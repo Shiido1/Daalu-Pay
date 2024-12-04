@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../app_assets/app_color.dart';
 import '../../app_assets/app_image.dart';
 import '../../widget/text_widget.dart';
+import 'wallet/wallet_screen.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -22,7 +23,7 @@ class _DashboardState extends State<Dashboard> {
 
   final List<Widget> _body = [
     const HomeScreen(),
-    Container(),
+    const WalletScreen(),
     Container(),
     Container(),
   ];

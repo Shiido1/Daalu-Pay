@@ -12,6 +12,7 @@ class WalletScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.light,
       body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(vertical: 20.w,horizontal: 16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -79,7 +79,7 @@ class TextFormWidget extends StatelessWidget {
     this.formKey,
     this.size,
     this.text,
-    this.borderColor = AppColor.grey,
+    this.borderColor = AppColor.inGrey,
     this.labelColor = AppColor.grey,
     this.maxline = 1,
     this.border = 4,
@@ -130,7 +130,7 @@ class TextFormWidget extends StatelessWidget {
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(border!.r)),
-                borderSide: BorderSide(width: 1.w, color: AppColor.inGrey),
+                borderSide: BorderSide(width: 1.w, color: borderColor!),
               ),
               errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.r)),

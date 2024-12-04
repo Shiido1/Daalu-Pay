@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../widget/button_widget.dart';
-import '../review_info_screen.dart';
+import '../onboarding/onboarding_screen.dart';
 
 enum Identity { nationalId, passport, driverslicense, voterscard }
 
@@ -243,7 +243,7 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const ReviewInfoScreen()),
+                        builder: (context) => const OnboardingScreen()),
                   );
                 }),
             SizedBox(

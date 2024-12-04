@@ -1,10 +1,10 @@
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
+import 'package:daalu_pay/ui/screen/dashboard/dashboard_screen.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widget/button_widget.dart';
 import '../widget/text_form_widget.dart';
-import 'welcome_back_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -100,10 +100,7 @@ class LoginScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => WelcomeBackScreen(
-                              name: 'Josh',
-                            )),
+                    MaterialPageRoute(builder: (context) => const Dashboard()),
                   );
                 }),
             SizedBox(

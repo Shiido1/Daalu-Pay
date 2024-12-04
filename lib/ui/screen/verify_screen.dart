@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:daalu_pay/ui/screen/create_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../app_assets/app_color.dart';
+import '../../../app_assets/contant.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,10 +16,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  paddedWing({Widget? child, double? value}) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: value!.w),
-        child: child,
-      );
 
   bool isTapped = false;
 

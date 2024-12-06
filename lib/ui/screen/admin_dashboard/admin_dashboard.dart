@@ -1,33 +1,32 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:daalu_pay/ui/screen/dashboard/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../app_assets/app_color.dart';
 import '../../app_assets/app_image.dart';
 import '../../widget/text_widget.dart';
-import 'settings/setting_screen.dart';
-import 'transaction/transaction_screen.dart';
-import 'wallet/wallet_screen.dart';
+import 'notification/admin_notification_screen.dart';
+import 'overview/admin_overview_screen.dart';
+import 'transaction/admin_transaction_screen.dart';
+import 'user/admin_user_screen.dart';
 
-class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+class AdminDashboard extends StatefulWidget {
+  const AdminDashboard({super.key});
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  State<AdminDashboard> createState() => _AdminDashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _AdminDashboardState extends State<AdminDashboard> {
   int _currentIndex = 0;
 
-  final List<Widget> _body = const [
-    HomeScreen(),
-    WalletScreen(),
-    TransactionScreen(),
-    SettingScreen(),
+  final List<Widget> _body = const[
+    AdminOverviewScreen(),
+    AdminUsersScreen(),
+    AdminTransactionScreen(),
+    AdminNotificationScreen(),
   ];
 
   Future<bool> willPopControl() async {
@@ -108,15 +107,15 @@ class _DashboardState extends State<Dashboard> {
                     color:
                         _currentIndex == 0 ? AppColor.primary : AppColor.black,
                   ),
-                  label: 'Home',
+                  label: 'Overview',
                 ),
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(
-                    AppImage.wallet,
+                    AppImage.person,
                     color:
                         _currentIndex == 1 ? AppColor.primary : AppColor.black,
                   ),
-                  label: 'Wallet',
+                  label: 'Users',
                 ),
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(
@@ -124,15 +123,15 @@ class _DashboardState extends State<Dashboard> {
                     color:
                         _currentIndex == 2 ? AppColor.primary : AppColor.black,
                   ),
-                  label: 'Transaction',
+                  label: 'Transactions',
                 ),
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(
-                    AppImage.person,
+                    AppImage.bell,
                     color:
                         _currentIndex == 3 ? AppColor.primary : AppColor.black,
                   ),
-                  label: 'Settings',
+                  label: 'Notifications',
                 ),
               ]),
         ),

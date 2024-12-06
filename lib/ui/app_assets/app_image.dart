@@ -3,6 +3,7 @@
 class AppImage {
   static const String nineja = 'assets/svg/nja.svg';
   static const String nigeria = 'assets/svg/Nigeria.svg';
+  static const String flag = 'assets/svg/flag.svg';
   static const String canada = 'assets/svg/canada.svg';
   static const String china = 'assets/svg/china.svg';
   static const String arrowDown = 'assets/svg/arrow_down.svg';

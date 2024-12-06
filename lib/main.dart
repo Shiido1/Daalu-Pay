@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'ui/screen/super_admin_dashboard/super_admin_dashboard.dart';
+import 'ui/screen/admin_dashboard/admin_dashboard.dart';
+import 'ui/screen/onboarding/onboarding_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const SuperAdminDashboard(),
+        home: const OnboardingScreen(),
       ),
     );
   }

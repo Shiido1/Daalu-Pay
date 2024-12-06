@@ -6,8 +6,8 @@ import '../../../app_assets/app_color.dart';
 import '../../../app_assets/app_image.dart';
 import '../../../widget/text_widget.dart';
 
-class SuperAdminUsersScreen extends StatelessWidget {
-  const SuperAdminUsersScreen({super.key});
+class AdminUsersScreen extends StatelessWidget {
+  const AdminUsersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +68,7 @@ class SuperAdminUsersScreen extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 30.h,
-            ),
-            TextView(
-              text: 'App Users',
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w400,
-            ),
-            SizedBox(
-              height: 16.h,
+              height: 50.h,
             ),
             Container(
               width: double.infinity,
@@ -95,16 +87,19 @@ class SuperAdminUsersScreen extends StatelessWidget {
                         TextView(
                           text: 'Name',
                           fontSize: 14.sp,
+                          color: AppColor.navyBlueGrey,
                           fontWeight: FontWeight.w500,
                         ),
                         TextView(
                           text: 'Email',
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
+                          color: AppColor.navyBlueGrey,
                         ),
                         TextView(
                           text: 'Status',
                           fontSize: 14.sp,
+                          color: AppColor.navyBlueGrey,
                           fontWeight: FontWeight.w500,
                         ),
                       ],

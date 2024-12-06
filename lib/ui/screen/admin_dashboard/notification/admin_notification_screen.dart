@@ -6,8 +6,8 @@ import '../../../app_assets/app_color.dart';
 import '../../../app_assets/app_image.dart';
 import '../../../widget/text_widget.dart';
 
-class SuperAdminNotificationScreen extends StatelessWidget {
-  const SuperAdminNotificationScreen({super.key});
+class AdminNotificationScreen extends StatelessWidget {
+  const AdminNotificationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

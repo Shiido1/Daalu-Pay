@@ -27,6 +27,7 @@ class TextFormWidget extends StatelessWidget {
   final TextEditingController? controller;
   final AutovalidateMode? autoValidateMode;
   final bool? obscureText;
+  final bool? alignLabelWithHint;
   final bool? readOnly;
   final bool? isGender;
   final bool? isFeedback;
@@ -62,6 +63,7 @@ class TextFormWidget extends StatelessWidget {
     this.initialValue,
     this.inputFormatters,
     this.controller,
+    this.alignLabelWithHint=false,
     this.isAsterix = false,
     this.autoValidateMode,
     this.obscureText = false,
@@ -107,6 +109,7 @@ class TextFormWidget extends StatelessWidget {
           keyboardType: keyboardType,
           focusNode: focusNode,
           decoration: InputDecoration(
+            alignLabelWithHint: alignLabelWithHint,
               filled: isFilled,
               fillColor: fillColor,
               contentPadding: EdgeInsets.fromLTRB(20.w, 10.w, 20.w, 19.w),

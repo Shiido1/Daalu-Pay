@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../app_assets/app_color.dart';
 import '../../app_assets/app_image.dart';
 import '../../widget/text_widget.dart';
+import 'notification/super_admin_notification_screen.dart';
 import 'overview/overview_screen.dart';
 import 'user/super_admin_user_screen.dart';
 
@@ -22,11 +23,11 @@ class SuperAdminDashboard extends StatefulWidget {
 class _SuperAdminDashboardState extends State<SuperAdminDashboard> {
   int _currentIndex = 0;
 
-  final List<Widget> _body = [
-    const OverviewScreen(),
-    const SuperAdminUsersScreen(),
-    const SuperAdminTransactionScreen(),
-    Container(),
+  final List<Widget> _body = const [
+    OverviewScreen(),
+    SuperAdminUsersScreen(),
+    SuperAdminTransactionScreen(),
+    SuperAdminNotificationScreen(),
   ];
 
   Future<bool> willPopControl() async {

@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
           children: [
             TextView(
               text: 'Login',
-              fontSize: 20.sp,
+              fontSize: 22.sp,
               fontWeight: FontWeight.w600,
               color: AppColor.primary,
             ),
@@ -29,8 +29,8 @@ class LoginScreen extends StatelessWidget {
             ),
             TextView(
               text: 'Enter your email address',
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w400,
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
               color: AppColor.grey,
             ),
             SizedBox(
@@ -62,7 +62,7 @@ class LoginScreen extends StatelessWidget {
             ),
             TextView(
               text: 'Forgot Password',
-              fontSize: 14.2.sp,
+              fontSize: 16.2.sp,
               fontWeight: FontWeight.w500,
               color: AppColor.darkGrey,
             ),
@@ -75,13 +75,13 @@ class LoginScreen extends StatelessWidget {
               children: [
                 TextView(
                   text: 'Don’t have an account? ',
-                  fontSize: 14.2.sp,
+                  fontSize: 16.2.sp,
                   fontWeight: FontWeight.w500,
                   color: AppColor.darkGrey,
                 ),
                 TextView(
                   text: 'Sign up here',
-                  fontSize: 14.2.sp,
+                  fontSize: 16.2.sp,
                   fontWeight: FontWeight.w500,
                   color: AppColor.primary,
                 ),
@@ -112,7 +112,7 @@ class LoginScreen extends StatelessWidget {
                 style: TextStyle(
                     fontWeight: FontWeight.w400,
                     color: AppColor.greyKind,
-                    fontSize: 12.sp),
+                    fontSize: 14.sp),
                 children: <TextSpan>[
                   TextSpan(
                       text: 'Terms & Conditions',

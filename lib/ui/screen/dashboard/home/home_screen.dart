@@ -1,6 +1,7 @@
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/home_widget/deposit_screen.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/home_widget/receipt_screen.dart';
+import 'package:daalu_pay/ui/screen/dashboard/home/swap/swap_screen.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -106,7 +107,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     homeTransFlowWidget(
-                        image: AppImage.homeSwap, text: 'Swap', onTap: () {}),
+                        image: AppImage.homeSwap, text: 'Swap', onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SwapScreen()),
+                            )),
                     homeTransFlowWidget(
                         image: AppImage.addCard,
                         text: 'Deposit',

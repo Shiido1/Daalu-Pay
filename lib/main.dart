@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'ui/screen/admin_dashboard/admin_dashboard.dart';
 import 'ui/screen/onboarding/onboarding_screen.dart';
 
 void main() {

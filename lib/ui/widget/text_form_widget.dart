@@ -63,7 +63,7 @@ class TextFormWidget extends StatelessWidget {
     this.initialValue,
     this.inputFormatters,
     this.controller,
-    this.alignLabelWithHint=false,
+    this.alignLabelWithHint = false,
     this.isAsterix = false,
     this.autoValidateMode,
     this.obscureText = false,
@@ -99,7 +99,7 @@ class TextFormWidget extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: 6.w),
                 child: TextView(
                   text: hint!,
-                  fontSize: 13.2.sp,
+                  fontSize: 15.2.sp,
                   fontWeight: FontWeight.w400,
                   color: AppColor.darkGrey,
                 ),
@@ -109,7 +109,7 @@ class TextFormWidget extends StatelessWidget {
           keyboardType: keyboardType,
           focusNode: focusNode,
           decoration: InputDecoration(
-            alignLabelWithHint: alignLabelWithHint,
+              alignLabelWithHint: alignLabelWithHint,
               filled: isFilled,
               fillColor: fillColor,
               contentPadding: EdgeInsets.fromLTRB(20.w, 10.w, 20.w, 19.w),

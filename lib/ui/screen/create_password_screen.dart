@@ -29,7 +29,7 @@ class CreatePassworsScreen extends StatelessWidget {
           children: [
             TextView(
               text: 'Create Password',
-              fontSize: 20.sp,
+              fontSize: 22.sp,
               fontWeight: FontWeight.w600,
               color: AppColor.primary,
             ),
@@ -67,7 +67,7 @@ class CreatePassworsScreen extends StatelessWidget {
             ),
             TextView(
               text: 'AT LEAST',
-              fontSize: 14.sp,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w500,
               color: AppColor.darkGrey,
             ),
@@ -85,7 +85,7 @@ class CreatePassworsScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(24)),
                       child: TextView(
                         text: e,
-                        fontSize: 12.sp,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                         color: AppColor.darkGrey,
                       ),

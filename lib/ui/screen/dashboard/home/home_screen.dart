@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 50.h,
             ),
             paddedWing(
-                value: 16.w,
+                value: 12.w,
                 // ignore: avoid_unnecessary_containers
                 child: Container(
                   height: 120.h,
@@ -101,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 )),
             SizedBox(height: 40.h),
             paddedWing(
-                value: 16.w,
+                value: 10.w,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 )),
             SizedBox(height: 46.h),
             paddedWing(
-              value: 16.w,
+              value: 10.w,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

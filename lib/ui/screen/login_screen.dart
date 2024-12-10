@@ -1,10 +1,10 @@
-import 'package:daalu_pay/ui/app_assets/app_color.dart';
-import 'package:daalu_pay/ui/screen/dashboard/dashboard_screen.dart';
-import 'package:daalu_pay/ui/widget/text_widget.dart';
+import 'package:daalu_pay_admin/ui/app_assets/app_color.dart';
+import 'package:daalu_pay_admin/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widget/button_widget.dart';
 import '../widget/text_form_widget.dart';
+import 'admin_dashboard/admin_dashboard.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
           children: [
             TextView(
               text: 'Login',
-              fontSize: 22.sp,
+              fontSize: 24.sp,
               fontWeight: FontWeight.w600,
               color: AppColor.primary,
             ),
@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
             ),
             TextView(
               text: 'Enter your email address',
-              fontSize: 16.sp,
+              fontSize: 18.sp,
               fontWeight: FontWeight.w500,
               color: AppColor.grey,
             ),
@@ -100,7 +100,8 @@ class LoginScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const Dashboard()),
+                    MaterialPageRoute(
+                        builder: (context) => const AdminDashboard()),
                   );
                 }),
             SizedBox(
@@ -119,25 +120,25 @@ class LoginScreen extends StatelessWidget {
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           color: AppColor.primary,
-                          fontSize: 12.sp)),
+                          fontSize: 14.sp)),
                   TextSpan(
                       text: ' and ',
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           color: AppColor.greyKind,
-                          fontSize: 12.sp)),
+                          fontSize: 14.sp)),
                   TextSpan(
                       text: 'Privacy Policy.',
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           color: AppColor.primary,
-                          fontSize: 12.sp)),
+                          fontSize: 14.sp)),
                   TextSpan(
                       text: ' Your data will be securely encrypted.🔒',
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           color: AppColor.greyKind,
-                          fontSize: 12.sp)),
+                          fontSize: 14.sp)),
                 ],
               ),
             )

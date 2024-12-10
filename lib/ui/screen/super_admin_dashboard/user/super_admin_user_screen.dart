@@ -1,4 +1,4 @@
-import 'package:daalu_pay/ui/widget/text_form_widget.dart';
+import 'package:daalu_pay_admin/ui/widget/text_form_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';

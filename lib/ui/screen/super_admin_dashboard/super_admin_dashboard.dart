@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:daalu_pay/ui/screen/super_admin_dashboard/transactions/super_admin_transaction_screen.dart';
+import 'package:daalu_pay_admin/ui/screen/super_admin_dashboard/transactions/super_admin_transaction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

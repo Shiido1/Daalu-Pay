@@ -1,6 +1,6 @@
-import 'package:daalu_pay/ui/app_assets/app_color.dart';
-import 'package:daalu_pay/ui/screen/setup_screen.dart';
-import 'package:daalu_pay/ui/widget/text_widget.dart';
+import 'package:daalu_pay_admin/ui/app_assets/app_color.dart';
+import 'package:daalu_pay_admin/ui/screen/setup_screen.dart';
+import 'package:daalu_pay_admin/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widget/button_widget.dart';
@@ -23,13 +23,13 @@ class CreatePassworsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.light,
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 100.w, horizontal: 16.w),
+        padding: EdgeInsets.symmetric(vertical: 100.w, horizontal: 24.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextView(
               text: 'Create Password',
-              fontSize: 22.sp,
+              fontSize: 24.sp,
               fontWeight: FontWeight.w600,
               color: AppColor.primary,
             ),
@@ -85,7 +85,7 @@ class CreatePassworsScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(24)),
                       child: TextView(
                         text: e,
-                        fontSize: 14.sp,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
                         color: AppColor.darkGrey,
                       ),

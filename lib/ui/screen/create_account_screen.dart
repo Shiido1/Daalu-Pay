@@ -1,7 +1,7 @@
-import 'package:daalu_pay/ui/app_assets/app_color.dart';
-import 'package:daalu_pay/ui/app_assets/app_image.dart';
-import 'package:daalu_pay/ui/screen/verify_screen.dart';
-import 'package:daalu_pay/ui/widget/text_widget.dart';
+import 'package:daalu_pay_admin/ui/app_assets/app_color.dart';
+import 'package:daalu_pay_admin/ui/app_assets/app_image.dart';
+import 'package:daalu_pay_admin/ui/screen/verify_screen.dart';
+import 'package:daalu_pay_admin/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,13 +16,13 @@ class CreateAccountScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.light,
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 100.w, horizontal: 16.w),
+        padding: EdgeInsets.symmetric(vertical: 100.w, horizontal: 24.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextView(
               text: 'Create Account',
-              fontSize: 20.sp,
+              fontSize: 22.sp,
               fontWeight: FontWeight.w600,
               color: AppColor.primary,
             ),
@@ -32,7 +32,7 @@ class CreateAccountScreen extends StatelessWidget {
             TextView(
               text:
                   'Enter your full name and the email address you’d like to use to create an account.',
-              fontSize: 14.sp,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w400,
               color: AppColor.grey,
             ),
@@ -89,7 +89,7 @@ class CreateAccountScreen extends StatelessWidget {
             ),
             TextView(
               text: 'Enter your phone number',
-              fontSize: 13.2.sp,
+              fontSize: 16.2.sp,
               fontWeight: FontWeight.w400,
               color: AppColor.darkGrey,
             ),
@@ -150,13 +150,13 @@ class CreateAccountScreen extends StatelessWidget {
               children: [
                 TextView(
                   text: 'Have an account? ',
-                  fontSize: 14.2.sp,
+                  fontSize: 16.2.sp,
                   fontWeight: FontWeight.w500,
                   color: AppColor.darkGrey,
                 ),
                 TextView(
                   text: 'Log in here',
-                  fontSize: 14.2.sp,
+                  fontSize: 16.2.sp,
                   fontWeight: FontWeight.w500,
                   color: AppColor.primary,
                 ),
@@ -175,8 +175,7 @@ class CreateAccountScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => VerifyScreen()),
+                    MaterialPageRoute(builder: (context) => VerifyScreen()),
                   );
                 }),
           ],

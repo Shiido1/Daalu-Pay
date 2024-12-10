@@ -42,7 +42,7 @@ class ButtonWidget extends StatelessWidget {
                           BorderSide(color: buttonBorderColor!, width: 1.w)))),
           child: TextView(
             text: buttonText!,
-            fontSize: 17.sp,
+            fontSize: 18.sp,
             color: color,
             fontWeight: FontWeight.w600,
           )),

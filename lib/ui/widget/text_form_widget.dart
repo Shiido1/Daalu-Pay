@@ -99,7 +99,7 @@ class TextFormWidget extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: 6.w),
                 child: TextView(
                   text: hint!,
-                  fontSize: 15.2.sp,
+                  fontSize: 16.2.sp,
                   fontWeight: FontWeight.w400,
                   color: AppColor.darkGrey,
                 ),

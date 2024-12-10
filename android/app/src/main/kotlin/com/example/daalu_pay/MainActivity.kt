@@ -1,4 +1,4 @@
-package com.example.daalu_pay
+package com.example.daalu_pay_admin
 
 import io.flutter.embedding.android.FlutterActivity
 

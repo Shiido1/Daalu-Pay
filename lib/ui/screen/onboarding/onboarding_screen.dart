@@ -1,7 +1,7 @@
-import 'package:daalu_pay/ui/app_assets/app_color.dart';
-import 'package:daalu_pay/ui/app_assets/app_image.dart';
-import 'package:daalu_pay/ui/screen/create_account_screen.dart';
-import 'package:daalu_pay/ui/screen/login_screen.dart';
+import 'package:daalu_pay_admin/ui/app_assets/app_color.dart';
+import 'package:daalu_pay_admin/ui/app_assets/app_image.dart';
+import 'package:daalu_pay_admin/ui/screen/create_account_screen.dart';
+import 'package:daalu_pay_admin/ui/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -80,7 +80,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       backgroundColor: AppColor.white,
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 70.w, horizontal: 16.w),
+        padding: EdgeInsets.symmetric(vertical: 70.w, horizontal: 24.w),
         child: Column(
           children: [
             Stack(children: [
@@ -168,7 +168,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       );
                     }
                   });
-                  
                 }),
             SizedBox(
               height: 10.h,

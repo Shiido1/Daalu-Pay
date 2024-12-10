@@ -1,5 +1,5 @@
-import 'package:daalu_pay/ui/app_assets/app_color.dart';
-import 'package:daalu_pay/ui/widget/text_widget.dart';
+import 'package:daalu_pay_admin/ui/app_assets/app_color.dart';
+import 'package:daalu_pay_admin/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widget/button_widget.dart';

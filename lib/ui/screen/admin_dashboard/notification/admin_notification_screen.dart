@@ -1,9 +1,9 @@
-import 'package:daalu_pay/ui/widget/text_form_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../app_assets/app_color.dart';
 import '../../../app_assets/app_image.dart';
+import '../../../widget/text_form_widget.dart';
 import '../../../widget/text_widget.dart';
 
 class AdminNotificationScreen extends StatelessWidget {

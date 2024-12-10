@@ -1,4 +1,4 @@
-import 'package:daalu_pay/ui/screen/login_screen.dart';
+import 'package:daalu_pay_admin/ui/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -40,7 +40,7 @@ class SetupScreen extends StatelessWidget {
               ),
               TextView(
                 text: 'You are all set up !',
-                fontSize: 22.0.sp,
+                fontSize: 24.0.sp,
                 fontWeight: FontWeight.w700,
                 color: AppColor.greyKind,
               ),
@@ -50,7 +50,7 @@ class SetupScreen extends StatelessWidget {
               TextView(
                 text:
                     'We have successfully verified your identity and created your account. Thank you for taking the time out to do that.',
-                fontSize: 14.0.sp,
+                fontSize: 16.2.sp,
                 textAlign: TextAlign.center,
                 fontWeight: FontWeight.w400,
                 color: AppColor.greyKind,

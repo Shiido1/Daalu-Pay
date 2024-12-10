@@ -2,7 +2,7 @@
     <application
         android:label="Daalu Pay"
         android:name="${applicationName}"
-        android:icon="@drawable/applogo">
+        android:icon="@drawable/ap  plogo">
         <activity
             android:name=".MainActivity"
             android:exported="true"

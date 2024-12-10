@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
           children: [
             TextView(
               text: 'Login',
-              fontSize: 22.sp,
+              fontSize: 24.sp,
               fontWeight: FontWeight.w600,
               color: AppColor.primary,
             ),
@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
             ),
             TextView(
               text: 'Enter your email address',
-              fontSize: 16.sp,
+              fontSize: 18.sp,
               fontWeight: FontWeight.w500,
               color: AppColor.grey,
             ),
@@ -119,25 +119,25 @@ class LoginScreen extends StatelessWidget {
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           color: AppColor.primary,
-                          fontSize: 12.sp)),
+                          fontSize: 14.sp)),
                   TextSpan(
                       text: ' and ',
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           color: AppColor.greyKind,
-                          fontSize: 12.sp)),
+                          fontSize: 14.sp)),
                   TextSpan(
                       text: 'Privacy Policy.',
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           color: AppColor.primary,
-                          fontSize: 12.sp)),
+                          fontSize: 14.sp)),
                   TextSpan(
                       text: ' Your data will be securely encrypted.🔒',
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           color: AppColor.greyKind,
-                          fontSize: 12.sp)),
+                          fontSize: 14.sp)),
                 ],
               ),
             )

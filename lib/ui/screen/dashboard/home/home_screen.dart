@@ -17,7 +17,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   bool isTapped = false;
 
   @override
@@ -25,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: AppColor.light,
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 25.0.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 25.0.w),
         child: Column(
           children: [
             SizedBox(
@@ -61,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 50.h,
             ),
             paddedWing(
-                value: 8.w,
+                value: 16.w,
                 // ignore: avoid_unnecessary_containers
                 child: Container(
                   height: 120.h,
@@ -102,12 +101,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 )),
             SizedBox(height: 40.h),
             paddedWing(
-                value: 8.w,
+                value: 16.w,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     homeTransFlowWidget(
-                        image: AppImage.homeSwap, text: 'Swap', onTap: () => Navigator.push(
+                        image: AppImage.homeSwap,
+                        text: 'Swap',
+                        onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const SwapScreen()),
@@ -128,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 )),
             SizedBox(height: 46.h),
             paddedWing(
-              value: 8.w,
+              value: 16.w,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -80,7 +80,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       backgroundColor: AppColor.white,
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 70.w, horizontal: 16.w),
+        padding: EdgeInsets.symmetric(vertical: 70.w, horizontal: 24.w),
         child: Column(
           children: [
             Stack(children: [
@@ -168,7 +168,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       );
                     }
                   });
-                  
                 }),
             SizedBox(
               height: 10.h,

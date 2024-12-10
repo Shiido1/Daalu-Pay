@@ -33,13 +33,13 @@ class _VerifyScreenState extends State<VerifyScreen> {
     return Scaffold(
       backgroundColor: AppColor.light,
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 100.w, horizontal: 16.w),
+        padding: EdgeInsets.symmetric(vertical: 100.w, horizontal: 24.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextView(
               text: 'Verify your email',
-              fontSize: 22.sp,
+              fontSize: 24.sp,
               fontWeight: FontWeight.w600,
               color: AppColor.primary,
             ),
@@ -48,13 +48,13 @@ class _VerifyScreenState extends State<VerifyScreen> {
             ),
             TextView(
               text: 'Please enter the OTP sent to',
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w400,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w500,
               color: AppColor.grey,
             ),
             TextView(
               text: 'john.doe@gmail.com',
-              fontSize: 16.sp,
+              fontSize: 18.sp,
               fontWeight: FontWeight.w600,
               color: AppColor.black,
             ),

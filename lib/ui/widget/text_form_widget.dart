@@ -48,7 +48,7 @@ class TextFormWidget extends StatelessWidget {
   final double? border;
 
   TextFormWidget({
-    Key? key,
+    super.key,
     this.textCapitalization,
     this.label,
     this.floatingLabel,
@@ -87,7 +87,7 @@ class TextFormWidget extends StatelessWidget {
     this.border = 4,
     this.minline,
     this.focusNode,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

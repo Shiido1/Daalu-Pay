@@ -175,7 +175,8 @@ class CreateAccountScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => VerifyScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const VerifyScreen()),
                   );
                 }),
           ],

@@ -10,7 +10,7 @@ import '../../../../../widget/text_widget.dart';
 
 // ignore: must_be_immutable
 class FlutterScreen extends StatefulWidget {
-  FlutterScreen({super.key});
+  const FlutterScreen({super.key});
 
   @override
   State<FlutterScreen> createState() => _FlutterScreenState();

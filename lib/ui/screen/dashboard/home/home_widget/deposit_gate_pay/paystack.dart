@@ -11,7 +11,7 @@ import '../../swap/swap_screen.dart';
 
 // ignore: must_be_immutable
 class PaystackScreen extends StatefulWidget {
-  PaystackScreen({super.key});
+  const PaystackScreen({super.key});
 
   @override
   State<PaystackScreen> createState() => _PaystackScreenState();

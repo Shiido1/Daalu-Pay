@@ -19,8 +19,8 @@ class TextView extends StatelessWidget {
   final double? decorationThickness;
   final List<Shadow>? shadows;
 
-  TextView({
-    Key? key,
+  const TextView({
+    super.key,
     required this.text,
     this.textOverflow = TextOverflow.clip,
     this.textAlign = TextAlign.left,
@@ -37,7 +37,7 @@ class TextView extends StatelessWidget {
     this.shadows,
     this.decorationThickness,
     this.fontStyle = FontStyle.normal,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

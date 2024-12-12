@@ -10,7 +10,7 @@ import '../../../../../widget/text_widget.dart';
 
 // ignore: must_be_immutable
 class PaypalScreen extends StatefulWidget {
-  PaypalScreen({super.key});
+  const PaypalScreen({super.key});
 
   @override
   State<PaypalScreen> createState() => _PaypalScreenState();

@@ -10,7 +10,7 @@ import '../../../../../widget/text_widget.dart';
 
 // ignore: must_be_immutable
 class AlipayScreen extends StatefulWidget {
-  AlipayScreen({super.key});
+  const AlipayScreen({super.key});
 
   @override
   State<AlipayScreen> createState() => _AlipayScreenState();

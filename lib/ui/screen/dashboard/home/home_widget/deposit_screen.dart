@@ -98,7 +98,7 @@ class DepositScreen extends StatelessWidget {
                 horizontal: 24,
                 child: SizedBox(
                   height: 740.h,
-                  child: TabBarView(
+                  child: const TabBarView(
                     children: <Widget>[
                       PaystackScreen(),
                       AlipayScreen(),

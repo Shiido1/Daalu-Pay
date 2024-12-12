@@ -9,7 +9,7 @@ import '../widget/text_widget.dart';
 
 // ignore: must_be_immutable
 class VerifyScreen extends StatefulWidget {
-  VerifyScreen({super.key});
+  const VerifyScreen({super.key});
 
   @override
   State<VerifyScreen> createState() => _VerifyScreenState();

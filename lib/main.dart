@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'ui/screen/onboarding/onboarding_screen.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'core/core_folder/app/app.locator.dart';
+import 'core/core_folder/app/app.router.dart';
 
+final navigate = locator<NavigationService>();
 void main() {
+  setupLocator();
   runApp(const MyApp());
 }
 
@@ -19,7 +23,9 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const OnboardingScreen(),
+        initialRoute: Routes.onboardingScreen,
+        navigatorKey: StackedService.navigatorKey,
+        onGenerateRoute: StackedRouter().onGenerateRoute,
       ),
     );
   }

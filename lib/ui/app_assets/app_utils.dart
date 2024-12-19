@@ -12,7 +12,7 @@ class AppUtils {
           : message,
       flushbarPosition: FlushbarPosition.TOP,
       flushbarStyle: FlushbarStyle.GROUNDED,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 1),
       reverseAnimationCurve: Curves.decelerate,
       forwardAnimationCurve: Curves.elasticOut,
       backgroundColor: error ? Colors.red : Colors.green,

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 @lazySingleton
 class SharedPreferencesService {
   SharedPreferencesService._internal();
@@ -28,8 +27,6 @@ class SharedPreferencesService {
   String get authToken => sharedPreferences?.getString(keyAuthToken) ?? '';
 
   bool get isLoggedIn => sharedPreferences?.getBool(logginKey) ?? false;
-  bool get isJustLoggedIn =>
-      sharedPreferences?.getBool(isJustLoggedInKey) ?? false;
   Map<String, dynamic> get usersData {
     final userDataString = sharedPreferences!.getString(userData);
     if (userDataString != null && userDataString.isNotEmpty) {
@@ -40,9 +37,6 @@ class SharedPreferencesService {
 
   set isLoggedIn(bool logging) =>
       sharedPreferences?.setBool(logginKey, logging);
-  set isJustLoggedIn(bool isJustLogin) =>
-      sharedPreferences?.setBool(isJustLoggedInKey, isJustLogin);
-
   set authToken(String authToken) =>
       sharedPreferences?.setString(keyAuthToken, authToken);
 
@@ -53,7 +47,7 @@ class SharedPreferencesService {
     try {
       await sharedPreferences!.clear();
       // await locator<HiveManager>().clearAllBox();
-      
+
       // getLogger('logout').d(sharedPreferences.toString());
       return true;
     } catch (e) {

@@ -151,7 +151,11 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 30.h,
             ),
-            ...[1, 2, 3].map((e) => recentTransWidget(
+            ...[
+              1,
+              2,
+              3,
+            ].map((e) => recentTransWidget(
                 e: e,
                 text: 'Deposit',
                 textValue: e == 1

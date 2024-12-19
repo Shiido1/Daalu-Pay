@@ -1,10 +1,9 @@
+import 'package:daalu_pay/core/core_folder/app/app.router.dart';
+import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
-import 'package:daalu_pay/ui/screen/create_account_screen.dart';
-import 'package:daalu_pay/ui/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../widget/button_widget.dart';
 import '../../widget/text_widget.dart';
 
@@ -153,7 +152,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 buttonText: 'Next',
                 color: AppColor.white,
                 border: 8,
-                // isLoading: model.isLoading,
                 buttonColor: AppColor.primary,
                 buttonBorderColor: Colors.transparent,
                 onPressed: () {
@@ -161,11 +159,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     if (i < 3) {
                       i++;
                     } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CreateAccountScreen()),
-                      );
+                      navigate.navigateTo(Routes.createAccountScreen);
                     }
                   });
                 }),
@@ -176,15 +170,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 buttonText: 'Login',
                 color: AppColor.darkGrey,
                 border: 8,
-                // isLoading: model.isLoading,
                 buttonColor: AppColor.white,
                 buttonBorderColor: AppColor.greyNice,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()),
-                  );
+                  navigate.navigateTo(Routes.loginScreen);
                 }),
             SizedBox(
               height: 30.h,

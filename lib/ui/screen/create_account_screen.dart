@@ -1,3 +1,5 @@
+import 'package:daalu_pay/core/core_folder/app/app.router.dart';
+import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:daalu_pay/ui/screen/verify_screen.dart';
@@ -154,11 +156,14 @@ class CreateAccountScreen extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color: AppColor.darkGrey,
                 ),
-                TextView(
-                  text: 'Log in here',
-                  fontSize: 16.2.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColor.primary,
+                GestureDetector(
+                  onTap: () => navigate.navigateTo(Routes.loginScreen),
+                  child: TextView(
+                    text: 'Login here',
+                    fontSize: 16.2.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColor.primary,
+                  ),
                 ),
               ],
             ),

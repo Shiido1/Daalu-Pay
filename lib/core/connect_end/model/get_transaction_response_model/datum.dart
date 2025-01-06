@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'transaction.g.dart';
+part 'datum.g.dart';
 
 @JsonSerializable()
-class Transaction {
+class Datum {
   String? uuid;
   num? userId;
   String? referenceNumber;
@@ -13,7 +13,7 @@ class Transaction {
   String? status;
   DateTime? createdAt;
 
-  Transaction({
+  Datum({
     this.uuid,
     this.userId,
     this.referenceNumber,
@@ -24,9 +24,7 @@ class Transaction {
     this.createdAt,
   });
 
-  factory Transaction.fromJson(Map<String, dynamic> json) {
-    return _$TransactionFromJson(json);
-  }
+  factory Datum.fromJson(Map<String, dynamic> json) => _$DatumFromJson(json);
 
-  Map<String, dynamic> toJson() => _$TransactionToJson(this);
+  Map<String, dynamic> toJson() => _$DatumToJson(this);
 }

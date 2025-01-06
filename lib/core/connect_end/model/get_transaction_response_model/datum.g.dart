@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'transaction.dart';
+part of 'datum.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
+Datum _$DatumFromJson(Map<String, dynamic> json) => Datum(
       uuid: json['uuid'] as String?,
       userId: json['userId'] as num?,
       referenceNumber: json['referenceNumber'] as String?,
@@ -19,8 +19,7 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
           : DateTime.parse(json['createdAt'] as String),
     );
 
-Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$DatumToJson(Datum instance) => <String, dynamic>{
       'uuid': instance.uuid,
       'userId': instance.userId,
       'referenceNumber': instance.referenceNumber,

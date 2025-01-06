@@ -1,3 +1,4 @@
+import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/user_response_model/user_response_model.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,9 @@ class AuthViewModel extends BaseViewModel {
   UserResponseModel? get userResponseModel => _userResponseModel;
   GetStatsResponseModel? _getStatsResponseModel;
   GetStatsResponseModel? get getStatsResponseModel => _getStatsResponseModel;
+  GetTransactionResponseModel? _getTransactionResponseModel;
+  GetTransactionResponseModel? get getTransactionResponseModel =>
+      _getTransactionResponseModel;
 
   // login flow so api call for method can be called here
 
@@ -91,6 +95,26 @@ class AuthViewModel extends BaseViewModel {
           throwException: true);
 
       if (_getStatsResponseModel?.status == 'success') {
+        _isLoading = false;
+      }
+    } catch (e) {
+      _isLoading = false;
+      logger.d(e);
+      AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  // get user transaction data api call
+
+  Future<void> getTransaction(contxt) async {
+    try {
+      _isLoading = true;
+      _getTransactionResponseModel = await runBusyFuture(
+          repositoryImply.getTransactions(),
+          throwException: true);
+
+      if (_getTransactionResponseModel?.status == 'success') {
         _isLoading = false;
       }
     } catch (e) {

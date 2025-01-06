@@ -3,6 +3,7 @@ import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/manager/shared_preference.dart';
 import '../contract/contract_impl.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
+import '../model/get_transaction_response_model/get_transaction_response_model.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
 import '../model/user_response_model/user_response_model.dart';
@@ -29,10 +30,10 @@ class AuthRepoImpl {
     return response;
   }
 
-  // Future<dynamic> csrfCookie() async {
-  //   final response = await _contract.csrfCookie();
-  //   return response;
-  // }
+  Future<GetTransactionResponseModel> getTransactions() async {
+    final response = await _contract.getTransactions();
+    return response;
+  }
 
   void _chache(data) {
     if (data != null) {

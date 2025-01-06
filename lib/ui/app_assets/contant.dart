@@ -19,3 +19,9 @@ paddedWing({Widget? child, double? value}) => Padding(
       padding: EdgeInsets.symmetric(horizontal: value!.w),
       child: child,
     );
+
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+  }
+}

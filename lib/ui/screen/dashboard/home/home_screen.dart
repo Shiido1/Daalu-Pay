@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/home_widget/deposit_screen.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/home_widget/receipt_screen.dart';
@@ -73,49 +74,115 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 50.h,
                 ),
-                paddedWing(
-                    value: 12.w,
-                    // ignore: avoid_unnecessary_containers
-                    child: Container(
-                      height: 120.h,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: AppColor.primary,
-                          borderRadius: BorderRadius.circular(14)),
-                      child: paddedWing(
-                        value: 16.w,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                TextView(
-                                  text: 'Available Balance',
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColor.white,
+                // paddedWing(
+                //     value: 12.w,
+                //     // ignore: avoid_unnecessary_containers
+                // child: Container(
+                //   height: 120.h,
+                //   width: double.infinity,
+                //   decoration: BoxDecoration(
+                //       color: AppColor.primary,
+                //       borderRadius: BorderRadius.circular(14)),
+                //   child: paddedWing(
+                //     value: 16.w,
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [
+                //         Column(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           children: [
+                //             TextView(
+                //               text: 'Available Balance',
+                //               fontSize: 16.sp,
+                //               fontWeight: FontWeight.w400,
+                //               color: AppColor.white,
+                //             ),
+                //             TextView(
+                //               text: isTapped
+                //                   ? '${getCurrency()}${oCcy.format(model.userResponseModel?.data?.wallets?[0].balance ?? 0)}'
+                //                   : '********',
+                //               fontSize: 28.sp,
+                //               fontWeight: FontWeight.w400,
+                //               color: AppColor.white,
+                //             ),
+                //           ],
+                //         ),
+                //         GestureDetector(
+                //             onTap: () =>
+                //                 setState(() => isTapped = !isTapped),
+                //             child: SvgPicture.asset(
+                //                 isTapped ? AppImage.openEye : AppImage.eye))
+                //       ],
+                //     ),
+                //   ),
+                // )),
+                if (model.userResponseModel != null)
+                  CarouselSlider(
+                    items: [
+                      ...model.userResponseModel!.data!.wallets!
+                          .map((e) => paddedWing(
+                                value: 12.w,
+                                child: Container(
+                                  height: 120.h,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      color: AppColor.primary,
+                                      borderRadius: BorderRadius.circular(14)),
+                                  child: paddedWing(
+                                    value: 16.w,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            TextView(
+                                              text: 'Available Balance',
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColor.white,
+                                            ),
+                                            TextView(
+                                              text: isTapped
+                                                  ? '${getCurrency()}${oCcy.format(e.balance ?? 0)}'
+                                                  : '********',
+                                              fontSize: 28.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColor.white,
+                                            ),
+                                          ],
+                                        ),
+                                        GestureDetector(
+                                            onTap: () => setState(
+                                                () => isTapped = !isTapped),
+                                            child: SvgPicture.asset(isTapped
+                                                ? AppImage.openEye
+                                                : AppImage.eye))
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                TextView(
-                                  text: isTapped
-                                      ? '${getCurrency()}${oCcy.format(model.userResponseModel?.data?.wallets?[0].balance ?? 0)}'
-                                      : '********',
-                                  fontSize: 28.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColor.white,
-                                ),
-                              ],
-                            ),
-                            GestureDetector(
-                                onTap: () =>
-                                    setState(() => isTapped = !isTapped),
-                                child: SvgPicture.asset(
-                                    isTapped ? AppImage.openEye : AppImage.eye))
-                          ],
-                        ),
-                      ),
-                    )),
+                              ))
+                    ],
+
+                    //Slider Container properties
+                    options: CarouselOptions(
+                      height: 120.0,
+                      enlargeCenterPage: false,
+                      autoPlay: false,
+                      aspectRatio: 1,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enableInfiniteScroll: false,
+                      autoPlayAnimationDuration: Duration(milliseconds: 800),
+                      viewportFraction: 1.0,
+                    ),
+                  ),
+
                 SizedBox(height: 40.h),
                 paddedWing(
                     value: 10.w,
@@ -187,14 +254,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   .getStatsResponseModel!.data!.transactions!
                                   .map((e) => recentTransWidget(
                                         e: e,
-                                        // text: 'Deposit',
-                                        // textValue: e == 1
-                                        //     ? 'Successful'
-                                        //     : e == 2
-                                        //         ? 'Pending'
-                                        //         : 'Failed',
-                                        // time: 'Today, 3:00 PM',
-                                        // amount: '5,000 NGN -> 25 USD'
                                       ))
                             ],
                           )
@@ -252,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextView(
-                    text: "Deposit",
+                    text: e.type?.capitalize() ?? "",
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
                     color: AppColor.darkGrey,
@@ -270,12 +329,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   TextView(
-                    text: e.status ?? '',
+                    text: e.status?.toLowerCase() == 'completed'
+                        ? 'Successful'
+                        : e.status!.capitalize(),
                     fontSize: 13.2.sp,
                     fontWeight: FontWeight.w400,
-                    color: e == 1
+                    color: e.status?.toLowerCase() == 'completed'
                         ? AppColor.green
-                        : e == 2
+                        : e.status?.toLowerCase() == 'pending'
                             ? AppColor.grey
                             : AppColor.red,
                   ),

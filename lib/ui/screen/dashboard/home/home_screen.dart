@@ -6,6 +6,8 @@ import 'package:daalu_pay/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:stacked/stacked.dart';
+import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../app_assets/app_color.dart';
 import '../../../app_assets/contant.dart';
 
@@ -23,151 +25,167 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.light,
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 25.0.w),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 50.h,
-            ),
-            paddedWing(
-              value: 8.w,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: ViewModelBuilder<AuthViewModel>.reactive(
+          viewModelBuilder: () => AuthViewModel(),
+          onViewModelReady: (model) {
+            model.getUser(context);
+          },
+          disposeViewModel: false,
+          builder: (_, AuthViewModel model, __) {
+            return SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 25.0.w),
+              child: Column(
                 children: [
-                  Container(
-                    padding: EdgeInsets.all(5.2.w),
-                    decoration: const BoxDecoration(
-                      color: AppColor.inGrey,
-                      shape: BoxShape.circle,
-                    ),
-                    child: TextView(
-                      text: 'JD',
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
+                  SizedBox(
+                    height: 50.h,
                   ),
-                  TextView(
-                    text: 'Welcome John',
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  SvgPicture.asset(AppImage.bell)
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 50.h,
-            ),
-            paddedWing(
-                value: 12.w,
-                // ignore: avoid_unnecessary_containers
-                child: Container(
-                  height: 120.h,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: AppColor.primary,
-                      borderRadius: BorderRadius.circular(14)),
-                  child: paddedWing(
-                    value: 16.w,
+                  paddedWing(
+                    value: 8.w,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextView(
-                              text: 'Available Balance',
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColor.white,
-                            ),
-                            TextView(
-                              text: isTapped ? 'N9,900,000,000.00' : '********',
-                              fontSize: 28.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColor.white,
-                            ),
-                          ],
+                        Container(
+                          padding: EdgeInsets.all(5.2.w),
+                          decoration: const BoxDecoration(
+                            color: AppColor.inGrey,
+                            shape: BoxShape.circle,
+                          ),
+                          child: TextView(
+                            text: getInitials(
+                                '${model.userResponseModel?.data?.firstName} ${model.userResponseModel?.data?.lastName}'),
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                        GestureDetector(
-                            onTap: () => setState(() => isTapped = !isTapped),
-                            child: SvgPicture.asset(
-                                isTapped ? AppImage.openEye : AppImage.eye))
+                        TextView(
+                          text:
+                              'Welcome ${model.userResponseModel?.data?.firstName ?? ''}',
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        SvgPicture.asset(AppImage.bell)
                       ],
                     ),
                   ),
-                )),
-            SizedBox(height: 40.h),
-            paddedWing(
-                value: 10.w,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    homeTransFlowWidget(
-                        image: AppImage.homeSwap,
-                        text: 'Swap',
-                        onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SwapScreen()),
-                            )),
-                    homeTransFlowWidget(
-                        image: AppImage.addCard,
-                        text: 'Deposit',
-                        onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const DepositScreen()),
-                            )),
-                    homeTransFlowWidget(
-                        image: AppImage.homeHelp,
-                        text: 'Get Help',
-                        onTap: () {}),
-                  ],
-                )),
-            SizedBox(height: 46.h),
-            paddedWing(
-              value: 10.w,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextView(
-                    text: 'Recent Transaction',
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    color: AppColor.darkGrey,
+                  SizedBox(
+                    height: 50.h,
                   ),
-                  TextView(
-                    text: 'View All',
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColor.darkGrey,
+                  paddedWing(
+                      value: 12.w,
+                      // ignore: avoid_unnecessary_containers
+                      child: Container(
+                        height: 120.h,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: AppColor.primary,
+                            borderRadius: BorderRadius.circular(14)),
+                        child: paddedWing(
+                          value: 16.w,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  TextView(
+                                    text: 'Available Balance',
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColor.white,
+                                  ),
+                                  TextView(
+                                    text: isTapped
+                                        ? '${getCurrency()}${oCcy.format(model.userResponseModel?.data?.wallets?[0].balance ?? 0)}'
+                                        : '********',
+                                    fontSize: 28.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColor.white,
+                                  ),
+                                ],
+                              ),
+                              GestureDetector(
+                                  onTap: () =>
+                                      setState(() => isTapped = !isTapped),
+                                  child: SvgPicture.asset(isTapped
+                                      ? AppImage.openEye
+                                      : AppImage.eye))
+                            ],
+                          ),
+                        ),
+                      )),
+                  SizedBox(height: 40.h),
+                  paddedWing(
+                      value: 10.w,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          homeTransFlowWidget(
+                              image: AppImage.homeSwap,
+                              text: 'Swap',
+                              onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SwapScreen()),
+                                  )),
+                          homeTransFlowWidget(
+                              image: AppImage.addCard,
+                              text: 'Deposit',
+                              onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DepositScreen()),
+                                  )),
+                          homeTransFlowWidget(
+                              image: AppImage.homeHelp,
+                              text: 'Get Help',
+                              onTap: () {}),
+                        ],
+                      )),
+                  SizedBox(height: 46.h),
+                  paddedWing(
+                    value: 10.w,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextView(
+                          text: 'Recent Transaction',
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: AppColor.darkGrey,
+                        ),
+                        TextView(
+                          text: 'View All',
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColor.darkGrey,
+                        ),
+                      ],
+                    ),
                   ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  ...[
+                    1,
+                    2,
+                    3,
+                  ].map((e) => recentTransWidget(
+                      e: e,
+                      text: 'Deposit',
+                      textValue: e == 1
+                          ? 'Successful'
+                          : e == 2
+                              ? 'Pending'
+                              : 'Failed',
+                      time: 'Today, 3:00 PM',
+                      amount: '5,000 NGN -> 25 USD'))
                 ],
               ),
-            ),
-            SizedBox(
-              height: 30.h,
-            ),
-            ...[
-              1,
-              2,
-              3,
-            ].map((e) => recentTransWidget(
-                e: e,
-                text: 'Deposit',
-                textValue: e == 1
-                    ? 'Successful'
-                    : e == 2
-                        ? 'Pending'
-                        : 'Failed',
-                time: 'Today, 3:00 PM',
-                amount: '5,000 NGN -> 25 USD'))
-          ],
-        ),
-      ),
+            );
+          }),
     );
   }
 

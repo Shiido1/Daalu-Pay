@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
@@ -24,6 +27,25 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
+
+  String? deviceName;
+  final deviceInfoPlug = DeviceInfoPlugin();
+
+  getDeviceName() async {
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfoPlug.androidInfo;
+      deviceName = androidInfo.device;
+    } else {
+      IosDeviceInfo iosInfo = await deviceInfoPlug.iosInfo;
+      deviceName = iosInfo.name;
+    }
+  }
+
+  @override
+  void initState() {
+    getDeviceName();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -57,14 +79,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    GestureDetector(
-                      onTap: () => model.csrfCookies(),
-                      child: TextView(
-                        text: 'Enter your email address',
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w500,
-                        color: AppColor.grey,
-                      ),
+                    TextView(
+                      text: 'Enter your email address',
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppColor.grey,
                     ),
                     SizedBox(
                       height: 20.h,
@@ -140,7 +159,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             model.loginUser(
                                 LoginEntityModel(
                                     email: emailController.text.trim(),
-                                    password: passwordController.text.trim()),
+                                    password: passwordController.text.trim(),
+                                    deviceName: deviceName),
                                 context);
                           }
                         }),

@@ -51,6 +51,8 @@ dependencies:
   stacked: ^3.4.4
   stacked_hooks: ^0.2.4
   stacked_services: ^1.6.0
+  device_info_plus: ^11.2.0
+  intl: ^0.20.1
   
 
 

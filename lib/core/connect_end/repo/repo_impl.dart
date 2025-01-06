@@ -4,6 +4,7 @@ import '../../core_folder/manager/shared_preference.dart';
 import '../contract/contract_impl.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
+import '../model/user_response_model/user_response_model.dart';
 
 @lazySingleton
 class AuthRepoImpl {
@@ -13,13 +14,19 @@ class AuthRepoImpl {
   Future<LoginResponseModel> login(LoginEntityModel loginEntity) async {
     final response = await _contract.login(loginEntity);
     _session.isLoggedIn = true;
+    _chache(response.data);
     return response;
   }
 
-  Future<dynamic> csrfCookie() async {
-    final response = await _contract.csrfCookie();
+  Future<UserResponseModel> userData() async {
+    final response = await _contract.userData();
     return response;
   }
+
+  // Future<dynamic> csrfCookie() async {
+  //   final response = await _contract.csrfCookie();
+  //   return response;
+  // }
 
   void _chache(data) {
     if (data != null) {

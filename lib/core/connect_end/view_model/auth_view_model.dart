@@ -1,3 +1,4 @@
+import 'package:daalu_pay/core/connect_end/model/user_response_model/user_response_model.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -33,23 +34,9 @@ class AuthViewModel extends BaseViewModel {
 
   LoginResponseModel? _loginResponse;
   LoginResponseModel? get loginResponse => _loginResponse;
+  UserResponseModel? _userResponseModel;
+  UserResponseModel? get userResponseModel => _userResponseModel;
 
-  // get user csrf cookies
-
-  Future<void> csrfCookies() async {
-    try {
-      _isLoading = true;
-      var res = await runBusyFuture(repositoryImply.csrfCookie(),
-          throwException: true);
-
-      logger.d('res::::${res['set-cookie'][0]}');
-      _isLoading = false;
-    } catch (e) {
-      _isLoading = false;
-      logger.d(e);
-    }
-    notifyListeners();
-  }
   // login flow so api call for method can be called here
 
   Future<void> loginUser(LoginEntityModel loginEntity, contxt) async {
@@ -63,6 +50,25 @@ class AuthViewModel extends BaseViewModel {
         await AppUtils.snackbar(contxt,
             message: _loginResponse?.message!.toString());
         navigate.navigateTo(Routes.dashboard);
+      }
+    } catch (e) {
+      _isLoading = false;
+      logger.d(e);
+      AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  // user data api call
+
+  Future<void> getUser(contxt) async {
+    try {
+      _isLoading = true;
+      _userResponseModel =
+          await runBusyFuture(repositoryImply.userData(), throwException: true);
+
+      if (_userResponseModel?.status == 'success') {
+        _isLoading = false;
       }
     } catch (e) {
       _isLoading = false;

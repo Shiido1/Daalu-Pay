@@ -3,6 +3,7 @@ import '../../api_folder/auth_api.dart';
 import '../../core_folder/app/app.locator.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
+import '../model/user_response_model/user_response_model.dart';
 
 @lazySingleton
 class AuthContractsImpl {
@@ -10,6 +11,5 @@ class AuthContractsImpl {
 
   Future<LoginResponseModel> login(LoginEntityModel loginEntity) async =>
       await _api.login(loginEntity);
-
-  Future<dynamic> csrfCookie() async => await _api.csrfCookie();
+  Future<UserResponseModel> userData() async => await _api.userData();
 }

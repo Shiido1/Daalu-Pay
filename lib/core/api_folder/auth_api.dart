@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import '../connect_end/model/login_entity.dart';
 import '../connect_end/model/login_response_model/login_response_model.dart';
+import '../connect_end/model/user_response_model/user_response_model.dart';
 import '../core_folder/app/app.locator.dart';
 import '../core_folder/app/app.logger.dart';
 import '../core_folder/network/network_service.dart';
@@ -23,14 +24,11 @@ class AuthApi {
     }
   }
 
-  Future<dynamic> csrfCookie() async {
+  Future<UserResponseModel> userData() async {
     try {
-      final response = await _service.call(
-        UrlConfig.csrfCookie,
-        RequestMethod.get,
-      );
-      logger.d(response.headers);
-      return response.headers;
+      final response = await _service.call(UrlConfig.user, RequestMethod.get);
+      logger.d(response.data);
+      return UserResponseModel.fromJson(response.data);
     } catch (e) {
       logger.d("response:$e");
       rethrow;

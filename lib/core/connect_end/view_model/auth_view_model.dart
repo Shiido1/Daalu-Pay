@@ -1,4 +1,3 @@
-import 'package:daalu_pay/core/connect_end/model/login/login_response_model.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -7,7 +6,8 @@ import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/app/app.logger.dart';
 import '../../core_folder/app/app.router.dart';
 import '../../core_folder/manager/shared_preference.dart';
-import '../model/Login/login_entity.dart';
+import '../model/login_entity.dart';
+import '../model/login_response_model/login_response_model.dart';
 import '../repo/repo_impl.dart';
 
 class AuthViewModel extends BaseViewModel {
@@ -31,9 +31,25 @@ class AuthViewModel extends BaseViewModel {
     return _isTogglePassword;
   }
 
-  LoginModel? _loginResponse;
-  LoginModel? get loginResponse => _loginResponse;
+  LoginResponseModel? _loginResponse;
+  LoginResponseModel? get loginResponse => _loginResponse;
 
+  // get user csrf cookies
+
+  Future<void> csrfCookies() async {
+    try {
+      _isLoading = true;
+      var res = await runBusyFuture(repositoryImply.csrfCookie(),
+          throwException: true);
+
+      logger.d('res::::${res['set-cookie'][0]}');
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      logger.d(e);
+    }
+    notifyListeners();
+  }
   // login flow so api call for method can be called here
 
   Future<void> loginUser(LoginEntityModel loginEntity, contxt) async {

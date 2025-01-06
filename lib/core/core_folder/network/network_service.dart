@@ -82,7 +82,6 @@ class NetworkService {
         case RequestMethod.get:
           response = await dio!.get(path,
               queryParameters: data, options: options ?? await _getOption());
-
           break;
         case RequestMethod.getParams:
           response = await dio!.get(path,

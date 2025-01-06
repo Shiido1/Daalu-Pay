@@ -1,9 +1,9 @@
-import 'package:daalu_pay/core/connect_end/model/Login/login_entity.dart';
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
+import '../../core/connect_end/model/login_entity.dart';
 import '../../core/connect_end/view_model/auth_view_model.dart';
 import '../../core/core_folder/app/app.locator.dart';
 import '../app_assets/app_validatiion.dart';
@@ -57,11 +57,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    TextView(
-                      text: 'Enter your email address',
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColor.grey,
+                    GestureDetector(
+                      onTap: () => model.csrfCookies(),
+                      child: TextView(
+                        text: 'Enter your email address',
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColor.grey,
+                      ),
                     ),
                     SizedBox(
                       height: 20.h,

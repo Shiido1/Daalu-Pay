@@ -9,6 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 paddedWing({Widget? child, double? value}) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: value!.w),
-        child: child,
-      );
+      padding: EdgeInsets.symmetric(horizontal: value!.w),
+      child: child,
+    );

@@ -1,19 +1,23 @@
-import 'package:daalu_pay/core/connect_end/model/Login/login_entity.dart';
-import 'package:daalu_pay/core/connect_end/model/login/login_response_model.dart';
 import 'package:injectable/injectable.dart';
-
 import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/manager/shared_preference.dart';
 import '../contract/contract_impl.dart';
+import '../model/login_entity.dart';
+import '../model/login_response_model/login_response_model.dart';
 
 @lazySingleton
 class AuthRepoImpl {
   final _session = locator<SharedPreferencesService>();
   final _contract = locator<AuthContractsImpl>();
 
-  Future<LoginModel> login(LoginEntityModel loginEntity) async {
+  Future<LoginResponseModel> login(LoginEntityModel loginEntity) async {
     final response = await _contract.login(loginEntity);
     _session.isLoggedIn = true;
+    return response;
+  }
+
+  Future<dynamic> csrfCookie() async {
+    final response = await _contract.csrfCookie();
     return response;
   }
 

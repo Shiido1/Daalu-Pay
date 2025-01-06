@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/manager/shared_preference.dart';
 import '../contract/contract_impl.dart';
+import '../model/get_stats_response_model/get_stats_response_model.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
 import '../model/user_response_model/user_response_model.dart';
@@ -20,6 +21,11 @@ class AuthRepoImpl {
 
   Future<UserResponseModel> userData() async {
     final response = await _contract.userData();
+    return response;
+  }
+
+  Future<GetStatsResponseModel> getStatistics() async {
+    final response = await _contract.getStatistics();
     return response;
   }
 

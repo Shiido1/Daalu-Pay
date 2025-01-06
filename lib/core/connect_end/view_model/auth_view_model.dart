@@ -7,6 +7,7 @@ import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/app/app.logger.dart';
 import '../../core_folder/app/app.router.dart';
 import '../../core_folder/manager/shared_preference.dart';
+import '../model/get_stats_response_model/get_stats_response_model.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
 import '../repo/repo_impl.dart';
@@ -36,6 +37,8 @@ class AuthViewModel extends BaseViewModel {
   LoginResponseModel? get loginResponse => _loginResponse;
   UserResponseModel? _userResponseModel;
   UserResponseModel? get userResponseModel => _userResponseModel;
+  GetStatsResponseModel? _getStatsResponseModel;
+  GetStatsResponseModel? get getStatsResponseModel => _getStatsResponseModel;
 
   // login flow so api call for method can be called here
 
@@ -68,6 +71,26 @@ class AuthViewModel extends BaseViewModel {
           await runBusyFuture(repositoryImply.userData(), throwException: true);
 
       if (_userResponseModel?.status == 'success') {
+        _isLoading = false;
+      }
+    } catch (e) {
+      _isLoading = false;
+      logger.d(e);
+      AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  // get user statistics data api call
+
+  Future<void> getStatistics(contxt) async {
+    try {
+      _isLoading = true;
+      _getStatsResponseModel = await runBusyFuture(
+          repositoryImply.getStatistics(),
+          throwException: true);
+
+      if (_getStatsResponseModel?.status == 'success') {
         _isLoading = false;
       }
     } catch (e) {

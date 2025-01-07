@@ -1,3 +1,5 @@
+import 'package:daalu_pay/core/connect_end/model/register_entity_model/register_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:injectable/injectable.dart';
 import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/manager/shared_preference.dart';
@@ -12,6 +14,12 @@ import '../model/user_response_model/user_response_model.dart';
 class AuthRepoImpl {
   final _session = locator<SharedPreferencesService>();
   final _contract = locator<AuthContractsImpl>();
+
+  Future<RegistrationResponseModel> register(
+      RegisterEntityModel registerEntity) async {
+    final response = await _contract.register(registerEntity);
+    return response;
+  }
 
   Future<LoginResponseModel> login(LoginEntityModel loginEntity) async {
     final response = await _contract.login(loginEntity);

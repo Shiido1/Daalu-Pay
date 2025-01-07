@@ -28,6 +28,10 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Daalupay needs camera to capture and share photos, we need access to your device's camera to enable you upload image profile and products.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Daalupay allows you to select and upload photos, we need access to your photo library to enable you upload image profile and products.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>
 	<key>UIMainStoryboardFile</key>

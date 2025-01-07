@@ -74,49 +74,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 50.h,
                 ),
-                // paddedWing(
-                //     value: 12.w,
-                //     // ignore: avoid_unnecessary_containers
-                // child: Container(
-                //   height: 120.h,
-                //   width: double.infinity,
-                //   decoration: BoxDecoration(
-                //       color: AppColor.primary,
-                //       borderRadius: BorderRadius.circular(14)),
-                //   child: paddedWing(
-                //     value: 16.w,
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //       children: [
-                //         Column(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           mainAxisAlignment: MainAxisAlignment.center,
-                //           children: [
-                //             TextView(
-                //               text: 'Available Balance',
-                //               fontSize: 16.sp,
-                //               fontWeight: FontWeight.w400,
-                //               color: AppColor.white,
-                //             ),
-                //             TextView(
-                //               text: isTapped
-                //                   ? '${getCurrency()}${oCcy.format(model.userResponseModel?.data?.wallets?[0].balance ?? 0)}'
-                //                   : '********',
-                //               fontSize: 28.sp,
-                //               fontWeight: FontWeight.w400,
-                //               color: AppColor.white,
-                //             ),
-                //           ],
-                //         ),
-                //         GestureDetector(
-                //             onTap: () =>
-                //                 setState(() => isTapped = !isTapped),
-                //             child: SvgPicture.asset(
-                //                 isTapped ? AppImage.openEye : AppImage.eye))
-                //       ],
-                //     ),
-                //   ),
-                // )),
+                if (model.userResponseModel == null || model.isLoading)
+                  Container(
+                    height: 120.h,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: AppColor.primary.withOpacity(.3)),
+                  ),
+                if (model.userResponseModel != null &&
+                    model.userResponseModel!.data!.wallets!.isEmpty)
+                  Padding(
+                    padding: EdgeInsets.all(20.0.w),
+                    child: Center(
+                      child: TextView(
+                        text: 'No Wallet',
+                        color: AppColor.black,
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 if (model.userResponseModel != null)
                   CarouselSlider(
                     items: [
@@ -182,7 +160,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       viewportFraction: 1.0,
                     ),
                   ),
-
                 SizedBox(height: 40.h),
                 paddedWing(
                     value: 10.w,

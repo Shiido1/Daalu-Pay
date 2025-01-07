@@ -9,6 +9,8 @@ import 'package:stacked/stacked.dart';
 import '../../core/connect_end/model/login_entity.dart';
 import '../../core/connect_end/view_model/auth_view_model.dart';
 import '../../core/core_folder/app/app.locator.dart';
+import '../../core/core_folder/app/app.router.dart';
+import '../../main.dart';
 import '../app_assets/app_validatiion.dart';
 import '../widget/button_widget.dart';
 import '../widget/text_form_widget.dart';
@@ -136,11 +138,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontWeight: FontWeight.w500,
                           color: AppColor.darkGrey,
                         ),
-                        TextView(
-                          text: 'Sign up here',
-                          fontSize: 16.2.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AppColor.primary,
+                        GestureDetector(
+                          onTap: () =>
+                              navigate.navigateTo(Routes.createAccountScreen),
+                          child: TextView(
+                            text: 'Sign up here',
+                            fontSize: 16.2.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AppColor.primary,
+                          ),
                         ),
                       ],
                     ),

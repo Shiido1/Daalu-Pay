@@ -1,5 +1,8 @@
 import 'package:daalu_pay/core/connect_end/model/get_stats_response_model/get_stats_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/register_entity_model/register_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
+import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import '../connect_end/model/login_entity.dart';
 import '../connect_end/model/login_response_model/login_response_model.dart';
@@ -13,6 +16,20 @@ import '../core_folder/network/url_path.dart';
 class AuthApi {
   final _service = locator<NetworkService>();
   final logger = getLogger('AuthViewModel');
+
+  Future<RegistrationResponseModel> register(
+      RegisterEntityModel registerEntity) async {
+    try {
+      final response = await _service.call(
+          UrlConfig.register, RequestMethod.post,
+          data: FormData.fromMap(registerEntity.toJson()));
+      logger.d(response.data);
+      return RegistrationResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
 
   Future<LoginResponseModel> login(LoginEntityModel loginEntity) async {
     try {

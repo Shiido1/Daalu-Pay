@@ -72,7 +72,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i5.CreateAccountScreen: (data) {
       return _i6.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i5.CreateAccountScreen(),
+        builder: (context) => _i5.CreateAccountScreen(),
         settings: data,
       );
     },

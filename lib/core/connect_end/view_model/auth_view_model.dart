@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
-import 'package:daalu_pay/core/connect_end/model/register_entity_model/register_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/user_response_model/user_response_model.dart';
 import 'package:daalu_pay/main.dart';
@@ -17,6 +16,7 @@ import '../../core_folder/manager/shared_preference.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
+import '../model/register_entity_model.dart';
 import '../repo/repo_impl.dart';
 
 class AuthViewModel extends BaseViewModel {
@@ -108,7 +108,8 @@ class AuthViewModel extends BaseViewModel {
 
       if (_registrationResponseModel?.status == 'success') {
         _isLoading = false;
-
+        AppUtils.snackbar(contxt,
+            message: 'Registration is successfully', error: true);
         navigate.navigateTo(Routes.loginScreen);
       }
     } catch (e) {

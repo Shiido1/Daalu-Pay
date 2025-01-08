@@ -119,11 +119,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: 14.0.h,
                     ),
-                    TextView(
-                      text: 'Forgot Password',
-                      fontSize: 16.2.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColor.darkGrey,
+                    GestureDetector(
+                      onTap: () =>
+                          navigate.navigateTo(Routes.createPassworsScreen),
+                      child: TextView(
+                        text: 'Forgot Password',
+                        fontSize: 16.2.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColor.darkGrey,
+                      ),
                     ),
                     SizedBox(
                       height: 20.h,

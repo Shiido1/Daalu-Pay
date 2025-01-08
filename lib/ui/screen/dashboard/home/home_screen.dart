@@ -48,19 +48,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        padding: EdgeInsets.all(5.2.w),
-                        decoration: const BoxDecoration(
-                          color: AppColor.inGrey,
-                          shape: BoxShape.circle,
-                        ),
-                        child: TextView(
-                          text: getInitials(
-                              '${model.userResponseModel?.data?.firstName} ${model.userResponseModel?.data?.lastName}'),
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
+                      model.userResponseModel == null
+                          ? SizedBox.shrink()
+                          : Container(
+                              padding: EdgeInsets.all(5.2.w),
+                              decoration: const BoxDecoration(
+                                color: AppColor.inGrey,
+                                shape: BoxShape.circle,
+                              ),
+                              child: TextView(
+                                text: getInitials(
+                                        '${model.userResponseModel?.data?.firstName} ${model.userResponseModel?.data?.lastName}')
+                                    .toUpperCase(),
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
                       TextView(
                         text:
                             'Welcome ${model.userResponseModel?.data?.firstName ?? ''}',

@@ -2,6 +2,7 @@ import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../ui/screen/create_account_screen.dart';
+import '../../../ui/screen/create_password_screen.dart';
 import '../../../ui/screen/dashboard/dashboard_screen.dart';
 import '../../../ui/screen/login_screen.dart';
 import '../../../ui/screen/onboarding/onboarding_screen.dart';
@@ -17,6 +18,7 @@ import '../network/network_service.dart';
   MaterialRoute(page: Dashboard, initial: false),
   MaterialRoute(page: LoginScreen, initial: false),
   MaterialRoute(page: CreateAccountScreen, initial: false),
+  MaterialRoute(page: CreatePassworsScreen, initial: false),
 ], dependencies: [
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: DialogService),

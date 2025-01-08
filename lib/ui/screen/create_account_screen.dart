@@ -1,4 +1,3 @@
-import 'package:daalu_pay/core/connect_end/model/register_entity_model/register_entity_model.dart';
 import 'package:daalu_pay/core/core_folder/app/app.router.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
+import '../../core/connect_end/model/register_entity_model.dart';
 import '../../core/connect_end/view_model/auth_view_model.dart';
 import '../app_assets/app_validatiion.dart';
 import '../widget/button_widget.dart';
@@ -114,6 +114,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       hint: 'Select Gender',
                       border: 10,
                       isFilled: true,
+                      readOnly: true,
                       fillColor: AppColor.white,
                       controller: genderController,
                       validator: AppValidator.validateString(),
@@ -136,6 +137,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             hint: 'Select Document',
                             border: 10,
                             isFilled: true,
+                            readOnly: true,
                             fillColor: AppColor.white,
                             controller: documentController,
                             validator: AppValidator.validateString(),
@@ -185,6 +187,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       hint: 'D.O.B',
                       border: 10,
                       isFilled: true,
+                      readOnly: true,
                       fillColor: AppColor.white,
                       controller: model.dobController,
                       validator: AppValidator.validateString(),

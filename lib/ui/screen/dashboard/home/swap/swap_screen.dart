@@ -260,31 +260,48 @@ class SwapScreen extends StatelessWidget {
         builder: (builder) {
           return Container(
             height: 450.0,
-            color: Colors.transparent, //could change this to Color(0xFF737373),
+            decoration: BoxDecoration(
+                color: const Color.fromARGB(219, 223, 233, 242),
+                borderRadius: BorderRadius.only(
+                    topLeft: const Radius.circular(14.0),
+                    topRight: const Radius.circular(
+                        14.0))), //could change this to Color(0xFF737373),
             //so you don't have to change MaterialApp canvasColor
             child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: const Color.fromARGB(219, 223, 233, 242),
                     borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(10.0),
-                        topRight: const Radius.circular(10.0))),
+                        topLeft: const Radius.circular(14.0),
+                        topRight: const Radius.circular(14.0))),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
                       SizedBox(
                         height: 20.h,
                       ),
-                      ...countryConst.map((e) => Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10.w, horizontal: 20.w),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(e['flag']!),
-                                SizedBox(
-                                  width: 15.6.w,
-                                ),
-                                TextView(text: '${e['country']}')
-                              ],
+                      ...countryConst.map((e) => GestureDetector(
+                            onTap: () {
+                              print(e['code']);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(219, 223, 233, 242),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10.w, horizontal: 20.w),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(e['flag']!),
+                                  SizedBox(
+                                    width: 15.6.w,
+                                  ),
+                                  TextView(
+                                    text: '${e['country']}',
+                                    fontSize: 17.6,
+                                    fontWeight: FontWeight.w400,
+                                  )
+                                ],
+                              ),
                             ),
                           ))
                     ],

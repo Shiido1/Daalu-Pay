@@ -218,7 +218,7 @@ class SwapScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                               ),
                               TextView(
-                                text: '0.00',
+                                text: model.transferFee(),
                                 fontSize: 15.4.sp,
                                 fontWeight: FontWeight.w500,
                               ),

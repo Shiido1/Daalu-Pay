@@ -365,8 +365,13 @@ class AuthViewModel extends BaseViewModel {
   }
 
   void onChangeRate(p0) {
-    print(p0);
     debouncer.run(() => exchangeTheRate(p0));
     notifyListeners();
+  }
+
+  String transferFee() {
+    double fee =
+        (double.parse(fromCurrencylController.text) * 0.01 * 100) / 100;
+    return fee.toString();
   }
 }

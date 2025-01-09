@@ -1,5 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55.2 38.4" style="enable-background:new 0 0 55.2 38.4" xml:space="preserve"><style type="text/css"><![CDATA[
-	.st0{fill:#FCD116;}
-	.st1{fill:#CE1126;}
-	.st2{fill:#002B7F;}
-]]></style><g><path class="st2" d="M17.75,0v38.4H3.03C1.37,38.4,0,37.04,0,35.37V3.03C0,1.36,1.37,0,3.03,0H17.75L17.75,0z"/><polygon class="st0" points="37.45,0 37.45,38.4 17.75,38.4 17.75,0 37.45,0"/><path class="st1" d="M37.45,38.4V0h14.72c1.67,0,3.03,1.36,3.03,3.03v32.33c0,1.67-1.37,3.03-3.03,3.03H37.45L37.45,38.4z"/></g></svg>
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1_3228)">
+<path d="M40 0H0V40H40V0Z" fill="#002B7F"/>
+<path d="M39.9999 0H13.3333V40H39.9999V0Z" fill="#FCD116"/>
+<path d="M40.0001 0H26.6667V40H40.0001V0Z" fill="#CE1126"/>
+</g>
+<defs>
+<clipPath id="clip0_1_3228">
+<rect width="40" height="40" rx="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

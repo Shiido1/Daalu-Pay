@@ -1,1 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55.2 38.4" style="enable-background:new 0 0 55.2 38.4" xml:space="preserve"><style type="text/css">.st0{fill:#00853F;} .st1{fill:#FDEF42;} .st2{fill:#E31B23;}</style><g><path class="st0" d="M3.01,0H18v38.4l-14.98,0C1.36,38.39,0,37.03,0,35.37V3.03C0,1.37,1.35,0.01,3.01,0L3.01,0z"/><polygon class="st1" points="18,0 37.2,0 37.2,38.4 18,38.4 18,0"/><path class="st2" d="M37.2,0h14.99c1.66,0.01,3.01,1.37,3.01,3.03v32.33c0,1.67-1.36,3.03-3.03,3.03l-14.97,0V0L37.2,0z"/><polygon class="st0" points="27.6,12.8 25.62,18.89 28.67,19.88 27.6,12.8"/><polygon class="st0" points="27.6,12.8 29.58,18.89 26.53,19.88 27.6,12.8"/><polygon class="st0" points="33.69,17.22 27.29,17.22 27.29,20.42 33.69,17.22"/><polygon class="st0" points="33.69,17.22 28.51,20.98 26.63,18.4 33.69,17.22"/><polygon class="st0" points="31.36,24.38 29.38,18.29 26.34,19.28 31.36,24.38"/><polygon class="st0" points="31.36,24.38 26.18,20.62 28.06,18.03 31.36,24.38"/><polygon class="st0" points="23.84,24.38 29.02,20.62 27.13,18.03 23.84,24.38"/><polygon class="st0" points="23.84,24.38 25.82,18.29 28.86,19.28 23.84,24.38"/><polygon class="st0" points="21.51,17.22 26.69,20.98 28.57,18.4 21.51,17.22"/><polygon class="st0" points="21.51,17.22 27.91,17.22 27.91,20.42 21.51,17.22"/></g></svg>
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1_16170)">
+<path d="M40 -5H0V46H40V-5Z" fill="#00853F"/>
+<path d="M40 -5H13V46H40V-5Z" fill="#FDEF42"/>
+<path d="M40 -4H27V45H40V-4Z" fill="#E31B23"/>
+<path d="M19.9895 15.889L18.6161 20.116L20.7296 20.8027L19.9895 15.889Z" fill="#00853F"/>
+<path d="M19.9895 15.889L21.3629 20.116L19.2495 20.8027L19.9895 15.889Z" fill="#00853F"/>
+<path d="M24.2279 18.9609H19.7835V21.1832L24.2279 18.9609Z" fill="#00853F"/>
+<path d="M24.2279 18.9609L20.6323 21.5733L19.3261 19.7755L24.2279 18.9609Z" fill="#00853F"/>
+<path d="M22.6133 23.9291L21.2399 19.7022L19.1264 20.3889L22.6133 23.9291Z" fill="#00853F"/>
+<path d="M22.6133 23.9291L19.0177 21.3167L20.3238 19.5189L22.6133 23.9291Z" fill="#00853F"/>
+<path d="M17.3881 23.9291L20.9837 21.3167L19.6775 19.5189L17.3881 23.9291Z" fill="#00853F"/>
+<path d="M17.3881 23.9291L18.7615 19.7022L20.8749 20.3889L17.3881 23.9291Z" fill="#00853F"/>
+<path d="M15.7734 18.959L19.3691 21.5714L20.6753 19.7735L15.7734 18.959Z" fill="#00853F"/>
+<path d="M15.7734 18.959H20.2179V21.1812L15.7734 18.959Z" fill="#00853F"/>
+</g>
+<defs>
+<clipPath id="clip0_1_16170">
+<rect width="40" height="40" rx="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

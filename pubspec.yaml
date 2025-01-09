@@ -80,4 +80,5 @@ flutter:
 
   assets:
     - assets/svg/
+    - assets/svg/country/
     - assets/image/

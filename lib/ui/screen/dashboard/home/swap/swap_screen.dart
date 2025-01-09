@@ -1,4 +1,5 @@
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
+import 'package:daalu_pay/ui/app_assets/country_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -81,7 +82,7 @@ class SwapScreen extends StatelessWidget {
               prefixWidget: Padding(
                 padding: EdgeInsets.all(8.w),
                 child: SvgPicture.asset(
-                  AppImage.round9ja,
+                  AppImage.ghana,
                 ),
               ),
               // controller: emailController,
@@ -108,8 +109,13 @@ class SwapScreen extends StatelessWidget {
               fillColor: AppColor.white,
               prefixWidget: Padding(
                 padding: EdgeInsets.all(8.w),
-                child: SvgPicture.asset(
-                  AppImage.uk,
+                child: GestureDetector(
+                  onTap: () {
+                    _modalBottomSheetMenu(context);
+                  },
+                  child: SvgPicture.asset(
+                    AppImage.united_states,
+                  ),
                 ),
               ),
               // controller: emailController,
@@ -246,5 +252,45 @@ class SwapScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _modalBottomSheetMenu(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return Container(
+            height: 450.0,
+            color: Colors.transparent, //could change this to Color(0xFF737373),
+            //so you don't have to change MaterialApp canvasColor
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(10.0),
+                        topRight: const Radius.circular(10.0))),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      ...countryConst.map((e) => Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.w, horizontal: 20.w),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(e['flag']!),
+                                SizedBox(
+                                  width: 15.6.w,
+                                ),
+                                TextView(text: '${e['country']}')
+                              ],
+                            ),
+                          ))
+                    ],
+                  ),
+                )),
+          );
+        });
   }
 }

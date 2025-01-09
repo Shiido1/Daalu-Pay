@@ -100,7 +100,7 @@ class _PaystackScreenState extends State<PaystackScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SwapScreen()),
+                    MaterialPageRoute(builder: (context) => SwapScreen()),
                   );
                 }),
             SizedBox(

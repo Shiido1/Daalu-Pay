@@ -1,3 +1,4 @@
+import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:injectable/injectable.dart';
 import '../../core_folder/app/app.locator.dart';
@@ -40,6 +41,12 @@ class AuthRepoImpl {
 
   Future<GetTransactionResponseModel> getTransactions() async {
     final response = await _contract.getTransactions();
+    return response;
+  }
+
+  Future<GetExchangeRateResponseModel> exchangeRate(
+      {String? from, String? to}) async {
+    final response = await _contract.exchangeRate(from: from, to: to);
     return response;
   }
 

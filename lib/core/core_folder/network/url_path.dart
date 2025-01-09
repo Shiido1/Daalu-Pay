@@ -4,4 +4,6 @@ class UrlConfig {
   static const String user = 'user';
   static const String statistics = 'user/stats';
   static const String transactions = 'user/transactions';
+  // ignore: constant_identifier_names
+  static const String exchange_rates = 'exchange-rates';
 }

@@ -1,3 +1,4 @@
+import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:injectable/injectable.dart';
 import '../../api_folder/auth_api.dart';
@@ -23,4 +24,7 @@ class AuthContractsImpl {
       await _api.getTransaction();
   Future<GetStatsResponseModel> getStatistics() async =>
       await _api.getStatistics();
+  Future<GetExchangeRateResponseModel> exchangeRate(
+          {String? from, String? to}) async =>
+      await _api.exchangeRate(from: from, to: to);
 }

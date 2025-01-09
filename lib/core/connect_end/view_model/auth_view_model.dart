@@ -1,14 +1,21 @@
 import 'dart:io';
+import 'dart:async';
 
+import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/user_response_model/user_response_model.dart';
 import 'package:daalu_pay/main.dart';
+import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import '../../../ui/app_assets/app_utils.dart';
+import '../../../ui/app_assets/country_const.dart';
 import '../../../ui/app_assets/image_picker.dart';
+import '../../../ui/widget/text_widget.dart';
 import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/app/app.logger.dart';
 import '../../core_folder/app/app.router.dart';
@@ -18,6 +25,7 @@ import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
 import '../model/register_entity_model.dart';
 import '../repo/repo_impl.dart';
+import 'debouncer.dart';
 
 class AuthViewModel extends BaseViewModel {
   final BuildContext? context;
@@ -33,6 +41,10 @@ class AuthViewModel extends BaseViewModel {
 
   bool get isTogglePassword => _isTogglePassword;
   bool _isTogglePassword = false;
+
+  GetExchangeRateResponseModel? get exchangeRateResponseModel =>
+      _exchangeRateResponseModel;
+  GetExchangeRateResponseModel? _exchangeRateResponseModel;
 
   bool isOnTogglePassword() {
     _isTogglePassword = !_isTogglePassword;
@@ -198,6 +210,163 @@ class AuthViewModel extends BaseViewModel {
       logger.d(e);
       AppUtils.snackbar(contxt, message: e.toString(), error: true);
     }
+    notifyListeners();
+  }
+  // get exchange rate
+
+  Future<void> exchangeRates(contxt, {String? from, String? to}) async {
+    try {
+      _exchangeRateResponseModel = await runBusyFuture(
+          repositoryImply.exchangeRate(from: from, to: to),
+          throwException: true);
+
+      if (_exchangeRateResponseModel?.status == 'success') {
+        _isLoading = false;
+      }
+    } catch (e) {
+      logger.d(e);
+      AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  String fromCurrency = AppImage.nigeria_flag;
+  String toCurrency = AppImage.united_states;
+  String fromCurrencyCode = 'NGN';
+  String toCurrencyCode = 'USD';
+
+  TextEditingController fromCurrencylController =
+      TextEditingController(text: '1');
+  TextEditingController toCurrencylController =
+      TextEditingController(text: '1');
+  final debouncer = Debouncer();
+
+  exchangeTheRate(o) {
+    toCurrencylController.text =
+        (double.parse(_exchangeRateResponseModel!.data!.rate!) *
+                double.parse(o))
+            .toString();
+    print(o);
+    notifyListeners();
+  }
+
+  void modalBottomSheetMenuFrom(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return Container(
+            height: 450.0,
+            decoration: BoxDecoration(
+                color: const Color.fromARGB(219, 223, 233, 242),
+                borderRadius: BorderRadius.only(
+                    topLeft: const Radius.circular(14.0),
+                    topRight: const Radius.circular(14.0))),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: const Color.fromARGB(219, 223, 233, 242),
+                    borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(14.0),
+                        topRight: const Radius.circular(14.0))),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      ...countryConst.map((e) => GestureDetector(
+                            onTap: () {
+                              fromCurrency = e['flag']!;
+                              fromCurrencyCode = e['code']!;
+                              notifyListeners();
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(219, 223, 233, 242),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10.w, horizontal: 20.w),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(e['flag']!),
+                                  SizedBox(
+                                    width: 15.6.w,
+                                  ),
+                                  TextView(
+                                    text: '${e['country']}',
+                                    fontSize: 17.6,
+                                    fontWeight: FontWeight.w400,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ))
+                    ],
+                  ),
+                )),
+          );
+        });
+  }
+
+  void modalBottomSheetMenuTo(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return Container(
+            height: 450.0,
+            decoration: BoxDecoration(
+                color: const Color.fromARGB(219, 223, 233, 242),
+                borderRadius: BorderRadius.only(
+                    topLeft: const Radius.circular(14.0),
+                    topRight: const Radius.circular(14.0))),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: const Color.fromARGB(219, 223, 233, 242),
+                    borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(14.0),
+                        topRight: const Radius.circular(14.0))),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      ...countryConst.map((e) => GestureDetector(
+                            onTap: () {
+                              toCurrency = e['flag']!;
+                              toCurrencyCode = e['code']!;
+                              notifyListeners();
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(219, 223, 233, 242),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10.w, horizontal: 20.w),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(e['flag']!),
+                                  SizedBox(
+                                    width: 15.6.w,
+                                  ),
+                                  TextView(
+                                    text: '${e['country']}',
+                                    fontSize: 17.6,
+                                    fontWeight: FontWeight.w400,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ))
+                    ],
+                  ),
+                )),
+          );
+        });
+  }
+
+  void onChangeRate(p0) {
+    print(p0);
+    debouncer.run(() => exchangeTheRate(p0));
     notifyListeners();
   }
 }

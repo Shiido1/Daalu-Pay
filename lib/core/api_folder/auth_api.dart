@@ -1,3 +1,4 @@
+import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_stats_response_model/get_stats_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
@@ -72,6 +73,20 @@ class AuthApi {
           await _service.call(UrlConfig.transactions, RequestMethod.get);
       logger.d(response.data);
       return GetTransactionResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<GetExchangeRateResponseModel> exchangeRate(
+      {String? from, String? to}) async {
+    try {
+      final response = await _service.call(
+          UrlConfig.exchange_rates, RequestMethod.get,
+          data: {'from': from, 'to': to});
+      logger.d(response.data);
+      return GetExchangeRateResponseModel.fromJson(response.data);
     } catch (e) {
       logger.d("response:$e");
       rethrow;

@@ -175,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             onTap: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const SwapScreen()),
+                                      builder: (context) => SwapScreen()),
                                 )),
                         homeTransFlowWidget(
                             image: AppImage.addCard,

@@ -11,6 +11,12 @@ String getCurrency() {
   return format.currencySymbol;
 }
 
+String getAllCurrency(c) {
+  var format =
+      NumberFormat.simpleCurrency(locale: Platform.localeName, name: c);
+  return format.currencySymbol;
+}
+
 String getInitials(String text) => text.isNotEmpty
     ? text.trim().split(RegExp(' +')).map((s) => s[0]).take(2).join()
     : '';

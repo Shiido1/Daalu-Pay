@@ -217,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 30.h,
                 ),
                 model.getStatsResponseModel == null
-                    ? SpinKitCircle(
+                    ? SpinKitPouringHourGlassRefined(
                         color: AppColor.primary,
                         size: 43.0.sp,
                       )

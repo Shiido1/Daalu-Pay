@@ -245,6 +245,7 @@ class AuthViewModel extends BaseViewModel {
   TextEditingController curcodeFromController = TextEditingController();
   TextEditingController curcodeToController = TextEditingController();
   String queryFrom = '';
+  String queryTo = '';
 
   exchangeTheRate(o) {
     toCurrencylController.text =
@@ -421,62 +422,188 @@ class AuthViewModel extends BaseViewModel {
     showModalBottomSheet(
         context: context,
         builder: (builder) {
-          return Container(
-            height: 450.0,
-            decoration: BoxDecoration(
-                color: const Color.fromARGB(219, 223, 233, 242),
-                borderRadius: BorderRadius.only(
-                    topLeft: const Radius.circular(14.0),
-                    topRight: const Radius.circular(14.0))),
-            child: Container(
-                decoration: BoxDecoration(
-                    color: const Color.fromARGB(219, 223, 233, 242),
-                    borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(14.0),
-                        topRight: const Radius.circular(14.0))),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      ...countryConst.map((e) => GestureDetector(
-                            onTap: () {
-                              toCurrency = e['flag']!;
-                              toCurrencyCode = e['code']!;
-                              notifyListeners();
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(219, 223, 233, 242),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10.w, horizontal: 20.w),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(e['flag']!),
-                                  SizedBox(
-                                    width: 15.6.w,
-                                  ),
-                                  TextView(
-                                    text: '${e['country']}',
-                                    fontSize: 17.6,
-                                    fontWeight: FontWeight.w400,
-                                  )
-                                ],
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => AuthViewModel(),
+              onViewModelReady: (model) {},
+              disposeViewModel: false,
+              builder: (_, AuthViewModel model, __) {
+                return Container(
+                  height: 500.0,
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(219, 223, 233, 242),
+                      borderRadius: BorderRadius.only(
+                          topLeft: const Radius.circular(14.0),
+                          topRight: const Radius.circular(14.0))),
+                  child: Container(
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(219, 223, 233, 242),
+                          borderRadius: BorderRadius.only(
+                              topLeft: const Radius.circular(14.0),
+                              topRight: const Radius.circular(14.0))),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 6.0.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(12.w),
+                            child: TextFormWidget(
+                              label: 'Search country',
+                              hint: '',
+                              border: 10,
+                              isFilled: true,
+                              fillColor: AppColor.white,
+
+                              onChange: (p0) {
+                                queryTo = p0;
+                                model.notifyListeners();
+                              },
+                              suffixIcon: Icons.search_sharp,
+                              controller: curcodeToController,
+                              // validator: AppValidator.validateAmount(),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              height: 400,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    queryTo == ''
+                                        ? Column(
+                                            children: [
+                                              ...countryConst.map((e) =>
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      toCurrency = e['flag']!;
+                                                      toCurrencyCode =
+                                                          e['code']!;
+                                                      Navigator.pop(context);
+                                                      notifyListeners();
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        color: const Color
+                                                            .fromARGB(
+                                                            219, 223, 233, 242),
+                                                      ),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 10.w,
+                                                              horizontal: 20.w),
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              e['flag']!),
+                                                          SizedBox(
+                                                            width: 15.6.w,
+                                                          ),
+                                                          TextView(
+                                                            text:
+                                                                '${e['country']}',
+                                                            fontSize: 17.6,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ))
+                                            ],
+                                          )
+                                        : Column(
+                                            children: [
+                                              ...countryConst
+                                                  .where((o) => o['country']!
+                                                      .toLowerCase()
+                                                      .contains(queryTo
+                                                          .toLowerCase()))
+                                                  .map((e) => GestureDetector(
+                                                        onTap: () {
+                                                          toCurrency =
+                                                              e['flag']!;
+                                                          toCurrencyCode =
+                                                              e['code']!;
+                                                          Navigator.pop(
+                                                              context);
+                                                          notifyListeners();
+                                                        },
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: const Color
+                                                                .fromARGB(219,
+                                                                223, 233, 242),
+                                                          ),
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical:
+                                                                      10.w,
+                                                                  horizontal:
+                                                                      20.w),
+                                                          child: Row(
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                  e['flag']!),
+                                                              SizedBox(
+                                                                width: 15.6.w,
+                                                              ),
+                                                              TextView(
+                                                                text:
+                                                                    '${e['country']}',
+                                                                fontSize: 17.6,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ))
+                                            ],
+                                          )
+                                  ],
+                                ),
                               ),
                             ),
-                          ))
-                    ],
-                  ),
-                )),
-          );
+                          ),
+                        ],
+                      )),
+                );
+              });
         });
   }
 
   void onChangeRate(p0) {
     debouncer.run(() => exchangeTheRate(p0));
     notifyListeners();
+  }
+
+  String getWalletCurrencyCode(currencyCode) {
+    String flag = '';
+    countryConst.forEach(
+      (element) {
+        if (element.containsValue(currencyCode)) {
+          flag = element['flag']!;
+        }
+      },
+    );
+    return flag;
+  }
+
+  String getWalletCountry(currencyCode) {
+    String country = '';
+    countryConst.forEach(
+      (element) {
+        if (element.containsValue(currencyCode)) {
+          country = '${element['name']!} ($currencyCode)';
+        }
+      },
+    );
+    return country;
   }
 
   String transferFee() {

@@ -19,6 +19,7 @@ Wallet _$WalletFromJson(Map<String, dynamic> json) => Wallet(
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
+      currency: json['currency'] as String?,
     );
 
 Map<String, dynamic> _$WalletToJson(Wallet instance) => <String, dynamic>{
@@ -30,4 +31,5 @@ Map<String, dynamic> _$WalletToJson(Wallet instance) => <String, dynamic>{
       'deletedAt': instance.deletedAt,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
+      'currency': instance.currency
     };

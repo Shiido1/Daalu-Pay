@@ -12,9 +12,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
+import '../../../ui/app_assets/app_color.dart';
 import '../../../ui/app_assets/app_utils.dart';
 import '../../../ui/app_assets/country_const.dart';
 import '../../../ui/app_assets/image_picker.dart';
+import '../../../ui/widget/text_form_widget.dart';
 import '../../../ui/widget/text_widget.dart';
 import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/app/app.logger.dart';
@@ -240,13 +242,15 @@ class AuthViewModel extends BaseViewModel {
   TextEditingController toCurrencylController =
       TextEditingController(text: '1');
   final debouncer = Debouncer();
+  TextEditingController curcodeFromController = TextEditingController();
+  TextEditingController curcodeToController = TextEditingController();
+  String queryFrom = '';
 
   exchangeTheRate(o) {
     toCurrencylController.text =
         (double.parse(_exchangeRateResponseModel!.data!.rate!) *
                 double.parse(o))
             .toString();
-    print(o);
     notifyListeners();
   }
 
@@ -254,56 +258,162 @@ class AuthViewModel extends BaseViewModel {
     showModalBottomSheet(
         context: context,
         builder: (builder) {
-          return Container(
-            height: 450.0,
-            decoration: BoxDecoration(
-                color: const Color.fromARGB(219, 223, 233, 242),
-                borderRadius: BorderRadius.only(
-                    topLeft: const Radius.circular(14.0),
-                    topRight: const Radius.circular(14.0))),
-            child: Container(
-                decoration: BoxDecoration(
-                    color: const Color.fromARGB(219, 223, 233, 242),
-                    borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(14.0),
-                        topRight: const Radius.circular(14.0))),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      ...countryConst.map((e) => GestureDetector(
-                            onTap: () {
-                              fromCurrency = e['flag']!;
-                              fromCurrencyCode = e['code']!;
-                              notifyListeners();
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(219, 223, 233, 242),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10.w, horizontal: 20.w),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(e['flag']!),
-                                  SizedBox(
-                                    width: 15.6.w,
-                                  ),
-                                  TextView(
-                                    text: '${e['country']}',
-                                    fontSize: 17.6,
-                                    fontWeight: FontWeight.w400,
-                                  )
-                                ],
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => AuthViewModel(),
+              onViewModelReady: (model) {},
+              disposeViewModel: false,
+              builder: (_, AuthViewModel model, __) {
+                return Container(
+                  height: 500.0,
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(219, 223, 233, 242),
+                      borderRadius: BorderRadius.only(
+                          topLeft: const Radius.circular(14.0),
+                          topRight: const Radius.circular(14.0))),
+                  child: Container(
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(219, 223, 233, 242),
+                          borderRadius: BorderRadius.only(
+                              topLeft: const Radius.circular(14.0),
+                              topRight: const Radius.circular(14.0))),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 6.0.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(12.w),
+                            child: TextFormWidget(
+                              label: 'Search country',
+                              hint: '',
+                              border: 10,
+                              isFilled: true,
+                              fillColor: AppColor.white,
+
+                              onChange: (p0) {
+                                queryFrom = p0;
+                                model.notifyListeners();
+                              },
+                              suffixIcon: Icons.search_sharp,
+                              controller: curcodeFromController,
+                              // validator: AppValidator.validateAmount(),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              height: 400,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    queryFrom == ''
+                                        ? Column(
+                                            children: [
+                                              ...countryConst.map((e) =>
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      fromCurrency = e['flag']!;
+                                                      fromCurrencyCode =
+                                                          e['code']!;
+                                                      Navigator.pop(context);
+                                                      notifyListeners();
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        color: const Color
+                                                            .fromARGB(
+                                                            219, 223, 233, 242),
+                                                      ),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 10.w,
+                                                              horizontal: 20.w),
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              e['flag']!),
+                                                          SizedBox(
+                                                            width: 15.6.w,
+                                                          ),
+                                                          TextView(
+                                                            text:
+                                                                '${e['country']}',
+                                                            fontSize: 17.6,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )),
+                                            ],
+                                          )
+                                        : Column(
+                                            children: [
+                                              ...countryConst
+                                                  .where((o) => o['country']!
+                                                      .toLowerCase()
+                                                      .contains(queryFrom
+                                                          .toLowerCase()))
+                                                  .map((e) => GestureDetector(
+                                                        onTap: () {
+                                                          fromCurrency =
+                                                              e['flag']!;
+                                                          fromCurrencyCode =
+                                                              e['code']!;
+
+                                                          Navigator.pop(
+                                                              context);
+                                                          notifyListeners();
+                                                        },
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: const Color
+                                                                .fromARGB(219,
+                                                                223, 233, 242),
+                                                          ),
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical:
+                                                                      10.w,
+                                                                  horizontal:
+                                                                      20.w),
+                                                          child: Row(
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                  e['flag']!),
+                                                              SizedBox(
+                                                                width: 15.6.w,
+                                                              ),
+                                                              TextView(
+                                                                text:
+                                                                    '${e['country']}',
+                                                                fontSize: 17.6,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )),
+                                            ],
+                                          )
+                                  ],
+                                ),
                               ),
                             ),
-                          ))
-                    ],
-                  ),
-                )),
-          );
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                        ],
+                      )),
+                );
+              });
         });
   }
 

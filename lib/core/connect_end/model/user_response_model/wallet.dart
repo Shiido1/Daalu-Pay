@@ -12,6 +12,7 @@ class Wallet {
   dynamic deletedAt;
   DateTime? createdAt;
   DateTime? updatedAt;
+  String? currency;
 
   Wallet({
     this.id,
@@ -22,6 +23,7 @@ class Wallet {
     this.deletedAt,
     this.createdAt,
     this.updatedAt,
+    this.currency,
   });
 
   factory Wallet.fromJson(Map<String, dynamic> json) {

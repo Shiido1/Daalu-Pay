@@ -8,6 +8,7 @@ import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
 import '../model/register_entity_model.dart';
 import '../model/registration_response_model/registration_response_model.dart';
+import '../model/swap_entiy_model.dart';
 import '../model/user_response_model/user_response_model.dart';
 
 @lazySingleton
@@ -27,4 +28,7 @@ class AuthContractsImpl {
   Future<GetExchangeRateResponseModel> exchangeRate(
           {String? from, String? to}) async =>
       await _api.exchangeRate(from: from, to: to);
+  Future<dynamic> createWallet({String? currencyCode}) async =>
+      await _api.createWallet(currencyCode);
+  Future<dynamic> swap(SwapEntiyModel? swap) async => await _api.swap(swap);
 }

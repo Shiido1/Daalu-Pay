@@ -1,3 +1,4 @@
+import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +10,6 @@ import '../../../../app_assets/app_color.dart';
 import '../../../../widget/button_widget.dart';
 import '../../../../widget/text_form_widget.dart';
 import '../../../../widget/text_widget.dart';
-import 'choose_currency_screen.dart';
 
 class SwapScreen extends StatelessWidget {
   const SwapScreen({super.key});
@@ -87,7 +87,6 @@ class SwapScreen extends StatelessWidget {
                     border: 10,
                     isFilled: true,
                     fillColor: AppColor.white,
-
                     onChange: (p0) {
                       model.onChangeRate(p0);
                     },
@@ -258,16 +257,19 @@ class SwapScreen extends StatelessWidget {
                       buttonText: 'Proceed',
                       color: AppColor.white,
                       border: 8,
-                      // isLoading: model.isLoading,
+                      isLoading: model.isLoading,
                       buttonColor: AppColor.primary,
                       buttonBorderColor: Colors.transparent,
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const ChooseCurrencyScreen()),
-                        );
+                        model.swap(context,
+                            swap: SwapEntiyModel(
+                                fromAmount: model.fromCurrencylController.text,
+                                toAmount: model.toCurrencylController.text,
+                                fromCurrency: "NGN",
+                                toCurrency: "USD",
+                                amount: model.toCurrencylController.text,
+                                rate: model
+                                    .exchangeRateResponseModel!.data!.rate));
                       }),
                   SizedBox(
                     height: 30.h,

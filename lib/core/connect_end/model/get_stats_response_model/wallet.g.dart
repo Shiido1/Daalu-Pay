@@ -31,5 +31,5 @@ Map<String, dynamic> _$WalletToJson(Wallet instance) => <String, dynamic>{
       'deletedAt': instance.deletedAt,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
-      'currency': instance.currency
+      'currency': instance.currency,
     };

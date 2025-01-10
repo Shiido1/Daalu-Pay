@@ -194,10 +194,16 @@ class TransactionScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextView(
-                    text: ' REF ID- ${e.referenceNumber?.toUpperCase() ?? ''}',
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w500,
+                  SizedBox(
+                    width: 180.0.w,
+                    child: TextView(
+                      text:
+                          ' REF ID- ${e.referenceNumber?.toUpperCase() ?? ''}',
+                      fontSize: 12.sp,
+                      maxLines: 1,
+                      textOverflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   TextView(
                     text: DateFormat('yyyy-MM-dd hh:mm a')

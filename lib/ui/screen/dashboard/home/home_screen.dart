@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             TextView(
                                               text: isTapped
-                                                  ? '${getCurrency()}${oCcy.format(e.balance ?? 0)}'
+                                                  ? '${getAllCurrency(e.currency)}${oCcy.format(e.balance ?? 0)}'
                                                   : '********',
                                               fontSize: 28.sp,
                                               fontWeight: FontWeight.w400,

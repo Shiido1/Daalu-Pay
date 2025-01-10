@@ -2,6 +2,8 @@ import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_mode
 import 'package:daalu_pay/core/connect_end/model/get_stats_response_model/get_stats_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
+import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import '../connect_end/model/login_entity.dart';
@@ -87,6 +89,94 @@ class AuthApi {
           data: {'from': from, 'to': to});
       logger.d(response.data);
       return GetExchangeRateResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<dynamic> createWallet(String? currencyCode) async {
+    try {
+      final response = await _service.call(
+          UrlConfig.wallets, RequestMethod.post,
+          data: {'currency': currencyCode});
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<dynamic> swap(SwapEntiyModel? swapEntity) async {
+    try {
+      final response = await _service.call(UrlConfig.swap, RequestMethod.post,
+          data: swapEntity!.toJson());
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<dynamic> userProfile(RegisterEntityModel? userEntity) async {
+    try {
+      final response = await _service.call(UrlConfig.user, RequestMethod.post,
+          data: userEntity!.toJson());
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<dynamic> requestOtp(String? email) async {
+    try {
+      final response = await _service.call(
+          UrlConfig.request_otp, RequestMethod.get,
+          data: {'email': email});
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<dynamic> verifyOtp(String? otp) async {
+    try {
+      final response = await _service
+          .call(UrlConfig.verify_otp, RequestMethod.post, data: {'otp': otp});
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<dynamic> forgotPassword(String? email) async {
+    try {
+      final response = await _service.call(
+          UrlConfig.forgot_password, RequestMethod.post,
+          data: {'email': email});
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<dynamic> resetPassword(ResetPasswordEntity? resetPassword) async {
+    try {
+      final response = await _service.call(
+          UrlConfig.reset_password, RequestMethod.post,
+          data: resetPassword!.toJson());
+      logger.d(response.data);
+      return response.data;
     } catch (e) {
       logger.d("response:$e");
       rethrow;

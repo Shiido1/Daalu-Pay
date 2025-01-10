@@ -1,5 +1,6 @@
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
 import 'package:injectable/injectable.dart';
 import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/manager/shared_preference.dart';
@@ -47,6 +48,16 @@ class AuthRepoImpl {
   Future<GetExchangeRateResponseModel> exchangeRate(
       {String? from, String? to}) async {
     final response = await _contract.exchangeRate(from: from, to: to);
+    return response;
+  }
+
+  Future<dynamic> createWallet(String currencyCode) async {
+    final response = await _contract.createWallet(currencyCode: currencyCode);
+    return response;
+  }
+
+  Future<dynamic> swap(SwapEntiyModel swap) async {
+    final response = await _contract.swap(swap);
     return response;
   }
 

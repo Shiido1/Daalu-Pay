@@ -60,7 +60,29 @@ class WalletScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: 60.h,
+                    height: 10.h,
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          width: 34.0.w,
+                        ),
+                        IconButton(
+                            onPressed: () =>
+                                model.modalBottomSheetMenuCreateWallet(context),
+                            icon: Icon(
+                              Icons.add,
+                              size: 30.sp,
+                              color: AppColor.primary,
+                            )),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 6.h,
                   ),
                   if (model.isLoading || model.getStatsResponseModel == null)
                     Center(
@@ -167,10 +189,15 @@ class WalletScreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      TextView(
-                                        text: 'Ref No-: ${o.referenceNumber}',
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w500,
+                                      SizedBox(
+                                        width: 160.w,
+                                        child: TextView(
+                                          text: 'Ref No-: ${o.referenceNumber}',
+                                          fontSize: 12.sp,
+                                          maxLines: 1,
+                                          textOverflow: TextOverflow.ellipsis,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                       TextView(
                                         text: DateFormat('yyyy-MM-dd hh:mm a')

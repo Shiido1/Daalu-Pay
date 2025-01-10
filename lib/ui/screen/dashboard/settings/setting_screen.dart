@@ -117,10 +117,38 @@ class SettingScreen extends StatelessWidget {
                           thickness: .4.sp,
                         ),
                         paddedWind(
-                          child: TextView(
-                            text: 'Account Verification',
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextView(
+                                text: 'Account Verification',
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 6.w, vertical: 4.w),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    color: model.userResponseModel?.data?.status
+                                                ?.toLowerCase() ==
+                                            'active'
+                                        ? AppColor.green.withOpacity(.8)
+                                        : AppColor.grey),
+                                child: TextView(
+                                  text: model.userResponseModel?.data?.status
+                                          ?.capitalize() ??
+                                      '',
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: model.userResponseModel?.data?.status
+                                              ?.toLowerCase() ==
+                                          'active'
+                                      ? AppColor.white
+                                      : AppColor.black,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         Divider(

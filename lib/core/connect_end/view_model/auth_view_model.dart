@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
 import 'package:daalu_pay/core/connect_end/model/user_response_model/user_response_model.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
@@ -16,6 +17,7 @@ import '../../../ui/app_assets/app_color.dart';
 import '../../../ui/app_assets/app_utils.dart';
 import '../../../ui/app_assets/country_const.dart';
 import '../../../ui/app_assets/image_picker.dart';
+import '../../../ui/widget/button_widget.dart';
 import '../../../ui/widget/text_form_widget.dart';
 import '../../../ui/widget/text_widget.dart';
 import '../../core_folder/app/app.locator.dart';
@@ -40,6 +42,8 @@ class AuthViewModel extends BaseViewModel {
 
   bool get isLoading => _isLoading;
   bool _isLoading = false;
+  bool get isLoadingCreate => _isLoadingCreate;
+  bool _isLoadingCreate = false;
 
   bool get isTogglePassword => _isTogglePassword;
   bool _isTogglePassword = false;
@@ -66,8 +70,29 @@ class AuthViewModel extends BaseViewModel {
   GetTransactionResponseModel? _getTransactionResponseModel;
   GetTransactionResponseModel? get getTransactionResponseModel =>
       _getTransactionResponseModel;
-
   TextEditingController dobController = TextEditingController();
+
+  final _pickImage = ImagePickerHandler();
+  File? image;
+  String? filename;
+
+  String fromCurrency = AppImage.nigeria_flag;
+  String toCurrency = AppImage.united_states;
+  String fromCurrencyCode = 'NGN';
+  String toCurrencyCode = 'USD';
+  String createCurrencyCode = '';
+
+  TextEditingController fromCurrencylController =
+      TextEditingController(text: '1');
+  TextEditingController toCurrencylController =
+      TextEditingController(text: '1');
+  final debouncer = Debouncer();
+  TextEditingController curcodeFromController = TextEditingController();
+  TextEditingController curcodeToController = TextEditingController();
+  String queryFrom = '';
+  String queryTo = '';
+  String queryCreate = '';
+  String? selectCountry;
 
   DateTime selectedDOB = DateTime.now();
 
@@ -87,10 +112,6 @@ class AuthViewModel extends BaseViewModel {
       notifyListeners();
     }
   }
-
-  final _pickImage = ImagePickerHandler();
-  File? image;
-  String? filename;
 
   formartFileImage(File? imageFile) {
     if (imageFile == null) return;
@@ -231,21 +252,6 @@ class AuthViewModel extends BaseViewModel {
     }
     notifyListeners();
   }
-
-  String fromCurrency = AppImage.nigeria_flag;
-  String toCurrency = AppImage.united_states;
-  String fromCurrencyCode = 'NGN';
-  String toCurrencyCode = 'USD';
-
-  TextEditingController fromCurrencylController =
-      TextEditingController(text: '1');
-  TextEditingController toCurrencylController =
-      TextEditingController(text: '1');
-  final debouncer = Debouncer();
-  TextEditingController curcodeFromController = TextEditingController();
-  TextEditingController curcodeToController = TextEditingController();
-  String queryFrom = '';
-  String queryTo = '';
 
   exchangeTheRate(o) {
     toCurrencylController.text =
@@ -577,6 +583,233 @@ class AuthViewModel extends BaseViewModel {
         });
   }
 
+  void modalBottomSheetMenuCreateWallet(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => AuthViewModel(),
+              onViewModelReady: (model) {},
+              disposeViewModel: false,
+              builder: (_, AuthViewModel model, __) {
+                return Container(
+                  height: 500.0,
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(219, 223, 233, 242),
+                      borderRadius: BorderRadius.only(
+                          topLeft: const Radius.circular(14.0),
+                          topRight: const Radius.circular(14.0))),
+                  child: Container(
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(219, 223, 233, 242),
+                          borderRadius: BorderRadius.only(
+                              topLeft: const Radius.circular(14.0),
+                              topRight: const Radius.circular(14.0))),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 6.0.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(12.w),
+                            child: TextFormWidget(
+                              label: 'Search country',
+                              hint: '',
+                              border: 10,
+                              isFilled: true,
+                              fillColor: AppColor.white,
+                              onChange: (p0) {
+                                queryCreate = p0;
+                                model.notifyListeners();
+                              },
+                              suffixIcon: Icons.search_sharp,
+                              controller: curcodeToController,
+                              // validator: AppValidator.validateAmount(),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              height: 340,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    queryCreate == ''
+                                        ? SizedBox(
+                                            width: 400.w,
+                                            child: Column(
+                                              children: [
+                                                ...countryConst.map((e) =>
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        createCurrencyCode =
+                                                            e['code']!;
+                                                        selectCountry =
+                                                            e['code'];
+                                                        model.notifyListeners();
+                                                      },
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: const Color
+                                                              .fromARGB(219,
+                                                              223, 233, 242),
+                                                        ),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 4.6.w,
+                                                                horizontal:
+                                                                    10.w),
+                                                        child: Container(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  6.w),
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              color: selectCountry ==
+                                                                      e['code']
+                                                                  ? AppColor
+                                                                      .white
+                                                                  : AppColor
+                                                                      .transparent),
+                                                          child: Row(
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                  e['flag']!),
+                                                              SizedBox(
+                                                                width: 15.6.w,
+                                                              ),
+                                                              TextView(
+                                                                text:
+                                                                    '${e['country']}',
+                                                                fontSize: 17.6,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ))
+                                              ],
+                                            ),
+                                          )
+                                        : Column(
+                                            children: [
+                                              ...countryConst
+                                                  .where((o) => o['country']!
+                                                      .toLowerCase()
+                                                      .contains(queryCreate
+                                                          .toLowerCase()))
+                                                  .map((e) => GestureDetector(
+                                                        onTap: () {
+                                                          createCurrencyCode =
+                                                              e['code']!;
+
+                                                          selectCountry =
+                                                              e['code'];
+                                                          model
+                                                              .notifyListeners();
+                                                        },
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: const Color
+                                                                .fromARGB(219,
+                                                                223, 233, 242),
+                                                          ),
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical:
+                                                                      4.6.w,
+                                                                  horizontal:
+                                                                      10.w),
+                                                          child: Container(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    6.w),
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                color: selectCountry ==
+                                                                        e[
+                                                                            'code']
+                                                                    ? AppColor
+                                                                        .white
+                                                                    : AppColor
+                                                                        .transparent),
+                                                            child: Row(
+                                                              children: [
+                                                                SvgPicture.asset(
+                                                                    e['flag']!),
+                                                                SizedBox(
+                                                                  width: 15.6.w,
+                                                                ),
+                                                                TextView(
+                                                                  text:
+                                                                      '${e['country']}',
+                                                                  fontSize:
+                                                                      17.6,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ))
+                                            ],
+                                          ),
+                                    SizedBox(
+                                      height: 14.0.h,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 26.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            child: ButtonWidget(
+                                buttonText: 'Create Wallet',
+                                color: AppColor.white,
+                                border: 8,
+                                isLoading: model.isLoadingCreate,
+                                buttonColor: AppColor.primary,
+                                buttonBorderColor: Colors.transparent,
+                                onPressed: () {
+                                  if (createCurrencyCode != '') {
+                                    createWallet(context,
+                                        currencyCode: createCurrencyCode);
+                                  } else {
+                                    AppUtils.snackbar(context,
+                                        message:
+                                            'Select country for currency code');
+                                  }
+                                }),
+                          ),
+                          SizedBox(
+                            height: 30.h,
+                          )
+                        ],
+                      )),
+                );
+              });
+        });
+  }
+
   void onChangeRate(p0) {
     debouncer.run(() => exchangeTheRate(p0));
     notifyListeners();
@@ -610,5 +843,37 @@ class AuthViewModel extends BaseViewModel {
     double fee =
         (double.parse(fromCurrencylController.text) * 0.01 * 100) / 100;
     return fee.toString();
+  }
+
+  Future<void> createWallet(context, {String? currencyCode}) async {
+    try {
+      _isLoadingCreate = true;
+      await runBusyFuture(repositoryImply.createWallet(currencyCode!),
+          throwException: true);
+      _isLoadingCreate = false;
+      getStatistics(context);
+      Navigator.pop(context);
+    } catch (e) {
+      _isLoadingCreate = false;
+      AppUtils.snackbar(context,
+          message: 'This wallet may have been created already', error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> swap(context, {SwapEntiyModel? swap}) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(repositoryImply.swap(swap!),
+          throwException: true);
+      _isLoading = false;
+      if (v['status'] == 'success') {
+        AppUtils.snackbar(context, message: 'Swap Successfully');
+      }
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
   }
 }

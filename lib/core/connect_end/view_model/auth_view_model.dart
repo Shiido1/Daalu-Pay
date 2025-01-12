@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:async';
-
+import "package:collection/collection.dart";
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
@@ -25,6 +25,7 @@ import '../../core_folder/app/app.logger.dart';
 import '../../core_folder/app/app.router.dart';
 import '../../core_folder/manager/shared_preference.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
+import '../model/get_transaction_response_model/datum.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
 import '../model/register_entity_model.dart';
@@ -71,6 +72,7 @@ class AuthViewModel extends BaseViewModel {
   GetTransactionResponseModel? get getTransactionResponseModel =>
       _getTransactionResponseModel;
   TextEditingController dobController = TextEditingController();
+  List<Datum>? transactionListData = [];
 
   final _pickImage = ImagePickerHandler();
   File? image;
@@ -93,6 +95,8 @@ class AuthViewModel extends BaseViewModel {
   String queryTo = '';
   String queryCreate = '';
   String? selectCountry;
+
+  String transStats = 'all';
 
   DateTime selectedDOB = DateTime.now();
 
@@ -232,6 +236,24 @@ class AuthViewModel extends BaseViewModel {
       _isLoading = false;
       logger.d(e);
       AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  groupTransationStatus() {
+    var groupedValue;
+
+    groupedValue =
+        groupBy(_getTransactionResponseModel!.data!, (obj) => obj.status);
+    transactionListData!.clear();
+    if (transStats == 'successful') {
+      transactionListData?.addAll(groupedValue['completed']);
+    } else if (transStats == 'pending') {
+      transactionListData?.addAll(groupedValue['pending']);
+    } else if (transStats == 'failed') {
+      transactionListData?.addAll(groupedValue['failed']);
+    } else {
+      transactionListData!.clear();
     }
     notifyListeners();
   }

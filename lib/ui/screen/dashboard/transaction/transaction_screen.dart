@@ -103,19 +103,80 @@ class TransactionScreen extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                SizedBox(
+                                  width: 4.4.w,
+                                ),
                                 TextView(
                                   text: 'Successful',
                                   color: AppColor.darkGrey,
-                                  fontSize: 14.sp,
+                                  fontSize: 15.4.sp,
                                   fontWeight: FontWeight.w400,
                                 ),
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.keyboard_arrow_down_rounded,
-                                      size: 20.sp,
-                                      color: AppColor.darkGrey,
-                                    ))
+                                PopupMenuButton(
+                                  onSelected: (value) {
+                                    // your logic
+                                  },
+                                  icon: Icon(
+                                    Icons.keyboard_arrow_down_rounded,
+                                    size: 20.sp,
+                                  ),
+                                  itemBuilder: (BuildContext bc) {
+                                    return [
+                                      PopupMenuItem(
+                                        value: '/all',
+                                        onTap: () {
+                                          model.transStats = 'all';
+                                          model.groupTransationStatus();
+                                          model.notifyListeners();
+                                        },
+                                        child: TextView(
+                                          text: 'All',
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: '/successful',
+                                        onTap: () {
+                                          model.transStats = 'successful';
+                                          model.groupTransationStatus();
+                                          model.notifyListeners();
+                                        },
+                                        child: TextView(
+                                          text: 'Successful',
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: '/pending',
+                                        onTap: () {
+                                          model.transStats = 'pending';
+                                          model.groupTransationStatus();
+                                          model.notifyListeners();
+                                        },
+                                        child: TextView(
+                                          text: 'Pending',
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: '/failed',
+                                        onTap: () {
+                                          model.transStats = 'failed';
+                                          model.groupTransationStatus();
+                                          model.notifyListeners();
+                                        },
+                                        child: TextView(
+                                          text: 'Failed',
+                                          fontSize: 20.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ];
+                                  },
+                                )
                               ],
                             )),
                       ),
@@ -128,7 +189,8 @@ class TransactionScreen extends StatelessWidget {
                           ),
                           child: Center(
                             child: TextView(
-                              text: '07/11/24-13/11/24',
+                              // text: '07/11/24-13/11/24',
+                              text: '',
                               color: AppColor.darkGrey,
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w400,
@@ -166,10 +228,16 @@ class TransactionScreen extends StatelessWidget {
                             )
                           : Column(
                               children: [
-                                ...model.getTransactionResponseModel!.data!
-                                    .map((e) => recentTransWidget(
-                                          e: e,
-                                        ))
+                                if (model.transactionListData!.isNotEmpty)
+                                  ...model.transactionListData!
+                                      .map((e) => recentTransWidget(
+                                            e: e,
+                                          ))
+                                else
+                                  ...model.getTransactionResponseModel!.data!
+                                      .map((e) => recentTransWidget(
+                                            e: e,
+                                          ))
                               ],
                             )
                 ],

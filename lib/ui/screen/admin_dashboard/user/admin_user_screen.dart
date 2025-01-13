@@ -118,14 +118,26 @@ class AdminUsersScreen extends StatelessWidget {
                                           color: AppColor.navyBlueGrey,
                                           fontWeight: FontWeight.w500,
                                         ),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
                                         TextView(
                                           text: 'Email',
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.w500,
                                           color: AppColor.navyBlueGrey,
                                         ),
+                                        SizedBox(
+                                          width: 30.w,
+                                        ),
                                         TextView(
                                           text: 'Status',
+                                          fontSize: 14.sp,
+                                          color: AppColor.navyBlueGrey,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        TextView(
+                                          text: 'Actions',
                                           fontSize: 14.sp,
                                           color: AppColor.navyBlueGrey,
                                           fontWeight: FontWeight.w500,
@@ -152,10 +164,10 @@ class AdminUsersScreen extends StatelessWidget {
                                                             .spaceBetween,
                                                     children: [
                                                       SizedBox(
-                                                        width: 80.w,
+                                                        width: 60.w,
                                                         child: TextView(
                                                           text:
-                                                              '${i.firstName ?? ''} ${i.lastName ?? ''}',
+                                                              i.firstName ?? '',
                                                           fontSize: 14.sp,
                                                           maxLines: 1,
                                                           textOverflow:
@@ -166,7 +178,7 @@ class AdminUsersScreen extends StatelessWidget {
                                                         ),
                                                       ),
                                                       SizedBox(
-                                                        width: 140.w,
+                                                        width: 134.0.w,
                                                         child: TextView(
                                                           text: i.email ?? '',
                                                           fontSize: 14.sp,
@@ -212,7 +224,15 @@ class AdminUsersScreen extends StatelessWidget {
                                                           fontWeight:
                                                               FontWeight.w600,
                                                         ),
-                                                      )
+                                                      ),
+                                                      IconButton(
+                                                          onPressed: () {},
+                                                          icon: Icon(
+                                                            Icons.more_vert,
+                                                            size: 20.sp,
+                                                            color:
+                                                                AppColor.black,
+                                                          ))
                                                     ],
                                                   ),
                                                 ),

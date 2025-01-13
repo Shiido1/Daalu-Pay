@@ -898,4 +898,20 @@ class AuthViewModel extends BaseViewModel {
     }
     notifyListeners();
   }
+
+  Future<void> updateProfile(context, {RegisterEntityModel? update}) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(repositoryImply.updateProfile(update!),
+          throwException: true);
+      _isLoading = false;
+      if (v['status'] == 'success') {
+        AppUtils.snackbar(context, message: 'Update Successful');
+      }
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
 }

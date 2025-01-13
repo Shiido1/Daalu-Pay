@@ -31,4 +31,5 @@ class AuthContractsImpl {
   Future<dynamic> createWallet({String? currencyCode}) async =>
       await _api.createWallet(currencyCode);
   Future<dynamic> swap(SwapEntiyModel? swap) async => await _api.swap(swap);
+  Future<dynamic> updateProfile(RegisterEntityModel? update) async => await _api.userProfile(update);
 }

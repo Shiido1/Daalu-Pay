@@ -1,11 +1,16 @@
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
+import 'package:daalu_pay/ui/app_assets/contant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
+import '../../../../../core/connect_end/model/get_stats_response_model/transaction.dart';
 import '../../../../widget/text_widget.dart';
 
+// ignore: must_be_immutable
 class ReceiptScreen extends StatelessWidget {
-  const ReceiptScreen({super.key});
+  ReceiptScreen({super.key, required this.e});
+  Transaction e;
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +55,21 @@ class ReceiptScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  contContainer(left: 'Time', right: 'Nov 10, 2024 5:30 AM'),
-                  contContainer(left: 'Transaction ID', right: '#1234567'),
-                  contContainer(left: 'From', right: '10,000 NGN'),
+                  contContainer(
+                      left: 'Time',
+                      right: DateFormat('MMM dd, yyyy hh:mm a')
+                          .format(DateTime.parse(e.createdAt.toString()))),
+                  contContainer(
+                      left: 'Transaction ID', right: e.referenceNumber),
+                  contContainer(left: 'From', right: ''),
                   contContainer(left: 'To', right: '50 USD'),
                   contContainer(
                       left: 'Exchange Rate', right: '1 USD = 500 NGN'),
-                  contContainer(left: 'State', right: 'Success'),
+                  contContainer(
+                      left: 'State',
+                      right: e.status == 'completed'
+                          ? 'Success'
+                          : e.status?.capitalize()),
                   contContainer(left: 'Transaction Fee', right: '500 NGN'),
                   contContainer(left: 'Not Received', right: '49.99 USD'),
                   contContainer(left: 'Payment Method', right: 'flutterwave'),
@@ -92,17 +105,26 @@ class ReceiptScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextView(
-                text: left,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w400,
-                color: AppColor.darkGrey,
+              SizedBox(
+                child: TextView(
+                  text: left,
+                  fontSize: 14.sp,
+                  maxLines: 1,
+                  textOverflow: TextOverflow.fade,
+                  fontWeight: FontWeight.w400,
+                  color: AppColor.darkGrey,
+                ),
               ),
-              TextView(
-                text: right,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w300,
-                color: AppColor.darkGrey,
+              SizedBox(
+                // width: 240.w,
+                child: TextView(
+                  text: right,
+                  fontSize: 12.sp,
+                  maxLines: 1,
+                  textOverflow: TextOverflow.fade,
+                  fontWeight: FontWeight.w300,
+                  color: AppColor.darkGrey,
+                ),
               ),
             ],
           ),

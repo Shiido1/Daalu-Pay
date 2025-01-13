@@ -274,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
   recentTransWidget({required Transaction e}) => GestureDetector(
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ReceiptScreen()),
+          MaterialPageRoute(builder: (context) =>  ReceiptScreen(e: e,)),
         ),
         child: Container(
           padding: EdgeInsets.all(10.w),

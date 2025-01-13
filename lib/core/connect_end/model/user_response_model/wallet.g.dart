@@ -9,7 +9,6 @@ part of 'wallet.dart';
 Wallet _$WalletFromJson(Map<String, dynamic> json) => Wallet(
       id: json['id'] as num?,
       uuid: json['uuid'] as String?,
-      currency: json['currency'] as String?,
       userId: json['userId'] as num?,
       currencyId: json['currencyId'] as num?,
       balance: json['balance'] as num?,
@@ -20,6 +19,7 @@ Wallet _$WalletFromJson(Map<String, dynamic> json) => Wallet(
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
+      currency: json['currency'] as String?,
     );
 
 Map<String, dynamic> _$WalletToJson(Wallet instance) => <String, dynamic>{
@@ -27,9 +27,9 @@ Map<String, dynamic> _$WalletToJson(Wallet instance) => <String, dynamic>{
       'uuid': instance.uuid,
       'userId': instance.userId,
       'currencyId': instance.currencyId,
-      'currency': instance.currency,
       'balance': instance.balance,
       'deletedAt': instance.deletedAt,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
+      'currency': instance.currency,
     };

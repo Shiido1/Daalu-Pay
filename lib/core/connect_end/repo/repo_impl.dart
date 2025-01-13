@@ -61,6 +61,11 @@ class AuthRepoImpl {
     return response;
   }
 
+  Future<dynamic> updateProfile(RegisterEntityModel update) async {
+    final response = await _contract.updateProfile(update);
+    return response;
+  }
+
   void _chache(data) {
     if (data != null) {
       _session.authToken = data.token!;

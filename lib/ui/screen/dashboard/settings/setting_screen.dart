@@ -1,3 +1,5 @@
+import 'package:daalu_pay/core/core_folder/app/app.router.dart';
+import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -106,10 +108,13 @@ class SettingScreen extends StatelessWidget {
                           height: 10.h,
                         ),
                         paddedWind(
-                          child: TextView(
-                            text: 'Your Profile',
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
+                          child: GestureDetector(
+                            onTap: () =>navigate.navigateTo(Routes.updateProfileScreen),
+                            child: TextView(
+                              text: 'Your Profile',
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
                         Divider(

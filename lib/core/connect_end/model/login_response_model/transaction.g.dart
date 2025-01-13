@@ -11,6 +11,7 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       userId: json['userId'] as num?,
       referenceNumber: json['referenceNumber'] as String?,
       channel: json['channel'] as String?,
+      type: json['type'] as String?,
       amount: json['amount'] as String?,
       status: json['status'] as String?,
       createdAt: json['createdAt'] == null
@@ -24,6 +25,7 @@ Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
       'userId': instance.userId,
       'referenceNumber': instance.referenceNumber,
       'channel': instance.channel,
+      'type': instance.type,
       'amount': instance.amount,
       'status': instance.status,
       'createdAt': instance.createdAt?.toIso8601String(),

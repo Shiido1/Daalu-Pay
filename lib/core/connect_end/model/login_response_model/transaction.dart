@@ -8,6 +8,7 @@ class Transaction {
   num? userId;
   String? referenceNumber;
   String? channel;
+  String? type;
   String? amount;
   String? status;
   DateTime? createdAt;
@@ -17,6 +18,7 @@ class Transaction {
     this.userId,
     this.referenceNumber,
     this.channel,
+    this.type,
     this.amount,
     this.status,
     this.createdAt,

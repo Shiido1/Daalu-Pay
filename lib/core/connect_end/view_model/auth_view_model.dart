@@ -248,6 +248,7 @@ class AuthViewModel extends BaseViewModel {
     groupedValue =
         groupBy(_getTransactionResponseModel!.data!, (obj) => obj.status);
     transactionListData!.clear();
+    print('object::::$groupedValue');
     if (transStats == 'successful') {
       transactionListData?.addAll(groupedValue['completed']);
     } else if (transStats == 'pending') {

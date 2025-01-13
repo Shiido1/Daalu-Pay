@@ -13,6 +13,7 @@ import '../model/get_all_user_response_model/get_all_user_response_model.dart';
 import '../model/login_entity_model.dart';
 import '../model/login_response_model/login_response_model.dart';
 import '../repo/repo_impl.dart';
+import "package:collection/collection.dart";
 
 class AuthViewModel extends BaseViewModel {
   final BuildContext? context;
@@ -46,6 +47,16 @@ class AuthViewModel extends BaseViewModel {
   GetAdminTransactionsResponseModel? get adminTransactionsResponseModel =>
       _adminTransactionsResponseModel;
   var groupedValue;
+
+  List<Datum>? transactionListData = [];
+  String transStats = 'approved';
+
+  TextEditingController usernameController = TextEditingController();
+
+  List<Datum> app = [];
+  List<Datum> rej = [];
+  List<Datum> pend = [];
+  String query = '';
 
   // login flow so api call for method can be called here
 
@@ -116,10 +127,6 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  List<Datum> app = [];
-  List<Datum> rej = [];
-  List<Datum> pend = [];
-
   groupTransationStatus() {
     app.clear();
     rej.clear();
@@ -135,5 +142,27 @@ class AuthViewModel extends BaseViewModel {
       notifyListeners();
     }
     notifyListeners();
+  }
+
+  secgroupTransationStatus() {
+    var groupedValue;
+
+    groupedValue =
+        groupBy(_adminTransactionsResponseModel!.data!, (obj) => obj.status);
+    transactionListData!.clear();
+    if (transStats == 'approved') {
+      transactionListData?.addAll(groupedValue['approved']);
+    } else if (transStats == 'pending') {
+      transactionListData?.addAll(groupedValue['pending']);
+    } else if (transStats == 'rejected') {
+      transactionListData?.addAll(groupedValue['rejected']);
+    } else {
+      transactionListData!.clear();
+    }
+    notifyListeners();
+  }
+
+  searchUsername(p0) {
+    usernameController.text = p0;
   }
 }

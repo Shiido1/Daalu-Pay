@@ -64,20 +64,74 @@ class AdminUsersScreen extends StatelessWidget {
                           borderColor: AppColor.transparent,
                           isFilled: true,
                           fillColor: AppColor.inGreyOut,
+                          onChange: (p0) {
+                            model.query = p0;
+                            model.notifyListeners();
+                          },
                           prefixWidget: Padding(
                             padding: EdgeInsets.all(12.w),
                             child: SvgPicture.asset(
                               AppImage.search,
                             ),
                           ),
-                          // controller: emailController,
+                          controller: model.usernameController,
                           // validator: AppValidator.validateEmail(),
                         ),
                       ),
                       SizedBox(
                         width: 18.w,
                       ),
-                      SvgPicture.asset(AppImage.filter)
+                      PopupMenuButton(
+                        onSelected: (value) {
+                          // your logic
+                        },
+                        color: AppColor.white,
+                        child: SvgPicture.asset(AppImage.filter),
+                        itemBuilder: (BuildContext bc) {
+                          return [
+                            PopupMenuItem(
+                              value: '/all',
+                              onTap: () {},
+                              child: TextView(
+                                text: 'All',
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: '/active',
+                              onTap: () {},
+                              child: TextView(
+                                text: 'Active',
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: '/inactive',
+                              onTap: () {},
+                              child: TextView(
+                                text: 'Inactive',
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            // PopupMenuItem(
+                            //   value: '/rejected',
+                            //   onTap: () {
+                            //     model.transStats = 'rejected';
+                            //     model.secgroupTransationStatus();
+                            //     model.notifyListeners();
+                            //   },
+                            //   child: TextView(
+                            //     text: 'Rejected',
+                            //     fontSize: 20.sp,
+                            //     fontWeight: FontWeight.w500,
+                            //   ),
+                            // ),
+                          ];
+                        },
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -149,99 +203,401 @@ class AdminUsersScreen extends StatelessWidget {
                                     color: AppColor.inGrey,
                                     thickness: .3.sp,
                                   ),
-                                  if (model.allUserResponseModel != null &&
-                                      model.allUserResponseModel!.data!
-                                          .isNotEmpty)
-                                    ...model.allUserResponseModel!.data!
-                                        .map((i) => Column(
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () =>
-                                                      openDialog(context),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 60.w,
-                                                        child: TextView(
-                                                          text:
-                                                              i.firstName ?? '',
-                                                          fontSize: 14.sp,
-                                                          maxLines: 1,
-                                                          textOverflow:
-                                                              TextOverflow
-                                                                  .ellipsis,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 134.0.w,
-                                                        child: TextView(
-                                                          text: i.email ?? '',
-                                                          fontSize: 14.sp,
-                                                          maxLines: 1,
-                                                          textOverflow:
-                                                              TextOverflow
-                                                                  .ellipsis,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 8.w,
-                                                                vertical:
-                                                                    5.2.w),
-                                                        decoration: BoxDecoration(
-                                                            color: i.status ==
-                                                                    'active'
-                                                                ? AppColor.green
-                                                                    .withOpacity(
-                                                                        .17)
-                                                                : AppColor
-                                                                    .greyKind
-                                                                    .withOpacity(
-                                                                        .17),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        4)),
-                                                        child: TextView(
-                                                          text: i.status
-                                                                  ?.capitalize() ??
-                                                              '',
-                                                          fontSize: 12.4.sp,
-                                                          color: i.status ==
-                                                                  'active'
-                                                              ? AppColor
-                                                                  .deeperGreen
-                                                              : AppColor
-                                                                  .greyKind,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
-                                                      IconButton(
-                                                          onPressed: () {},
-                                                          icon: Icon(
-                                                            Icons.more_vert,
-                                                            size: 20.sp,
+                                  model.query != ''
+                                      ? Column(
+                                          children: [
+                                            if (model.allUserResponseModel !=
+                                                    null &&
+                                                model.allUserResponseModel!
+                                                    .data!.isNotEmpty)
+                                              ...model
+                                                  .allUserResponseModel!.data!
+                                                  .where((o) => o.firstName!
+                                                      .toLowerCase()
+                                                      .contains(model.query
+                                                          .toLowerCase()))
+                                                  .map((i) => Column(
+                                                        children: [
+                                                          GestureDetector(
+                                                            onTap: () =>
+                                                                openDialog(
+                                                                    context),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 60.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text:
+                                                                        i.firstName ??
+                                                                            '',
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  width:
+                                                                      134.0.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text:
+                                                                        i.email ??
+                                                                            '',
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  padding: EdgeInsets.symmetric(
+                                                                      horizontal:
+                                                                          8.w,
+                                                                      vertical:
+                                                                          5.2.w),
+                                                                  decoration: BoxDecoration(
+                                                                      color: i.status ==
+                                                                              'active'
+                                                                          ? AppColor.green.withOpacity(
+                                                                              .17)
+                                                                          : AppColor.greyKind.withOpacity(
+                                                                              .17),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              4)),
+                                                                  child:
+                                                                      TextView(
+                                                                    text: i.status
+                                                                            ?.capitalize() ??
+                                                                        '',
+                                                                    fontSize:
+                                                                        12.4.sp,
+                                                                    color: i.status ==
+                                                                            'active'
+                                                                        ? AppColor
+                                                                            .deeperGreen
+                                                                        : AppColor
+                                                                            .greyKind,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                                ),
+                                                                PopupMenuButton(
+                                                                  onSelected:
+                                                                      (value) {
+                                                                    // your logic
+                                                                  },
+                                                                  color: AppColor
+                                                                      .white,
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .more_vert,
+                                                                    size: 20.sp,
+                                                                  ),
+                                                                  itemBuilder:
+                                                                      (BuildContext
+                                                                          bc) {
+                                                                    return [
+                                                                      PopupMenuItem(
+                                                                        value:
+                                                                            '/suspend',
+                                                                        onTap:
+                                                                            () {},
+                                                                        child:
+                                                                            TextView(
+                                                                          text:
+                                                                              'Suspend',
+                                                                          fontSize:
+                                                                              20.sp,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
+                                                                      PopupMenuItem(
+                                                                        value:
+                                                                            '/delete',
+                                                                        onTap:
+                                                                            () {},
+                                                                        child:
+                                                                            TextView(
+                                                                          text:
+                                                                              'Delete',
+                                                                          fontSize:
+                                                                              18.sp,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
+                                                                      PopupMenuItem(
+                                                                        value:
+                                                                            '/pending',
+                                                                        onTap:
+                                                                            () {
+                                                                          model.transStats =
+                                                                              'pending';
+                                                                          model
+                                                                              .secgroupTransationStatus();
+                                                                          model
+                                                                              .notifyListeners();
+                                                                        },
+                                                                        child:
+                                                                            TextView(
+                                                                          text:
+                                                                              'Pending',
+                                                                          fontSize:
+                                                                              20.sp,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
+                                                                      PopupMenuItem(
+                                                                        value:
+                                                                            '/rejected',
+                                                                        onTap:
+                                                                            () {
+                                                                          model.transStats =
+                                                                              'rejected';
+                                                                          model
+                                                                              .secgroupTransationStatus();
+                                                                          model
+                                                                              .notifyListeners();
+                                                                        },
+                                                                        child:
+                                                                            TextView(
+                                                                          text:
+                                                                              'Rejected',
+                                                                          fontSize:
+                                                                              20.sp,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
+                                                                    ];
+                                                                  },
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Divider(
                                                             color:
-                                                                AppColor.black,
-                                                          ))
-                                                    ],
-                                                  ),
-                                                ),
-                                                Divider(
-                                                  color: AppColor.inGrey,
-                                                  thickness: .3.sp,
-                                                ),
-                                              ],
-                                            ))
+                                                                AppColor.inGrey,
+                                                            thickness: .3.sp,
+                                                          ),
+                                                        ],
+                                                      ))
+                                          ],
+                                        )
+                                      : Column(
+                                          children: [
+                                            if (model.allUserResponseModel !=
+                                                    null &&
+                                                model.allUserResponseModel!
+                                                    .data!.isNotEmpty)
+                                              ...model
+                                                  .allUserResponseModel!.data!
+                                                  .map((i) => Column(
+                                                        children: [
+                                                          GestureDetector(
+                                                            onTap: () =>
+                                                                openDialog(
+                                                                    context),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 60.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text:
+                                                                        i.firstName ??
+                                                                            '',
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  width:
+                                                                      134.0.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text:
+                                                                        i.email ??
+                                                                            '',
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  padding: EdgeInsets.symmetric(
+                                                                      horizontal:
+                                                                          8.w,
+                                                                      vertical:
+                                                                          5.2.w),
+                                                                  decoration: BoxDecoration(
+                                                                      color: i.status ==
+                                                                              'active'
+                                                                          ? AppColor.green.withOpacity(
+                                                                              .17)
+                                                                          : AppColor.greyKind.withOpacity(
+                                                                              .17),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              4)),
+                                                                  child:
+                                                                      TextView(
+                                                                    text: i.status
+                                                                            ?.capitalize() ??
+                                                                        '',
+                                                                    fontSize:
+                                                                        12.4.sp,
+                                                                    color: i.status ==
+                                                                            'active'
+                                                                        ? AppColor
+                                                                            .deeperGreen
+                                                                        : AppColor
+                                                                            .greyKind,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                                ),
+                                                                PopupMenuButton(
+                                                                  onSelected:
+                                                                      (value) {
+                                                                    // your logic
+                                                                  },
+                                                                  color: AppColor
+                                                                      .white,
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .more_vert,
+                                                                    size: 20.sp,
+                                                                  ),
+                                                                  itemBuilder:
+                                                                      (BuildContext
+                                                                          bc) {
+                                                                    return [
+                                                                      PopupMenuItem(
+                                                                        value:
+                                                                            '/suspend',
+                                                                        onTap:
+                                                                            () {},
+                                                                        child:
+                                                                            TextView(
+                                                                          text:
+                                                                              'Suspend',
+                                                                          fontSize:
+                                                                              20.sp,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
+                                                                      PopupMenuItem(
+                                                                        value:
+                                                                            '/delete',
+                                                                        onTap:
+                                                                            () {},
+                                                                        child:
+                                                                            TextView(
+                                                                          text:
+                                                                              'Delete',
+                                                                          fontSize:
+                                                                              18.sp,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
+                                                                      PopupMenuItem(
+                                                                        value:
+                                                                            '/pending',
+                                                                        onTap:
+                                                                            () {
+                                                                          model.transStats =
+                                                                              'pending';
+                                                                          model
+                                                                              .secgroupTransationStatus();
+                                                                          model
+                                                                              .notifyListeners();
+                                                                        },
+                                                                        child:
+                                                                            TextView(
+                                                                          text:
+                                                                              'Pending',
+                                                                          fontSize:
+                                                                              20.sp,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
+                                                                      PopupMenuItem(
+                                                                        value:
+                                                                            '/rejected',
+                                                                        onTap:
+                                                                            () {
+                                                                          model.transStats =
+                                                                              'rejected';
+                                                                          model
+                                                                              .secgroupTransationStatus();
+                                                                          model
+                                                                              .notifyListeners();
+                                                                        },
+                                                                        child:
+                                                                            TextView(
+                                                                          text:
+                                                                              'Rejected',
+                                                                          fontSize:
+                                                                              20.sp,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
+                                                                    ];
+                                                                  },
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Divider(
+                                                            color:
+                                                                AppColor.inGrey,
+                                                            thickness: .3.sp,
+                                                          ),
+                                                        ],
+                                                      ))
+                                          ],
+                                        )
                                 ],
                               ),
                             )

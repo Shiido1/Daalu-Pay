@@ -176,14 +176,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 buttonText: 'Login',
                 color: AppColor.darkGrey,
                 border: 8,
-                // isLoading: model.isLoading,
                 buttonColor: AppColor.white,
                 buttonBorderColor: AppColor.greyNice,
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()),
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
                   );
                 }),
             SizedBox(

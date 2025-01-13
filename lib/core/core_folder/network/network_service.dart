@@ -2,7 +2,9 @@
 
 import 'package:dio/dio.dart';
 // import '../app/app.locator.dart';
+import '../app/app.locator.dart';
 import '../config/configuration.dart';
+// import '../manager/shared_preference.dart';
 import '../manager/shared_preference.dart';
 import 'api_error.dart';
 
@@ -29,7 +31,7 @@ class NetworkService {
   Dio? dio;
   String? baseUrl, authToken;
 
-  // final session = locator<SharedPreferencesService>();
+  final session = locator<SharedPreferencesService>();
 
   NetworkService({String? baseUrl, String? authToken}) {
     // ignore: prefer_initializing_formals
@@ -107,7 +109,7 @@ class NetworkService {
               queryParameters: params,
               options: options ??
                   Options(headers: {
-                    // "Authorization": "Bearer ${session.authToken}",
+                    "Authorization": "Bearer ${session.authToken}",
                     "Content-Disposition": "form-data",
                     "Content-Type": "multipart/form-data",
                     'Accept': 'application/json'
@@ -131,7 +133,7 @@ class NetworkService {
 
   Future<Options> _getOption() async {
     return Options(headers: {
-      // "Authorization": "Bearer ${session.authToken}",
+      "Authorization": "Bearer ${session.authToken}",
       'Accept': 'application/json',
     });
   }

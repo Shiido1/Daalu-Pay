@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'ui/screen/onboarding/onboarding_screen.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'core/core_folder/app/app.locator.dart';
+import 'core/core_folder/app/app.router.dart';
+import 'core/core_folder/manager/shared_preference.dart';
 
-void main() {
+final navigate = locator<NavigationService>();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  setupLocator();
+  await locator<SharedPreferencesService>().initilize();
   runApp(const MyApp());
 }
 
@@ -19,7 +29,9 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const OnboardingScreen(),
+        initialRoute: Routes.onboardingScreen,
+        navigatorKey: StackedService.navigatorKey,
+        onGenerateRoute: StackedRouter().onGenerateRoute,
       ),
     );
   }

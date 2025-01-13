@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'text_widget.dart';
 
 class ButtonWidget extends StatelessWidget {
@@ -40,12 +41,17 @@ class ButtonWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(border!),
                       side:
                           BorderSide(color: buttonBorderColor!, width: 1.w)))),
-          child: TextView(
-            text: buttonText!,
-            fontSize: 18.sp,
-            color: color,
-            fontWeight: FontWeight.w600,
-          )),
+          child: isLoading == false || isLoading == null
+              ? TextView(
+                  text: buttonText!,
+                  fontSize: 16.sp,
+                  color: color,
+                  fontWeight: FontWeight.w600,
+                )
+              : SpinKitThreeBounce(
+                  color: color!,
+                  size: 24,
+                )),
     );
   }
 }

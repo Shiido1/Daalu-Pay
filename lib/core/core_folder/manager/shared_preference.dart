@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 @lazySingleton
 class SharedPreferencesService {
   SharedPreferencesService._internal();
@@ -53,7 +52,7 @@ class SharedPreferencesService {
     try {
       await sharedPreferences!.clear();
       // await locator<HiveManager>().clearAllBox();
-      
+
       // getLogger('logout').d(sharedPreferences.toString());
       return true;
     } catch (e) {

@@ -22,7 +22,7 @@ class AdminDashboard extends StatefulWidget {
 class _AdminDashboardState extends State<AdminDashboard> {
   int _currentIndex = 0;
 
-  final List<Widget> _body = const[
+  final List<Widget> _body = const [
     AdminOverviewScreen(),
     AdminUsersScreen(),
     AdminTransactionScreen(),

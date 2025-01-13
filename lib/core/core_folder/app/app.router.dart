@@ -8,13 +8,15 @@
 import 'package:daalu_pay/ui/screen/create_account_screen.dart' as _i5;
 import 'package:daalu_pay/ui/screen/create_password_screen.dart' as _i6;
 import 'package:daalu_pay/ui/screen/dashboard/dashboard_screen.dart' as _i3;
+import 'package:daalu_pay/ui/screen/dashboard/transaction/transaction_screen.dart'
+    as _i8;
 import 'package:daalu_pay/ui/screen/login_screen.dart' as _i4;
 import 'package:daalu_pay/ui/screen/onboarding/onboarding_screen.dart' as _i2;
 import 'package:daalu_pay/ui/screen/update_profile_screen.dart' as _i7;
-import 'package:flutter/material.dart' as _i8;
+import 'package:flutter/material.dart' as _i9;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i9;
+import 'package:stacked_services/stacked_services.dart' as _i10;
 
 class Routes {
   static const onboardingScreen = '/';
@@ -29,6 +31,8 @@ class Routes {
 
   static const updateProfileScreen = '/update-profile-screen';
 
+  static const transactionScreen = '/transaction-screen';
+
   static const all = <String>{
     onboardingScreen,
     dashboard,
@@ -36,6 +40,7 @@ class Routes {
     createAccountScreen,
     createPassworsScreen,
     updateProfileScreen,
+    transactionScreen,
   };
 }
 
@@ -65,29 +70,33 @@ class StackedRouter extends _i1.RouterBase {
       Routes.updateProfileScreen,
       page: _i7.UpdateProfileScreen,
     ),
+    _i1.RouteDef(
+      Routes.transactionScreen,
+      page: _i8.TransactionScreen,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.OnboardingScreen: (data) {
-      return _i8.MaterialPageRoute<dynamic>(
+      return _i9.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.OnboardingScreen(),
         settings: data,
       );
     },
     _i3.Dashboard: (data) {
-      return _i8.MaterialPageRoute<dynamic>(
+      return _i9.MaterialPageRoute<dynamic>(
         builder: (context) => const _i3.Dashboard(),
         settings: data,
       );
     },
     _i4.LoginScreen: (data) {
-      return _i8.MaterialPageRoute<dynamic>(
+      return _i9.MaterialPageRoute<dynamic>(
         builder: (context) => const _i4.LoginScreen(),
         settings: data,
       );
     },
     _i5.CreateAccountScreen: (data) {
-      return _i8.MaterialPageRoute<dynamic>(
+      return _i9.MaterialPageRoute<dynamic>(
         builder: (context) => const _i5.CreateAccountScreen(),
         settings: data,
       );
@@ -96,14 +105,20 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<CreatePassworsScreenArguments>(
         orElse: () => const CreatePassworsScreenArguments(),
       );
-      return _i8.MaterialPageRoute<dynamic>(
+      return _i9.MaterialPageRoute<dynamic>(
         builder: (context) => _i6.CreatePassworsScreen(key: args.key),
         settings: data,
       );
     },
     _i7.UpdateProfileScreen: (data) {
-      return _i8.MaterialPageRoute<dynamic>(
+      return _i9.MaterialPageRoute<dynamic>(
         builder: (context) => const _i7.UpdateProfileScreen(),
+        settings: data,
+      );
+    },
+    _i8.TransactionScreen: (data) {
+      return _i9.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i8.TransactionScreen(),
         settings: data,
       );
     },
@@ -119,7 +134,7 @@ class StackedRouter extends _i1.RouterBase {
 class CreatePassworsScreenArguments {
   const CreatePassworsScreenArguments({this.key});
 
-  final _i8.Key? key;
+  final _i9.Key? key;
 
   @override
   String toString() {
@@ -138,7 +153,7 @@ class CreatePassworsScreenArguments {
   }
 }
 
-extension NavigatorStateExtension on _i9.NavigationService {
+extension NavigatorStateExtension on _i10.NavigationService {
   Future<dynamic> navigateToOnboardingScreen([
     int? routerId,
     bool preventDuplicates = true,
@@ -196,7 +211,7 @@ extension NavigatorStateExtension on _i9.NavigationService {
   }
 
   Future<dynamic> navigateToCreatePassworsScreen({
-    _i8.Key? key,
+    _i9.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -219,6 +234,20 @@ extension NavigatorStateExtension on _i9.NavigationService {
         transition,
   ]) async {
     return navigateTo<dynamic>(Routes.updateProfileScreen,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToTransactionScreen([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.transactionScreen,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -282,7 +311,7 @@ extension NavigatorStateExtension on _i9.NavigationService {
   }
 
   Future<dynamic> replaceWithCreatePassworsScreen({
-    _i8.Key? key,
+    _i9.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -305,6 +334,20 @@ extension NavigatorStateExtension on _i9.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.updateProfileScreen,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithTransactionScreen([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.transactionScreen,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

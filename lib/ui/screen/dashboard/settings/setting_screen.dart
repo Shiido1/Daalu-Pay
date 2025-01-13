@@ -109,7 +109,8 @@ class SettingScreen extends StatelessWidget {
                         ),
                         paddedWind(
                           child: GestureDetector(
-                            onTap: () =>navigate.navigateTo(Routes.updateProfileScreen),
+                            onTap: () =>
+                                navigate.navigateTo(Routes.updateProfileScreen),
                             child: TextView(
                               text: 'Your Profile',
                               fontSize: 14.sp,
@@ -193,10 +194,14 @@ class SettingScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: paddedWind(
-                      child: TextView(
-                        text: 'Transaction Limits',
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
+                      child: GestureDetector(
+                        onTap: () =>
+                            navigate.navigateTo(Routes.transactionScreen),
+                        child: TextView(
+                          text: 'Transaction Limits',
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
                   ),

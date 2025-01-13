@@ -107,15 +107,16 @@ class TransactionScreen extends StatelessWidget {
                                   width: 4.4.w,
                                 ),
                                 TextView(
-                                  text: 'Successful',
+                                  text: model.transStats.capitalize(),
                                   color: AppColor.darkGrey,
-                                  fontSize: 15.4.sp,
+                                  fontSize: 17.4.sp,
                                   fontWeight: FontWeight.w400,
                                 ),
                                 PopupMenuButton(
                                   onSelected: (value) {
                                     // your logic
                                   },
+                                  color: AppColor.white,
                                   icon: Icon(
                                     Icons.keyboard_arrow_down_rounded,
                                     size: 20.sp,

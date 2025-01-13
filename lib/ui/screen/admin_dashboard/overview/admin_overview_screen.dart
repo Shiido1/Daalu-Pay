@@ -183,7 +183,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                             Align(
                               alignment: Alignment.topRight,
                               child: TextView(
-                                text: DateFormat('yyyy-MM-dd hh:mm a').format(
+                                text: DateFormat('yyyy MMM dd, hh:mm a').format(
                                     DateTime.parse(o.createdAt.toString())),
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,

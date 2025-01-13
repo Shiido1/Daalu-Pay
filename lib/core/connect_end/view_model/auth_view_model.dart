@@ -9,6 +9,7 @@ import 'package:daalu_pay/core/connect_end/model/user_response_model/user_respon
 import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_paystack_max/flutter_paystack_max.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -97,6 +98,7 @@ class AuthViewModel extends BaseViewModel {
   String? selectCountry;
 
   String transStats = 'all';
+  bool initializingPayment = false;
 
   DateTime selectedDOB = DateTime.now();
 
@@ -913,5 +915,68 @@ class AuthViewModel extends BaseViewModel {
       AppUtils.snackbar(context, message: e.toString(), error: true);
     }
     notifyListeners();
+  }
+
+  void makePayment({amount, context}) async {
+    print(session.usersData['user']);
+    const secretKey = 'sk_test_d9830d6c7a17c2b69f22ccb0589b560c902f6059';
+
+    final request = PaystackTransactionRequest(
+      reference: 'ps_${DateTime.now().microsecondsSinceEpoch}',
+      secretKey: secretKey,
+      email: session.usersData['user']['email'],
+      amount: amount * 100,
+      currency: PaystackCurrency.ngn,
+      channel: [
+        PaystackPaymentChannel.mobileMoney,
+        PaystackPaymentChannel.card,
+        PaystackPaymentChannel.ussd,
+        PaystackPaymentChannel.bankTransfer,
+        PaystackPaymentChannel.bank,
+        PaystackPaymentChannel.qr,
+        PaystackPaymentChannel.eft,
+      ],
+    );
+
+    initializingPayment = true;
+    final initializedTransaction =
+        await PaymentService.initializeTransaction(request);
+
+    if (!initializedTransaction.status) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(initializedTransaction.message),
+      ));
+
+      return;
+    }
+
+    final response = await PaymentService.showPaymentModal(context,
+            transaction: initializedTransaction,
+            // Callback URL must match the one specified on your paystack dashboard,
+            callbackUrl:
+                'https://snappy.appypie.com/webservices/InAppPaymentGateway/paystack/response.php?method=success')
+        .then((_) async {
+      return await PaymentService.verifyTransaction(
+        paystackSecretKey: secretKey,
+        initializedTransaction.data?.reference ?? request.reference,
+      );
+    });
+
+    print(response); // Result of the confirmed payment
+
+    // await PaymentService.showPaymentModal(
+    //   context,
+    //   transaction: initializedTransaction,
+    //   // Callback URL must match the one specified on your paystack dashboard,
+    //   callbackUrl: 'https://binemmanuel.com',
+    // );
+
+    // final response = await PaymentService.verifyTransaction(
+    //   paystackSecretKey: secretKey,
+    //   initializedTransaction.data?.reference ?? request.reference,
+    // );
+
+    // if (kDebugMode) logger.d(response.data.status == PaystackTransactionStatus.abandoned);
   }
 }

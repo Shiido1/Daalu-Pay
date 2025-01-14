@@ -3,8 +3,10 @@ import 'package:daalu_pay_admin/ui/app_assets/contant.dart';
 import 'package:daalu_pay_admin/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 import '../../../main.dart';
+import '../../../ui/app_assets/app_image.dart';
 import '../../../ui/app_assets/app_utils.dart';
 import '../../../ui/app_assets/app_validatiion.dart';
 import '../../../ui/widget/button_widget.dart';
@@ -67,6 +69,7 @@ class AuthViewModel extends BaseViewModel {
   TextEditingController rejectController = TextEditingController();
   TextEditingController deleteController = TextEditingController();
   TextEditingController reasonController = TextEditingController();
+  TextEditingController controller = TextEditingController();
 
   List<Datum> app = [];
   List<Datum> rej = [];
@@ -94,6 +97,297 @@ class AuthViewModel extends BaseViewModel {
     }
     notifyListeners();
   }
+
+  contRecentTranWidget(user.Datum u) => Column(
+        children: [
+          Divider(
+            color: AppColor.grey,
+            thickness: .3.sp,
+          ),
+          SizedBox(
+            height: 4.2.h,
+          ),
+          paddedWing(
+            value: 14,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextView(
+                  text: '${u.id}',
+                  fontSize: 14.sp,
+                  color: AppColor.greyNice,
+                  fontWeight: FontWeight.w500,
+                ),
+                // TextView(
+                //   text: '${getAllCurrency(u.)}${oCcy.format(double.parse(u..fromAmount!))}',
+                //   fontSize: 14.sp,
+                //   color: AppColor.black,
+                //   fontWeight: FontWeight.w500,
+                // ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 8.w, horizontal: 6.w),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: AppColor.green.withOpacity(.2)),
+                  child: TextView(
+                    text: 'Approved',
+                    fontSize: 12.sp,
+                    color: AppColor.deeperGreen,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                TextView(
+                  text: '99/99/2025',
+                  fontSize: 12.sp,
+                  color: AppColor.black,
+                  fontWeight: FontWeight.w500,
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+
+  Future openDialog(
+          {required BuildContext context, required user.Datum data}) =>
+      showDialog(
+        context: context,
+        builder: (context) => Container(
+          margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 100.w),
+          decoration: BoxDecoration(
+              color: AppColor.white, borderRadius: BorderRadius.circular(12)),
+          width: double.infinity,
+          child: Scaffold(
+            backgroundColor: AppColor.transparent,
+            body: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(vertical: 33.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  paddedWing(
+                    value: 20,
+                    child: Container(
+                      padding: EdgeInsets.all(10.w),
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: AppColor.navyBlueGrey),
+                      child: TextView(
+                        text: getInitials('${data.firstName} ${data.lastName}'),
+                        fontSize: 16.4.sp,
+                        color: AppColor.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.2.h,
+                  ),
+                  paddedWing(
+                    value: 20,
+                    child: TextView(
+                      text: '${data.status}'.capitalize(),
+                      fontSize: 14.4.sp,
+                      color: AppColor.deeperGreen,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8.2.h,
+                  ),
+                  paddedWing(
+                    value: 20,
+                    child: TextView(
+                      text: 'Last Active - 2 secs ago',
+                      fontSize: 14.4.sp,
+                      color: AppColor.black,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 6.2.h,
+                  ),
+                  paddedWing(
+                    value: 20,
+                    child: TextView(
+                      text: '${data.firstName} ${data.lastName}',
+                      fontSize: 15.4.sp,
+                      color: AppColor.black,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 6.2.h,
+                  ),
+                  paddedWing(
+                    value: 20,
+                    child: TextView(
+                      text: '${data.email}'.toLowerCase(),
+                      fontSize: 14.sp,
+                      color: AppColor.black,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 6.2.h,
+                  ),
+                  paddedWing(
+                    value: 20,
+                    child: TextView(
+                      text: 'ID-: ${data.id}'.toUpperCase(),
+                      fontSize: 14.sp,
+                      color: AppColor.black,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                  // paddedWing(
+                  //   value: 20,
+                  //   child: TextView(
+                  //     text: 'Recent Transactions',
+                  //     fontSize: 15.4.sp,
+                  //     color: AppColor.black,
+                  //     fontWeight: FontWeight.w600,
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 4.2.h,
+                  // ),
+                  // Divider(
+                  //   color: AppColor.grey,
+                  //   thickness: .3.sp,
+                  // ),
+                  // SizedBox(
+                  //   height: 4.2.h,
+                  // ),
+                  // paddedWing(
+                  //   value: 20,
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       TextView(
+                  //         text: 'Txn ID',
+                  //         fontSize: 14.sp,
+                  //         color: AppColor.black,
+                  //         fontWeight: FontWeight.w600,
+                  //       ),
+                  //       TextView(
+                  //         text: 'Amount',
+                  //         fontSize: 14.sp,
+                  //         color: AppColor.black,
+                  //         fontWeight: FontWeight.w600,
+                  //       ),
+                  //       TextView(
+                  //         text: 'Status',
+                  //         fontSize: 14.sp,
+                  //         color: AppColor.black,
+                  //         fontWeight: FontWeight.w600,
+                  //       ),
+                  //       TextView(
+                  //         text: 'Date',
+                  //         fontSize: 14.sp,
+                  //         color: AppColor.black,
+                  //         fontWeight: FontWeight.w600,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 4.2.h,
+                  // ),
+                  // contRecentTranWidget(),
+                  SizedBox(
+                    height: 12.2.h,
+                  ),
+                  paddedWing(
+                    value: 20,
+                    child: TextFormWidget(
+                      label: 'Add Notes',
+                      hint: null,
+                      border: 10,
+                      maxline: 4,
+                      isFilled: true,
+                      fillColor: AppColor.white,
+                      alignLabelWithHint: true,
+                      controller: controller,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  paddedWing(
+                    value: 20,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () => approveUser(context, id: data.id),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 6.w, horizontal: 22.w),
+                            decoration: BoxDecoration(
+                                color: AppColor.green.withOpacity(.2),
+                                borderRadius: BorderRadius.circular(4)),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  AppImage.flag,
+                                  color: AppColor.green,
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                TextView(
+                                  text: 'Approve',
+                                  fontSize: 14.sp,
+                                  color: AppColor.green,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => denyUser(context, id: data.id),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 6.w, horizontal: 22.w),
+                            decoration: BoxDecoration(
+                                color: AppColor.red.withOpacity(.2),
+                                borderRadius: BorderRadius.circular(4)),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.pause_circle_outline,
+                                  color: AppColor.red,
+                                  size: 24.sp,
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                TextView(
+                                  text: 'Reject',
+                                  fontSize: 14.sp,
+                                  color: AppColor.red,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
 
   // get all users flow api
 
@@ -621,7 +915,9 @@ class AuthViewModel extends BaseViewModel {
           throwException: true);
       logger.d(res);
       _isLoading = false;
-      Navigator.pop(contxt);
+
+      getAllUser(context);
+      AppUtils.snackbar(contxt, message: res['message'].toString());
     } catch (e) {
       _isLoading = false;
       logger.d(e);
@@ -639,7 +935,8 @@ class AuthViewModel extends BaseViewModel {
       _isLoading = false;
       rejectController.text = '';
 
-      Navigator.pop(contxt);
+      AppUtils.snackbar(contxt, message: res['message'].toString());
+      getAllUser(context);
     } catch (e) {
       _isLoading = false;
       logger.d(e);

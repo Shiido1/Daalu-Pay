@@ -1027,10 +1027,9 @@ class AuthViewModel extends BaseViewModel {
       var res = await runBusyFuture(
           repositoryImply.denyTransaction(id: id, text: text),
           throwException: true);
-      logger.d(res);
       _isLoading = false;
       rejectController.text = '';
-
+      getAdminTransactions(contxt);
       Navigator.pop(contxt);
     } catch (e) {
       _isLoading = false;

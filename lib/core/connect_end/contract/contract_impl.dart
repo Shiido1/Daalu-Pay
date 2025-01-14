@@ -18,4 +18,15 @@ class AuthContractsImpl {
       await _api.adminStats();
   Future<GetAdminTransactionsResponseModel> adminTransactions() async =>
       await _api.adminTransactions();
+  Future<dynamic> approveUser(String id) async => await _api.approveUser(id);
+  Future<dynamic> denyUser(String id) async => await _api.denyUser(id);
+  Future<dynamic> suspendUser({String? id, String? text}) async =>
+      await _api.suspendUser(id: id, text: text);
+  Future<dynamic> unsuspendUser({String? id, String? text}) async =>
+      await _api.unsuspendUser(id: id, text: text);
+  Future<dynamic> delete(String id) async => await _api.delete(id);
+  Future<dynamic> approveTransaction(String id) async =>
+      await _api.approveTransactions(id);
+  Future<dynamic> denyTransaction({String? id, String? text}) async =>
+      await _api.denyTransactions(id: id, text: text);
 }

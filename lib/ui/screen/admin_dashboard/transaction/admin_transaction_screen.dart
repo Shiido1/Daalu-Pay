@@ -131,7 +131,7 @@ class AdminTransactionScreen extends StatelessWidget {
                                         },
                                         child: TextView(
                                           text: 'All',
-                                          fontSize: 20.sp,
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -144,7 +144,7 @@ class AdminTransactionScreen extends StatelessWidget {
                                         },
                                         child: TextView(
                                           text: 'Approved',
-                                          fontSize: 18.sp,
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -157,7 +157,7 @@ class AdminTransactionScreen extends StatelessWidget {
                                         },
                                         child: TextView(
                                           text: 'Pending',
-                                          fontSize: 20.sp,
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -170,7 +170,7 @@ class AdminTransactionScreen extends StatelessWidget {
                                         },
                                         child: TextView(
                                           text: 'Rejected',
-                                          fontSize: 20.sp,
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),

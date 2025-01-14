@@ -27,7 +27,7 @@ class AdminUsersScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: AppColor.light,
             body: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 50.w),
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 50.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -57,7 +57,7 @@ class AdminUsersScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: TextFormWidget(
-                          label: 'Search',
+                          label: 'Search name',
                           labelColor: AppColor.grey,
                           hint: null,
                           border: 10,
@@ -91,44 +91,69 @@ class AdminUsersScreen extends StatelessWidget {
                           return [
                             PopupMenuItem(
                               value: '/all',
-                              onTap: () {},
+                              onTap: () {
+                                model.userStats = 'all';
+                                model.usergroupTransationStatus();
+                                model.notifyListeners();
+                              },
                               child: TextView(
                                 text: 'All',
-                                fontSize: 20.sp,
+                                fontSize: 15.2.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                             PopupMenuItem(
                               value: '/active',
-                              onTap: () {},
+                              onTap: () {
+                                model.userStats = 'active';
+                                model.usergroupTransationStatus();
+                                model.notifyListeners();
+                              },
                               child: TextView(
                                 text: 'Active',
-                                fontSize: 18.sp,
+                                fontSize: 15.2.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                             PopupMenuItem(
-                              value: '/inactive',
-                              onTap: () {},
+                              value: '/suspended',
+                              onTap: () {
+                                model.userStats = 'suspended';
+                                model.usergroupTransationStatus();
+                                model.notifyListeners();
+                              },
                               child: TextView(
-                                text: 'Inactive',
-                                fontSize: 20.sp,
+                                text: 'Suspended',
+                                fontSize: 15.2.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            // PopupMenuItem(
-                            //   value: '/rejected',
-                            //   onTap: () {
-                            //     model.transStats = 'rejected';
-                            //     model.secgroupTransationStatus();
-                            //     model.notifyListeners();
-                            //   },
-                            //   child: TextView(
-                            //     text: 'Rejected',
-                            //     fontSize: 20.sp,
-                            //     fontWeight: FontWeight.w500,
-                            //   ),
-                            // ),
+                            PopupMenuItem(
+                              value: '/band',
+                              onTap: () {
+                                model.userStats = 'band';
+                                model.usergroupTransationStatus();
+                                model.notifyListeners();
+                              },
+                              child: TextView(
+                                text: 'Band',
+                                fontSize: 15.2.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: '/unverified',
+                              onTap: () {
+                                model.userStats = 'unverified';
+                                model.usergroupTransationStatus();
+                                model.notifyListeners();
+                              },
+                              child: TextView(
+                                text: 'Unverified',
+                                fontSize: 15.2.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ];
                         },
                       ),
@@ -206,12 +231,8 @@ class AdminUsersScreen extends StatelessWidget {
                                   model.query != ''
                                       ? Column(
                                           children: [
-                                            if (model.allUserResponseModel !=
-                                                    null &&
-                                                model.allUserResponseModel!
-                                                    .data!.isNotEmpty)
-                                              ...model
-                                                  .allUserResponseModel!.data!
+                                            if (model.userListData!.isNotEmpty)
+                                              ...model.userListData!
                                                   .where((o) => o.firstName!
                                                       .toLowerCase()
                                                       .contains(model.query
@@ -219,9 +240,11 @@ class AdminUsersScreen extends StatelessWidget {
                                                   .map((i) => Column(
                                                         children: [
                                                           GestureDetector(
-                                                            onTap: () =>
-                                                                openDialog(
-                                                                    context),
+                                                            onTap: () => model
+                                                                .openDialog(
+                                                                    context:
+                                                                        context,
+                                                                    data: i),
                                                             child: Row(
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
@@ -250,9 +273,9 @@ class AdminUsersScreen extends StatelessWidget {
                                                                       134.0.w,
                                                                   child:
                                                                       TextView(
-                                                                    text:
-                                                                        i.email ??
-                                                                            '',
+                                                                    text: i.email
+                                                                            ?.toLowerCase() ??
+                                                                        '',
                                                                     fontSize:
                                                                         14.sp,
                                                                     maxLines: 1,
@@ -266,8 +289,11 @@ class AdminUsersScreen extends StatelessWidget {
                                                                 ),
                                                                 Container(
                                                                   padding: EdgeInsets.symmetric(
-                                                                      horizontal:
-                                                                          8.w,
+                                                                      horizontal: i.status ==
+                                                                              'active'
+                                                                          ? 8.w
+                                                                          : 3.2
+                                                                              .w,
                                                                       vertical:
                                                                           5.2.w),
                                                                   decoration: BoxDecoration(
@@ -285,16 +311,22 @@ class AdminUsersScreen extends StatelessWidget {
                                                                     text: i.status
                                                                             ?.capitalize() ??
                                                                         '',
-                                                                    fontSize:
-                                                                        12.4.sp,
+                                                                    fontSize: i.status ==
+                                                                            'active'
+                                                                        ? 12.4
+                                                                            .sp
+                                                                        : 10.sp,
                                                                     color: i.status ==
                                                                             'active'
                                                                         ? AppColor
                                                                             .deeperGreen
                                                                         : AppColor
                                                                             .greyKind,
-                                                                    fontWeight:
-                                                                        FontWeight
+                                                                    fontWeight: i.status ==
+                                                                            'active'
+                                                                        ? FontWeight
+                                                                            .w500
+                                                                        : FontWeight
                                                                             .w600,
                                                                   ),
                                                                 ),
@@ -324,7 +356,7 @@ class AdminUsersScreen extends StatelessWidget {
                                                                           text:
                                                                               'Suspend',
                                                                           fontSize:
-                                                                              20.sp,
+                                                                              14.2.sp,
                                                                           fontWeight:
                                                                               FontWeight.w500,
                                                                         ),
@@ -339,51 +371,180 @@ class AdminUsersScreen extends StatelessWidget {
                                                                           text:
                                                                               'Delete',
                                                                           fontSize:
-                                                                              18.sp,
+                                                                              14.2.sp,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
+                                                                    ];
+                                                                  },
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Divider(
+                                                            color:
+                                                                AppColor.inGrey,
+                                                            thickness: .3.sp,
+                                                          ),
+                                                        ],
+                                                      ))
+                                            else if (model
+                                                        .allUserResponseModel !=
+                                                    null &&
+                                                model.allUserResponseModel!
+                                                    .data!.isNotEmpty)
+                                              ...model
+                                                  .allUserResponseModel!.data!
+                                                  .where((o) => o.firstName!
+                                                      .toLowerCase()
+                                                      .contains(model.query
+                                                          .toLowerCase()))
+                                                  .map((i) => Column(
+                                                        children: [
+                                                          GestureDetector(
+                                                            onTap: () => model
+                                                                .openDialog(
+                                                                    context:
+                                                                        context,
+                                                                    data: i),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 60.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text:
+                                                                        i.firstName ??
+                                                                            '',
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  width:
+                                                                      134.0.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text: i.email
+                                                                            ?.toLowerCase() ??
+                                                                        '',
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  padding: EdgeInsets.symmetric(
+                                                                      horizontal: i.status ==
+                                                                              'active'
+                                                                          ? 8.w
+                                                                          : 3.2
+                                                                              .w,
+                                                                      vertical:
+                                                                          5.2.w),
+                                                                  decoration: BoxDecoration(
+                                                                      color: i.status ==
+                                                                              'active'
+                                                                          ? AppColor.green.withOpacity(
+                                                                              .17)
+                                                                          : AppColor.greyKind.withOpacity(
+                                                                              .17),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              4)),
+                                                                  child:
+                                                                      TextView(
+                                                                    text: i.status
+                                                                            ?.capitalize() ??
+                                                                        '',
+                                                                    fontSize: i.status ==
+                                                                            'active'
+                                                                        ? 12.4
+                                                                            .sp
+                                                                        : 10.sp,
+                                                                    color: i.status ==
+                                                                            'active'
+                                                                        ? AppColor
+                                                                            .deeperGreen
+                                                                        : AppColor
+                                                                            .greyKind,
+                                                                    fontWeight: i.status ==
+                                                                            'active'
+                                                                        ? FontWeight
+                                                                            .w500
+                                                                        : FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                                ),
+                                                                PopupMenuButton(
+                                                                  onSelected:
+                                                                      (value) {
+                                                                    // your logic
+                                                                  },
+                                                                  color: AppColor
+                                                                      .white,
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .more_vert,
+                                                                    size: 20.sp,
+                                                                  ),
+                                                                  itemBuilder:
+                                                                      (BuildContext
+                                                                          bc) {
+                                                                    return [
+                                                                      PopupMenuItem(
+                                                                        value:
+                                                                            '/suspend',
+                                                                        onTap: () => model.modalBottomSuspendAndUnsuspendSheet(
+                                                                            context:
+                                                                                context,
+                                                                            id: i
+                                                                                .id,
+                                                                            status:
+                                                                                i.status),
+                                                                        child:
+                                                                            TextView(
+                                                                          text: i.status?.toLowerCase() == 'active'
+                                                                              ? 'Suspend'
+                                                                              : "Unsuspend",
+                                                                          fontSize:
+                                                                              14.2.sp,
                                                                           fontWeight:
                                                                               FontWeight.w500,
                                                                         ),
                                                                       ),
                                                                       PopupMenuItem(
                                                                         value:
-                                                                            '/pending',
-                                                                        onTap:
-                                                                            () {
-                                                                          model.transStats =
-                                                                              'pending';
-                                                                          model
-                                                                              .secgroupTransationStatus();
-                                                                          model
-                                                                              .notifyListeners();
-                                                                        },
-                                                                        child:
-                                                                            TextView(
-                                                                          text:
-                                                                              'Pending',
-                                                                          fontSize:
-                                                                              20.sp,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
+                                                                            '/delete',
+                                                                        onTap: () =>
+                                                                            model.modalBottomDeleteUserSheet(
+                                                                          context,
+                                                                          id: i
+                                                                              .id,
                                                                         ),
-                                                                      ),
-                                                                      PopupMenuItem(
-                                                                        value:
-                                                                            '/rejected',
-                                                                        onTap:
-                                                                            () {
-                                                                          model.transStats =
-                                                                              'rejected';
-                                                                          model
-                                                                              .secgroupTransationStatus();
-                                                                          model
-                                                                              .notifyListeners();
-                                                                        },
                                                                         child:
                                                                             TextView(
                                                                           text:
-                                                                              'Rejected',
+                                                                              'Delete',
                                                                           fontSize:
-                                                                              20.sp,
+                                                                              14.2.sp,
                                                                           fontWeight:
                                                                               FontWeight.w500,
                                                                         ),
@@ -405,18 +566,20 @@ class AdminUsersScreen extends StatelessWidget {
                                         )
                                       : Column(
                                           children: [
-                                            if (model.allUserResponseModel !=
-                                                    null &&
-                                                model.allUserResponseModel!
-                                                    .data!.isNotEmpty)
-                                              ...model
-                                                  .allUserResponseModel!.data!
+                                            if (model.userListData!.isNotEmpty)
+                                              ...model.userListData!
+                                                  .where((o) => o.firstName!
+                                                      .toLowerCase()
+                                                      .contains(model.query
+                                                          .toLowerCase()))
                                                   .map((i) => Column(
                                                         children: [
                                                           GestureDetector(
-                                                            onTap: () =>
-                                                                openDialog(
-                                                                    context),
+                                                            onTap: () => model
+                                                                .openDialog(
+                                                                    context:
+                                                                        context,
+                                                                    data: i),
                                                             child: Row(
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
@@ -445,9 +608,9 @@ class AdminUsersScreen extends StatelessWidget {
                                                                       134.0.w,
                                                                   child:
                                                                       TextView(
-                                                                    text:
-                                                                        i.email ??
-                                                                            '',
+                                                                    text: i.email
+                                                                            ?.toLowerCase() ??
+                                                                        '',
                                                                     fontSize:
                                                                         14.sp,
                                                                     maxLines: 1,
@@ -461,8 +624,11 @@ class AdminUsersScreen extends StatelessWidget {
                                                                 ),
                                                                 Container(
                                                                   padding: EdgeInsets.symmetric(
-                                                                      horizontal:
-                                                                          8.w,
+                                                                      horizontal: i.status ==
+                                                                              'active'
+                                                                          ? 8.w
+                                                                          : 3.2
+                                                                              .w,
                                                                       vertical:
                                                                           5.2.w),
                                                                   decoration: BoxDecoration(
@@ -480,16 +646,22 @@ class AdminUsersScreen extends StatelessWidget {
                                                                     text: i.status
                                                                             ?.capitalize() ??
                                                                         '',
-                                                                    fontSize:
-                                                                        12.4.sp,
+                                                                    fontSize: i.status ==
+                                                                            'active'
+                                                                        ? 12.4
+                                                                            .sp
+                                                                        : 10.sp,
                                                                     color: i.status ==
                                                                             'active'
                                                                         ? AppColor
                                                                             .deeperGreen
                                                                         : AppColor
                                                                             .greyKind,
-                                                                    fontWeight:
-                                                                        FontWeight
+                                                                    fontWeight: i.status ==
+                                                                            'active'
+                                                                        ? FontWeight
+                                                                            .w500
+                                                                        : FontWeight
                                                                             .w600,
                                                                   ),
                                                                 ),
@@ -512,14 +684,20 @@ class AdminUsersScreen extends StatelessWidget {
                                                                       PopupMenuItem(
                                                                         value:
                                                                             '/suspend',
-                                                                        onTap:
-                                                                            () {},
+                                                                        onTap: () => model.modalBottomSuspendAndUnsuspendSheet(
+                                                                            context:
+                                                                                context,
+                                                                            id: i
+                                                                                .id,
+                                                                            status:
+                                                                                i.status),
                                                                         child:
                                                                             TextView(
-                                                                          text:
-                                                                              'Suspend',
+                                                                          text: i.status?.toLowerCase() == 'active'
+                                                                              ? 'Suspend'
+                                                                              : "Unsuspend",
                                                                           fontSize:
-                                                                              20.sp,
+                                                                              14.2.sp,
                                                                           fontWeight:
                                                                               FontWeight.w500,
                                                                         ),
@@ -527,58 +705,187 @@ class AdminUsersScreen extends StatelessWidget {
                                                                       PopupMenuItem(
                                                                         value:
                                                                             '/delete',
-                                                                        onTap:
-                                                                            () {},
+                                                                        onTap: () =>
+                                                                            model.modalBottomDeleteUserSheet(
+                                                                          context,
+                                                                          id: i
+                                                                              .id,
+                                                                        ),
                                                                         child:
                                                                             TextView(
                                                                           text:
                                                                               'Delete',
                                                                           fontSize:
-                                                                              18.sp,
+                                                                              14.2.sp,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
+                                                                    ];
+                                                                  },
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Divider(
+                                                            color:
+                                                                AppColor.inGrey,
+                                                            thickness: .3.sp,
+                                                          ),
+                                                        ],
+                                                      ))
+                                            else if (model
+                                                        .allUserResponseModel !=
+                                                    null &&
+                                                model.allUserResponseModel!
+                                                    .data!.isNotEmpty)
+                                              ...model
+                                                  .allUserResponseModel!.data!
+                                                  .map((i) => Column(
+                                                        children: [
+                                                          GestureDetector(
+                                                            onTap: () => model
+                                                                .openDialog(
+                                                                    context:
+                                                                        context,
+                                                                    data: i),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 60.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text:
+                                                                        i.firstName ??
+                                                                            '',
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  width:
+                                                                      134.0.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text: i.email
+                                                                            ?.toLowerCase() ??
+                                                                        '',
+                                                                    fontSize:
+                                                                        14.sp,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  padding: EdgeInsets.symmetric(
+                                                                      horizontal: i.status ==
+                                                                              'active'
+                                                                          ? 8.w
+                                                                          : 3.2
+                                                                              .w,
+                                                                      vertical:
+                                                                          5.2.w),
+                                                                  decoration: BoxDecoration(
+                                                                      color: i.status ==
+                                                                              'active'
+                                                                          ? AppColor.green.withOpacity(
+                                                                              .17)
+                                                                          : AppColor.greyKind.withOpacity(
+                                                                              .17),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              4)),
+                                                                  child:
+                                                                      TextView(
+                                                                    text: i.status
+                                                                            ?.capitalize() ??
+                                                                        '',
+                                                                    fontSize: i.status ==
+                                                                            'active'
+                                                                        ? 12.4
+                                                                            .sp
+                                                                        : 10.sp,
+                                                                    color: i.status ==
+                                                                            'active'
+                                                                        ? AppColor
+                                                                            .deeperGreen
+                                                                        : AppColor
+                                                                            .greyKind,
+                                                                    fontWeight: i.status ==
+                                                                            'active'
+                                                                        ? FontWeight
+                                                                            .w500
+                                                                        : FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                                ),
+                                                                PopupMenuButton(
+                                                                  onSelected:
+                                                                      (value) {
+                                                                    // your logic
+                                                                  },
+                                                                  color: AppColor
+                                                                      .white,
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .more_vert,
+                                                                    size: 20.sp,
+                                                                  ),
+                                                                  itemBuilder:
+                                                                      (BuildContext
+                                                                          bc) {
+                                                                    return [
+                                                                      PopupMenuItem(
+                                                                        value:
+                                                                            '/suspend',
+                                                                        onTap: () => model.modalBottomSuspendAndUnsuspendSheet(
+                                                                            context:
+                                                                                context,
+                                                                            id: i
+                                                                                .id,
+                                                                            status:
+                                                                                i.status),
+                                                                        child:
+                                                                            TextView(
+                                                                          text: i.status?.toLowerCase() == 'active'
+                                                                              ? 'Suspend'
+                                                                              : "Unsuspend",
+                                                                          fontSize:
+                                                                              14.2.sp,
                                                                           fontWeight:
                                                                               FontWeight.w500,
                                                                         ),
                                                                       ),
                                                                       PopupMenuItem(
                                                                         value:
-                                                                            '/pending',
-                                                                        onTap:
-                                                                            () {
-                                                                          model.transStats =
-                                                                              'pending';
-                                                                          model
-                                                                              .secgroupTransationStatus();
-                                                                          model
-                                                                              .notifyListeners();
-                                                                        },
-                                                                        child:
-                                                                            TextView(
-                                                                          text:
-                                                                              'Pending',
-                                                                          fontSize:
-                                                                              20.sp,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
+                                                                            '/delete',
+                                                                        onTap: () =>
+                                                                            model.modalBottomDeleteUserSheet(
+                                                                          context,
+                                                                          id: i
+                                                                              .id,
                                                                         ),
-                                                                      ),
-                                                                      PopupMenuItem(
-                                                                        value:
-                                                                            '/rejected',
-                                                                        onTap:
-                                                                            () {
-                                                                          model.transStats =
-                                                                              'rejected';
-                                                                          model
-                                                                              .secgroupTransationStatus();
-                                                                          model
-                                                                              .notifyListeners();
-                                                                        },
                                                                         child:
                                                                             TextView(
                                                                           text:
-                                                                              'Rejected',
+                                                                              'Delete',
                                                                           fontSize:
-                                                                              20.sp,
+                                                                              14.2.sp,
                                                                           fontWeight:
                                                                               FontWeight.w500,
                                                                         ),
@@ -611,280 +918,5 @@ class AdminUsersScreen extends StatelessWidget {
   paddedWing({child}) => Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: child,
-      );
-
-  Future openDialog(context) => showDialog(
-        context: context,
-        builder: (context) => Container(
-          margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 100.w),
-          decoration: BoxDecoration(
-              color: AppColor.white, borderRadius: BorderRadius.circular(12)),
-          width: double.infinity,
-          child: Scaffold(
-            backgroundColor: AppColor.transparent,
-            body: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(vertical: 33.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  paddedWing(
-                    child: Container(
-                      padding: EdgeInsets.all(10.w),
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: AppColor.navyBlueGrey),
-                      child: TextView(
-                        text: 'JD',
-                        fontSize: 16.4.sp,
-                        color: AppColor.white,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.2.h,
-                  ),
-                  paddedWing(
-                    child: TextView(
-                      text: 'Active',
-                      fontSize: 14.4.sp,
-                      color: AppColor.deeperGreen,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8.2.h,
-                  ),
-                  paddedWing(
-                    child: TextView(
-                      text: 'Last Active - 2 secs ago',
-                      fontSize: 14.4.sp,
-                      color: AppColor.black,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 6.2.h,
-                  ),
-                  paddedWing(
-                    child: TextView(
-                      text: 'Jane Doe',
-                      fontSize: 15.4.sp,
-                      color: AppColor.black,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 6.2.h,
-                  ),
-                  paddedWing(
-                    child: TextView(
-                      text: 'jane.doe@example.com',
-                      fontSize: 14.sp,
-                      color: AppColor.black,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 6.2.h,
-                  ),
-                  paddedWing(
-                    child: TextView(
-                      text: 'ID- #81671ABO',
-                      fontSize: 14.sp,
-                      color: AppColor.black,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  paddedWing(
-                    child: TextView(
-                      text: 'Recent Transactions',
-                      fontSize: 15.4.sp,
-                      color: AppColor.black,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 4.2.h,
-                  ),
-                  Divider(
-                    color: AppColor.grey,
-                    thickness: .3.sp,
-                  ),
-                  SizedBox(
-                    height: 4.2.h,
-                  ),
-                  paddedWing(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextView(
-                          text: 'Txn ID',
-                          fontSize: 14.sp,
-                          color: AppColor.black,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        TextView(
-                          text: 'Amount',
-                          fontSize: 14.sp,
-                          color: AppColor.black,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        TextView(
-                          text: 'Status',
-                          fontSize: 14.sp,
-                          color: AppColor.black,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        TextView(
-                          text: 'Date',
-                          fontSize: 14.sp,
-                          color: AppColor.black,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 4.2.h,
-                  ),
-                  ...[
-                    1,
-                    2,
-                    3,
-                    4,
-                  ].map((e) => contRecentTranWidget()),
-                  SizedBox(
-                    height: 12.2.h,
-                  ),
-                  paddedWing(
-                    child: TextFormWidget(
-                      label: 'Add Notes',
-                      hint: null,
-                      border: 10,
-                      maxline: 4,
-                      isFilled: true,
-                      fillColor: AppColor.white,
-                      alignLabelWithHint: true,
-                      // controller: emailController,
-                      // validator: AppValidator.validateEmail(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  paddedWing(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 6.w, horizontal: 22.w),
-                          decoration: BoxDecoration(
-                              color: AppColor.yellow.withOpacity(.2),
-                              borderRadius: BorderRadius.circular(4)),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(AppImage.flag),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              TextView(
-                                text: 'Flag',
-                                fontSize: 14.sp,
-                                color: AppColor.yellow,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 6.w, horizontal: 22.w),
-                          decoration: BoxDecoration(
-                              color: AppColor.grey.withOpacity(.2),
-                              borderRadius: BorderRadius.circular(4)),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.pause_circle_outline,
-                                color: AppColor.darkGrey,
-                                size: 24.sp,
-                              ),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              TextView(
-                                text: 'Suspend',
-                                fontSize: 14.sp,
-                                color: AppColor.darkGrey,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-
-  contRecentTranWidget() => Column(
-        children: [
-          Divider(
-            color: AppColor.grey,
-            thickness: .3.sp,
-          ),
-          SizedBox(
-            height: 4.2.h,
-          ),
-          paddedWing(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextView(
-                  text: '#81671',
-                  fontSize: 14.sp,
-                  color: AppColor.greyNice,
-                  fontWeight: FontWeight.w500,
-                ),
-                TextView(
-                  text: '100,000,000 NGN',
-                  fontSize: 14.sp,
-                  color: AppColor.black,
-                  fontWeight: FontWeight.w500,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 8.w, horizontal: 6.w),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: AppColor.green.withOpacity(.2)),
-                  child: TextView(
-                    text: 'Approved',
-                    fontSize: 12.sp,
-                    color: AppColor.deeperGreen,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                TextView(
-                  text: '99/99/2025',
-                  fontSize: 12.sp,
-                  color: AppColor.black,
-                  fontWeight: FontWeight.w500,
-                ),
-              ],
-            ),
-          ),
-        ],
       );
 }

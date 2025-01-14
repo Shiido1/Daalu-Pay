@@ -1,3 +1,5 @@
+import 'package:daalu_pay_admin/core/core_folder/app/app.router.dart';
+import 'package:daalu_pay_admin/main.dart';
 import 'package:daalu_pay_admin/ui/app_assets/app_color.dart';
 import 'package:daalu_pay_admin/ui/app_assets/app_image.dart';
 import 'package:flutter/material.dart';
@@ -145,22 +147,11 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                         )
                       : const SizedBox.shrink(),
                   model.pend.isNotEmpty
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextView(
-                              text: 'Pending Swaps',
-                              color: AppColor.greyKind,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            TextView(
-                              text: 'View All',
-                              color: AppColor.grey,
-                              fontSize: 13.2.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ],
+                      ? TextView(
+                          text: 'Pending Swaps',
+                          color: AppColor.greyKind,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
                         )
                       : const SizedBox.shrink(),
                   SizedBox(
@@ -210,54 +201,62 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.w, vertical: 6.w),
-                                  decoration: BoxDecoration(
-                                      color: AppColor.green.withOpacity(.17),
-                                      borderRadius: BorderRadius.circular(4)),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.check_circle_outline_outlined,
-                                        size: 24.sp,
-                                        color: AppColor.deeperGreen,
-                                      ),
-                                      SizedBox(
-                                        width: 10.w,
-                                      ),
-                                      TextView(
-                                        text: 'Approved',
-                                        fontSize: 12.4.sp,
-                                        color: AppColor.deeperGreen,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ],
+                                GestureDetector(
+                                  onTap: () => model.modalBottomApproveSheet(
+                                      context: context, id: o.id.toString()),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.w, vertical: 6.w),
+                                    decoration: BoxDecoration(
+                                        color: AppColor.green.withOpacity(.17),
+                                        borderRadius: BorderRadius.circular(4)),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.check_circle_outline_outlined,
+                                          size: 24.sp,
+                                          color: AppColor.deeperGreen,
+                                        ),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        TextView(
+                                          text: 'Approved',
+                                          fontSize: 12.4.sp,
+                                          color: AppColor.deeperGreen,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.w, vertical: 6.w),
-                                  decoration: BoxDecoration(
-                                      color: AppColor.red.withOpacity(.17),
-                                      borderRadius: BorderRadius.circular(4)),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.cancel_outlined,
-                                        size: 24.sp,
-                                        color: AppColor.red,
-                                      ),
-                                      SizedBox(
-                                        width: 10.w,
-                                      ),
-                                      TextView(
-                                        text: 'Reject',
-                                        fontSize: 12.4.sp,
-                                        color: AppColor.red,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ],
+                                GestureDetector(
+                                  onTap: () => model.modalBottomRejectSheet(
+                                      context: context, id: o.id.toString()),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.w, vertical: 6.w),
+                                    decoration: BoxDecoration(
+                                        color: AppColor.red.withOpacity(.17),
+                                        borderRadius: BorderRadius.circular(4)),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.cancel_outlined,
+                                          size: 24.sp,
+                                          color: AppColor.red,
+                                        ),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        TextView(
+                                          text: 'Reject',
+                                          fontSize: 12.4.sp,
+                                          color: AppColor.red,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Container(
@@ -303,11 +302,15 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w500,
                       ),
-                      TextView(
-                        text: 'View All',
-                        color: AppColor.grey,
-                        fontSize: 13.2.sp,
-                        fontWeight: FontWeight.w400,
+                      GestureDetector(
+                        onTap: () =>
+                            navigate.navigateTo(Routes.adminTransactionScreen),
+                        child: TextView(
+                          text: 'View All',
+                          color: AppColor.grey,
+                          fontSize: 13.2.sp,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ],
                   ),

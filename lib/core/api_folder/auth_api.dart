@@ -61,4 +61,98 @@ class AuthApi {
       rethrow;
     }
   }
+
+  Future<dynamic> approveUser(String? id) async {
+    try {
+      final response = await _service.call(
+          'users/$id/approve', RequestMethod.post,
+          data: {"status": "approved"});
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d(e);
+      rethrow;
+    }
+  }
+
+  Future<dynamic> denyUser(
+    String? id,
+  ) async {
+    try {
+      final response = await _service.call('users/$id/deny', RequestMethod.post,
+          data: {"status": "rejected"});
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d(e);
+      rethrow;
+    }
+  }
+
+  Future<dynamic> suspendUser({String? id, String? text}) async {
+    try {
+      final response = await _service.call(
+          'users/$id/suspend', RequestMethod.post,
+          data: {"reason": text});
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d(e);
+      rethrow;
+    }
+  }
+
+  Future<dynamic> unsuspendUser({String? id, String? text}) async {
+    try {
+      final response = await _service.call(
+          'users/$id/unsuspend', RequestMethod.post,
+          data: {"reason": text});
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d(e);
+      rethrow;
+    }
+  }
+
+  Future<dynamic> delete(
+    String? id,
+  ) async {
+    try {
+      final response = await _service.call(
+        'users/$id/delete',
+        RequestMethod.post,
+      );
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d(e);
+      rethrow;
+    }
+  }
+
+  Future<dynamic> approveTransactions(String? id) async {
+    try {
+      final response =
+          await _service.call('transactions/$id/approve', RequestMethod.post);
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d(e);
+      rethrow;
+    }
+  }
+
+  Future<dynamic> denyTransactions({String? id, String? text}) async {
+    try {
+      final response = await _service.call(
+          'transactions/$id/deny', RequestMethod.post,
+          data: {"reason": text});
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d(e);
+      rethrow;
+    }
+  }
 }

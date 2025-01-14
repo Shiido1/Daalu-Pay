@@ -36,6 +36,41 @@ class AuthRepoImpl {
     return response;
   }
 
+  Future<dynamic> approveUser(String id) async {
+    final response = await _contract.approveUser(id);
+    return response;
+  }
+
+  Future<dynamic> denyUser(String id) async {
+    final response = await _contract.denyUser(id);
+    return response;
+  }
+
+  Future<dynamic> suspendUser({String? id, String? text}) async {
+    final response = await _contract.suspendUser(id: id, text: text);
+    return response;
+  }
+
+  Future<dynamic> unsuspendUser({String? id, String? text}) async {
+    final response = await _contract.unsuspendUser(id: id, text: text);
+    return response;
+  }
+
+  Future<dynamic> delete(String id) async {
+    final response = await _contract.delete(id);
+    return response;
+  }
+
+  Future<dynamic> approveTransaction(String id) async {
+    final response = await _contract.approveTransaction(id);
+    return response;
+  }
+
+  Future<dynamic> denyTransaction({String? id, String? text}) async {
+    final response = await _contract.denyTransaction(id: id, text: text);
+    return response;
+  }
+
   void _chache(data) {
     if (data != null) {
       _session.authToken = data.token!;

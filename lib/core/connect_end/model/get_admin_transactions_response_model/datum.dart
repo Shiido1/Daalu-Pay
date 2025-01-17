@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'user.dart';
+
 part 'datum.g.dart';
 
 @JsonSerializable()
@@ -19,6 +21,7 @@ class Datum {
   DateTime? createdAt;
   DateTime? updatedAt;
   dynamic deletedAt;
+  User? user;
 
   Datum({
     this.id,
@@ -36,6 +39,7 @@ class Datum {
     this.createdAt,
     this.updatedAt,
     this.deletedAt,
+    this.user,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => _$DatumFromJson(json);

@@ -1040,8 +1040,7 @@ class AuthViewModel extends BaseViewModel {
   Future<void> denyTransaction(contxt, {String? id, String? text}) async {
     try {
       _isLoading = true;
-     await runBusyFuture(
-          repositoryImply.denyTransaction(id: id, text: text),
+      await runBusyFuture(repositoryImply.denyTransaction(id: id, text: text),
           throwException: true);
       _isLoading = false;
       rejectController.text = '';

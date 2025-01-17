@@ -477,13 +477,29 @@ class AuthViewModel extends BaseViewModel {
     groupedValue = groupBy(_allUserResponseModel!.data!, (obj) => obj.status);
     userListData!.clear();
     if (userStats == 'active') {
-      userListData?.addAll(groupedValue['active']);
+      if (groupedValue['active'] != null) {
+        userListData!.addAll(groupedValue['active']);
+      } else {
+        userListData!.clear();
+      }
     } else if (userStats == 'suspended') {
-      userListData?.addAll(groupedValue['suspended']);
+      if (groupedValue['suspended'] != null) {
+        userListData!.addAll(groupedValue['suspended']);
+      } else {
+        userListData!.clear();
+      }
     } else if (userStats == 'band') {
-      userListData?.addAll(groupedValue['band']);
+      if (groupedValue['band'] != null) {
+        userListData!.addAll(groupedValue['band']);
+      } else {
+        userListData!.clear();
+      }
     } else if (userStats == 'unverified') {
-      userListData?.addAll(groupedValue['unverified']);
+      if (groupedValue['unverified'] != null) {
+        userListData!.addAll(groupedValue['unverified']);
+      } else {
+        userListData!.clear();
+      }
     } else {
       userListData!.clear();
     }

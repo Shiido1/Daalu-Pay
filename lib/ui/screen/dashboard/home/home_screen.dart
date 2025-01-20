@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 50.h,
                 ),
-                if (model.userResponseModel == null || model.isLoading)
+                if (model.getStatsResponseModel == null || model.isLoading)
                   Container(
                     height: 120.h,
                     width: double.infinity,
@@ -85,8 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(12),
                         color: AppColor.primary.withOpacity(.3)),
                   ),
-                if (model.userResponseModel != null &&
-                    model.userResponseModel!.data!.wallets!.isEmpty)
+                if (model.getStatsResponseModel != null &&
+                    model.getStatsResponseModel!.data!.wallets!.isEmpty)
                   Padding(
                     padding: EdgeInsets.all(20.0.w),
                     child: Center(
@@ -98,10 +98,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                if (model.userResponseModel != null)
+                if (model.getStatsResponseModel != null)
                   CarouselSlider(
                     items: [
-                      ...model.userResponseModel!.data!.wallets!
+                      ...model.getStatsResponseModel!.data!.wallets!
                           .map((e) => paddedWing(
                                 value: 12.w,
                                 child: Container(
@@ -274,7 +274,10 @@ class _HomeScreenState extends State<HomeScreen> {
   recentTransWidget({required Transaction e}) => GestureDetector(
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  ReceiptScreen(e: e,)),
+          MaterialPageRoute(
+              builder: (context) => ReceiptScreen(
+                    e: e,
+                  )),
         ),
         child: Container(
           padding: EdgeInsets.all(10.w),

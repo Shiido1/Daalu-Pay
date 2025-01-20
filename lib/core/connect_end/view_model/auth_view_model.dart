@@ -257,7 +257,7 @@ class AuthViewModel extends BaseViewModel {
     }
     notifyListeners();
   }
-  
+
   // get exchange rate
 
   Future<void> exchangeRates(contxt, {String? from, String? to}) async {
@@ -277,10 +277,11 @@ class AuthViewModel extends BaseViewModel {
   }
 
   exchangeTheRate(o) {
-    toCurrencylController.text =
-        (double.parse(_exchangeRateResponseModel!.data!.rate!) *
-                double.parse(o))
-            .toString();
+      toCurrencylController.text =
+          (double.parse(_exchangeRateResponseModel!.data!.rate!) *
+                  double.parse(o))
+              .toString();
+   
     notifyListeners();
   }
 
@@ -863,8 +864,9 @@ class AuthViewModel extends BaseViewModel {
   }
 
   String transferFee() {
-    double fee =
-        (double.parse(fromCurrencylController.text) * 0.01 * 100) / 100;
+    double fee = fromCurrencylController.text.isNotEmpty
+        ? (double.parse(fromCurrencylController.text) * 0.01 * 100) / 100
+        : 0;
     return fee.toString();
   }
 

@@ -43,11 +43,12 @@ class TextView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: GoogleFonts.dmSans(
-          color: color,
-          fontSize: fontSize,
-          fontWeight: fontWeight,
-          fontStyle: fontStyle),
+      style: textStyle ??
+          GoogleFonts.dmSans(
+              color: color,
+              fontSize: fontSize,
+              fontWeight: fontWeight,
+              fontStyle: fontStyle),
       textAlign: textAlign,
       overflow: textOverflow,
       maxLines: maxLines,

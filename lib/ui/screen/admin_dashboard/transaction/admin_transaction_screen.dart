@@ -279,13 +279,15 @@ class AdminTransactionScreen extends StatelessWidget {
                                           TextView(
                                             text:
                                                 '${getAllCurrency(o.fromCurrency)}${oCcy.format(double.parse(o.fromAmount!))} -> ${oCcy.format(double.parse(o.toAmount!))}${getAllCurrency(o.toCurrency)}',
-                                            color: o.status == 'approved'
-                                                ? AppColor.green
-                                                : o.status == 'rejected'
-                                                    ? AppColor.red
-                                                    : AppColor.yellow,
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w500,
+                                            textStyle: TextStyle(
+                                              color: o.status == 'approved'
+                                                  ? AppColor.green
+                                                  : o.status == 'rejected'
+                                                      ? AppColor.red
+                                                      : AppColor.yellow,
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
                                           SizedBox(
                                             height: 20.w,
@@ -370,16 +372,25 @@ class AdminTransactionScreen extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.end,
                                             children: [
-                                              TextView(
-                                                text:
-                                                    '${getAllCurrency(o.fromCurrency)}${oCcy.format(double.parse(o.fromAmount!))} -> ${oCcy.format(double.parse(o.toAmount!))}${getAllCurrency(o.toCurrency)}',
-                                                color: o.status == 'approved'
-                                                    ? AppColor.green
-                                                    : o.status == 'rejected'
-                                                        ? AppColor.red
-                                                        : AppColor.yellow,
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.w500,
+                                              SizedBox(
+                                                width: 130.w,
+                                                child: TextView(
+                                                  text:
+                                                      '${getAllCurrency(o.fromCurrency)}${oCcy.format(double.parse(o.fromAmount!))} -> ${oCcy.format(double.parse(o.toAmount!))}${getAllCurrency(o.toCurrency)}',
+                                                  textStyle: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: o.status ==
+                                                            'approved'
+                                                        ? AppColor.green
+                                                        : o.status == 'rejected'
+                                                            ? AppColor.red
+                                                            : AppColor.yellow,
+                                                  ),
+                                                  textOverflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                ),
                                               ),
                                               SizedBox(
                                                 height: 20.w,

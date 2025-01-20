@@ -192,8 +192,10 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                             TextView(
                               text:
                                   '${getAllCurrency(o.fromCurrency)}${oCcy.format(double.parse(o.fromAmount!))} -> ${oCcy.format(double.parse(o.toAmount!))}${getAllCurrency(o.toCurrency)}',
-                              fontSize: 26.sp,
-                              fontWeight: FontWeight.w500,
+                              textStyle: TextStyle(
+                                fontSize: 26.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                             SizedBox(
                               height: 20.h,
@@ -369,13 +371,15 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                                   TextView(
                                     text:
                                         '${getAllCurrency(o.fromCurrency)}${oCcy.format(double.parse(o.fromAmount!))} -> ${oCcy.format(double.parse(o.toAmount!))}${getAllCurrency(o.toCurrency)}',
-                                    color: o.status == 'approved'
-                                        ? AppColor.green
-                                        : o.status == 'rejected'
-                                            ? AppColor.red
-                                            : AppColor.yellow,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
+                                    textStyle: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: o.status == 'approved'
+                                          ? AppColor.green
+                                          : o.status == 'rejected'
+                                              ? AppColor.red
+                                              : AppColor.yellow,
+                                    ),
                                   ),
                                 ],
                               ),

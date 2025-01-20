@@ -257,6 +257,7 @@ class AuthViewModel extends BaseViewModel {
     }
     notifyListeners();
   }
+  
   // get exchange rate
 
   Future<void> exchangeRates(contxt, {String? from, String? to}) async {

@@ -20,6 +20,21 @@ class SwapScreen extends StatelessWidget {
         viewModelBuilder: () => AuthViewModel(),
         onViewModelReady: (model) {
           model.exchangeRates(context, from: 'NGN', to: 'USD');
+          // Add a listener to the controller
+          model.fromCurrencylController.addListener(() {
+            if (model.fromCurrencylController.text.length == 1) {
+              // Disable clearing the last figure
+              final currentText = model.fromCurrencylController.text;
+              if (currentText.isEmpty) {
+                // Restore the last figure if the user tries to clear it
+                model.fromCurrencylController.text = currentText;
+                model.fromCurrencylController.selection =
+                    TextSelection.collapsed(
+                        offset: model.fromCurrencylController.text
+                            .length); // Maintain cursor position
+              }
+            }
+          });
         },
         disposeViewModel: false,
         builder: (_, AuthViewModel model, __) {

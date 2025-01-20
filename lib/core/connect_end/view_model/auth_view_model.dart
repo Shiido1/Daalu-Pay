@@ -369,12 +369,20 @@ class AuthViewModel extends BaseViewModel {
                                                           SizedBox(
                                                             width: 15.6.w,
                                                           ),
-                                                          TextView(
-                                                            text:
-                                                                '${e['country']}',
-                                                            fontSize: 17.6,
-                                                            fontWeight:
-                                                                FontWeight.w400,
+                                                          SizedBox(
+                                                            width: 180.w,
+                                                            child: TextView(
+                                                              text:
+                                                                  '${e['country']}',
+                                                              fontSize: 17.6,
+                                                              maxLines: 1,
+                                                              textOverflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                            ),
                                                           )
                                                         ],
                                                       ),
@@ -420,13 +428,21 @@ class AuthViewModel extends BaseViewModel {
                                                               SizedBox(
                                                                 width: 15.6.w,
                                                               ),
-                                                              TextView(
-                                                                text:
-                                                                    '${e['country']}',
-                                                                fontSize: 17.6,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
+                                                              SizedBox(
+                                                                width: 180.w,
+                                                                child: TextView(
+                                                                  text:
+                                                                      '${e['country']}',
+                                                                  fontSize:
+                                                                      17.6,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                  maxLines: 1,
+                                                                  textOverflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
                                                               )
                                                             ],
                                                           ),
@@ -532,12 +548,20 @@ class AuthViewModel extends BaseViewModel {
                                                           SizedBox(
                                                             width: 15.6.w,
                                                           ),
-                                                          TextView(
-                                                            text:
-                                                                '${e['country']}',
-                                                            fontSize: 17.6,
-                                                            fontWeight:
-                                                                FontWeight.w400,
+                                                          SizedBox(
+                                                            width: 180.w,
+                                                            child: TextView(
+                                                              text:
+                                                                  '${e['country']}',
+                                                              fontSize: 17.6,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              textOverflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 1,
+                                                            ),
                                                           )
                                                         ],
                                                       ),
@@ -582,13 +606,21 @@ class AuthViewModel extends BaseViewModel {
                                                               SizedBox(
                                                                 width: 15.6.w,
                                                               ),
-                                                              TextView(
-                                                                text:
-                                                                    '${e['country']}',
-                                                                fontSize: 17.6,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
+                                                              SizedBox(
+                                                                width: 180.w,
+                                                                child: TextView(
+                                                                  text:
+                                                                      '${e['country']}',
+                                                                  fontSize:
+                                                                      17.6,
+                                                                  maxLines: 1,
+                                                                  textOverflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                ),
                                                               )
                                                             ],
                                                           ),
@@ -709,13 +741,21 @@ class AuthViewModel extends BaseViewModel {
                                                               SizedBox(
                                                                 width: 15.6.w,
                                                               ),
-                                                              TextView(
-                                                                text:
-                                                                    '${e['country']}',
-                                                                fontSize: 17.6,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
+                                                              SizedBox(
+                                                                width: 180.w,
+                                                                child: TextView(
+                                                                  text:
+                                                                      '${e['country']}',
+                                                                  fontSize:
+                                                                      17.6,
+                                                                  maxLines: 1,
+                                                                  textOverflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                ),
                                                               )
                                                             ],
                                                           ),
@@ -778,14 +818,22 @@ class AuthViewModel extends BaseViewModel {
                                                                 SizedBox(
                                                                   width: 15.6.w,
                                                                 ),
-                                                                TextView(
-                                                                  text:
-                                                                      '${e['country']}',
-                                                                  fontSize:
-                                                                      17.6,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
+                                                                SizedBox(
+                                                                  width: 180.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text:
+                                                                        '${e['country']}',
+                                                                    fontSize:
+                                                                        17.6,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                  ),
                                                                 )
                                                               ],
                                                             ),
@@ -892,8 +940,9 @@ class AuthViewModel extends BaseViewModel {
       var v = await runBusyFuture(repositoryImply.swap(swap!),
           throwException: true);
       _isLoading = false;
-      if (v['status'] == 'success') {
-        AppUtils.snackbar(context, message: 'Swap Successfully');
+      if (v['status'] == true) {
+        AppUtils.snackbar(context, message: v['message']);
+        getStatistics(context);
       }
     } catch (e) {
       _isLoading = false;

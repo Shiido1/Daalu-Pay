@@ -86,6 +86,7 @@ class SwapScreen extends StatelessWidget {
                     hint: 'Amount to swap',
                     border: 10,
                     isFilled: true,
+                    keyboardType: TextInputType.number,
                     fillColor: AppColor.white,
                     onChange: (p0) {
                       model.onChangeRate(p0);
@@ -122,6 +123,7 @@ class SwapScreen extends StatelessWidget {
                     hint: 'Amount to receive',
                     border: 10,
                     isFilled: true,
+                    keyboardType: TextInputType.number,
                     fillColor: AppColor.white,
                     prefixWidget: Padding(
                       padding: EdgeInsets.all(8.w),
@@ -265,8 +267,8 @@ class SwapScreen extends StatelessWidget {
                             swap: SwapEntiyModel(
                                 fromAmount: model.fromCurrencylController.text,
                                 toAmount: model.toCurrencylController.text,
-                                fromCurrency: "NGN",
-                                toCurrency: "USD",
+                                fromCurrency: model.fromCurrencyCode,
+                                toCurrency: model.toCurrencyCode,
                                 amount: model.toCurrencylController.text,
                                 rate: model
                                     .exchangeRateResponseModel!.data!.rate));

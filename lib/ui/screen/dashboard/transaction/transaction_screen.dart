@@ -132,7 +132,7 @@ class TransactionScreen extends StatelessWidget {
                                         },
                                         child: TextView(
                                           text: 'All',
-                                          fontSize: 20.sp,
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -145,7 +145,7 @@ class TransactionScreen extends StatelessWidget {
                                         },
                                         child: TextView(
                                           text: 'Successful',
-                                          fontSize: 20.sp,
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -158,7 +158,7 @@ class TransactionScreen extends StatelessWidget {
                                         },
                                         child: TextView(
                                           text: 'Pending',
-                                          fontSize: 20.sp,
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -171,7 +171,7 @@ class TransactionScreen extends StatelessWidget {
                                         },
                                         child: TextView(
                                           text: 'Failed',
-                                          fontSize: 20.sp,
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),

@@ -15,6 +15,7 @@ class User {
   String? email;
   String? phone;
   String? status;
+  String? kycStatus;
   DateTime? emailVerifiedAt;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -31,6 +32,7 @@ class User {
     this.email,
     this.phone,
     this.status,
+    this.kycStatus,
     this.emailVerifiedAt,
     this.createdAt,
     this.updatedAt,

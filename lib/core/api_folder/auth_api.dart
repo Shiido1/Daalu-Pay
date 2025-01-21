@@ -123,7 +123,7 @@ class AuthApi {
   Future<dynamic> userProfile(RegisterEntityModel? userEntity) async {
     try {
       final response = await _service.call(UrlConfig.user, RequestMethod.post,
-          data: userEntity!.toJson());
+          data: FormData.fromMap(userEntity!.toJson()));
       logger.d(response.data);
       return response.data;
     } catch (e) {

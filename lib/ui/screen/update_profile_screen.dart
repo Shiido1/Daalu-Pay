@@ -1,6 +1,6 @@
-
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
+import 'package:daalu_pay/ui/app_assets/app_utils.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -58,8 +58,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           onViewModelReady: (model) async {
             await model.getUser(context);
             emailController.text = model.userResponseModel?.data?.email ?? '';
-            firstnameController.text = model.userResponseModel?.data?.firstName ?? '';
-            lastnameController.text = model.userResponseModel?.data?.lastName ?? '';
+            firstnameController.text =
+                model.userResponseModel?.data?.firstName ?? '';
+            lastnameController.text =
+                model.userResponseModel?.data?.lastName ?? '';
             genderController.text = model.userResponseModel?.data?.gender ?? '';
             phoneController.text = model.userResponseModel?.data?.phone ?? '';
             // documentController.text = model.userResponseModel?.data?.d ?? '';
@@ -362,33 +364,37 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         buttonColor: AppColor.primary,
                         buttonBorderColor: Colors.transparent,
                         onPressed: () {
-                          if (formKeyRegister.currentState!.validate()) {
+                          if (formKeyRegister.currentState!.validate() &&
+                              model.image != null) {
                             model.updateProfile(
-                              context,update: 
-                                RegisterEntityModel(
-                                    firstName: firstnameController.text.trim(),
-                                    lastName: lastnameController.text.trim(),
-                                    email: emailController.text.trim(),
-                                    phoneNumber: phoneController.text.trim(),
-                                    gender: genderController.text.trim(),
-                                    address: addressController.text.trim(),
-                                    city: cityController.text.trim(),
-                                    dateOfBirth:
-                                        model.dobController.text.trim(),
-                                    zipCode: zipCodeController.text.trim(),
-                                    country: countryController.text.trim(),
-                                    password: passwordController.text.trim(),
-                                    confirmPassword:
-                                        confirmPasswordController.text.trim(),
-                                    documentFile: MultipartFile.fromBytes(
-                                        model
-                                            .formartFileImage(model.image)
-                                            .readAsBytesSync(),
-                                        filename:
-                                            model.image!.path.split("/").last),
-                                    documentType:
-                                        documentController.text.trim()),
-                                );
+                              context,
+                              update: RegisterEntityModel(
+                                  firstName: firstnameController.text.trim(),
+                                  lastName: lastnameController.text.trim(),
+                                  email: emailController.text.trim(),
+                                  phoneNumber: phoneController.text.trim(),
+                                  gender: genderController.text.trim(),
+                                  address: addressController.text.trim(),
+                                  city: cityController.text.trim(),
+                                  dateOfBirth: model.dobController.text.trim(),
+                                  zipCode: zipCodeController.text.trim(),
+                                  country: countryController.text.trim(),
+                                  password: passwordController.text.trim(),
+                                  confirmPassword:
+                                      confirmPasswordController.text.trim(),
+                                  documentFile: MultipartFile.fromBytes(
+                                      model
+                                          .formartFileImage(model.image)
+                                          .readAsBytesSync(),
+                                      filename:
+                                          model.image!.path.split("/").last),
+                                  documentType: documentController.text.trim()),
+                            );
+                          } else {
+                            AppUtils.snackbar(context,
+                                message:
+                                    'Kindly fill all data and select file.',
+                                error: true);
                           }
                         }),
                   ],

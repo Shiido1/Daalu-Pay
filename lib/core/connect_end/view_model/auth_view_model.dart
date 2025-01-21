@@ -242,6 +242,18 @@ class AuthViewModel extends BaseViewModel {
                   SizedBox(
                     height: 8.h,
                   ),
+                  paddedWing(
+                    value: 20,
+                    child: TextView(
+                      text: 'file-: ${data.kyc?.documentImage}'.capitalize(),
+                      fontSize: 14.sp,
+                      color: AppColor.black,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8.h,
+                  ),
                   // paddedWing(
                   //   value: 20,
                   //   child: TextView(

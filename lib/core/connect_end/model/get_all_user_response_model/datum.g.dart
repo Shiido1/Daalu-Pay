@@ -26,6 +26,12 @@ Datum _$DatumFromJson(Map<String, dynamic> json) => Datum(
           ? null
           : DateTime.parse(json['updatedAt'] as String),
       deletedAt: json['deletedAt'],
+      address: json['address'] == null
+          ? null
+          : Address.fromJson(json['address'] as Map<String, dynamic>),
+      kyc: json['kyc'] == null
+          ? null
+          : Kyc.fromJson(json['kyc'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$DatumToJson(Datum instance) => <String, dynamic>{
@@ -42,4 +48,6 @@ Map<String, dynamic> _$DatumToJson(Datum instance) => <String, dynamic>{
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'deletedAt': instance.deletedAt,
+      'address': instance.address,
+      'kyc': instance.kyc,
     };

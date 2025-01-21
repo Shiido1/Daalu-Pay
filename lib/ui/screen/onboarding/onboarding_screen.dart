@@ -4,7 +4,6 @@ import 'package:daalu_pay_admin/ui/screen/create_account_screen.dart';
 import 'package:daalu_pay_admin/ui/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../widget/button_widget.dart';
 import '../../widget/text_widget.dart';
 

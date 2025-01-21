@@ -331,7 +331,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     textStyle: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
-                      color: AppColor.darkGrey,
+                      color: e.status?.toLowerCase() == 'completed'
+                          ? AppColor.green
+                          : e.status?.toLowerCase() == 'pending'
+                              ? AppColor.grey
+                              : AppColor.red,
                     ),
                   ),
                 ],

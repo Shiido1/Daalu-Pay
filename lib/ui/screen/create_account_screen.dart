@@ -10,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import '../../core/connect_end/model/register_entity_model.dart';
 import '../../core/connect_end/view_model/auth_view_model.dart';
+import '../app_assets/app_utils.dart';
 import '../app_assets/app_validatiion.dart';
 import '../widget/button_widget.dart';
 import '../widget/text_form_widget.dart';
@@ -375,32 +376,39 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         buttonColor: AppColor.primary,
                         buttonBorderColor: Colors.transparent,
                         onPressed: () {
-                          if (formKeyRegister.currentState!.validate()) {
-                            model.register(
-                                RegisterEntityModel(
-                                    firstName: firstnameController.text.trim(),
-                                    lastName: lastnameController.text.trim(),
-                                    email: emailController.text.trim(),
-                                    phoneNumber: phoneController.text.trim(),
-                                    gender: genderController.text.trim(),
-                                    address: addressController.text.trim(),
-                                    city: cityController.text.trim(),
-                                    dateOfBirth:
-                                        model.dobController.text.trim(),
-                                    zipCode: zipCodeController.text.trim(),
-                                    country: countryController.text.trim(),
-                                    password: passwordController.text.trim(),
-                                    confirmPassword:
-                                        confirmPasswordController.text.trim(),
-                                    documentFile: MultipartFile.fromBytes(
-                                        model
-                                            .formartFileImage(model.image)
-                                            .readAsBytesSync(),
-                                        filename:
-                                            model.image!.path.split("/").last),
-                                    documentType:
-                                        documentController.text.trim()),
-                                context);
+                          if (formKeyRegister.currentState!.validate() &&
+                              model.filename != null) {
+                            print('object');
+                            // model.register(
+                            //     RegisterEntityModel(
+                            //         firstName: firstnameController.text.trim(),
+                            //         lastName: lastnameController.text.trim(),
+                            //         email: emailController.text.trim(),
+                            //         phoneNumber: phoneController.text.trim(),
+                            //         gender: genderController.text.trim(),
+                            //         address: addressController.text.trim(),
+                            //         city: cityController.text.trim(),
+                            //         dateOfBirth:
+                            //             model.dobController.text.trim(),
+                            //         zipCode: zipCodeController.text.trim(),
+                            //         country: countryController.text.trim(),
+                            //         password: passwordController.text.trim(),
+                            //         confirmPassword:
+                            //             confirmPasswordController.text.trim(),
+                            //         documentFile: MultipartFile.fromBytes(
+                            //             model
+                            //                 .formartFileImage(model.image)
+                            //                 .readAsBytesSync(),
+                            //             filename:
+                            //                 model.image!.path.split("/").last),
+                            //         documentType:
+                            //             documentController.text.trim()),
+                            //     context);
+                          } else {
+                            AppUtils.snackbar(context,
+                                message:
+                                    'Kindly fill all necessary fields and Select image.',
+                                error: true);
                           }
                         }),
                   ],

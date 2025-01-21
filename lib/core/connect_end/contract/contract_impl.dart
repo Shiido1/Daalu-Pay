@@ -1,5 +1,7 @@
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
+import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
 import 'package:injectable/injectable.dart';
 import '../../api_folder/auth_api.dart';
 import '../../core_folder/app/app.locator.dart';
@@ -33,4 +35,7 @@ class AuthContractsImpl {
   Future<dynamic> swap(SwapEntiyModel? swap) async => await _api.swap(swap);
   Future<dynamic> updateProfile(RegisterEntityModel? update) async =>
       await _api.userProfile(update);
+  Future<UpdatePasswordResponseModel> updatePassword(
+          UpdatePasswordEntity? updatePassword) async =>
+      await _api.updatePassword(updatePassword);
 }

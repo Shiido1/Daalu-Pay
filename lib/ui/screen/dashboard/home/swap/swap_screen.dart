@@ -20,7 +20,6 @@ class SwapScreen extends StatelessWidget {
         viewModelBuilder: () => AuthViewModel(),
         onViewModelReady: (model) {
           model.exchangeRates(context, from: 'NGN', to: 'USD');
-          
         },
         disposeViewModel: false,
         builder: (_, AuthViewModel model, __) {

@@ -5,6 +5,8 @@ import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_mode
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
+import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
+import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/user_response_model/user_response_model.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
@@ -42,6 +44,26 @@ class AuthViewModel extends BaseViewModel {
 
   AuthViewModel({this.context});
 
+  bool get is8characters => _is8characters;
+  bool _is8characters = false;
+  bool get isUpperCase => _isUpperCase;
+  bool _isUpperCase = false;
+  bool get isLowerCase => _isLowerCase;
+  bool _isLowerCase = false;
+  bool get isSpecialCharacters => _isSpecialCharacters;
+  bool _isSpecialCharacters = false;
+  bool get isNumber => _isNumber;
+  bool _isNumber = false;
+
+  bool _isDisabled = true;
+  bool get disabled => _isDisabled;
+
+  bool? _isToggleNewPassword = false;
+  bool? _isTogglePasswordConfirm = false;
+
+  bool? get isToggleNewPassword => _isToggleNewPassword;
+  bool? get isTogglePasswordConfirm => _isTogglePasswordConfirm;
+
   bool get isLoading => _isLoading;
   bool _isLoading = false;
   bool get isLoadingCreate => _isLoadingCreate;
@@ -72,6 +94,9 @@ class AuthViewModel extends BaseViewModel {
   GetTransactionResponseModel? _getTransactionResponseModel;
   GetTransactionResponseModel? get getTransactionResponseModel =>
       _getTransactionResponseModel;
+  UpdatePasswordResponseModel? get updatePasswordResponseModel =>
+      _updatePasswordResponseModel;
+  UpdatePasswordResponseModel? _updatePasswordResponseModel;
   TextEditingController dobController = TextEditingController();
   List<Datum>? transactionListData = [];
 
@@ -280,11 +305,11 @@ class AuthViewModel extends BaseViewModel {
   }
 
   exchangeTheRate(o) {
-      toCurrencylController.text =
-          (double.parse(_exchangeRateResponseModel!.data!.rate!) *
-                  double.parse(o))
-              .toString();
-   
+    toCurrencylController.text =
+        (double.parse(_exchangeRateResponseModel!.data!.rate!) *
+                double.parse(o))
+            .toString();
+
     notifyListeners();
   }
 
@@ -970,6 +995,25 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<void> updatePassword(context, {UpdatePasswordEntity? update}) async {
+    try {
+      _isLoading = true;
+      _updatePasswordResponseModel = await runBusyFuture(
+          repositoryImply.updatePassword(update!),
+          throwException: true);
+      _isLoading = false;
+      if (_updatePasswordResponseModel?.status == 'success') {
+        AppUtils.snackbar(context, message: 'Password updated Successful..!');
+
+        navigate.navigateTo(Routes.setupScreen);
+      }
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
   void makePayment({amount, context}) async {
     print(session.usersData['user']);
     const secretKey = 'sk_test_d9830d6c7a17c2b69f22ccb0589b560c902f6059';
@@ -1031,5 +1075,57 @@ class AuthViewModel extends BaseViewModel {
     // );
 
     // if (kDebugMode) logger.d(response.data.status == PaystackTransactionStatus.abandoned);
+  }
+
+  isDisable() {
+    _isDisabled = false;
+    notifyListeners();
+  }
+
+  isNotDisable() {
+    _isDisabled = true;
+    notifyListeners();
+  }
+
+  bool isOnToggleNewPassword() {
+    _isToggleNewPassword = !_isToggleNewPassword!;
+    notifyListeners();
+    return _isToggleNewPassword!;
+  }
+
+  bool isOnTogglePasswordConfirm() {
+    _isTogglePasswordConfirm = !_isTogglePasswordConfirm!;
+    notifyListeners();
+    return _isTogglePassword;
+  }
+
+  validatePassword(String password) {
+    if (password.length >= 8) {
+      _is8characters = true;
+    } else {
+      _is8characters = false;
+    }
+    if (password.contains(RegExp("(?:[ ^A-Z]*[A-Z]){1}"))) {
+      _isUpperCase = true;
+    } else {
+      _isUpperCase = false;
+    }
+    if (password.contains(RegExp("(?:[ ^a-z]*[a-z]){1}"))) {
+      _isLowerCase = true;
+    } else {
+      _isLowerCase = false;
+    }
+    if (password.contains(RegExp(r'[0-9]'))) {
+      _isNumber = true;
+    } else {
+      _isNumber = false;
+    }
+    if (password.contains(RegExp(
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$'))) {
+      _isSpecialCharacters = true;
+    } else {
+      _isSpecialCharacters = false;
+    }
+    notifyListeners();
   }
 }

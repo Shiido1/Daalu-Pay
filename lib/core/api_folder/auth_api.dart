@@ -4,6 +4,8 @@ import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
+import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
+import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import '../connect_end/model/login_entity.dart';
@@ -177,6 +179,20 @@ class AuthApi {
           data: resetPassword!.toJson());
       logger.d(response.data);
       return response.data;
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<UpdatePasswordResponseModel> updatePassword(
+      UpdatePasswordEntity? updatePassword) async {
+    try {
+      final response = await _service.call(
+          UrlConfig.update_password, RequestMethod.post,
+          data: updatePassword!.toJson());
+      logger.d(response.data);
+      return UpdatePasswordResponseModel.fromJson(response.data);
     } catch (e) {
       logger.d("response:$e");
       rethrow;

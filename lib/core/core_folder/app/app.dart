@@ -7,6 +7,7 @@ import '../../../ui/screen/dashboard/dashboard_screen.dart';
 import '../../../ui/screen/dashboard/transaction/transaction_screen.dart';
 import '../../../ui/screen/login_screen.dart';
 import '../../../ui/screen/onboarding/onboarding_screen.dart';
+import '../../../ui/screen/setup_screen.dart';
 import '../../../ui/screen/update_profile_screen.dart';
 import '../../api_folder/auth_api.dart';
 import '../../connect_end/contract/contract_impl.dart';
@@ -23,6 +24,7 @@ import '../network/network_service.dart';
   MaterialRoute(page: CreatePassworsScreen, initial: false),
   MaterialRoute(page: UpdateProfileScreen, initial: false),
   MaterialRoute(page: TransactionScreen, initial: false),
+  MaterialRoute(page: SetupScreen, initial: false),
 ], dependencies: [
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: DialogService),

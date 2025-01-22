@@ -1,3 +1,4 @@
+import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_stats_response_model/get_stats_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
@@ -193,6 +194,20 @@ class AuthApi {
           data: updatePassword!.toJson());
       logger.d(response.data);
       return UpdatePasswordResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<dynamic> alipayVerify(AliPayEntityModel? alipay) async {
+    logger.d(alipay?.toJson());
+    try {
+      final response = await _service.call(
+          '${UrlConfig.wallets}/alipay/verify', RequestMethod.post,
+          data: FormData.fromMap(alipay!.toJson()));
+      logger.d(response.data);
+      return response.data;
     } catch (e) {
       logger.d("response:$e");
       rethrow;

@@ -378,32 +378,31 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         onPressed: () {
                           if (formKeyRegister.currentState!.validate() &&
                               model.filename != null) {
-                            print('object');
-                            // model.register(
-                            //     RegisterEntityModel(
-                            //         firstName: firstnameController.text.trim(),
-                            //         lastName: lastnameController.text.trim(),
-                            //         email: emailController.text.trim(),
-                            //         phoneNumber: phoneController.text.trim(),
-                            //         gender: genderController.text.trim(),
-                            //         address: addressController.text.trim(),
-                            //         city: cityController.text.trim(),
-                            //         dateOfBirth:
-                            //             model.dobController.text.trim(),
-                            //         zipCode: zipCodeController.text.trim(),
-                            //         country: countryController.text.trim(),
-                            //         password: passwordController.text.trim(),
-                            //         confirmPassword:
-                            //             confirmPasswordController.text.trim(),
-                            //         documentFile: MultipartFile.fromBytes(
-                            //             model
-                            //                 .formartFileImage(model.image)
-                            //                 .readAsBytesSync(),
-                            //             filename:
-                            //                 model.image!.path.split("/").last),
-                            //         documentType:
-                            //             documentController.text.trim()),
-                            //     context);
+                            model.register(
+                                RegisterEntityModel(
+                                    firstName: firstnameController.text.trim(),
+                                    lastName: lastnameController.text.trim(),
+                                    email: emailController.text.trim(),
+                                    phoneNumber: phoneController.text.trim(),
+                                    gender: genderController.text.trim(),
+                                    address: addressController.text.trim(),
+                                    city: cityController.text.trim(),
+                                    dateOfBirth:
+                                        model.dobController.text.trim(),
+                                    zipCode: zipCodeController.text.trim(),
+                                    country: countryController.text.trim(),
+                                    password: passwordController.text.trim(),
+                                    confirmPassword:
+                                        confirmPasswordController.text.trim(),
+                                    documentFile: MultipartFile.fromBytes(
+                                        model
+                                            .formartFileImage(model.image)
+                                            .readAsBytesSync(),
+                                        filename:
+                                            model.image!.path.split("/").last),
+                                    documentType:
+                                        documentController.text.trim()),
+                                context);
                           } else {
                             AppUtils.snackbar(context,
                                 message:

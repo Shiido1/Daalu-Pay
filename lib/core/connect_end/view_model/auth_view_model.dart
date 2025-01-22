@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'dart:async';
 import "package:collection/collection.dart";
+import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
@@ -128,6 +130,26 @@ class AuthViewModel extends BaseViewModel {
   DateTime selectedDOB = DateTime.now();
 
   String? _formattedDob = DateFormat('EEEE, d MMM yyyy').format(DateTime.now());
+
+  Timer? timer;
+  int startTimerCount = 0;
+
+  void startTimer() {
+    startTimerCount = 30;
+    const oneSec = Duration(seconds: 1);
+    timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (startTimerCount == 0) {
+          timer.cancel();
+          notifyListeners();
+        } else {
+          startTimerCount--;
+          notifyListeners();
+        }
+      },
+    );
+  }
 
   Future<void> selectDateOfBirth(BuildContext? context) async {
     final DateTime? picked = await showDatePicker(
@@ -268,18 +290,18 @@ class AuthViewModel extends BaseViewModel {
   }
 
   groupTransationStatus() {
-    var groupedValue;
+    Map<String?, List<Datum>> groupedValue;
 
     groupedValue =
         groupBy(_getTransactionResponseModel!.data!, (obj) => obj.status);
     transactionListData!.clear();
     print('object::::$groupedValue');
     if (transStats == 'successful') {
-      transactionListData?.addAll(groupedValue['completed']);
+      transactionListData?.addAll(groupedValue['completed']!);
     } else if (transStats == 'pending') {
-      transactionListData?.addAll(groupedValue['pending']);
+      transactionListData?.addAll(groupedValue['pending']!);
     } else if (transStats == 'failed') {
-      transactionListData?.addAll(groupedValue['failed']);
+      transactionListData?.addAll(groupedValue['failed']!);
     } else {
       transactionListData!.clear();
     }
@@ -917,25 +939,21 @@ class AuthViewModel extends BaseViewModel {
 
   String getWalletCurrencyCode(currencyCode) {
     String flag = '';
-    countryConst.forEach(
-      (element) {
-        if (element.containsValue(currencyCode)) {
-          flag = element['flag']!;
-        }
-      },
-    );
+    for (var element in countryConst) {
+      if (element.containsValue(currencyCode)) {
+        flag = element['flag']!;
+      }
+    }
     return flag;
   }
 
   String getWalletCountry(currencyCode) {
     String country = '';
-    countryConst.forEach(
-      (element) {
-        if (element.containsValue(currencyCode)) {
-          country = '${element['name']!} ($currencyCode)';
-        }
-      },
-    );
+    for (var element in countryConst) {
+      if (element.containsValue(currencyCode)) {
+        country = '${element['name']!} ($currencyCode)';
+      }
+    }
     return country;
   }
 
@@ -1007,6 +1025,76 @@ class AuthViewModel extends BaseViewModel {
 
         navigate.navigateTo(Routes.setupScreen);
       }
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> resetPassword(context, {ResetPasswordEntity? reset}) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(repositoryImply.resetPassword(reset!),
+          throwException: true);
+      _isLoading = false;
+      print('object:::::$v');
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> forgotPassword(context, {String? email}) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(repositoryImply.forgotPassword(email!),
+          throwException: true);
+      _isLoading = false;
+      print('object:::::$v');
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> requestOtp(context, {String? email}) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(repositoryImply.requestOtp(email!),
+          throwException: true);
+      _isLoading = false;
+      print('object:::::$v');
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> validateOtp(context, {String? otp}) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(repositoryImply.verifyOtp(otp!),
+          throwException: true);
+      _isLoading = false;
+      print('object:::::$v');
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> alipayVerify(context, {AliPayEntityModel? alipay}) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(repositoryImply.alipayVerify(alipay!),
+          throwException: true);
+      _isLoading = false;
+      print('object:::::$v');
     } catch (e) {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);

@@ -57,6 +57,7 @@ dependencies:
   stacked_hooks: ^0.2.4
   stacked_services: ^1.6.0
   path_provider: ^2.1.5
+  flutter_native_splash: ^2.4.4
 
 flutter_launcher_icons:
   android: true

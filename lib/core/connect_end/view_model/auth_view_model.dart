@@ -1265,7 +1265,7 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  TextEditingController currencyController = TextEditingController(text: 'NGN');
+  TextEditingController currencyController = TextEditingController();
   TextEditingController recipientWalletIdController = TextEditingController();
   Wallet? _walletAmount;
   Wallet? get walletAmount => _walletAmount;

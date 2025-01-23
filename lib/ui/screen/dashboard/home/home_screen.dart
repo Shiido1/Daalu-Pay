@@ -1,10 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
+import 'package:daalu_pay/ui/app_assets/app_utils.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/home_widget/deposit_screen.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/home_widget/receipt_screen.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/swap/swap_screen.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
@@ -140,12 +142,48 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                           ],
                                         ),
-                                        GestureDetector(
-                                            onTap: () => setState(
-                                                () => isTapped = !isTapped),
-                                            child: SvgPicture.asset(isTapped
-                                                ? AppImage.openEye
-                                                : AppImage.eye))
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 32.w),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 12.w),
+                                                child: GestureDetector(
+                                                    onTap: () => setState(() =>
+                                                        isTapped = !isTapped),
+                                                    child: SvgPicture.asset(
+                                                        isTapped
+                                                            ? AppImage.openEye
+                                                            : AppImage.eye)),
+                                              ),
+                                              SizedBox(
+                                                height: 14.0.h,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(right: 6.w),
+                                                child: IconButton(
+                                                    onPressed: () {
+                                                      Clipboard.setData(
+                                                          ClipboardData(
+                                                              text: e.uuid
+                                                                  .toString()));
+                                                      AppUtils.snackbar(context,
+                                                          message:
+                                                              'Copied Wallet Id');
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.copy,
+                                                      color: AppColor.white,
+                                                      size: 20.sp,
+                                                    )),
+                                              )
+                                            ],
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ),

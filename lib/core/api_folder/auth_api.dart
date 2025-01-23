@@ -2,8 +2,10 @@ import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_stats_response_model/get_stats_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
+import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
@@ -206,6 +208,33 @@ class AuthApi {
       final response = await _service.call(
           '${UrlConfig.wallets}/alipay/verify', RequestMethod.post,
           data: FormData.fromMap(alipay!.toJson()));
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<GetWalletIdResponseModel> getWalletId(String? id) async {
+    try {
+      final response = await _service.call(
+        '${UrlConfig.wallets}/$id',
+        RequestMethod.get,
+      );
+      logger.d(response.data);
+      return GetWalletIdResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<dynamic> sendMoney(SendMonetEntityModel sendMoney) async {
+    try {
+      final response = await _service.call(
+          '${UrlConfig.wallets}/send', RequestMethod.post,
+          data: sendMoney.toJson());
       logger.d(response.data);
       return response.data;
     } catch (e) {

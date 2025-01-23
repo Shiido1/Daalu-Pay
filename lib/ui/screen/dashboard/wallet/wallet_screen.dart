@@ -1,10 +1,11 @@
+import 'package:daalu_pay/core/core_folder/app/app.router.dart';
+import 'package:daalu_pay/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
-
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../../core/core_folder/app/app.locator.dart';
 import '../../../app_assets/app_color.dart';
@@ -144,11 +145,23 @@ class WalletScreen extends StatelessWidget {
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w500,
                         ),
-                        TextView(
-                          text: 'View All',
-                          color: AppColor.grey,
-                          fontSize: 13.2.sp,
-                          fontWeight: FontWeight.w400,
+                        GestureDetector(
+                          onTap: () =>
+                              navigate.navigateTo(Routes.sendMoneyScreen),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 8.w),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              color: AppColor.primary,
+                            ),
+                            child: TextView(
+                              text: 'Send Money',
+                              color: AppColor.white,
+                              fontSize: 14.2.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ],
                     ),

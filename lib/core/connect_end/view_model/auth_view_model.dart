@@ -4,8 +4,10 @@ import "package:collection/collection.dart";
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
+import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
@@ -30,6 +32,7 @@ import '../../core_folder/app/app.logger.dart';
 import '../../core_folder/app/app.router.dart';
 import '../../core_folder/manager/shared_preference.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
+import '../model/get_stats_response_model/wallet.dart';
 import '../model/get_transaction_response_model/datum.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
@@ -126,6 +129,9 @@ class AuthViewModel extends BaseViewModel {
 
   String transStats = 'all';
   bool initializingPayment = false;
+  GetWalletIdResponseModel? _getWalletIdResponseModel;
+  GetWalletIdResponseModel? get getWalletIdResponseModel =>
+      _getWalletIdResponseModel;
 
   DateTime selectedDOB = DateTime.now();
 
@@ -331,6 +337,13 @@ class AuthViewModel extends BaseViewModel {
         (double.parse(_exchangeRateResponseModel!.data!.rate!) *
                 double.parse(o))
             .toString();
+
+    notifyListeners();
+  }
+
+  getUSerWalletUUID(context, o) {
+    recipientWalletIdController.text = o;
+    getWalletId(context, id: o);
 
     notifyListeners();
   }
@@ -937,6 +950,11 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void onGetUserWalletRate(context, p0) {
+    debouncer.run(() => getUSerWalletUUID(context, p0));
+    notifyListeners();
+  }
+
   String getWalletCurrencyCode(currencyCode) {
     String flag = '';
     for (var element in countryConst) {
@@ -1102,6 +1120,36 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<void> getWalletId(context, {String? id}) async {
+    try {
+      _isLoading = true;
+      _getWalletIdResponseModel = await runBusyFuture(
+          repositoryImply.getWalletId(id!),
+          throwException: true);
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> sendMoney(context, {SendMonetEntityModel? sendMoney}) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(repositoryImply.sendMoney(sendMoney!),
+          throwException: true);
+      if (v['status'] == 'success') {
+        AppUtils.snackbar(context, message: 'Transfer Successful..!');
+      }
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
   void makePayment({amount, context}) async {
     print(session.usersData['user']);
     const secretKey = 'sk_test_d9830d6c7a17c2b69f22ccb0589b560c902f6059';
@@ -1216,4 +1264,61 @@ class AuthViewModel extends BaseViewModel {
     }
     notifyListeners();
   }
+
+  TextEditingController currencyController = TextEditingController(text: 'NGN');
+  TextEditingController recipientWalletIdController = TextEditingController();
+  Wallet? _walletAmount;
+  Wallet? get walletAmount => _walletAmount;
+
+  shwWalletCurrencyDialog(context) => showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => locator<AuthViewModel>(),
+              fireOnViewModelReadyOnce: true,
+              onViewModelReady: (model) {
+                // WidgetsBinding.instance
+                //     .addPostFrameCallback((e) => model.getStatistics(context));
+              },
+              disposeViewModel: false,
+              builder: (_, AuthViewModel model, __) {
+                return AlertDialog(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 20.w, horizontal: 20.w),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        if (model.getStatsResponseModel != null &&
+                            model.getStatsResponseModel!.data!.wallets!
+                                .isNotEmpty)
+                          ...model.getStatsResponseModel!.data!.wallets!.map(
+                            (e) => GestureDetector(
+                              onTap: () {
+                                currencyController.text = e.currency!;
+                                _walletAmount = e;
+                                notifyListeners();
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextView(
+                                    text: e.currency ?? '',
+                                    color: AppColor.black,
+                                    fontSize: 16.2.sp,
+                                  ),
+                                  SizedBox(
+                                    height: 3.2.h,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+              });
+        },
+      );
 }

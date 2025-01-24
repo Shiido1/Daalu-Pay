@@ -1,6 +1,5 @@
 import 'package:daalu_pay_admin/ui/app_assets/app_color.dart';
 import 'package:daalu_pay_admin/ui/app_assets/app_image.dart';
-import 'package:daalu_pay_admin/ui/screen/create_account_screen.dart';
 import 'package:daalu_pay_admin/ui/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -159,12 +158,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   setState(() {
                     if (i < 3) {
                       i++;
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CreateAccountScreen()),
-                      );
                     }
                   });
                 }),

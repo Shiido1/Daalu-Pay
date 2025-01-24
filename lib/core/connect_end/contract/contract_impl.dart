@@ -45,7 +45,8 @@ class AuthContractsImpl {
       await _api.forgotPassword(email);
   Future<dynamic> requestOtp(String? email) async =>
       await _api.requestOtp(email);
-  Future<dynamic> verifyOtp(String? otp) async => await _api.verifyOtp(otp);
+  Future<dynamic> verifyOtp({String? otp, String? email}) async =>
+      await _api.verifyOtp(otp: otp, email: email);
   Future<dynamic> alipayVerify(AliPayEntityModel alipay) async =>
       await _api.alipayVerify(alipay);
   Future<UpdatePasswordResponseModel> updatePassword(

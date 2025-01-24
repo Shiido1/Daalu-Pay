@@ -35,37 +35,37 @@ class RegisterEntityModel {
 
   factory RegisterEntityModel.fromJson(Map<String, dynamic> json) {
     return RegisterEntityModel(
-      firstName: json['first_name']?.toString(),
-      lastName: json['last_name']?.toString(),
+      firstName: json['firstName']?.toString(),
+      lastName: json['lastName']?.toString(),
       email: json['email']?.toString(),
-      phoneNumber: json['phone_number']?.toString(),
+      phoneNumber: json['phoneNumber']?.toString(),
       gender: json['gender']?.toString(),
       address: json['address']?.toString(),
       city: json['city']?.toString(),
-      dateOfBirth: json['date_of_birth']?.toString(),
-      zipCode: json['zip_code']?.toString(),
+      dateOfBirth: json['dateOfBirth']?.toString(),
+      zipCode: json['zipCode']?.toString(),
       country: json['country']?.toString(),
       password: json['password']?.toString(),
-      documentType: json['document_type']?.toString(),
-      documentFile: json['document_file'],
-      confirmPassword: json['confirm_password']?.toString(),
+      documentType: json['documentType']?.toString(),
+      documentFile: json['documentFile'],
+      confirmPassword: json['confirmPassword']?.toString(),
     );
   }
 
   Map<String, dynamic> toJson() => {
-        if (firstName != null) 'first_name': firstName,
-        if (lastName != null) 'last_name': lastName,
+        if (firstName != null) 'firstName': firstName,
+        if (lastName != null) 'lastName': lastName,
         if (email != null) 'email': email,
-        if (phoneNumber != null) 'phone_number': phoneNumber,
+        if (phoneNumber != null) 'phoneNumber': phoneNumber,
         if (gender != null) 'gender': gender,
         if (address != null) 'address': address,
         if (city != null) 'city': city,
-        if (dateOfBirth != null) 'date_of_birth': dateOfBirth,
-        if (zipCode != null) 'zip_code': zipCode,
+        if (dateOfBirth != null) 'dateOfBirth': dateOfBirth,
+        if (zipCode != null) 'zipCode': zipCode,
         if (country != null) 'country': country,
         if (password != null) 'password': password,
-        if (documentType != null) 'document_type': documentType,
-        if (documentFile != null) 'document_file': documentFile,
-        if (confirmPassword != null) 'confirm_password': confirmPassword,
+        if (documentType != null) 'documentType': documentType,
+        if (documentFile != null) 'documentFile': documentFile,
+        if (confirmPassword != null) 'confirmPassword': confirmPassword,
       };
 }

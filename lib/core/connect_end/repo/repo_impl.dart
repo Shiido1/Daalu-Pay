@@ -93,8 +93,8 @@ class AuthRepoImpl {
     return response;
   }
 
-  Future<dynamic> verifyOtp(String otp) async {
-    final response = await _contract.verifyOtp(otp);
+  Future<dynamic> verifyOtp({String? otp, String? email}) async {
+    final response = await _contract.verifyOtp(otp: otp, email: email);
     return response;
   }
 

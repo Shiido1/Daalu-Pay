@@ -105,6 +105,11 @@ class AuthViewModel extends BaseViewModel {
   TextEditingController dobController = TextEditingController();
   List<Datum>? transactionListData = [];
 
+  TextEditingController currencyController = TextEditingController();
+  TextEditingController recipientWalletIdController = TextEditingController();
+  Wallet? _walletAmount;
+  Wallet? get walletAmount => _walletAmount;
+
   final _pickImage = ImagePickerHandler();
   File? image;
   String? filename;
@@ -132,11 +137,8 @@ class AuthViewModel extends BaseViewModel {
   GetWalletIdResponseModel? _getWalletIdResponseModel;
   GetWalletIdResponseModel? get getWalletIdResponseModel =>
       _getWalletIdResponseModel;
-
   DateTime selectedDOB = DateTime.now();
-
   String? _formattedDob = DateFormat('EEEE, d MMM yyyy').format(DateTime.now());
-
   Timer? timer;
   int startTimerCount = 0;
 
@@ -204,7 +206,8 @@ class AuthViewModel extends BaseViewModel {
         _isLoading = false;
         AppUtils.snackbar(contxt,
             message: 'Registration is successfully', error: true);
-        navigate.navigateTo(Routes.loginScreen);
+        navigate.navigateTo(Routes.verifyScreen,
+            arguments: VerifyScreenArguments(email: registerEntity.email));
       }
     } catch (e) {
       _isLoading = false;
@@ -1084,7 +1087,9 @@ class AuthViewModel extends BaseViewModel {
       var v = await runBusyFuture(repositoryImply.requestOtp(email!),
           throwException: true);
       _isLoading = false;
-      print('object:::::$v');
+      if (v['status'] == 'success') {
+        AppUtils.snackbar(context, message: v['message']);
+      }
     } catch (e) {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);
@@ -1092,13 +1097,16 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> validateOtp(context, {String? otp}) async {
+  Future<void> validateOtp(context, {String? otp, String? email}) async {
     try {
       _isLoading = true;
-      var v = await runBusyFuture(repositoryImply.verifyOtp(otp!),
+      var v = await runBusyFuture(
+          repositoryImply.verifyOtp(otp: otp, email: email),
           throwException: true);
       _isLoading = false;
-      print('object:::::$v');
+      if (v['status'] == 'success') {
+        navigate.navigateTo(Routes.loginScreen);
+      }
     } catch (e) {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);
@@ -1264,11 +1272,6 @@ class AuthViewModel extends BaseViewModel {
     }
     notifyListeners();
   }
-
-  TextEditingController currencyController = TextEditingController();
-  TextEditingController recipientWalletIdController = TextEditingController();
-  Wallet? _walletAmount;
-  Wallet? get walletAmount => _walletAmount;
 
   shwWalletCurrencyDialog(context) => showDialog(
         context: context,

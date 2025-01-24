@@ -27,6 +27,7 @@ class AuthApi {
 
   Future<RegistrationResponseModel> register(
       RegisterEntityModel registerEntity) async {
+    logger.d(registerEntity.toJson());
     try {
       final response = await _service.call(
           UrlConfig.register, RequestMethod.post,
@@ -140,8 +141,9 @@ class AuthApi {
   Future<dynamic> requestOtp(String? email) async {
     try {
       final response = await _service.call(
-          UrlConfig.request_otp, RequestMethod.get,
-          data: {'email': email});
+        '${UrlConfig.request_otp}?email=$email',
+        RequestMethod.post,
+      );
       logger.d(response.data);
       return response.data;
     } catch (e) {
@@ -150,10 +152,11 @@ class AuthApi {
     }
   }
 
-  Future<dynamic> verifyOtp(String? otp) async {
+  Future<dynamic> verifyOtp({String? otp, String? email}) async {
     try {
-      final response = await _service
-          .call(UrlConfig.verify_otp, RequestMethod.post, data: {'otp': otp});
+      final response = await _service.call(
+          UrlConfig.verify_otp, RequestMethod.post,
+          data: {'otp': otp, 'email': email});
       logger.d(response.data);
       return response.data;
     } catch (e) {

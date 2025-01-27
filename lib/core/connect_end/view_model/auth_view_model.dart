@@ -49,6 +49,10 @@ class AuthViewModel extends BaseViewModel {
 
   bool get isTogglePassword => _isTogglePassword;
   bool _isTogglePassword = false;
+  bool get isSignupTogglePassword => _isSignupTogglePassword;
+  bool _isSignupTogglePassword = false;
+  bool get isSignupConTogglePassword => _isSignupConTogglePassword;
+  bool _isSignupConTogglePassword = false;
 
   GetExchangeRateResponseModel? get exchangeRateResponseModel =>
       _exchangeRateResponseModel;
@@ -58,6 +62,16 @@ class AuthViewModel extends BaseViewModel {
     _isTogglePassword = !_isTogglePassword;
     notifyListeners();
     return _isTogglePassword;
+  }
+  bool isSignupOnTogglePassword() {
+    _isSignupTogglePassword = !_isSignupTogglePassword;
+    notifyListeners();
+    return _isSignupTogglePassword;
+  }
+  bool isSignupConOnTogglePassword() {
+    _isSignupConTogglePassword = !_isSignupConTogglePassword;
+    notifyListeners();
+    return _isSignupConTogglePassword;
   }
 
   LoginResponseModel? _loginResponse;
@@ -92,9 +106,11 @@ class AuthViewModel extends BaseViewModel {
   final debouncer = Debouncer();
   TextEditingController curcodeFromController = TextEditingController();
   TextEditingController curcodeToController = TextEditingController();
+  TextEditingController signUpCountryController = TextEditingController();
   String queryFrom = '';
   String queryTo = '';
   String queryCreate = '';
+  String querySignUpCountry = '';
   String? selectCountry;
 
   String transStats = 'all';
@@ -280,11 +296,11 @@ class AuthViewModel extends BaseViewModel {
   }
 
   exchangeTheRate(o) {
-      toCurrencylController.text =
-          (double.parse(_exchangeRateResponseModel!.data!.rate!) *
-                  double.parse(o))
-              .toString();
-   
+    toCurrencylController.text =
+        (double.parse(_exchangeRateResponseModel!.data!.rate!) *
+                double.parse(o))
+            .toString();
+
     notifyListeners();
   }
 
@@ -878,6 +894,229 @@ class AuthViewModel extends BaseViewModel {
                           SizedBox(
                             height: 30.h,
                           )
+                        ],
+                      )),
+                );
+              });
+        });
+  }
+
+  void modalBottomSheetMenuSignUpCountry(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => AuthViewModel(),
+              onViewModelReady: (model) {},
+              disposeViewModel: false,
+              builder: (_, AuthViewModel model, __) {
+                return Container(
+                  height: 500.0,
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(219, 223, 233, 242),
+                      borderRadius: BorderRadius.only(
+                          topLeft: const Radius.circular(14.0),
+                          topRight: const Radius.circular(14.0))),
+                  child: Container(
+                      decoration: BoxDecoration(
+                          color: const Color.fromARGB(219, 223, 233, 242),
+                          borderRadius: BorderRadius.only(
+                              topLeft: const Radius.circular(14.0),
+                              topRight: const Radius.circular(14.0))),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 6.0.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(12.w),
+                            child: TextFormWidget(
+                              label: 'Search country',
+                              hint: '',
+                              border: 10,
+                              isFilled: true,
+                              fillColor: AppColor.white,
+                              onChange: (p0) {
+                                querySignUpCountry = p0;
+                                model.notifyListeners();
+                              },
+                              suffixIcon: Icons.search_sharp,
+                              controller: signUpCountryController,
+                              // validator: AppValidator.validateAmount(),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              height: 340,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    querySignUpCountry == ''
+                                        ? SizedBox(
+                                            width: 400.w,
+                                            child: Column(
+                                              children: [
+                                                ...countryConst.map((e) =>
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        signUpCountryController
+                                                                .text =
+                                                            e['country']!;
+                                                        selectCountry =
+                                                            e['code'];
+                                                        model.notifyListeners();
+                                                      },
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: const Color
+                                                              .fromARGB(219,
+                                                              223, 233, 242),
+                                                        ),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 4.6.w,
+                                                                horizontal:
+                                                                    10.w),
+                                                        child: Container(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  6.w),
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              color: selectCountry ==
+                                                                      e['code']
+                                                                  ? AppColor
+                                                                      .white
+                                                                  : AppColor
+                                                                      .transparent),
+                                                          child: Row(
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                  e['flag']!),
+                                                              SizedBox(
+                                                                width: 15.6.w,
+                                                              ),
+                                                              SizedBox(
+                                                                width: 180.w,
+                                                                child: TextView(
+                                                                  text:
+                                                                      '${e['country']}',
+                                                                  fontSize:
+                                                                      17.6,
+                                                                  maxLines: 1,
+                                                                  textOverflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ))
+                                              ],
+                                            ),
+                                          )
+                                        : Column(
+                                            children: [
+                                              ...countryConst
+                                                  .where((o) => o['country']!
+                                                      .toLowerCase()
+                                                      .contains(
+                                                          querySignUpCountry
+                                                              .toLowerCase()))
+                                                  .map((e) => GestureDetector(
+                                                        onTap: () {
+                                                          signUpCountryController
+                                                                  .text =
+                                                              e['country']!;
+
+                                                          selectCountry =
+                                                              e['code'];
+                                                          model
+                                                              .notifyListeners();
+                                                        },
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: const Color
+                                                                .fromARGB(219,
+                                                                223, 233, 242),
+                                                          ),
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical:
+                                                                      4.6.w,
+                                                                  horizontal:
+                                                                      10.w),
+                                                          child: Container(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    6.w),
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                color: selectCountry ==
+                                                                        e[
+                                                                            'code']
+                                                                    ? AppColor
+                                                                        .white
+                                                                    : AppColor
+                                                                        .transparent),
+                                                            child: Row(
+                                                              children: [
+                                                                SvgPicture.asset(
+                                                                    e['flag']!),
+                                                                SizedBox(
+                                                                  width: 15.6.w,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 180.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text:
+                                                                        '${e['country']}',
+                                                                    fontSize:
+                                                                        17.6,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ))
+                                            ],
+                                          ),
+                                    SizedBox(
+                                      height: 14.0.h,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 26.h,
+                          ),
                         ],
                       )),
                 );

@@ -159,10 +159,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     ButtonWidget(
                         buttonText: 'Login',
-                        color: AppColor.grey,
+                        color: model.isLoading ? AppColor.white : AppColor.grey,
                         border: 8,
                         isLoading: model.isLoading,
-                        buttonColor: AppColor.inGrey,
+                        buttonColor: model.isLoading
+                            ? AppColor.primary
+                            : AppColor.inGrey,
                         buttonBorderColor: Colors.transparent,
                         onPressed: () {
                           if (formKeyLogin.currentState!.validate()) {

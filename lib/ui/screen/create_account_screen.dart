@@ -206,9 +206,17 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       hint: 'Country',
                       border: 10,
                       isFilled: true,
+                      readOnly: true,
                       fillColor: AppColor.white,
                       controller: countryController,
                       validator: AppValidator.validateString(),
+                      suffixWidget: IconButton(
+                          onPressed: () =>
+                              model.modalBottomSheetMenuSignUpCountry(context),
+                          icon: Icon(
+                            Icons.arrow_drop_down_sharp,
+                            color: AppColor.black,
+                          )),
                     ),
                     SizedBox(
                       height: 20.h,
@@ -324,6 +332,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       isFilled: true,
                       fillColor: AppColor.white,
                       controller: passwordController,
+                      suffixIcon: !model.isSignupTogglePassword
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
+                      obscureText: !model.isSignupTogglePassword,
+                      onPasswordToggle: model.isSignupOnTogglePassword,
                       validator: AppValidator.validateString(),
                     ),
                     SizedBox(
@@ -336,6 +349,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       isFilled: true,
                       fillColor: AppColor.white,
                       controller: confirmPasswordController,
+                      suffixIcon: !model.isSignupConTogglePassword
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
+                      obscureText: !model.isSignupConTogglePassword,
+                      onPasswordToggle: model.isSignupConOnTogglePassword,
                       validator: AppValidator.confirmValidatePassword(
                           passwordController1: passwordController,
                           passwordController2: confirmPasswordController),
@@ -369,10 +387,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     ),
                     ButtonWidget(
                         buttonText: 'Continue',
-                        color: AppColor.white,
+                        color: model.isLoading ? AppColor.white : AppColor.grey,
                         border: 8,
                         isLoading: model.isLoading,
-                        buttonColor: AppColor.primary,
+                        buttonColor: model.isLoading
+                            ? AppColor.primary
+                            : AppColor.inGrey,
                         buttonBorderColor: Colors.transparent,
                         onPressed: () {
                           if (formKeyRegister.currentState!.validate()) {

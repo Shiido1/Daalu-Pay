@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
+import '../../../../core/core_folder/manager/shared_preference.dart';
 import '../../../app_assets/contant.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -111,10 +112,23 @@ class SettingScreen extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () =>
                                 navigate.navigateTo(Routes.profileScreen),
-                            child: TextView(
-                              text: 'Your Profile',
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Icon(
+                                  Icons.person,
+                                  color: AppColor.primary.withOpacity(.5),
+                                  size: 19.2.sp,
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                TextView(
+                                  text: 'Your Profile',
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -126,10 +140,23 @@ class SettingScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              TextView(
-                                text: 'Account Verification',
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Icon(
+                                    Icons.verified_outlined,
+                                    color: AppColor.primary.withOpacity(.5),
+                                    size: 19.2.sp,
+                                  ),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  TextView(
+                                    text: 'Verification',
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ],
                               ),
                               Container(
                                 padding: EdgeInsets.symmetric(
@@ -162,10 +189,23 @@ class SettingScreen extends StatelessWidget {
                           thickness: .4.sp,
                         ),
                         paddedWind(
-                          child: TextView(
-                            text: 'Notification',
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Icon(
+                                Icons.notifications_none,
+                                color: AppColor.primary.withOpacity(.5),
+                                size: 19.2.sp,
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              TextView(
+                                text: 'Notification',
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(
@@ -197,10 +237,23 @@ class SettingScreen extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () =>
                             navigate.navigateTo(Routes.transactionScreen),
-                        child: TextView(
-                          text: 'Transaction Limits',
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Icon(
+                              Icons.monetization_on_outlined,
+                              color: AppColor.primary.withOpacity(.5),
+                              size: 19.2.sp,
+                            ),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            TextView(
+                              text: 'Transaction Limit',
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -233,10 +286,23 @@ class SettingScreen extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () => navigate
                                 .navigateTo(Routes.createPassworsScreen),
-                            child: TextView(
-                              text: 'Change Password',
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Icon(
+                                  Icons.password_outlined,
+                                  color: AppColor.primary.withOpacity(.5),
+                                  size: 19.2.sp,
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                TextView(
+                                  text: 'Change Password',
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -248,10 +314,23 @@ class SettingScreen extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () => navigate
                                 .navigateTo(Routes.uploadDocumentsScreen),
-                            child: TextView(
-                              text: 'KYC',
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Icon(
+                                  Icons.key_outlined,
+                                  color: AppColor.primary.withOpacity(.5),
+                                  size: 19.2.sp,
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                TextView(
+                                  text: 'KYC',
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -270,6 +349,35 @@ class SettingScreen extends StatelessWidget {
                         //   height: 2.h,
                         // ),
                       ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40.h,
+                  ),
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        SharedPreferencesService.instance.logOut();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextView(
+                            text: 'Logout',
+                            fontSize: 16.4.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AppColor.red,
+                          ),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Icon(
+                            Icons.logout_outlined,
+                            size: 19.2.sp,
+                            color: AppColor.red,
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],

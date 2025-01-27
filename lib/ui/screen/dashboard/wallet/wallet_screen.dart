@@ -92,44 +92,52 @@ class WalletScreen extends StatelessWidget {
                     else if (model.getStatsResponseModel != null &&
                         model.getStatsResponseModel!.data!.wallets!.isNotEmpty)
                       ...model.getStatsResponseModel!.data!.wallets!.map((e) =>
-                          Container(
-                            padding: EdgeInsets.all(10.w),
-                            margin: EdgeInsets.only(bottom: 16.w),
-                            decoration: BoxDecoration(
-                                color: AppColor.white,
-                                border: Border.all(color: AppColor.inGrey),
-                                borderRadius: BorderRadius.circular(12)),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 2.w),
-                                  child: SvgPicture.asset(
-                                      model.getWalletCurrencyCode(e.currency)),
-                                ),
-                                SizedBox(
-                                  width: 14.w,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    TextView(
-                                      text: model.getWalletCountry(e.currency),
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    TextView(
-                                      text:
-                                          '${getAllCurrency(e.currency)}${oCcy.format(double.parse(e.balance.toString()))}',
-                                      textStyle: TextStyle(
-                                        fontSize: 18.sp,
-                                        color: AppColor.grey,
-                                        fontWeight: FontWeight.w400,
+                          GestureDetector(
+                            onTap: () => navigate.navigateTo(
+                                Routes.viewWalletScreen,
+                                arguments:
+                                    ViewWalletScreenArguments(wallet: e)),
+                            child: Container(
+                              padding: EdgeInsets.all(10.w),
+                              margin: EdgeInsets.only(bottom: 16.w),
+                              decoration: BoxDecoration(
+                                  color: AppColor.white,
+                                  border: Border.all(color: AppColor.inGrey),
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 2.w),
+                                    child: SvgPicture.asset(model
+                                        .getWalletCurrencyCode(e.currency)),
+                                  ),
+                                  SizedBox(
+                                    width: 14.w,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      TextView(
+                                        text:
+                                            model.getWalletCountry(e.currency),
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
                                       ),
-                                    ),
-                                  ],
-                                )
-                              ],
+                                      TextView(
+                                        text:
+                                            '${getAllCurrency(e.currency)}${oCcy.format(double.parse(e.balance.toString()))}',
+                                        textStyle: TextStyle(
+                                          fontSize: 18.sp,
+                                          color: AppColor.grey,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           )),
                     SizedBox(

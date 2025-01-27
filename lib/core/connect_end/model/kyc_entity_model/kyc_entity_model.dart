@@ -1,9 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:json_annotation/json_annotation.dart';
 
-part 'kyc_entity_model.g.dart';
-
-@JsonSerializable()
 class KycEntityModel {
   String? documentType;
   MultipartFile? documentFile;
@@ -16,8 +12,16 @@ class KycEntityModel {
   });
 
   factory KycEntityModel.fromJson(Map<String, dynamic> json) {
-    return _$KycEntityModelFromJson(json);
+    return KycEntityModel(
+      documentType: json['documentType']?.toString(),
+      documentFile: json['documentFile'],
+      documentNumber: json['documentNumber']?.toString(),
+    );
   }
 
-  Map<String, dynamic> toJson() => _$KycEntityModelToJson(this);
+  Map<String, dynamic> toJson() => {
+        if (documentType != null) 'documentType': documentType,
+        if (documentFile != null) 'lastName': documentFile,
+        if (documentNumber != null) 'email': documentNumber,
+      };
 }

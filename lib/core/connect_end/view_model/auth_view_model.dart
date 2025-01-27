@@ -1554,11 +1554,11 @@ class AuthViewModel extends BaseViewModel {
         context: context,
         builder: (BuildContext context) {
           return ViewModelBuilder<AuthViewModel>.reactive(
-              viewModelBuilder: () => locator<AuthViewModel>(),
+              viewModelBuilder: () => AuthViewModel(),
               fireOnViewModelReadyOnce: true,
               onViewModelReady: (model) {
-                // WidgetsBinding.instance
-                //     .addPostFrameCallback((e) => model.getStatistics(context));
+                WidgetsBinding.instance
+                    .addPostFrameCallback((e) => model.getStatistics(context));
               },
               disposeViewModel: false,
               builder: (_, AuthViewModel model, __) {

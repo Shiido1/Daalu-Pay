@@ -6,6 +6,7 @@ import '../../../ui/screen/create_password_screen.dart';
 import '../../../ui/screen/dashboard/dashboard_screen.dart';
 import '../../../ui/screen/dashboard/transaction/transaction_screen.dart';
 import '../../../ui/screen/dashboard/wallet/send_money.dart';
+import '../../../ui/screen/dashboard/wallet/view_wallet_screen.dart';
 import '../../../ui/screen/forgot_password_screen.dart';
 import '../../../ui/screen/kyc/upload_documents.dart';
 import '../../../ui/screen/login_screen.dart';
@@ -37,6 +38,7 @@ import '../network/network_service.dart';
   MaterialRoute(page: SendMoneyScreen, initial: false),
   MaterialRoute(page: ProfileScreen, initial: false),
   MaterialRoute(page: UploadDocumentsScreen, initial: false),
+  MaterialRoute(page: ViewWalletScreen, initial: false),
 ], dependencies: [
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: DialogService),

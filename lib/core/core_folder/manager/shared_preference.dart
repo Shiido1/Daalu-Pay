@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'package:daalu_pay/core/core_folder/app/app.router.dart';
+import 'package:daalu_pay/main.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../app/app.logger.dart';
 
 @lazySingleton
 class SharedPreferencesService {
@@ -46,9 +50,10 @@ class SharedPreferencesService {
   Future<bool> logOut() async {
     try {
       await sharedPreferences!.clear();
+      navigate.navigateTo(Routes.loginScreen);
       // await locator<HiveManager>().clearAllBox();
 
-      // getLogger('logout').d(sharedPreferences.toString());
+      getLogger('logout').d(sharedPreferences.toString());
       return true;
     } catch (e) {
       // getLogger("error clearing cache").d('logout');

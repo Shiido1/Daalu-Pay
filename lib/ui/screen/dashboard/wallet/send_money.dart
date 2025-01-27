@@ -14,7 +14,8 @@ import '../../../widget/text_widget.dart';
 
 // ignore: must_be_immutable
 class SendMoneyScreen extends StatefulWidget {
-  const SendMoneyScreen({super.key});
+  SendMoneyScreen({super.key, this.currency});
+  String? currency;
 
   @override
   State<SendMoneyScreen> createState() => _SendMoneyScreenState();
@@ -30,8 +31,11 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
     return ViewModelBuilder<AuthViewModel>.reactive(
         viewModelBuilder: () => AuthViewModel(),
         onViewModelReady: (model) {
-          WidgetsBinding.instance.addPostFrameCallback((e) {
-            model.getStatistics(context);
+          WidgetsBinding.instance.addPostFrameCallback((e) async {
+            await model.getStatistics(context);
+            if (widget.currency != null) {
+              model.currencyController.text = widget.currency!;
+            }
           });
         },
         disposeViewModel: false,

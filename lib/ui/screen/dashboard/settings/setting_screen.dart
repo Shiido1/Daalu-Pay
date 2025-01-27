@@ -110,7 +110,7 @@ class SettingScreen extends StatelessWidget {
                         paddedWind(
                           child: GestureDetector(
                             onTap: () =>
-                                navigate.navigateTo(Routes.updateProfileScreen),
+                                navigate.navigateTo(Routes.profileScreen),
                             child: TextView(
                               text: 'Your Profile',
                               fontSize: 14.sp,
@@ -245,10 +245,14 @@ class SettingScreen extends StatelessWidget {
                           thickness: .4.sp,
                         ),
                         paddedWind(
-                          child: TextView(
-                            text: 'KYC',
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
+                          child: GestureDetector(
+                            onTap: () => navigate
+                                .navigateTo(Routes.uploadDocumentsScreen),
+                            child: TextView(
+                              text: 'KYC',
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
                         // Divider(

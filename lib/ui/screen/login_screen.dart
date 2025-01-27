@@ -162,10 +162,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     ButtonWidget(
                         buttonText: 'Login',
-                        color: model.isLoading ? AppColor.white : AppColor.grey,
+                        color:
+                            !model.isLoading ? AppColor.white : AppColor.grey,
                         border: 8,
                         isLoading: model.isLoading,
-                        buttonColor: model.isLoading
+                        buttonColor: !model.isLoading
                             ? AppColor.primary
                             : AppColor.inGrey,
                         buttonBorderColor: Colors.transparent,

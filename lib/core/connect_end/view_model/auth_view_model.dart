@@ -2,9 +2,13 @@ import 'dart:io';
 import 'dart:async';
 import "package:collection/collection.dart";
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/kyc_entity_model/kyc_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/kyc_response_model/kyc_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
@@ -85,16 +89,24 @@ class AuthViewModel extends BaseViewModel {
       _exchangeRateResponseModel;
   GetExchangeRateResponseModel? _exchangeRateResponseModel;
 
+  DepositWalletResponseModel? _depositWalletResponseModel;
+  DepositWalletResponseModel? get depositWalletResponse =>
+      _depositWalletResponseModel;
+  KycResponseModel? get kycResponseModel => _kycResponseModel;
+  KycResponseModel? _kycResponseModel;
+
   bool isOnTogglePassword() {
     _isTogglePassword = !_isTogglePassword;
     notifyListeners();
     return _isTogglePassword;
   }
+
   bool isSignupOnTogglePassword() {
     _isSignupTogglePassword = !_isSignupTogglePassword;
     notifyListeners();
     return _isSignupTogglePassword;
   }
+
   bool isSignupConOnTogglePassword() {
     _isSignupConTogglePassword = !_isSignupConTogglePassword;
     notifyListeners();
@@ -320,7 +332,6 @@ class AuthViewModel extends BaseViewModel {
     groupedValue =
         groupBy(_getTransactionResponseModel!.data!, (obj) => obj.status);
     transactionListData!.clear();
-    print('object::::$groupedValue');
     if (transStats == 'successful') {
       transactionListData?.addAll(groupedValue['completed']!);
     } else if (transStats == 'pending') {
@@ -1397,8 +1408,42 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void makePayment({amount, context}) async {
-    print(session.usersData['user']);
+  Future<void> depositMoney(context,
+      {DepositWalletEntityModel? depositMoney}) async {
+    try {
+      _isLoading = true;
+      _depositWalletResponseModel = await runBusyFuture(
+          repositoryImply.depositWallet(depositMoney!),
+          throwException: true);
+      if (_depositWalletResponseModel?.status == 'success') {
+        AppUtils.snackbar(context, message: 'Deposit Successful..!');
+      }
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> uploadKyc(context, {KycEntityModel? kycEntity}) async {
+    try {
+      _isLoading = true;
+      _kycResponseModel = await runBusyFuture(repositoryImply.kyc(kycEntity!),
+          throwException: true);
+      if (_kycResponseModel?.status == 'success') {
+        AppUtils.snackbar(context, message: 'Kyc uploaded Successfully..!');
+      }
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  void makePayment({amount, context, String? walletId}) async {
+    print('$walletId!');
     const secretKey = 'sk_test_d9830d6c7a17c2b69f22ccb0589b560c902f6059';
 
     final request = PaystackTransactionRequest(
@@ -1442,22 +1487,15 @@ class AuthViewModel extends BaseViewModel {
         initializedTransaction.data?.reference ?? request.reference,
       );
     });
-
-    print(response); // Result of the confirmed payment
-
-    // await PaymentService.showPaymentModal(
-    //   context,
-    //   transaction: initializedTransaction,
-    //   // Callback URL must match the one specified on your paystack dashboard,
-    //   callbackUrl: 'https://binemmanuel.com',
-    // );
-
-    // final response = await PaymentService.verifyTransaction(
-    //   paystackSecretKey: secretKey,
-    //   initializedTransaction.data?.reference ?? request.reference,
-    // );
-
-    // if (kDebugMode) logger.d(response.data.status == PaystackTransactionStatus.abandoned);
+    if (response.data.status == PaystackTransactionStatus.success) {
+      depositMoney(context,
+          depositMoney: DepositWalletEntityModel(
+              amount: amount.toString(),
+              currency: 'NGN',
+              channel: 'paystack',
+              walletId: walletId));
+      print('oya deposit');
+    }
   }
 
   isDisable() {

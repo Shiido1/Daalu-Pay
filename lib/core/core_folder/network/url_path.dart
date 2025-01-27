@@ -16,6 +16,8 @@ class UrlConfig {
   static const String exchange_rates = 'exchange-rates';
   static const String swap = 'user/swaps';
   static const String wallets = 'user/wallets';
+  static const String deposit = 'user/deposits';
+  static const String kyc = 'user/kyc';
   // ignore: constant_identifier_names
   static const String update_password = 'user/password';
 }

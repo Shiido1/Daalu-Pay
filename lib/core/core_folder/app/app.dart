@@ -7,8 +7,10 @@ import '../../../ui/screen/dashboard/dashboard_screen.dart';
 import '../../../ui/screen/dashboard/transaction/transaction_screen.dart';
 import '../../../ui/screen/dashboard/wallet/send_money.dart';
 import '../../../ui/screen/forgot_password_screen.dart';
+import '../../../ui/screen/kyc/upload_documents.dart';
 import '../../../ui/screen/login_screen.dart';
 import '../../../ui/screen/onboarding/onboarding_screen.dart';
+import '../../../ui/screen/profile_screen.dart';
 import '../../../ui/screen/reset_password_screen.dart';
 import '../../../ui/screen/setup_screen.dart';
 import '../../../ui/screen/update_profile_screen.dart';
@@ -33,6 +35,8 @@ import '../network/network_service.dart';
   MaterialRoute(page: ForgotPasswordScreen, initial: false),
   MaterialRoute(page: VerifyScreen, initial: false),
   MaterialRoute(page: SendMoneyScreen, initial: false),
+  MaterialRoute(page: ProfileScreen, initial: false),
+  MaterialRoute(page: UploadDocumentsScreen, initial: false),
 ], dependencies: [
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: DialogService),

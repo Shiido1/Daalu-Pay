@@ -3,7 +3,6 @@ import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -129,60 +128,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     SizedBox(
                       height: 20.h,
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: TextFormWidget(
-                            label: 'Document',
-                            hint: 'Select Document',
-                            border: 10,
-                            isFilled: true,
-                            readOnly: true,
-                            fillColor: AppColor.white,
-                            controller: documentController,
-                            validator: AppValidator.validateString(),
-                            suffixWidget: IconButton(
-                                onPressed: () => shwDocumentDialog(),
-                                icon: Icon(
-                                  Icons.arrow_drop_down_sharp,
-                                  color: AppColor.black,
-                                )),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20.w,
-                        ),
-                        GestureDetector(
-                          onTap: () => model.getDocumentImage(context),
-                          child: Container(
-                            margin: EdgeInsets.only(top: 26.w),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 12.w, horizontal: 6.w),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                border: Border.all(
-                                    color: AppColor.inGrey, width: 1.2),
-                                color: AppColor.white),
-                            child: TextView(text: 'Select file'),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.0.h,
-                    ),
-                    model.filename != null
-                        ? TextView(
-                            text: model.filename!,
-                            fontSize: 12.sp,
-                            fontStyle: FontStyle.italic,
-                            color: AppColor.red.withOpacity(.7),
-                          )
-                        : SizedBox.shrink(),
-                    SizedBox(
-                      height: 20.h,
-                    ),
                     TextFormWidget(
                       label: 'Select your date of birth',
                       hint: 'D.O.B',
@@ -209,7 +154,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       isFilled: true,
                       readOnly: true,
                       fillColor: AppColor.white,
-                      controller: countryController,
+                      controller: model.signUpCountryController,
                       validator: AppValidator.validateString(),
                       suffixWidget: IconButton(
                           onPressed: () =>
@@ -318,6 +263,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           border: 10,
                           isFilled: true,
                           fillColor: AppColor.white,
+                          keyboardType: TextInputType.number,
                           controller: phoneController,
                           validator: AppValidator.validateString(),
                         ),
@@ -388,10 +334,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     ),
                     ButtonWidget(
                         buttonText: 'Continue',
-                        color: model.isLoading ? AppColor.white : AppColor.grey,
+                        color:
+                            !model.isLoading ? AppColor.white : AppColor.grey,
                         border: 8,
                         isLoading: model.isLoading,
-                        buttonColor: model.isLoading
+                        buttonColor: !model.isLoading
                             ? AppColor.primary
                             : AppColor.inGrey,
                         buttonBorderColor: Colors.transparent,
@@ -400,28 +347,21 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               model.filename != null) {
                             model.register(
                                 RegisterEntityModel(
-                                    firstName: firstnameController.text.trim(),
-                                    lastName: lastnameController.text.trim(),
-                                    email: emailController.text.trim(),
-                                    phoneNumber: phoneController.text.trim(),
-                                    gender: genderController.text.trim(),
-                                    address: addressController.text.trim(),
-                                    city: cityController.text.trim(),
-                                    dateOfBirth:
-                                        model.dobController.text.trim(),
-                                    zipCode: zipCodeController.text.trim(),
-                                    country: countryController.text.trim(),
-                                    password: passwordController.text.trim(),
-                                    confirmPassword:
-                                        confirmPasswordController.text.trim(),
-                                    documentFile: MultipartFile.fromBytes(
-                                        model
-                                            .formartFileImage(model.image)
-                                            .readAsBytesSync(),
-                                        filename:
-                                            model.image!.path.split("/").last),
-                                    documentType:
-                                        documentController.text.trim()),
+                                  firstName: firstnameController.text.trim(),
+                                  lastName: lastnameController.text.trim(),
+                                  email: emailController.text.trim(),
+                                  phoneNumber: phoneController.text.trim(),
+                                  gender: genderController.text.trim(),
+                                  address: addressController.text.trim(),
+                                  city: cityController.text.trim(),
+                                  dateOfBirth: model.dobController.text.trim(),
+                                  zipCode: zipCodeController.text.trim(),
+                                  country:
+                                      model.signUpCountryController.text.trim(),
+                                  password: passwordController.text.trim(),
+                                  confirmPassword:
+                                      confirmPasswordController.text.trim(),
+                                ),
                                 context);
                           } else {
                             AppUtils.snackbar(context,

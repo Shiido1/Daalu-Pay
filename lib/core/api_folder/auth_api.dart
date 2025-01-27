@@ -1,8 +1,12 @@
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_stats_response_model/get_stats_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/kyc_entity_model/kyc_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/kyc_response_model/kyc_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
@@ -31,7 +35,7 @@ class AuthApi {
     try {
       final response = await _service.call(
           UrlConfig.register, RequestMethod.post,
-          data: FormData.fromMap(registerEntity.toJson()));
+          data: registerEntity.toJson());
       logger.d(response.data);
       return RegistrationResponseModel.fromJson(response.data);
     } catch (e) {
@@ -240,6 +244,31 @@ class AuthApi {
           data: sendMoney.toJson());
       logger.d(response.data);
       return response.data;
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<DepositWalletResponseModel> depositWallet(
+      DepositWalletEntityModel deposit) async {
+    try {
+      final response = await _service
+          .call(UrlConfig.deposit, RequestMethod.post, data: deposit.toJson());
+      logger.d(response.data);
+      return DepositWalletResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<KycResponseModel> kyc(KycEntityModel kyc) async {
+    try {
+      final response = await _service.call(UrlConfig.kyc, RequestMethod.post,
+          data: FormData.fromMap(kyc.toJson()));
+      logger.d(response.data);
+      return KycResponseModel.fromJson(response.data);
     } catch (e) {
       logger.d("response:$e");
       rethrow;

@@ -1,7 +1,11 @@
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/kyc_entity_model/kyc_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/kyc_response_model/kyc_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
@@ -56,4 +60,9 @@ class AuthContractsImpl {
       await _api.getWalletId(id);
   Future<dynamic> sendMoney(SendMonetEntityModel? sendMoney) async =>
       await _api.sendMoney(sendMoney!);
+  Future<DepositWalletResponseModel> depositWallet(
+          DepositWalletEntityModel? deposit) async =>
+      await _api.depositWallet(deposit!);
+  Future<KycResponseModel> kyc(KycEntityModel? kyc) async =>
+      await _api.kyc(kyc!);
 }

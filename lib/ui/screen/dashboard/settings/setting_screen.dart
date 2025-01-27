@@ -230,10 +230,14 @@ class SettingScreen extends StatelessWidget {
                           height: 10.h,
                         ),
                         paddedWind(
-                          child: TextView(
-                            text: 'Change Password',
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
+                          child: GestureDetector(
+                            onTap: () => navigate
+                                .navigateTo(Routes.createPassworsScreen),
+                            child: TextView(
+                              text: 'Change Password',
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
                         Divider(
@@ -242,25 +246,25 @@ class SettingScreen extends StatelessWidget {
                         ),
                         paddedWind(
                           child: TextView(
-                            text: 'Two Factor Authentication',
+                            text: 'KYC',
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        Divider(
-                          color: AppColor.grey,
-                          thickness: .4.sp,
-                        ),
-                        paddedWind(
-                          child: TextView(
-                            text: 'Change Pin',
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 6.h,
-                        ),
+                        // Divider(
+                        //   color: AppColor.grey,
+                        //   thickness: .4.sp,
+                        // ),
+                        // paddedWind(
+                        //   child: TextView(
+                        //     text: 'Change Pin',
+                        //     fontSize: 14.sp,
+                        //     fontWeight: FontWeight.w400,
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   height: 2.h,
+                        // ),
                       ],
                     ),
                   )

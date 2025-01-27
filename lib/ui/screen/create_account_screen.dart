@@ -10,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import '../../core/connect_end/model/register_entity_model.dart';
 import '../../core/connect_end/view_model/auth_view_model.dart';
+import '../app_assets/app_utils.dart';
 import '../app_assets/app_validatiion.dart';
 import '../widget/button_widget.dart';
 import '../widget/text_form_widget.dart';
@@ -395,7 +396,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             : AppColor.inGrey,
                         buttonBorderColor: Colors.transparent,
                         onPressed: () {
-                          if (formKeyRegister.currentState!.validate()) {
+                          if (formKeyRegister.currentState!.validate() &&
+                              model.filename != null) {
                             model.register(
                                 RegisterEntityModel(
                                     firstName: firstnameController.text.trim(),
@@ -421,6 +423,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                     documentType:
                                         documentController.text.trim()),
                                 context);
+                          } else {
+                            AppUtils.snackbar(context,
+                                message:
+                                    'Kindly fill all necessary fields and Select image.',
+                                error: true);
                           }
                         }),
                   ],

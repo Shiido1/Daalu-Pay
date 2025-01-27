@@ -1,10 +1,16 @@
 import 'dart:io';
 import 'dart:async';
 import "package:collection/collection.dart";
+import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
+import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
+import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
+import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/user_response_model/user_response_model.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
@@ -26,6 +32,7 @@ import '../../core_folder/app/app.logger.dart';
 import '../../core_folder/app/app.router.dart';
 import '../../core_folder/manager/shared_preference.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
+import '../model/get_stats_response_model/wallet.dart';
 import '../model/get_transaction_response_model/datum.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
@@ -41,6 +48,26 @@ class AuthViewModel extends BaseViewModel {
   final session = locator<SharedPreferencesService>();
 
   AuthViewModel({this.context});
+
+  bool get is8characters => _is8characters;
+  bool _is8characters = false;
+  bool get isUpperCase => _isUpperCase;
+  bool _isUpperCase = false;
+  bool get isLowerCase => _isLowerCase;
+  bool _isLowerCase = false;
+  bool get isSpecialCharacters => _isSpecialCharacters;
+  bool _isSpecialCharacters = false;
+  bool get isNumber => _isNumber;
+  bool _isNumber = false;
+
+  bool _isDisabled = true;
+  bool get disabled => _isDisabled;
+
+  bool? _isToggleNewPassword = false;
+  bool? _isTogglePasswordConfirm = false;
+
+  bool? get isToggleNewPassword => _isToggleNewPassword;
+  bool? get isTogglePasswordConfirm => _isTogglePasswordConfirm;
 
   bool get isLoading => _isLoading;
   bool _isLoading = false;
@@ -86,8 +113,16 @@ class AuthViewModel extends BaseViewModel {
   GetTransactionResponseModel? _getTransactionResponseModel;
   GetTransactionResponseModel? get getTransactionResponseModel =>
       _getTransactionResponseModel;
+  UpdatePasswordResponseModel? get updatePasswordResponseModel =>
+      _updatePasswordResponseModel;
+  UpdatePasswordResponseModel? _updatePasswordResponseModel;
   TextEditingController dobController = TextEditingController();
   List<Datum>? transactionListData = [];
+
+  TextEditingController currencyController = TextEditingController();
+  TextEditingController recipientWalletIdController = TextEditingController();
+  Wallet? _walletAmount;
+  Wallet? get walletAmount => _walletAmount;
 
   final _pickImage = ImagePickerHandler();
   File? image;
@@ -115,10 +150,30 @@ class AuthViewModel extends BaseViewModel {
 
   String transStats = 'all';
   bool initializingPayment = false;
-
+  GetWalletIdResponseModel? _getWalletIdResponseModel;
+  GetWalletIdResponseModel? get getWalletIdResponseModel =>
+      _getWalletIdResponseModel;
   DateTime selectedDOB = DateTime.now();
-
   String? _formattedDob = DateFormat('EEEE, d MMM yyyy').format(DateTime.now());
+  Timer? timer;
+  int startTimerCount = 0;
+
+  void startTimer() {
+    startTimerCount = 30;
+    const oneSec = Duration(seconds: 1);
+    timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (startTimerCount == 0) {
+          timer.cancel();
+          notifyListeners();
+        } else {
+          startTimerCount--;
+          notifyListeners();
+        }
+      },
+    );
+  }
 
   Future<void> selectDateOfBirth(BuildContext? context) async {
     final DateTime? picked = await showDatePicker(
@@ -167,7 +222,8 @@ class AuthViewModel extends BaseViewModel {
         _isLoading = false;
         AppUtils.snackbar(contxt,
             message: 'Registration is successfully', error: true);
-        navigate.navigateTo(Routes.loginScreen);
+        navigate.navigateTo(Routes.verifyScreen,
+            arguments: VerifyScreenArguments(email: registerEntity.email));
       }
     } catch (e) {
       _isLoading = false;
@@ -259,18 +315,18 @@ class AuthViewModel extends BaseViewModel {
   }
 
   groupTransationStatus() {
-    var groupedValue;
+    Map<String?, List<Datum>> groupedValue;
 
     groupedValue =
         groupBy(_getTransactionResponseModel!.data!, (obj) => obj.status);
     transactionListData!.clear();
     print('object::::$groupedValue');
     if (transStats == 'successful') {
-      transactionListData?.addAll(groupedValue['completed']);
+      transactionListData?.addAll(groupedValue['completed']!);
     } else if (transStats == 'pending') {
-      transactionListData?.addAll(groupedValue['pending']);
+      transactionListData?.addAll(groupedValue['pending']!);
     } else if (transStats == 'failed') {
-      transactionListData?.addAll(groupedValue['failed']);
+      transactionListData?.addAll(groupedValue['failed']!);
     } else {
       transactionListData!.clear();
     }
@@ -300,6 +356,13 @@ class AuthViewModel extends BaseViewModel {
         (double.parse(_exchangeRateResponseModel!.data!.rate!) *
                 double.parse(o))
             .toString();
+
+    notifyListeners();
+  }
+
+  getUSerWalletUUID(context, o) {
+    recipientWalletIdController.text = o;
+    getWalletId(context, id: o);
 
     notifyListeners();
   }
@@ -1129,27 +1192,28 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void onGetUserWalletRate(context, p0) {
+    debouncer.run(() => getUSerWalletUUID(context, p0));
+    notifyListeners();
+  }
+
   String getWalletCurrencyCode(currencyCode) {
     String flag = '';
-    countryConst.forEach(
-      (element) {
-        if (element.containsValue(currencyCode)) {
-          flag = element['flag']!;
-        }
-      },
-    );
+    for (var element in countryConst) {
+      if (element.containsValue(currencyCode)) {
+        flag = element['flag']!;
+      }
+    }
     return flag;
   }
 
   String getWalletCountry(currencyCode) {
     String country = '';
-    countryConst.forEach(
-      (element) {
-        if (element.containsValue(currencyCode)) {
-          country = '${element['name']!} ($currencyCode)';
-        }
-      },
-    );
+    for (var element in countryConst) {
+      if (element.containsValue(currencyCode)) {
+        country = '${element['name']!} ($currencyCode)';
+      }
+    }
     return country;
   }
 
@@ -1202,6 +1266,130 @@ class AuthViewModel extends BaseViewModel {
       if (v['status'] == 'success') {
         AppUtils.snackbar(context, message: 'Update Successful');
       }
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> updatePassword(context, {UpdatePasswordEntity? update}) async {
+    try {
+      _isLoading = true;
+      _updatePasswordResponseModel = await runBusyFuture(
+          repositoryImply.updatePassword(update!),
+          throwException: true);
+      _isLoading = false;
+      if (_updatePasswordResponseModel?.status == 'success') {
+        AppUtils.snackbar(context, message: 'Password updated Successful..!');
+
+        navigate.navigateTo(Routes.setupScreen);
+      }
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> resetPassword(context, {ResetPasswordEntity? reset}) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(repositoryImply.resetPassword(reset!),
+          throwException: true);
+      _isLoading = false;
+      print('object:::::$v');
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> forgotPassword(context, {String? email}) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(repositoryImply.forgotPassword(email!),
+          throwException: true);
+      _isLoading = false;
+      print('object:::::$v');
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> requestOtp(context, {String? email}) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(repositoryImply.requestOtp(email!),
+          throwException: true);
+      _isLoading = false;
+      if (v['status'] == 'success') {
+        AppUtils.snackbar(context, message: v['message']);
+      }
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> validateOtp(context, {String? otp, String? email}) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(
+          repositoryImply.verifyOtp(otp: otp, email: email),
+          throwException: true);
+      _isLoading = false;
+      if (v['status'] == 'success') {
+        navigate.navigateTo(Routes.loginScreen);
+      }
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> alipayVerify(context, {AliPayEntityModel? alipay}) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(repositoryImply.alipayVerify(alipay!),
+          throwException: true);
+      _isLoading = false;
+      print('object:::::$v');
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getWalletId(context, {String? id}) async {
+    try {
+      _isLoading = true;
+      _getWalletIdResponseModel = await runBusyFuture(
+          repositoryImply.getWalletId(id!),
+          throwException: true);
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> sendMoney(context, {SendMonetEntityModel? sendMoney}) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(repositoryImply.sendMoney(sendMoney!),
+          throwException: true);
+      if (v['status'] == 'success') {
+        AppUtils.snackbar(context, message: 'Transfer Successful..!');
+      }
+      _isLoading = false;
     } catch (e) {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);
@@ -1271,4 +1459,108 @@ class AuthViewModel extends BaseViewModel {
 
     // if (kDebugMode) logger.d(response.data.status == PaystackTransactionStatus.abandoned);
   }
+
+  isDisable() {
+    _isDisabled = false;
+    notifyListeners();
+  }
+
+  isNotDisable() {
+    _isDisabled = true;
+    notifyListeners();
+  }
+
+  bool isOnToggleNewPassword() {
+    _isToggleNewPassword = !_isToggleNewPassword!;
+    notifyListeners();
+    return _isToggleNewPassword!;
+  }
+
+  bool isOnTogglePasswordConfirm() {
+    _isTogglePasswordConfirm = !_isTogglePasswordConfirm!;
+    notifyListeners();
+    return _isTogglePassword;
+  }
+
+  validatePassword(String password) {
+    if (password.length >= 8) {
+      _is8characters = true;
+    } else {
+      _is8characters = false;
+    }
+    if (password.contains(RegExp("(?:[ ^A-Z]*[A-Z]){1}"))) {
+      _isUpperCase = true;
+    } else {
+      _isUpperCase = false;
+    }
+    if (password.contains(RegExp("(?:[ ^a-z]*[a-z]){1}"))) {
+      _isLowerCase = true;
+    } else {
+      _isLowerCase = false;
+    }
+    if (password.contains(RegExp(r'[0-9]'))) {
+      _isNumber = true;
+    } else {
+      _isNumber = false;
+    }
+    if (password.contains(RegExp(
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$'))) {
+      _isSpecialCharacters = true;
+    } else {
+      _isSpecialCharacters = false;
+    }
+    notifyListeners();
+  }
+
+  shwWalletCurrencyDialog(context) => showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => locator<AuthViewModel>(),
+              fireOnViewModelReadyOnce: true,
+              onViewModelReady: (model) {
+                // WidgetsBinding.instance
+                //     .addPostFrameCallback((e) => model.getStatistics(context));
+              },
+              disposeViewModel: false,
+              builder: (_, AuthViewModel model, __) {
+                return AlertDialog(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 20.w, horizontal: 20.w),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        if (model.getStatsResponseModel != null &&
+                            model.getStatsResponseModel!.data!.wallets!
+                                .isNotEmpty)
+                          ...model.getStatsResponseModel!.data!.wallets!.map(
+                            (e) => GestureDetector(
+                              onTap: () {
+                                currencyController.text = e.currency!;
+                                _walletAmount = e;
+                                notifyListeners();
+                                Navigator.pop(context);
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextView(
+                                    text: e.currency ?? '',
+                                    color: AppColor.black,
+                                    fontSize: 16.2.sp,
+                                  ),
+                                  SizedBox(
+                                    height: 3.2.h,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+              });
+        },
+      );
 }

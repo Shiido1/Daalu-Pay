@@ -121,7 +121,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     GestureDetector(
                       onTap: () =>
-                          navigate.navigateTo(Routes.createPassworsScreen),
+                          // navigate.navigateTo(Routes.verifyScreen,
+                          //     arguments:
+                          //         VerifyScreenArguments(email: 'test@example.com')),
+                          navigate.navigateTo(Routes.forgotPasswordScreen),
                       child: TextView(
                         text: 'Forgot Password',
                         fontSize: 16.2.sp,

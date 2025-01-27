@@ -5,9 +5,14 @@ import '../../../ui/screen/create_account_screen.dart';
 import '../../../ui/screen/create_password_screen.dart';
 import '../../../ui/screen/dashboard/dashboard_screen.dart';
 import '../../../ui/screen/dashboard/transaction/transaction_screen.dart';
+import '../../../ui/screen/dashboard/wallet/send_money.dart';
+import '../../../ui/screen/forgot_password_screen.dart';
 import '../../../ui/screen/login_screen.dart';
 import '../../../ui/screen/onboarding/onboarding_screen.dart';
+import '../../../ui/screen/reset_password_screen.dart';
+import '../../../ui/screen/setup_screen.dart';
 import '../../../ui/screen/update_profile_screen.dart';
+import '../../../ui/screen/verify_screen.dart';
 import '../../api_folder/auth_api.dart';
 import '../../connect_end/contract/contract_impl.dart';
 import '../../connect_end/repo/repo_impl.dart';
@@ -23,6 +28,11 @@ import '../network/network_service.dart';
   MaterialRoute(page: CreatePassworsScreen, initial: false),
   MaterialRoute(page: UpdateProfileScreen, initial: false),
   MaterialRoute(page: TransactionScreen, initial: false),
+  MaterialRoute(page: SetupScreen, initial: false),
+  MaterialRoute(page: ResetPasswordScreen, initial: false),
+  MaterialRoute(page: ForgotPasswordScreen, initial: false),
+  MaterialRoute(page: VerifyScreen, initial: false),
+  MaterialRoute(page: SendMoneyScreen, initial: false),
 ], dependencies: [
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: DialogService),

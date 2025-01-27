@@ -1,117 +1,149 @@
+import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
-import 'package:daalu_pay/ui/screen/setup_screen.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:stacked/stacked.dart';
+import '../../core/connect_end/view_model/auth_view_model.dart';
+import '../app_assets/app_validatiion.dart';
 import '../widget/button_widget.dart';
 import '../widget/text_form_widget.dart';
 
 // ignore: must_be_immutable
 class CreatePassworsScreen extends StatelessWidget {
   CreatePassworsScreen({super.key});
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  List<String> text = [
-    '8 characters',
-    'An uppercase letter',
-    'A Lowercase letter',
-    'A special character',
-    'A number'
-  ];
+  TextEditingController oldPassword = TextEditingController();
+  TextEditingController newPasswordConfirm = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.light,
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 100.w, horizontal: 24.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextView(
-              text: 'Create Password',
-              fontSize: 24.sp,
-              fontWeight: FontWeight.w600,
-              color: AppColor.primary,
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            TextFormWidget(
-              label: '*********',
-              hint: 'Create your password',
-              border: 10,
-              isFilled: true,
-              fillColor: AppColor.white,
-              suffixIcon: Icons.visibility,
-              suffixIconColor: AppColor.black,
-
-              // controller: emailController,
-              // validator: AppValidator.validateEmail(),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            TextFormWidget(
-              label: '*********',
-              hint: 'Confirm your password',
-              border: 10,
-              isFilled: true,
-              fillColor: AppColor.white,
-              suffixIcon: Icons.visibility,
-              suffixIconColor: AppColor.black,
-              // controller: emailController,
-              // validator: AppValidator.validateEmail(),
-            ),
-            SizedBox(
-              height: 30.h,
-            ),
-            TextView(
-              text: 'AT LEAST',
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
-              color: AppColor.darkGrey,
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Wrap(
-              children: [
-                ...text.map((e) => Container(
-                      margin: EdgeInsets.only(right: 10.w, bottom: 10.w),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 6.w, horizontal: 10.w),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: AppColor.inGrey),
-                          borderRadius: BorderRadius.circular(24)),
-                      child: TextView(
-                        text: e,
+    return ViewModelBuilder<AuthViewModel>.reactive(
+        viewModelBuilder: () => AuthViewModel(),
+        disposeViewModel: false,
+        builder: (_, AuthViewModel model, __) => Scaffold(
+              backgroundColor: AppColor.light,
+              body: SingleChildScrollView(
+                padding:
+                    EdgeInsets.symmetric(vertical: 100.w, horizontal: 24.w),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextView(
+                        text: 'Create Password',
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColor.primary,
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      TextFormWidget(
+                          label: '*********',
+                          hint: 'Input your old password',
+                          border: 10,
+                          isFilled: true,
+                          fillColor: AppColor.white,
+                          controller: oldPassword,
+                          validator: AppValidator.validateString(),
+                          suffixIcon: !model.isToggleNewPassword!
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                          onPasswordToggle: model.isOnToggleNewPassword,
+                          obscureText: !model.isToggleNewPassword!),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      TextFormWidget(
+                        label: '*********',
+                        hint: 'Input new your password',
+                        border: 10,
+                        isFilled: true,
+                        fillColor: AppColor.white,
+                        controller: newPasswordConfirm,
+                        onChange: (value) async {
+                          await model.validatePassword(newPasswordConfirm.text);
+                          if (value.isNotEmpty) {
+                            model.isDisable();
+                          } else {
+                            model.isNotDisable();
+                          }
+                        },
+                        validator: AppValidator.validatePlainPass(),
+                        suffixIcon: !model.isToggleNewPassword!
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        onPasswordToggle: model.isOnToggleNewPassword,
+                        obscureText: !model.isToggleNewPassword!,
+                      ),
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      TextView(
+                        text: 'AT LEAST',
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
                         color: AppColor.darkGrey,
                       ),
-                    ))
-              ],
-            ),
-            SizedBox(
-              height: 240.h,
-            ),
-            ButtonWidget(
-                buttonText: 'Continue',
-                color: AppColor.white,
-                border: 8,
-                // isLoading: model.isLoading,
-                buttonColor: AppColor.primary,
-                buttonBorderColor: Colors.transparent,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SetupScreen()),
-                  );
-                }),
-          ],
-        ),
-      ),
-    );
+                      SizedBox(
+                        height: 12.0.h,
+                      ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextView(
+                                fontSize: 14.6.sp,
+                                text: 'must have 8 characters ',
+                                color: model.is8characters
+                                    ? AppColor.green
+                                    : AppColor.red,
+                                fontWeight: FontWeight.w300),
+                            TextView(
+                                fontSize: 14.6.sp,
+                                text: 'must have lower and uppercase',
+                                color: model.isUpperCase && model.isLowerCase
+                                    ? AppColor.green
+                                    : AppColor.red,
+                                fontWeight: FontWeight.w300),
+                            TextView(
+                              fontSize: 14.6.sp,
+                              text:
+                                  'must include number and special characters',
+                              color: model.isNumber && model.isSpecialCharacters
+                                  ? AppColor.green
+                                  : AppColor.red,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 240.h,
+                      ),
+                      ButtonWidget(
+                          buttonText: 'Continue',
+                          color: AppColor.white,
+                          border: 8,
+                          isLoading: model.isLoading,
+                          buttonColor: AppColor.primary,
+                          buttonBorderColor: Colors.transparent,
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              model.updatePassword(context,
+                                  update: UpdatePasswordEntity(
+                                      oldPassword: oldPassword.text,
+                                      newPassword: newPasswordConfirm.text));
+                            }
+                          }),
+                    ],
+                  ),
+                ),
+              ),
+            ));
   }
 }

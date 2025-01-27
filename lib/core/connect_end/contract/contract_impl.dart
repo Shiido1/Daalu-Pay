@@ -1,5 +1,11 @@
+import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
+import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
+import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
 import 'package:injectable/injectable.dart';
 import '../../api_folder/auth_api.dart';
 import '../../core_folder/app/app.locator.dart';
@@ -33,4 +39,21 @@ class AuthContractsImpl {
   Future<dynamic> swap(SwapEntiyModel? swap) async => await _api.swap(swap);
   Future<dynamic> updateProfile(RegisterEntityModel? update) async =>
       await _api.userProfile(update);
+  Future<dynamic> resetPassword(ResetPasswordEntity? resetPassword) async =>
+      await _api.resetPassword(resetPassword);
+  Future<dynamic> forgotPassword(String? email) async =>
+      await _api.forgotPassword(email);
+  Future<dynamic> requestOtp(String? email) async =>
+      await _api.requestOtp(email);
+  Future<dynamic> verifyOtp({String? otp, String? email}) async =>
+      await _api.verifyOtp(otp: otp, email: email);
+  Future<dynamic> alipayVerify(AliPayEntityModel alipay) async =>
+      await _api.alipayVerify(alipay);
+  Future<UpdatePasswordResponseModel> updatePassword(
+          UpdatePasswordEntity? updatePassword) async =>
+      await _api.updatePassword(updatePassword);
+  Future<GetWalletIdResponseModel> getWalletId(String? id) async =>
+      await _api.getWalletId(id);
+  Future<dynamic> sendMoney(SendMonetEntityModel? sendMoney) async =>
+      await _api.sendMoney(sendMoney!);
 }

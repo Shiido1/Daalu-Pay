@@ -40,30 +40,12 @@ class TransactionScreen extends StatelessWidget {
                     height: 60.h,
                   ),
                   paddedWing(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () => Navigator.pop(context),
-                            icon: Icon(
-                              Icons.arrow_back_ios_new_outlined,
-                              color: AppColor.inGrey,
-                              size: 20.sp,
-                            )),
-                        TextView(
-                          text: 'Transactions',
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(16.w),
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColor.inGrey,
-                          ),
-                        )
-                      ],
-                    ),
+                    child: Center(
+                        child: TextView(
+                      text: 'Transactions',
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w500,
+                    )),
                   ),
                   SizedBox(
                     height: 30.h,

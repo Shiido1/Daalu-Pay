@@ -1,10 +1,11 @@
+import 'package:daalu_pay/core/core_folder/app/app.router.dart';
+import 'package:daalu_pay/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
-
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../../core/core_folder/app/app.locator.dart';
 import '../../../app_assets/app_color.dart';
@@ -13,6 +14,10 @@ import '../../../widget/text_widget.dart';
 
 class WalletScreen extends StatelessWidget {
   const WalletScreen({super.key});
+  paddedWin({child}) => Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: child,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -39,32 +44,13 @@ class WalletScreen extends StatelessWidget {
                     SizedBox(
                       height: 60.h,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () => Navigator.pop(context),
-                            icon: Icon(
-                              Icons.arrow_back_ios_new_outlined,
-                              color: AppColor.inGrey,
-                              size: 20.sp,
-                            )),
-                        TextView(
-                          text: 'Wallet',
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        SizedBox(
-                          width: 30.w,
-                        )
-                        // Container(
-                        //   padding: EdgeInsets.all(16.w),
-                        //   decoration: const BoxDecoration(
-                        //     shape: BoxShape.circle,
-                        //     color: AppColor.inGrey,
-                        //   ),
-                        // )
-                      ],
+                    paddedWin(
+                      child: Center(
+                          child: TextView(
+                        text: 'Wallet',
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w500,
+                      )),
                     ),
                     SizedBox(
                       height: 10.h,
@@ -159,11 +145,23 @@ class WalletScreen extends StatelessWidget {
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w500,
                         ),
-                        TextView(
-                          text: 'View All',
-                          color: AppColor.grey,
-                          fontSize: 13.2.sp,
-                          fontWeight: FontWeight.w400,
+                        GestureDetector(
+                          onTap: () =>
+                              navigate.navigateTo(Routes.sendMoneyScreen),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 8.w),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              color: AppColor.primary,
+                            ),
+                            child: TextView(
+                              text: 'Send Money',
+                              color: AppColor.white,
+                              fontSize: 14.2.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ],
                     ),

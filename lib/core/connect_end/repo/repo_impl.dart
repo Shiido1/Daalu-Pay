@@ -1,6 +1,12 @@
+import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
+import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
+import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
+import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
 import 'package:injectable/injectable.dart';
 import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/manager/shared_preference.dart';
@@ -63,6 +69,47 @@ class AuthRepoImpl {
 
   Future<dynamic> updateProfile(RegisterEntityModel update) async {
     final response = await _contract.updateProfile(update);
+    return response;
+  }
+
+  Future<UpdatePasswordResponseModel> updatePassword(
+      UpdatePasswordEntity updatePassword) async {
+    final response = await _contract.updatePassword(updatePassword);
+    return response;
+  }
+
+  Future<dynamic> resetPassword(ResetPasswordEntity resetPassword) async {
+    final response = await _contract.resetPassword(resetPassword);
+    return response;
+  }
+
+  Future<dynamic> forgotPassword(String email) async {
+    final response = await _contract.forgotPassword(email);
+    return response;
+  }
+
+  Future<dynamic> requestOtp(String email) async {
+    final response = await _contract.requestOtp(email);
+    return response;
+  }
+
+  Future<dynamic> verifyOtp({String? otp, String? email}) async {
+    final response = await _contract.verifyOtp(otp: otp, email: email);
+    return response;
+  }
+
+  Future<dynamic> alipayVerify(AliPayEntityModel alipay) async {
+    final response = await _contract.alipayVerify(alipay);
+    return response;
+  }
+
+  Future<GetWalletIdResponseModel> getWalletId(String id) async {
+    final response = await _contract.getWalletId(id);
+    return response;
+  }
+
+  Future<dynamic> sendMoney(SendMonetEntityModel sendMoney) async {
+    final response = await _contract.sendMoney(sendMoney);
     return response;
   }
 

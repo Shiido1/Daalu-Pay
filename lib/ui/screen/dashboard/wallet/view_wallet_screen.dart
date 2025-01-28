@@ -177,101 +177,109 @@ class _ViewWalletScreenState extends State<ViewWalletScreen> {
                   SizedBox(
                     height: 30.h,
                   ),
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        if (model.isLoading ||
-                            model.getStatsResponseModel == null)
-                          SizedBox.shrink()
-                        else if (model
-                            .getStatsResponseModel!.data!.transactions!.isEmpty)
-                          TextView(
-                            text: 'No Transaction',
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w500,
-                          )
-                        else if (model.getStatsResponseModel != null &&
-                            model.getStatsResponseModel!.data!.transactions!
-                                .isNotEmpty)
-                          ...model.getStatsResponseModel!.data!.transactions!
-                              .map((o) => Container(
-                                    padding: EdgeInsets.all(10.w),
-                                    margin: EdgeInsets.only(bottom: 16.w),
-                                    decoration: BoxDecoration(
-                                        color: AppColor.white,
-                                        border:
-                                            Border.all(color: AppColor.inGrey),
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              width: 160.w,
-                                              child: TextView(
+                  SizedBox(
+                    height: 400.h,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          if (model.isLoading ||
+                              model.getStatsResponseModel == null)
+                            SizedBox.shrink()
+                          else if (model.getStatsResponseModel!.data!
+                              .transactions!.isEmpty)
+                            TextView(
+                              text: 'No Transaction',
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w500,
+                            )
+                          else if (model.getStatsResponseModel != null &&
+                              model.getStatsResponseModel!.data!.transactions!
+                                  .isNotEmpty)
+                            ...model.getStatsResponseModel!.data!.transactions!
+                                .map((o) => Container(
+                                      padding: EdgeInsets.all(10.w),
+                                      margin: EdgeInsets.only(bottom: 16.w),
+                                      decoration: BoxDecoration(
+                                          color: AppColor.white,
+                                          border: Border.all(
+                                              color: AppColor.inGrey),
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                width: 160.w,
+                                                child: TextView(
+                                                  text:
+                                                      'Ref No-: ${o.referenceNumber?.toUpperCase()}',
+                                                  fontSize: 12.sp,
+                                                  maxLines: 1,
+                                                  textOverflow:
+                                                      TextOverflow.ellipsis,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              TextView(
+                                                text: DateFormat(
+                                                        'yyyy-MM-dd hh:mm a')
+                                                    .format(DateTime.parse(o
+                                                        .createdAt
+                                                        .toString())),
+                                                fontSize: 12.sp,
+                                                color: AppColor.grey,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              TextView(
                                                 text:
-                                                    'Ref No-: ${o.referenceNumber?.toUpperCase()}',
-                                                fontSize: 12.sp,
-                                                maxLines: 1,
-                                                textOverflow:
-                                                    TextOverflow.ellipsis,
-                                                fontWeight: FontWeight.w500,
+                                                    '${getCurrency()}${oCcy.format(double.parse(o.amount!))}',
+                                                textStyle: TextStyle(
+                                                  color: AppColor.greyNice,
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
                                               ),
-                                            ),
-                                            TextView(
-                                              text: DateFormat(
-                                                      'yyyy-MM-dd hh:mm a')
-                                                  .format(DateTime.parse(
-                                                      o.createdAt.toString())),
-                                              fontSize: 12.sp,
-                                              color: AppColor.grey,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            TextView(
-                                              text:
-                                                  '${getCurrency()}${oCcy.format(double.parse(o.amount!))}',
-                                              textStyle: TextStyle(
-                                                color: AppColor.greyNice,
-                                                fontSize: 12.sp,
-                                                fontWeight: FontWeight.w500,
+                                              TextView(
+                                                text: o.status?.toLowerCase() ==
+                                                        'completed'
+                                                    ? 'Successful'
+                                                    : o.status!.capitalize(),
+                                                fontSize: 13.2.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: o.status
+                                                            ?.toLowerCase() ==
+                                                        'completed'
+                                                    ? AppColor.green
+                                                    : o.status?.toLowerCase() ==
+                                                            'pending'
+                                                        ? AppColor.grey
+                                                        : AppColor.red,
                                               ),
-                                            ),
-                                            TextView(
-                                              text: o.status?.toLowerCase() ==
-                                                      'completed'
-                                                  ? 'Successful'
-                                                  : o.status!.capitalize(),
-                                              fontSize: 13.2.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: o.status?.toLowerCase() ==
-                                                      'completed'
-                                                  ? AppColor.green
-                                                  : o.status?.toLowerCase() ==
-                                                          'pending'
-                                                      ? AppColor.grey
-                                                      : AppColor.red,
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ))
-                      ],
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ))
+                        ],
+                      ),
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
                 ],
               ),
             ),

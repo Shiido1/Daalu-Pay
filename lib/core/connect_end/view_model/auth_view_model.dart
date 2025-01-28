@@ -22,6 +22,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_paystack_max/flutter_paystack_max.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutterwave_standard_smart/flutterwave.dart';
+import 'package:flutterwave_standard_smart/models/requests/customer.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import '../../../ui/app_assets/app_color.dart';
@@ -1494,8 +1496,37 @@ class AuthViewModel extends BaseViewModel {
               currency: 'NGN',
               channel: 'paystack',
               walletId: walletId));
-      print('oya deposit');
     }
+  }
+
+  handleFlutterPaymentInitialization(
+      {amount, context, String? walletId}) async {
+    final Customer customer = Customer(
+        name: session.usersData['user']['firstName'],
+        phoneNumber: session.usersData['user']['phone'],
+        email: session.usersData['user']['email']);
+    final Flutterwave flutterwave = Flutterwave(
+        context: context,
+        publicKey: "FLWPUBK_TEST-c2f20bd64cbacd523ebb2542ad58aa00-X",
+        currency: "NGN",
+        redirectUrl: "https://flutterwave.com/pay/shiidotgyt",
+        txRef: walletId!,
+        amount: "$amount",
+        customer: customer,
+        paymentOptions: "card, payattitude, barter, bank transfer, ussd",
+        customization: Customization(title: "My Payment"),
+        isTestMode: true);
+
+    final ChargeResponse response = await flutterwave.charge();
+    if (response.status?.toLowerCase() == 'successful') {
+      depositMoney(context,
+          depositMoney: DepositWalletEntityModel(
+              amount: amount.toString(),
+              currency: 'NGN',
+              channel: 'flutterwave',
+              walletId: walletId));
+    }
+    print("${response.toJson()}");
   }
 
   isDisable() {

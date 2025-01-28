@@ -1445,7 +1445,6 @@ class AuthViewModel extends BaseViewModel {
   }
 
   void makePayment({amount, context, String? walletId}) async {
-    print('$walletId!');
     const secretKey = 'sk_test_d9830d6c7a17c2b69f22ccb0589b560c902f6059';
 
     final request = PaystackTransactionRequest(

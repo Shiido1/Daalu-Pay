@@ -138,6 +138,29 @@ class _AlipayScreenState extends State<AlipayScreen> {
                                 color: AppColor.red.withOpacity(.7),
                               )
                             : SizedBox.shrink(),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        TextFormWidget(
+                          label: 'Currency',
+                          hint: 'Select Currency',
+                          border: 10,
+                          isFilled: true,
+                          readOnly: true,
+                          fillColor: AppColor.white,
+                          controller: model.currencyController,
+                          validator: AppValidator.validateString(),
+                          suffixWidget: IconButton(
+                              onPressed: () =>
+                                  model.shwWalletCurrencyDialog(context),
+                              icon: Icon(
+                                Icons.arrow_drop_down_sharp,
+                                color: AppColor.black,
+                              )),
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
                       ],
                     ),
                     SizedBox(

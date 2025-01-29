@@ -136,10 +136,11 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                     ),
                     ButtonWidget(
                       buttonText: 'Send Money',
-                      color: AppColor.grey,
+                      color: !model.isLoading ? AppColor.white : AppColor.grey,
                       border: 8,
                       isLoading: model.isLoading,
-                      buttonColor: AppColor.inGrey,
+                      buttonColor:
+                          !model.isLoading ? AppColor.primary : AppColor.inGrey,
                       buttonBorderColor: Colors.transparent,
                       onPressed: () {
                         if (formKey.currentState!.validate() &&

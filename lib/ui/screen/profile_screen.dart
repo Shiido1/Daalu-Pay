@@ -70,9 +70,12 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                               TextView(
-                                text:
-                                    '${model.userResponseModel?.data?.firstName}'
-                                        .capitalize(),
+                                text: model.userResponseModel?.data
+                                            ?.firstName !=
+                                        null
+                                    ? '${model.userResponseModel?.data?.firstName}'
+                                        .capitalize()
+                                    : '',
                                 fontSize: 14.4.sp,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -105,9 +108,11 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                               TextView(
-                                text:
-                                    '${model.userResponseModel?.data?.lastName}'
-                                        .capitalize(),
+                                text: model.userResponseModel?.data?.lastName !=
+                                        null
+                                    ? '${model.userResponseModel?.data?.lastName}'
+                                        .capitalize()
+                                    : '',
                                 fontSize: 14.4.sp,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -143,7 +148,10 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                               TextView(
-                                text: '${model.userResponseModel?.data?.email}',
+                                text: model.userResponseModel?.data?.lastName !=
+                                        null
+                                    ? '${model.userResponseModel?.data?.email}'
+                                    : '',
                                 fontSize: 14.4.sp,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -179,8 +187,11 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                               TextView(
-                                text: '${model.userResponseModel?.data?.gender}'
-                                    .capitalize(),
+                                text: model.userResponseModel?.data?.gender !=
+                                        null
+                                    ? '${model.userResponseModel?.data?.gender}'
+                                        .capitalize()
+                                    : '',
                                 fontSize: 14.4.sp,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -216,7 +227,10 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                               TextView(
-                                text: '${model.userResponseModel?.data?.phone}',
+                                text: model.userResponseModel?.data?.phone !=
+                                        null
+                                    ? '${model.userResponseModel?.data?.phone}'
+                                    : '',
                                 fontSize: 14.4.sp,
                                 fontWeight: FontWeight.w500,
                               ),

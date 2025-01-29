@@ -1,11 +1,9 @@
 import 'package:daalu_pay_admin/core/core_folder/app/app.router.dart';
 import 'package:daalu_pay_admin/main.dart';
 import 'package:daalu_pay_admin/ui/app_assets/app_color.dart';
-import 'package:daalu_pay_admin/ui/app_assets/app_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
@@ -55,9 +53,29 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w500,
                       ),
-                      SvgPicture.asset(
-                        AppImage.person,
-                        color: AppColor.primary,
+                      PopupMenuButton(
+                        onSelected: (value) {
+                          // your logic
+                        },
+                        color: AppColor.white,
+                        icon: Icon(
+                          Icons.more_vert_rounded,
+                          size: 24.sp,
+                          color: AppColor.primary,
+                        ),
+                        itemBuilder: (BuildContext bc) {
+                          return [
+                            PopupMenuItem(
+                              value: '/receipt',
+                              onTap: () {},
+                              child: TextView(
+                                text: 'View Receipts',
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ];
+                        },
                       )
                     ],
                   ),

@@ -37,6 +37,8 @@ class AuthViewModel extends BaseViewModel {
 
   bool get isLoading => _isLoading;
   bool _isLoading = false;
+  bool get isLoadingReceipts => _isLoadingReceipts;
+  bool _isLoadingReceipts = false;
 
   bool get isTogglePassword => _isTogglePassword;
   bool _isTogglePassword = false;
@@ -1088,13 +1090,21 @@ class AuthViewModel extends BaseViewModel {
 
   Future<void> approveReceipts(contxt, {String? id}) async {
     try {
-      _isLoading = true;
+      _isLoadingReceipts = true;
       var res = await runBusyFuture(repositoryImply.approveReceipts(id!),
           throwException: true);
-      logger.d(res);
-      _isLoading = false;
+      if (res['status'] == 'success') {
+        AppUtils.snackbar(
+          contxt,
+          message: 'Users receipts has been approved.',
+        );
+
+        getUsersReceipt(contxt);
+      }
+
+      _isLoadingReceipts = false;
     } catch (e) {
-      _isLoading = false;
+      _isLoadingReceipts = false;
       logger.d(e);
       AppUtils.snackbar(contxt, message: e.toString(), error: true);
     }
@@ -1103,15 +1113,22 @@ class AuthViewModel extends BaseViewModel {
 
   Future<void> denyReceipts(contxt, {String? id}) async {
     try {
-      _isLoading = true;
-      await runBusyFuture(
+      _isLoadingReceipts = true;
+      var v = await runBusyFuture(
           repositoryImply.denyReceipts(
             id,
           ),
           throwException: true);
-      _isLoading = false;
+      if (v['status'] == 'success') {
+        AppUtils.snackbar(
+          contxt,
+          message: 'Users receipts has been denied.',
+        );
+        getUsersReceipt(contxt);
+      }
+      _isLoadingReceipts = false;
     } catch (e) {
-      _isLoading = false;
+      _isLoadingReceipts = false;
       logger.d(e);
       AppUtils.snackbar(contxt, message: e.toString(), error: true);
     }

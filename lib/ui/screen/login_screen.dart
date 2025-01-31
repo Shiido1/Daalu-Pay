@@ -92,38 +92,38 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: !model.isTogglePassword,
                       onPasswordToggle: model.isOnTogglePassword,
                     ),
+                    // SizedBox(
+                    //   height: 14.0.h,
+                    // ),
+                    // TextView(
+                    //   text: 'Forgot Password',
+                    //   fontSize: 16.2.sp,
+                    //   fontWeight: FontWeight.w500,
+                    //   color: AppColor.darkGrey,
+                    // ),
+                    // SizedBox(
+                    //   height: 20.h,
+                    // ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   crossAxisAlignment: CrossAxisAlignment.center,
+                    //   children: [
+                    //     TextView(
+                    //       text: 'Don’t have an account? ',
+                    //       fontSize: 16.2.sp,
+                    //       fontWeight: FontWeight.w500,
+                    //       color: AppColor.darkGrey,
+                    //     ),
+                    //     TextView(
+                    //       text: 'Sign up here',
+                    //       fontSize: 16.2.sp,
+                    //       fontWeight: FontWeight.w500,
+                    //       color: AppColor.primary,
+                    //     ),
+                    //   ],
+                    // ),
                     SizedBox(
-                      height: 14.0.h,
-                    ),
-                    TextView(
-                      text: 'Forgot Password',
-                      fontSize: 16.2.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColor.darkGrey,
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        TextView(
-                          text: 'Don’t have an account? ',
-                          fontSize: 16.2.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AppColor.darkGrey,
-                        ),
-                        TextView(
-                          text: 'Sign up here',
-                          fontSize: 16.2.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AppColor.primary,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 240.h,
+                      height: 180.h,
                     ),
                     ButtonWidget(
                         buttonText: 'Login',

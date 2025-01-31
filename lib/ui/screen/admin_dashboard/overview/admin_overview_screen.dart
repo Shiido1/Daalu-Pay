@@ -67,7 +67,8 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                           return [
                             PopupMenuItem(
                               value: '/receipt',
-                              onTap: () {},
+                              onTap: () => navigate
+                                  .navigateTo(Routes.viewUsersReceiptScreen),
                               child: TextView(
                                 text: 'View Receipts',
                                 fontSize: 16.sp,

@@ -3,6 +3,7 @@ import 'package:daalu_pay_admin/core/connect_end/model/get_admin_transactions_re
 import 'package:daalu_pay_admin/core/connect_end/model/get_all_user_response_model/get_all_user_response_model.dart';
 import 'package:injectable/injectable.dart';
 
+import '../connect_end/model/get_users_receipt_response_model/get_users_receipt_response_model.dart';
 import '../connect_end/model/login_entity_model.dart';
 import '../connect_end/model/login_response_model/login_response_model.dart';
 import '../core_folder/app/app.locator.dart';
@@ -148,6 +149,43 @@ class AuthApi {
       final response = await _service.call(
           'transactions/$id/deny', RequestMethod.post,
           data: {"reason": text});
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d(e);
+      rethrow;
+    }
+  }
+
+  Future<GetUsersReceiptResponseModel> getUsersReceipts() async {
+    try {
+      final response = await _service.call('receipts', RequestMethod.get);
+      logger.d(response.data);
+      return GetUsersReceiptResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d(e);
+      rethrow;
+    }
+  }
+
+  Future<dynamic> approveReceipts(String? id) async {
+    try {
+      final response =
+          await _service.call('receipts/$id/approve', RequestMethod.post);
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d(e);
+      rethrow;
+    }
+  }
+
+  Future<dynamic> denyReceipts(String? id) async {
+    try {
+      final response = await _service.call(
+        'receipts/$id/deny',
+        RequestMethod.post,
+      );
       logger.d(response.data);
       return response.data;
     } catch (e) {

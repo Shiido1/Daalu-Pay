@@ -1,4 +1,5 @@
 import 'package:daalu_pay_admin/core/connect_end/model/get_all_user_response_model/get_all_user_response_model.dart';
+import 'package:daalu_pay_admin/core/connect_end/model/get_users_receipt_response_model/get_users_receipt_response_model.dart';
 import 'package:injectable/injectable.dart';
 import '../../api_folder/auth_api.dart';
 import '../../core_folder/app/app.locator.dart';
@@ -29,4 +30,9 @@ class AuthContractsImpl {
       await _api.approveTransactions(id);
   Future<dynamic> denyTransaction({String? id, String? text}) async =>
       await _api.denyTransactions(id: id, text: text);
+  Future<GetUsersReceiptResponseModel> getUsersReceipts() async =>
+      await _api.getUsersReceipts();
+  Future<dynamic> approveReceipts(String id) async =>
+      await _api.approveReceipts(id);
+  Future<dynamic> denyReceipts(String? id) async => await _api.denyReceipts(id);
 }

@@ -20,6 +20,7 @@ import '../model/get_admin_transactions_response_model/datum.dart';
 import '../model/get_admin_transactions_response_model/get_admin_transactions_response_model.dart';
 import '../model/get_all_user_response_model/datum.dart' as user;
 import '../model/get_all_user_response_model/get_all_user_response_model.dart';
+import '../model/get_users_receipt_response_model/get_users_receipt_response_model.dart';
 import '../model/login_entity_model.dart';
 import '../model/login_response_model/login_response_model.dart';
 import '../repo/repo_impl.dart';
@@ -75,6 +76,10 @@ class AuthViewModel extends BaseViewModel {
   List<Datum> rej = [];
   List<Datum> pend = [];
   String query = '';
+
+  GetUsersReceiptResponseModel? _getUsersReceiptResponseModel;
+  GetUsersReceiptResponseModel? get getUsersReceiptResponseMode =>
+      _getUsersReceiptResponseModel;
 
   // login flow so api call for method can be called here
 
@@ -1058,6 +1063,53 @@ class AuthViewModel extends BaseViewModel {
       rejectController.text = '';
       getAdminTransactions(contxt);
       Navigator.pop(contxt);
+    } catch (e) {
+      _isLoading = false;
+      logger.d(e);
+      AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getUsersReceipt(contxt) async {
+    try {
+      _isLoading = true;
+      _getUsersReceiptResponseModel = await runBusyFuture(
+          repositoryImply.getUsersReceipts(),
+          throwException: true);
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      logger.d(e);
+      AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> approveReceipts(contxt, {String? id}) async {
+    try {
+      _isLoading = true;
+      var res = await runBusyFuture(repositoryImply.approveReceipts(id!),
+          throwException: true);
+      logger.d(res);
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      logger.d(e);
+      AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> denyReceipts(contxt, {String? id}) async {
+    try {
+      _isLoading = true;
+      await runBusyFuture(
+          repositoryImply.denyReceipts(
+            id,
+          ),
+          throwException: true);
+      _isLoading = false;
     } catch (e) {
       _isLoading = false;
       logger.d(e);

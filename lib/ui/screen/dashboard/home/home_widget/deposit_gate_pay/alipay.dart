@@ -2,12 +2,15 @@ import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../../../app_assets/app_color.dart';
+import '../../../../../app_assets/app_utils.dart';
 import '../../../../../app_assets/app_validatiion.dart';
 import '../../../../../widget/button_widget.dart';
 import '../../../../../widget/text_form_widget.dart';
@@ -103,7 +106,70 @@ class _AlipayScreenState extends State<AlipayScreen> {
                       ],
                     ),
                     SizedBox(
-                      height: 40.h,
+                      height: 10.h,
+                    ),
+                    Center(
+                      child: Container(
+                        margin: EdgeInsets.all(20.w),
+                        padding: EdgeInsets.all(10.w),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: AppColor.grey.withOpacity(.4)),
+                            borderRadius: BorderRadius.circular(6)),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 6.h,
+                            ),
+                            TextView(
+                              text: 'Scan QR Code to Pay',
+                              fontSize: 18.sp,
+                              color: AppColor.darkGrey,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            QrImageView(
+                              data: 'https://qrfy.io/r/kvkzs_kXLe',
+                              version: QrVersions.auto,
+                              size: 240,
+                              gapless: false,
+                            ),
+                            SizedBox(
+                              height: 14.20.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                TextView(
+                                  text: 'Copy address:',
+                                  fontSize: 15.2.sp,
+                                  color: AppColor.darkGrey,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                SizedBox(width: 10.h),
+                                IconButton(
+                                    onPressed: () {
+                                      Clipboard.setData(ClipboardData(
+                                          text:
+                                              'https://qrfy.io/r/kvkzs_kXLe'));
+                                      AppUtils.snackbar(context,
+                                          message: 'Barcode Address Copied..!');
+                                    },
+                                    icon: Icon(
+                                      Icons.copy,
+                                      color: AppColor.black,
+                                      size: 24.0.sp,
+                                    ))
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
                     ),
                     Column(
                       children: [

@@ -1372,7 +1372,9 @@ class AuthViewModel extends BaseViewModel {
       var v = await runBusyFuture(repositoryImply.alipayVerify(alipay!),
           throwException: true);
       _isLoading = false;
-      print('object:::::$v');
+      if (v['status'] == 'success') {
+        AppUtils.snackbar(context, message: 'Receipt sent successfully..!');
+      }
     } catch (e) {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);

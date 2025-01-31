@@ -40,12 +40,22 @@ class _AlipayScreenState extends State<AlipayScreen> {
   TextEditingController amountController = TextEditingController();
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
+  String? walletId;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: ViewModelBuilder<AuthViewModel>.reactive(
           viewModelBuilder: () => AuthViewModel(),
-          onViewModelReady: (model) {},
+          onViewModelReady: (model) {
+            WidgetsBinding.instance.addPostFrameCallback((_) async {
+              await model.getStatistics(context);
+              model.getStatsResponseModel!.data!.wallets!.any((e) {
+                walletId = e.id.toString();
+                return e.currency == 'CNY';
+              });
+            });
+          },
           disposeViewModel: false,
           builder: (_, AuthViewModel model, __) {
             return SingleChildScrollView(
@@ -204,29 +214,6 @@ class _AlipayScreenState extends State<AlipayScreen> {
                                 color: AppColor.red.withOpacity(.7),
                               )
                             : SizedBox.shrink(),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        TextFormWidget(
-                          label: 'Currency',
-                          hint: 'Select Currency',
-                          border: 10,
-                          isFilled: true,
-                          readOnly: true,
-                          fillColor: AppColor.white,
-                          controller: model.currencyController,
-                          validator: AppValidator.validateString(),
-                          suffixWidget: IconButton(
-                              onPressed: () =>
-                                  model.shwWalletCurrencyDialog(context),
-                              icon: Icon(
-                                Icons.arrow_drop_down_sharp,
-                                color: AppColor.black,
-                              )),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
                       ],
                     ),
                     SizedBox(
@@ -243,6 +230,7 @@ class _AlipayScreenState extends State<AlipayScreen> {
                           if (formkey.currentState!.validate()) {
                             model.alipayVerify(context,
                                 alipay: AliPayEntityModel(
+                                    walletId: walletId,
                                     amount: amountController.text,
                                     receipt: MultipartFile.fromBytes(
                                         model
@@ -254,7 +242,7 @@ class _AlipayScreenState extends State<AlipayScreen> {
                           }
                         }),
                     SizedBox(
-                      height: 30.h,
+                      height: 60.h,
                     ),
                   ],
                 ),

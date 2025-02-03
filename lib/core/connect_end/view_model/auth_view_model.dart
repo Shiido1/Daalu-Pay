@@ -1088,6 +1088,21 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<void> getUsersReceiptAgain(contxt) async {
+    try {
+      // _isLoading = true;
+      _getUsersReceiptResponseModel = await runBusyFuture(
+          repositoryImply.getUsersReceipts(),
+          throwException: true);
+      // _isLoading = false;
+    } catch (e) {
+      // _isLoading = false;
+      logger.d(e);
+      AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
   Future<void> approveReceipts(contxt, {String? id}) async {
     try {
       _isLoadingReceipts = true;
@@ -1099,7 +1114,7 @@ class AuthViewModel extends BaseViewModel {
           message: 'Users receipts has been approved.',
         );
 
-        getUsersReceipt(contxt);
+        getUsersReceiptAgain(contxt);
       }
 
       _isLoadingReceipts = false;
@@ -1124,7 +1139,7 @@ class AuthViewModel extends BaseViewModel {
           contxt,
           message: 'Users receipts has been denied.',
         );
-        getUsersReceipt(contxt);
+        getUsersReceiptAgain(contxt);
       }
       _isLoadingReceipts = false;
     } catch (e) {

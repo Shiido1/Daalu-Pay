@@ -35,7 +35,7 @@ class FirebaseApi {
 
   Future initLocalNotification() async {
     const ios = DarwinInitializationSettings();
-    const android = AndroidInitializationSettings("@drawable/launcher_icon");
+    const android = AndroidInitializationSettings("@drawable/applogo");
     const settings = InitializationSettings(android: android, iOS: ios);
     await flutterLocalNotificationsPlugin.initialize(settings,
         onDidReceiveNotificationResponse: onDidReceiveNotificationResponse);
@@ -77,7 +77,7 @@ class FirebaseApi {
             android: AndroidNotificationDetails(
                 _androidChannel.id, _androidChannel.name,
                 channelDescription: _androidChannel.description,
-                icon: "@drawable/launcher_icon"),
+                icon: "@drawable/applogo"),
           ),
           payload: jsonEncode(message.toMap()));
     });

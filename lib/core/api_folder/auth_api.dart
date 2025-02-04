@@ -7,6 +7,8 @@ import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/
 import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/kyc_entity_model/kyc_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/kyc_response_model/kyc_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/notification_user_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/notification_user_response_model/notification_user_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
@@ -269,6 +271,18 @@ class AuthApi {
           data: FormData.fromMap(kyc.toJson()));
       logger.d(response.data);
       return KycResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<NotificationUserResponseModel> notificationToken(NotificationUserEntityModel notificationTokenEntity) async {
+    try {
+      final response = await _service.call(UrlConfig.notification_token, RequestMethod.post,
+          data: notificationTokenEntity.toJson());
+      logger.d(response.data);
+      return NotificationUserResponseModel.fromJson(response.data);
     } catch (e) {
       logger.d("response:$e");
       rethrow;

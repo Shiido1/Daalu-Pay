@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -6,11 +7,18 @@ import 'package:stacked_services/stacked_services.dart';
 import 'core/core_folder/app/app.locator.dart';
 import 'core/core_folder/app/app.router.dart';
 import 'core/core_folder/manager/shared_preference.dart';
+import 'core/firebase_api.dart';
+import 'firebase_options.dart';
 
 final navigate = locator<NavigationService>();
+var globalfCMToken;
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseApi().initNotification();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   setupLocator();

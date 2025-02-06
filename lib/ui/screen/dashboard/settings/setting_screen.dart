@@ -10,9 +10,14 @@ import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../../core/core_folder/manager/shared_preference.dart';
 import '../../../app_assets/contant.dart';
 
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
 
+  @override
+  State<SettingScreen> createState() => _SettingScreenState();
+}
+
+class _SettingScreenState extends State<SettingScreen> {
   paddedWind({child}) => Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.w),
         child: child,
@@ -190,20 +195,54 @@ class SettingScreen extends StatelessWidget {
                         ),
                         paddedWind(
                           child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(
-                                Icons.notifications_none,
-                                color: AppColor.primary.withOpacity(.5),
-                                size: 19.2.sp,
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Icon(
+                                    Icons.notifications_none,
+                                    color: AppColor.primary.withOpacity(.5),
+                                    size: 19.2.sp,
+                                  ),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  TextView(
+                                    text: 'Notification',
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              TextView(
-                                text: 'Notification',
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
+                              Switch(
+                                value: SharedPreferencesService
+                                    .instance.isNotified,
+                                onChanged: (v) {
+                                  if (SharedPreferencesService
+                                          .instance.isNotified ==
+                                      true) {
+                                    SharedPreferencesService
+                                        .instance.isNotified = false;
+                                    // disableCurrencies(context, d.id.toString());
+                                  } else {
+                                    SharedPreferencesService
+                                        .instance.isNotified = true;
+                                    // enableCurrencies(context, d.id.toString());
+                                  }
+                                  setState(() {});
+                                  ();
+                                },
+                                activeTrackColor: SharedPreferencesService
+                                            .instance.isNotified ==
+                                        true
+                                    ? AppColor.deeperGreen
+                                    : AppColor.inGrey,
+                                activeColor: SharedPreferencesService
+                                            .instance.isNotified ==
+                                        true
+                                    ? Colors.white
+                                    : AppColor.inGrey,
                               ),
                             ],
                           ),

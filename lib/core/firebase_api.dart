@@ -83,11 +83,40 @@ class FirebaseApi {
     });
   }
 
+  Future<void> _initNotification() async {
+    // Request permission
+    NotificationSettings settings = await _firebaseMessage.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+
+      // Get APNs token (iOS only)
+      String? apnsToken = await _firebaseMessage.getAPNSToken();
+      if (apnsToken != null) {
+        print("APNs Token: $apnsToken");
+      } else {
+        print(
+            "APNs token is still null. Ensure push notifications are enabled.");
+      }
+
+      // Get FCM token
+      String? fcmToken = await _firebaseMessage.getToken();
+      print("FCM Token: $fcmToken");
+    } else {
+      print('User declined or has not accepted notification permissions');
+    }
+  }
+
   Future<void> initNotification() async {
     await _firebaseMessage.requestPermission();
     globalfCMToken = await _firebaseMessage.getToken();
     print(":jjjj:::::$globalfCMToken");
     initPushNotification();
     initLocalNotification();
+    _initNotification();
   }
 }

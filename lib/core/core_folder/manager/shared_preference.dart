@@ -25,11 +25,13 @@ class SharedPreferencesService {
 
   static const String keyAuthToken = 'auth_token';
   static const String logginKey = 'loggin';
+  static const String notifiedKey = 'notify';
   static const String isJustLoggedInKey = 'isJustLoggedIn ';
   static const String userData = 'user';
 
   String get authToken => sharedPreferences?.getString(keyAuthToken) ?? '';
 
+  bool get isNotified => sharedPreferences?.getBool(notifiedKey) ?? false;
   bool get isLoggedIn => sharedPreferences?.getBool(logginKey) ?? false;
   Map<String, dynamic> get usersData {
     final userDataString = sharedPreferences!.getString(userData);
@@ -41,6 +43,8 @@ class SharedPreferencesService {
 
   set isLoggedIn(bool logging) =>
       sharedPreferences?.setBool(logginKey, logging);
+  set isNotified(bool notify) =>
+      sharedPreferences?.setBool(notifiedKey, notify);
   set authToken(String authToken) =>
       sharedPreferences?.setString(keyAuthToken, authToken);
 

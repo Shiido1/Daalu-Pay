@@ -83,15 +83,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: Column(
           children: [
             Stack(children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: TextView(
-                  text: 'Skip',
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: const Color.fromARGB(255, 10, 15, 22),
-                ),
-              ),
+              // Align(
+              //   alignment: Alignment.topRight,
+              //   child: TextView(
+              //     text: 'Skip',
+              //     fontSize: 14.sp,
+              //     fontWeight: FontWeight.w400,
+              //     color: const Color.fromARGB(255, 10, 15, 22),
+              //   ),
+              // ),
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

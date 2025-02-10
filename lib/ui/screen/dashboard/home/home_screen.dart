@@ -235,6 +235,44 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 46.h),
                 paddedWing(
                   value: 10.w,
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: TextView(
+                      text: 'Swap Transaction',
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppColor.darkGrey,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                model.getStatsResponseModel == null
+                    ? SpinKitPouringHourGlassRefined(
+                        color: AppColor.primary,
+                        size: 43.0.sp,
+                      )
+                    : model.getStatsResponseModel!.data!.swaps!.isEmpty
+                        ? Center(
+                            child: TextView(
+                              text: 'No Transations',
+                              fontSize: 20.sp,
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              ...model
+                                  .getStatsResponseModel!.data!.swaps!.reversed
+                                  .map((e) => recentSwapTransWidget(
+                                        context: context,
+                                        e: e,
+                                      ))
+                            ],
+                          ),
+                SizedBox(height: 46.h),
+                paddedWing(
+                  value: 10.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

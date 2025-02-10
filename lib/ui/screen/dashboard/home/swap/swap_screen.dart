@@ -1,3 +1,5 @@
+// ignore_for_file: collection_methods_unrelated_type
+
 import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +21,10 @@ class SwapScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AuthViewModel>.reactive(
         viewModelBuilder: () => AuthViewModel(),
-        onViewModelReady: (model) {
-          model.exchangeRates(context, from: 'NGN', to: 'USD');
+        onViewModelReady: (model) async {
+          await model.exchangeRates(context, from: 'NGN', to: 'USD');
+          // ignore: use_build_context_synchronously
+          model.getStatistics(context);
         },
         disposeViewModel: false,
         builder: (_, AuthViewModel model, __) {

@@ -403,11 +403,13 @@ class AuthViewModel extends BaseViewModel {
         builder: (builder) {
           return ViewModelBuilder<AuthViewModel>.reactive(
               viewModelBuilder: () => AuthViewModel(),
-              onViewModelReady: (model) {},
+              onViewModelReady: (model) {
+                model.getStatistics(context);
+              },
               disposeViewModel: false,
               builder: (_, AuthViewModel model, __) {
                 return Container(
-                  height: 500.0,
+                  height: 400.0,
                   decoration: BoxDecoration(
                       color: const Color.fromARGB(219, 223, 233, 242),
                       borderRadius: BorderRadius.only(
@@ -447,73 +449,90 @@ class AuthViewModel extends BaseViewModel {
                           ),
                           Expanded(
                             child: SizedBox(
-                              height: 400,
+                              height: 320,
                               child: SingleChildScrollView(
                                 child: Column(
                                   children: [
                                     queryFrom == ''
                                         ? Column(
                                             children: [
-                                              ...countryConst.map((e) =>
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      fromCurrency = e['flag']!;
-                                                      fromCurrencyCode =
-                                                          e['code']!;
-                                                      Navigator.pop(context);
-                                                      notifyListeners();
-                                                    },
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: const Color
-                                                            .fromARGB(
-                                                            219, 223, 233, 242),
-                                                      ),
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 10.w,
-                                                              horizontal: 20.w),
-                                                      child: Row(
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                              e['flag']!),
-                                                          SizedBox(
-                                                            width: 15.6.w,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 180.w,
-                                                            child: TextView(
-                                                              text:
-                                                                  '${e['country']}',
-                                                              fontSize: 17.6,
-                                                              maxLines: 1,
-                                                              textOverflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
+                                              if (model.getStatsResponseModel !=
+                                                  null)
+                                                ...model.getStatsResponseModel!
+                                                    .data!.wallets!
+                                                    .map((e) => GestureDetector(
+                                                          onTap: () {
+                                                            fromCurrency =
+                                                                getWalletCurrencyCode(
+                                                                    e.currency);
+                                                            fromCurrencyCode =
+                                                                e.currency!;
+                                                            Navigator.pop(
+                                                                context);
+                                                            notifyListeners();
+                                                          },
+                                                          child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: const Color
+                                                                  .fromARGB(
+                                                                  219,
+                                                                  223,
+                                                                  233,
+                                                                  242),
                                                             ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  )),
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10.w,
+                                                                    horizontal:
+                                                                        20.w),
+                                                            child: Row(
+                                                              children: [
+                                                                SvgPicture.asset(
+                                                                    getWalletCurrencyCode(
+                                                                        e.currency)),
+                                                                SizedBox(
+                                                                  width: 15.6.w,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 180.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text:
+                                                                        '${e.currency}',
+                                                                    fontSize:
+                                                                        17.6,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )),
                                             ],
                                           )
                                         : Column(
                                             children: [
-                                              ...countryConst
-                                                  .where((o) => o['country']!
+                                              ...model.getStatsResponseModel!
+                                                  .data!.wallets!
+                                                  .where((o) => o.currency!
                                                       .toLowerCase()
                                                       .contains(queryFrom
                                                           .toLowerCase()))
                                                   .map((e) => GestureDetector(
                                                         onTap: () {
                                                           fromCurrency =
-                                                              e['flag']!;
+                                                              getWalletCurrencyCode(
+                                                                  e.currency);
                                                           fromCurrencyCode =
-                                                              e['code']!;
+                                                              e.currency!;
 
                                                           Navigator.pop(
                                                               context);
@@ -535,7 +554,8 @@ class AuthViewModel extends BaseViewModel {
                                                           child: Row(
                                                             children: [
                                                               SvgPicture.asset(
-                                                                  e['flag']!),
+                                                                  getWalletCurrencyCode(
+                                                                      e.currency)),
                                                               SizedBox(
                                                                 width: 15.6.w,
                                                               ),
@@ -543,7 +563,7 @@ class AuthViewModel extends BaseViewModel {
                                                                 width: 180.w,
                                                                 child: TextView(
                                                                   text:
-                                                                      '${e['country']}',
+                                                                      '${e.currency}',
                                                                   fontSize:
                                                                       17.6,
                                                                   fontWeight:
@@ -582,11 +602,13 @@ class AuthViewModel extends BaseViewModel {
         builder: (builder) {
           return ViewModelBuilder<AuthViewModel>.reactive(
               viewModelBuilder: () => AuthViewModel(),
-              onViewModelReady: (model) {},
+              onViewModelReady: (model) {
+                model.getStatistics(context);
+              },
               disposeViewModel: false,
               builder: (_, AuthViewModel model, __) {
                 return Container(
-                  height: 500.0,
+                  height: 400.0,
                   decoration: BoxDecoration(
                       color: const Color.fromARGB(219, 223, 233, 242),
                       borderRadius: BorderRadius.only(
@@ -606,7 +628,7 @@ class AuthViewModel extends BaseViewModel {
                           Padding(
                             padding: EdgeInsets.all(12.w),
                             child: TextFormWidget(
-                              label: 'Search country',
+                              label: 'Search country code',
                               hint: '',
                               border: 10,
                               isFilled: true,
@@ -626,73 +648,90 @@ class AuthViewModel extends BaseViewModel {
                           ),
                           Expanded(
                             child: SizedBox(
-                              height: 400,
+                              height: 320,
                               child: SingleChildScrollView(
                                 child: Column(
                                   children: [
                                     queryTo == ''
                                         ? Column(
                                             children: [
-                                              ...countryConst.map((e) =>
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      toCurrency = e['flag']!;
-                                                      toCurrencyCode =
-                                                          e['code']!;
-                                                      Navigator.pop(context);
-                                                      notifyListeners();
-                                                    },
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: const Color
-                                                            .fromARGB(
-                                                            219, 223, 233, 242),
-                                                      ),
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 10.w,
-                                                              horizontal: 20.w),
-                                                      child: Row(
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                              e['flag']!),
-                                                          SizedBox(
-                                                            width: 15.6.w,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 180.w,
-                                                            child: TextView(
-                                                              text:
-                                                                  '${e['country']}',
-                                                              fontSize: 17.6,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              textOverflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              maxLines: 1,
+                                              if (model.getStatsResponseModel !=
+                                                  null)
+                                                ...model.getStatsResponseModel!
+                                                    .data!.wallets!
+                                                    .map((e) => GestureDetector(
+                                                          onTap: () {
+                                                            toCurrency =
+                                                                getWalletCurrencyCode(
+                                                                    e.currency);
+                                                            toCurrencyCode =
+                                                                e.currency!;
+                                                            Navigator.pop(
+                                                                context);
+                                                            notifyListeners();
+                                                          },
+                                                          child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: const Color
+                                                                  .fromARGB(
+                                                                  219,
+                                                                  223,
+                                                                  233,
+                                                                  242),
                                                             ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ))
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10.w,
+                                                                    horizontal:
+                                                                        20.w),
+                                                            child: Row(
+                                                              children: [
+                                                                SvgPicture.asset(
+                                                                    getWalletCurrencyCode(
+                                                                        e.currency)),
+                                                                SizedBox(
+                                                                  width: 15.6.w,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 180.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text:
+                                                                        '${e.currency}',
+                                                                    fontSize:
+                                                                        17.6,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    maxLines: 1,
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ))
                                             ],
                                           )
                                         : Column(
                                             children: [
-                                              ...countryConst
-                                                  .where((o) => o['country']!
+                                              ...model.getStatsResponseModel!
+                                                  .data!.wallets!
+                                                  .where((o) => o.currency!
                                                       .toLowerCase()
                                                       .contains(queryTo
                                                           .toLowerCase()))
                                                   .map((e) => GestureDetector(
                                                         onTap: () {
                                                           toCurrency =
-                                                              e['flag']!;
+                                                              getWalletCurrencyCode(
+                                                                  e.currency);
                                                           toCurrencyCode =
-                                                              e['code']!;
+                                                              e.currency!;
                                                           Navigator.pop(
                                                               context);
                                                           notifyListeners();
@@ -713,7 +752,8 @@ class AuthViewModel extends BaseViewModel {
                                                           child: Row(
                                                             children: [
                                                               SvgPicture.asset(
-                                                                  e['flag']!),
+                                                                  getWalletCurrencyCode(
+                                                                      e.currency)),
                                                               SizedBox(
                                                                 width: 15.6.w,
                                                               ),
@@ -721,7 +761,7 @@ class AuthViewModel extends BaseViewModel {
                                                                 width: 180.w,
                                                                 child: TextView(
                                                                   text:
-                                                                      '${e['country']}',
+                                                                      '${e.currency}',
                                                                   fontSize:
                                                                       17.6,
                                                                   maxLines: 1,

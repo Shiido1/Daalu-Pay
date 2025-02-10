@@ -111,7 +111,6 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                         border: 10,
                         isFilled: true,
                         fillColor: AppColor.white,
-                        keyboardType: TextInputType.number,
                         controller: model.recipientWalletIdController,
                         validator: AppValidator.validateString(),
                         onChange: (p0) {

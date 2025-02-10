@@ -85,5 +85,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'daalupay.firebasestorage.app',
     measurementId: 'G-67TV9V6Q3G',
   );
-
 }

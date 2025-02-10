@@ -212,12 +212,13 @@ class TransactionScreen extends StatelessWidget {
                           : Column(
                               children: [
                                 if (model.transactionListData!.isNotEmpty)
-                                  ...model.transactionListData!
+                                  ...model.transactionListData!.reversed
                                       .map((e) => recentTransWidget(
                                             e: e,
                                           ))
                                 else
                                   ...model.getTransactionResponseModel!.data!
+                                      .reversed
                                       .map((e) => recentTransWidget(
                                             e: e,
                                           ))

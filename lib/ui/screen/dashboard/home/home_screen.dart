@@ -270,8 +270,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           )
                         : Column(
                             children: [
-                              ...model
-                                  .getStatsResponseModel!.data!.transactions!
+                              ...model.getStatsResponseModel!.data!
+                                  .transactions!.reversed
                                   .map((e) => recentTransWidget(
                                         context: context,
                                         e: e,

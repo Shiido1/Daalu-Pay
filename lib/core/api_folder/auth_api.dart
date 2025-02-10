@@ -277,9 +277,11 @@ class AuthApi {
     }
   }
 
-  Future<NotificationUserResponseModel> notificationToken(NotificationUserEntityModel notificationTokenEntity) async {
+  Future<NotificationUserResponseModel> notificationToken(
+      NotificationUserEntityModel notificationTokenEntity) async {
     try {
-      final response = await _service.call(UrlConfig.notification_token, RequestMethod.post,
+      final response = await _service.call(
+          UrlConfig.notification_token, RequestMethod.post,
           data: notificationTokenEntity.toJson());
       logger.d(response.data);
       return NotificationUserResponseModel.fromJson(response.data);
@@ -291,7 +293,8 @@ class AuthApi {
 
   Future<dynamic> deletNotificationToken(String id) async {
     try {
-      final response = await _service.call('${UrlConfig.notification_token}/$id', RequestMethod.delete);
+      final response = await _service.call(
+          '${UrlConfig.notification_token}/$id', RequestMethod.delete);
       logger.d(response.data);
       return response.data;
     } catch (e) {

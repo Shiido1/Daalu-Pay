@@ -67,7 +67,8 @@ class AuthContractsImpl {
       await _api.depositWallet(deposit!);
   Future<KycResponseModel> kyc(KycEntityModel? kyc) async =>
       await _api.kyc(kyc!);
-  Future<NotificationUserResponseModel> notificationToken(NotificationUserEntityModel? notificationTokenEntity) async =>
+  Future<NotificationUserResponseModel> notificationToken(
+          NotificationUserEntityModel? notificationTokenEntity) async =>
       await _api.notificationToken(notificationTokenEntity!);
   Future<dynamic> deleteNotificationToken(String? id) async =>
       await _api.deletNotificationToken(id!);

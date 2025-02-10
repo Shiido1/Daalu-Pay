@@ -229,9 +229,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     SharedPreferencesService
                                         .instance.isNotified = false;
                                     model.deleteNotificationToken(context,
-                                        id: SharedPreferencesService
-                                            .instance.usersData['user']['id']);
-                                    // disableCurrencies(context, d.id.toString());
+                                        id: globalfCMToken);
                                   } else {
                                     SharedPreferencesService
                                         .instance.isNotified = true;
@@ -242,7 +240,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 deviceType: Platform.isIOS
                                                     ? 'ios'
                                                     : 'android'));
-                                    // enableCurrencies(context, d.id.toString());
                                   }
                                   setState(() {});
                                   ();

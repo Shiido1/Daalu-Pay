@@ -136,8 +136,7 @@ class AuthRepoImpl {
     return response;
   }
 
-  Future<dynamic> deleteNotificationToke(
-      String id) async {
+  Future<dynamic> deleteNotificationToke(String id) async {
     final response = await _contract.deleteNotificationToken(id);
     return response;
   }

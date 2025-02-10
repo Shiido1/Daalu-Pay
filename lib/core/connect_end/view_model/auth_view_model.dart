@@ -99,8 +99,6 @@ class AuthViewModel extends BaseViewModel {
   KycResponseModel? get kycResponseModel => _kycResponseModel;
   KycResponseModel? _kycResponseModel;
 
-
-
   // firebase generate token call
 
   final _firebaseMessage = FirebaseMessaging.instance;

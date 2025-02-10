@@ -196,6 +196,7 @@ class _ViewWalletScreenState extends State<ViewWalletScreen> {
                               model.getStatsResponseModel!.data!.transactions!
                                   .isNotEmpty)
                             ...model.getStatsResponseModel!.data!.transactions!
+                                .reversed
                                 .map((o) => Container(
                                       padding: EdgeInsets.all(10.w),
                                       margin: EdgeInsets.only(bottom: 16.w),

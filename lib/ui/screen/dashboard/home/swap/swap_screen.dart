@@ -7,6 +7,7 @@ import 'package:stacked/stacked.dart';
 
 import '../../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../../app_assets/app_color.dart';
+import '../../../../app_assets/contant.dart';
 import '../../../../widget/button_widget.dart';
 import '../../../../widget/text_form_widget.dart';
 import '../../../../widget/text_widget.dart';
@@ -143,20 +144,28 @@ class SwapScreen extends StatelessWidget {
                     height: 20.h,
                   ),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextView(
-                        text: 'You will receive approximately ',
-                        fontSize: 15.4.sp,
+                        text: 'You will recieve approximately ',
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                       ),
                       SizedBox(
                         width: 2.w,
                       ),
-                      TextView(
-                        text:
-                            '${model.toCurrencylController.text} ${model.toCurrencyCode}',
-                        fontSize: 15.4.sp,
-                        fontWeight: FontWeight.w500,
+                      SizedBox(
+                        // width: 160.w,
+                        child: TextView(
+                            text:
+                                '${getAllCurrency(model.toCurrencyCode)}${oCcy.format(double.parse(model.toCurrencylController.text))}',
+                            maxLines: 2,
+                            textOverflow: TextOverflow.fade,
+                            textStyle: TextStyle(
+                              fontSize: 15.6.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColor.black,
+                            )),
                       ),
                     ],
                   ),

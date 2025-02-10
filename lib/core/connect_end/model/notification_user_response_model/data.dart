@@ -4,37 +4,25 @@ part 'data.g.dart';
 
 @JsonSerializable()
 class Data {
-	String? id;
-	String? uuid;
-	String? firstName;
-	String? lastName;
-	dynamic gender;
-	String? email;
-	String? phone;
-	String? status;
-	String? kycStatus;
-	dynamic emailVerifiedAt;
-	DateTime? createdAt;
-	DateTime? updatedAt;
-	dynamic deletedAt;
+  String? token;
+  String? deviceType;
+  String? userId;
+  String? status;
+  DateTime? updatedAt;
+  DateTime? createdAt;
+  num? id;
 
-	Data({
-		this.id, 
-		this.uuid, 
-		this.firstName, 
-		this.lastName, 
-		this.gender, 
-		this.email, 
-		this.phone, 
-		this.status, 
-		this.kycStatus, 
-		this.emailVerifiedAt, 
-		this.createdAt, 
-		this.updatedAt, 
-		this.deletedAt, 
-	});
+  Data({
+    this.token,
+    this.deviceType,
+    this.userId,
+    this.status,
+    this.updatedAt,
+    this.createdAt,
+    this.id,
+  });
 
-	factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
+  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
-	Map<String, dynamic> toJson() => _$DataToJson(this);
+  Map<String, dynamic> toJson() => _$DataToJson(this);
 }

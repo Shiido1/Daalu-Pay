@@ -6,14 +6,14 @@ part 'notification_user_response_model.g.dart';
 
 @JsonSerializable()
 class NotificationUserResponseModel {
-	String? status;
-	Data? data;
+  String? status;
+  Data? data;
 
-	NotificationUserResponseModel({this.status, this.data});
+  NotificationUserResponseModel({this.status, this.data});
 
-	factory NotificationUserResponseModel.fromJson(Map<String, dynamic> json) {
-		return _$NotificationUserResponseModelFromJson(json);
-	}
+  factory NotificationUserResponseModel.fromJson(Map<String, dynamic> json) {
+    return _$NotificationUserResponseModelFromJson(json);
+  }
 
-	Map<String, dynamic> toJson() => _$NotificationUserResponseModelToJson(this);
+  Map<String, dynamic> toJson() => _$NotificationUserResponseModelToJson(this);
 }

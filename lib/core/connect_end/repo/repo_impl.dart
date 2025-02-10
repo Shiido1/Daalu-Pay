@@ -4,6 +4,7 @@ import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_mode
 import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/kyc_entity_model/kyc_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/kyc_response_model/kyc_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/notification_user_response_model/notification_user_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
@@ -19,6 +20,7 @@ import '../model/get_stats_response_model/get_stats_response_model.dart';
 import '../model/get_transaction_response_model/get_transaction_response_model.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
+import '../model/notification_user_entity_model.dart';
 import '../model/register_entity_model.dart';
 import '../model/user_response_model/user_response_model.dart';
 
@@ -125,6 +127,18 @@ class AuthRepoImpl {
 
   Future<KycResponseModel> kyc(KycEntityModel kyc) async {
     final response = await _contract.kyc(kyc);
+    return response;
+  }
+
+  Future<NotificationUserResponseModel> notificationToke(
+      NotificationUserEntityModel notificationUserEntity) async {
+    final response = await _contract.notificationToken(notificationUserEntity);
+    return response;
+  }
+
+  Future<dynamic> deleteNotificationToke(
+      String id) async {
+    final response = await _contract.deleteNotificationToken(id);
     return response;
   }
 

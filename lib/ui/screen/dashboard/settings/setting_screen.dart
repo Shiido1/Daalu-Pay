@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:daalu_pay/core/connect_end/model/notification_user_entity_model.dart';
 import 'package:daalu_pay/core/core_folder/app/app.router.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
@@ -27,8 +30,9 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AuthViewModel>.reactive(
         viewModelBuilder: () => AuthViewModel(),
-        onViewModelReady: (model) {
-          model.getUser(context);
+        onViewModelReady: (model) async {
+          await model.getUser(context);
+          model.initNotificationToken();
         },
         disposeViewModel: false,
         builder: (_, AuthViewModel model, __) {
@@ -224,10 +228,20 @@ class _SettingScreenState extends State<SettingScreen> {
                                       true) {
                                     SharedPreferencesService
                                         .instance.isNotified = false;
+                                    model.deleteNotificationToken(context,
+                                        id: SharedPreferencesService
+                                            .instance.usersData['user']['id']);
                                     // disableCurrencies(context, d.id.toString());
                                   } else {
                                     SharedPreferencesService
                                         .instance.isNotified = true;
+                                    model.updateNotificationToken(context,
+                                        notificationUser:
+                                            NotificationUserEntityModel(
+                                                token: globalfCMToken,
+                                                deviceType: Platform.isIOS
+                                                    ? 'ios'
+                                                    : 'android'));
                                     // enableCurrencies(context, d.id.toString());
                                   }
                                   setState(() {});

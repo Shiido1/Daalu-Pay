@@ -9,6 +9,8 @@ import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/
 import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/kyc_entity_model/kyc_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/kyc_response_model/kyc_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/notification_user_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/notification_user_response_model/notification_user_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
@@ -18,12 +20,12 @@ import 'package:daalu_pay/core/connect_end/model/update_password_response_model/
 import 'package:daalu_pay/core/connect_end/model/user_response_model/user_response_model.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paystack_max/flutter_paystack_max.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutterwave_standard_smart/flutterwave.dart';
-import 'package:flutterwave_standard_smart/models/requests/customer.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import '../../../ui/app_assets/app_color.dart';
@@ -97,6 +99,19 @@ class AuthViewModel extends BaseViewModel {
   KycResponseModel? get kycResponseModel => _kycResponseModel;
   KycResponseModel? _kycResponseModel;
 
+
+
+  // firebase generate token call
+
+  final _firebaseMessage = FirebaseMessaging.instance;
+
+  Future<void> initNotificationToken() async {
+    await _firebaseMessage.requestPermission();
+    globalfCMToken = await _firebaseMessage.getToken();
+    print(":jjjj:::::$globalfCMToken");
+    notifyListeners();
+  }
+
   bool isOnTogglePassword() {
     _isTogglePassword = !_isTogglePassword;
     notifyListeners();
@@ -132,6 +147,10 @@ class AuthViewModel extends BaseViewModel {
   UpdatePasswordResponseModel? _updatePasswordResponseModel;
   TextEditingController dobController = TextEditingController();
   List<Datum>? transactionListData = [];
+
+  NotificationUserResponseModel? _notificationUserResponseModel;
+  NotificationUserResponseModel? get notificationUserResponseModel =>
+      _notificationUserResponseModel;
 
   TextEditingController currencyController = TextEditingController();
   TextEditingController recipientWalletIdController = TextEditingController();
@@ -1439,6 +1458,40 @@ class AuthViewModel extends BaseViewModel {
         AppUtils.snackbar(context, message: 'Kyc uploaded Successfully..!');
       }
       _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> updateNotificationToken(context,
+      {NotificationUserEntityModel? notificationUser}) async {
+    try {
+      // _isLoading = true;
+      _notificationUserResponseModel = await runBusyFuture(
+          repositoryImply.notificationToke(notificationUser!),
+          throwException: true);
+      // if (_kycResponseModel?.status == 'success') {
+      //   AppUtils.snackbar(context, message: 'Kyc uploaded Successfully..!');
+      // }
+      // _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> deleteNotificationToken(context, {String? id}) async {
+    try {
+      // _isLoading = true;
+      await runBusyFuture(repositoryImply.deleteNotificationToke(id!),
+          throwException: true);
+      // if (_kycResponseModel?.status == 'success') {
+      //   AppUtils.snackbar(context, message: 'Kyc uploaded Successfully..!');
+      // }
+      // _isLoading = false;
     } catch (e) {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);

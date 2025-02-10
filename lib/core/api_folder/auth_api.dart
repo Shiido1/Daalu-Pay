@@ -288,4 +288,15 @@ class AuthApi {
       rethrow;
     }
   }
+
+  Future<dynamic> deletNotificationToken(String id) async {
+    try {
+      final response = await _service.call('${UrlConfig.notification_token}/$id', RequestMethod.delete);
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
 }

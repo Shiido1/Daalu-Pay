@@ -17,11 +17,13 @@ var globalfCMToken;
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  if(Platform.isAndroid){
+  if (Platform.isAndroid) {
     await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  await FirebaseApi().initNotification();
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    await FirebaseApi().initNotification();
+  } else {
+    await Firebase.initializeApp();
   }
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

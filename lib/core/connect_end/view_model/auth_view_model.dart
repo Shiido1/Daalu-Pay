@@ -1368,7 +1368,8 @@ class AuthViewModel extends BaseViewModel {
       var v = await runBusyFuture(repositoryImply.resetPassword(reset!),
           throwException: true);
       _isLoading = false;
-      print('object:::::$v');
+      navigate.navigateTo(Routes.loginScreen);
+      AppUtils.snackbar(context, message: v['message']);
     } catch (e) {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);
@@ -1382,7 +1383,9 @@ class AuthViewModel extends BaseViewModel {
       var v = await runBusyFuture(repositoryImply.forgotPassword(email!),
           throwException: true);
       _isLoading = false;
-      print('object:::::$v');
+      navigate.navigateTo(Routes.resetPasswordScreen,
+          arguments: ResetPasswordScreenArguments(email: email));
+      AppUtils.snackbar(context, message: v['message']);
     } catch (e) {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);

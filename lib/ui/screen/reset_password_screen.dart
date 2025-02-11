@@ -1,4 +1,5 @@
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
+import 'package:daalu_pay/core/core_folder/manager/shared_preference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
@@ -14,6 +15,7 @@ class ResetPasswordScreen extends StatelessWidget {
   ResetPasswordScreen({super.key, required this.email});
   String? email;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController tokenController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmNewPasswordController = TextEditingController();
 
@@ -27,6 +29,7 @@ class ResetPasswordScreen extends StatelessWidget {
           disposeViewModel: false,
           builder: (_, AuthViewModel model, __) {
             return SingleChildScrollView(
+              padding: EdgeInsets.symmetric(vertical: 100.w, horizontal: 24.w),
               child: Form(
                   key: formKey,
                   child: Column(
@@ -37,6 +40,18 @@ class ResetPasswordScreen extends StatelessWidget {
                         fontSize: 22.sp,
                         fontWeight: FontWeight.w600,
                         color: AppColor.primary,
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      TextFormWidget(
+                        label: 'Enter Token',
+                        hint: 'Token',
+                        border: 10,
+                        isFilled: true,
+                        fillColor: AppColor.white,
+                        controller: tokenController,
+                        validator: AppValidator.validateString(),
                       ),
                       SizedBox(
                         height: 20.h,
@@ -60,7 +75,9 @@ class ResetPasswordScreen extends StatelessWidget {
                         isFilled: true,
                         fillColor: AppColor.white,
                         controller: confirmNewPasswordController,
-                        validator: AppValidator.validateString(),
+                        validator: AppValidator.confirmValidatePassword(
+                            passwordController1: newPasswordController,
+                            passwordController2: confirmNewPasswordController),
                       ),
                       SizedBox(
                         height: 30.h,
@@ -78,6 +95,9 @@ class ResetPasswordScreen extends StatelessWidget {
                                   reset: ResetPasswordEntity(
                                       email: email,
                                       password: newPasswordController.text,
+                                      token: tokenController.text,
+                                      usedId: SharedPreferencesService
+                                          .instance.usersData['user']['id'],
                                       passwordConfirmation:
                                           confirmNewPasswordController.text));
                             }

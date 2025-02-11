@@ -1,5 +1,4 @@
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
-import 'package:daalu_pay/core/core_folder/manager/shared_preference.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';

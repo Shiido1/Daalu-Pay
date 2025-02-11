@@ -129,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         text: 'Forgot Password',
                         fontSize: 16.2.sp,
                         fontWeight: FontWeight.w500,
-                        color: AppColor.darkGrey,
+                        color: AppColor.primary,
                       ),
                     ),
                     SizedBox(

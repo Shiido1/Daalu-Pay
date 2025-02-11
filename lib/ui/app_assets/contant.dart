@@ -204,12 +204,12 @@ recentSwapTransWidget({context, required Swap e}) => Container(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextView(
-                text: e.status?.toLowerCase() == 'completed'
+                text: e.status?.toLowerCase() == 'approved'
                     ? 'Successful'
                     : e.status!.capitalize(),
                 fontSize: 13.2.sp,
                 fontWeight: FontWeight.w400,
-                color: e.status?.toLowerCase() == 'completed'
+                color: e.status?.toLowerCase() == 'approved'
                     ? AppColor.green
                     : e.status?.toLowerCase() == 'pending'
                         ? AppColor.grey
@@ -221,7 +221,7 @@ recentSwapTransWidget({context, required Swap e}) => Container(
                 textStyle: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
-                  color: e.status?.toLowerCase() == 'completed'
+                  color: e.status?.toLowerCase() == 'approved'
                       ? AppColor.green
                       : e.status?.toLowerCase() == 'pending'
                           ? AppColor.grey

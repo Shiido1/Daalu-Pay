@@ -63,6 +63,11 @@ class ResetPasswordScreen extends StatelessWidget {
                         isFilled: true,
                         fillColor: AppColor.white,
                         controller: newPasswordController,
+                        suffixIcon: !model.isSignupTogglePassword
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        obscureText: !model.isSignupTogglePassword,
+                        onPasswordToggle: model.isSignupOnTogglePassword,
                         validator: AppValidator.validateString(),
                       ),
                       SizedBox(
@@ -75,6 +80,11 @@ class ResetPasswordScreen extends StatelessWidget {
                         isFilled: true,
                         fillColor: AppColor.white,
                         controller: confirmNewPasswordController,
+                        suffixIcon: !model.isSignupConTogglePassword
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        obscureText: !model.isSignupConTogglePassword,
+                        onPasswordToggle: model.isSignupConOnTogglePassword,
                         validator: AppValidator.confirmValidatePassword(
                             passwordController1: newPasswordController,
                             passwordController2: confirmNewPasswordController),
@@ -96,8 +106,6 @@ class ResetPasswordScreen extends StatelessWidget {
                                       email: email,
                                       password: newPasswordController.text,
                                       token: tokenController.text,
-                                      usedId: SharedPreferencesService
-                                          .instance.usersData['user']['id'],
                                       passwordConfirmation:
                                           confirmNewPasswordController.text));
                             }

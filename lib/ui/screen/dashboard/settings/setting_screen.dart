@@ -25,6 +25,10 @@ class _SettingScreenState extends State<SettingScreen> {
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.w),
         child: child,
       );
+  paddedWindNot({child}) => Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 0.w),
+        child: child,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -181,8 +185,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                   text: model.userResponseModel?.data?.status
                                           ?.capitalize() ??
                                       '',
-                                  fontSize: 13.sp,
-                                  fontWeight: FontWeight.w400,
+                                  fontSize: 13.4.sp,
+                                  fontWeight: FontWeight.w500,
                                   color: model.userResponseModel?.data?.status
                                               ?.toLowerCase() ==
                                           'active'
@@ -230,7 +234,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           color: AppColor.grey,
                           thickness: .4.sp,
                         ),
-                        paddedWind(
+                        paddedWindNot(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

@@ -57,8 +57,7 @@ class ChatScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.topLeft,
                       child: Container(
-                        width: 200.w,
-                        margin: EdgeInsets.only(left: 20.w),
+                        margin: EdgeInsets.only(left: 20.w, right: 100.w),
                         padding: EdgeInsets.all(8.0.w),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.only(
@@ -97,8 +96,7 @@ class ChatScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.topRight,
                       child: Container(
-                        width: 200.w,
-                        margin: EdgeInsets.only(right: 20.w),
+                        margin: EdgeInsets.only(right: 20.w, left: 100.w),
                         padding: EdgeInsets.all(8.0.w),
                         decoration: BoxDecoration(
                             border:
@@ -114,92 +112,7 @@ class ChatScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             TextView(
-                              text:
-                                  'Hello John, How can we help you today? Hello John, How can we help you today? Hello John, How can we help you today? Hello John, How can we help you today?',
-                              fontSize: 13.2.sp,
-                              fontWeight: FontWeight.w300,
-                              color: AppColor.primary,
-                            ),
-                            SizedBox(
-                              height: 6.h,
-                            ),
-                            TextView(
-                              text: '09:45PM',
-                              fontSize: 11.2.sp,
-                              fontWeight: FontWeight.w200,
-                              color: AppColor.primary,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Container(
-                        width: 200.w,
-                        margin: EdgeInsets.only(right: 20.w),
-                        padding: EdgeInsets.all(8.0.w),
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(color: AppColor.primary, width: .3),
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                              bottomLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(0),
-                            ),
-                            color: AppColor.white),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            TextView(
-                              text:
-                                  'Hello John, How can we help you today? Hello John, How can we help you today? Hello John, How can we help you today? Hello John, How can we help you today?',
-                              fontSize: 13.2.sp,
-                              fontWeight: FontWeight.w300,
-                              color: AppColor.primary,
-                            ),
-                            SizedBox(
-                              height: 6.h,
-                            ),
-                            TextView(
-                              text: '09:45PM',
-                              fontSize: 11.2.sp,
-                              fontWeight: FontWeight.w200,
-                              color: AppColor.primary,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Container(
-                        width: 200.w,
-                        margin: EdgeInsets.only(right: 20.w),
-                        padding: EdgeInsets.all(8.0.w),
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(color: AppColor.primary, width: .3),
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                              bottomLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(0),
-                            ),
-                            color: AppColor.white),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            TextView(
-                              text:
-                                  'Hello John, How can we help you today? Hello John, How can we help you today? Hello John, How can we help you today? Hello John, How can we help you today?',
+                              text: 'Oh wow, i need a day off',
                               fontSize: 13.2.sp,
                               fontWeight: FontWeight.w300,
                               color: AppColor.primary,

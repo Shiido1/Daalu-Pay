@@ -30,8 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: AppColor.light,
       body: ViewModelBuilder<AuthViewModel>.reactive(
           viewModelBuilder: () => AuthViewModel(),
-          onViewModelReady: (model) {
-            model.getUser(context);
+          onViewModelReady: (model) async {
+            await model.getUser(context);
             model.getStatistics(context);
           },
           disposeViewModel: false,

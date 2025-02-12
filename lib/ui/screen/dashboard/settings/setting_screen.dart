@@ -197,6 +197,39 @@ class _SettingScreenState extends State<SettingScreen> {
                           color: AppColor.grey,
                           thickness: .4.sp,
                         ),
+                        SizedBox(
+                          height: 1.32.h,
+                        ),
+                        paddedWind(
+                          child: GestureDetector(
+                            onTap: () => navigate.navigateTo(Routes.chatScreen),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Icon(
+                                  Icons.message,
+                                  color: AppColor.primary.withOpacity(.5),
+                                  size: 19.2.sp,
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                TextView(
+                                  text: 'Live Chat',
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 1.32.h,
+                        ),
+                        Divider(
+                          color: AppColor.grey,
+                          thickness: .4.sp,
+                        ),
                         paddedWind(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

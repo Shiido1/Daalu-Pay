@@ -1,6 +1,6 @@
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
-
+import '../../../ui/screen/chat_screen.dart';
 import '../../../ui/screen/create_account_screen.dart';
 import '../../../ui/screen/create_password_screen.dart';
 import '../../../ui/screen/dashboard/dashboard_screen.dart';
@@ -39,6 +39,7 @@ import '../network/network_service.dart';
   MaterialRoute(page: ProfileScreen, initial: false),
   MaterialRoute(page: UploadDocumentsScreen, initial: false),
   MaterialRoute(page: ViewWalletScreen, initial: false),
+  MaterialRoute(page: ChatScreen, initial: false),
 ], dependencies: [
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: DialogService),

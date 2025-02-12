@@ -6,7 +6,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:daalu_pay/core/connect_end/model/get_stats_response_model/wallet.dart'
-    as _i18;
+    as _i19;
+import 'package:daalu_pay/ui/screen/chat_screen.dart' as _i17;
 import 'package:daalu_pay/ui/screen/create_account_screen.dart' as _i5;
 import 'package:daalu_pay/ui/screen/create_password_screen.dart' as _i6;
 import 'package:daalu_pay/ui/screen/dashboard/dashboard_screen.dart' as _i3;
@@ -24,10 +25,10 @@ import 'package:daalu_pay/ui/screen/reset_password_screen.dart' as _i10;
 import 'package:daalu_pay/ui/screen/setup_screen.dart' as _i9;
 import 'package:daalu_pay/ui/screen/update_profile_screen.dart' as _i7;
 import 'package:daalu_pay/ui/screen/verify_screen.dart' as _i12;
-import 'package:flutter/material.dart' as _i17;
+import 'package:flutter/material.dart' as _i18;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i19;
+import 'package:stacked_services/stacked_services.dart' as _i20;
 
 class Routes {
   static const onboardingScreen = '/';
@@ -60,6 +61,8 @@ class Routes {
 
   static const viewWalletScreen = '/view-wallet-screen';
 
+  static const chatScreen = '/chat-screen';
+
   static const all = <String>{
     onboardingScreen,
     dashboard,
@@ -76,6 +79,7 @@ class Routes {
     profileScreen,
     uploadDocumentsScreen,
     viewWalletScreen,
+    chatScreen,
   };
 }
 
@@ -141,29 +145,33 @@ class StackedRouter extends _i1.RouterBase {
       Routes.viewWalletScreen,
       page: _i16.ViewWalletScreen,
     ),
+    _i1.RouteDef(
+      Routes.chatScreen,
+      page: _i17.ChatScreen,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.OnboardingScreen: (data) {
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.OnboardingScreen(),
         settings: data,
       );
     },
     _i3.Dashboard: (data) {
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => const _i3.Dashboard(),
         settings: data,
       );
     },
     _i4.LoginScreen: (data) {
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => const _i4.LoginScreen(),
         settings: data,
       );
     },
     _i5.CreateAccountScreen: (data) {
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => const _i5.CreateAccountScreen(),
         settings: data,
       );
@@ -172,32 +180,32 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<CreatePassworsScreenArguments>(
         orElse: () => const CreatePassworsScreenArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i6.CreatePassworsScreen(key: args.key),
         settings: data,
       );
     },
     _i7.UpdateProfileScreen: (data) {
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => const _i7.UpdateProfileScreen(),
         settings: data,
       );
     },
     _i8.TransactionScreen: (data) {
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => const _i8.TransactionScreen(),
         settings: data,
       );
     },
     _i9.SetupScreen: (data) {
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => const _i9.SetupScreen(),
         settings: data,
       );
     },
     _i10.ResetPasswordScreen: (data) {
       final args = data.getArgs<ResetPasswordScreenArguments>(nullOk: false);
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i10.ResetPasswordScreen(key: args.key, email: args.email),
         settings: data,
@@ -207,14 +215,14 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ForgotPasswordScreenArguments>(
         orElse: () => const ForgotPasswordScreenArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => _i11.ForgotPasswordScreen(key: args.key),
         settings: data,
       );
     },
     _i12.VerifyScreen: (data) {
       final args = data.getArgs<VerifyScreenArguments>(nullOk: false);
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i12.VerifyScreen(key: args.key, email: args.email),
         settings: data,
@@ -224,29 +232,35 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SendMoneyScreenArguments>(
         orElse: () => const SendMoneyScreenArguments(),
       );
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i13.SendMoneyScreen(key: args.key, currency: args.currency),
         settings: data,
       );
     },
     _i14.ProfileScreen: (data) {
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => const _i14.ProfileScreen(),
         settings: data,
       );
     },
     _i15.UploadDocumentsScreen: (data) {
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) => const _i15.UploadDocumentsScreen(),
         settings: data,
       );
     },
     _i16.ViewWalletScreen: (data) {
       final args = data.getArgs<ViewWalletScreenArguments>(nullOk: false);
-      return _i17.MaterialPageRoute<dynamic>(
+      return _i18.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i16.ViewWalletScreen(key: args.key, wallet: args.wallet),
+        settings: data,
+      );
+    },
+    _i17.ChatScreen: (data) {
+      return _i18.MaterialPageRoute<dynamic>(
+        builder: (context) => _i17.ChatScreen(),
         settings: data,
       );
     },
@@ -262,7 +276,7 @@ class StackedRouter extends _i1.RouterBase {
 class CreatePassworsScreenArguments {
   const CreatePassworsScreenArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -287,7 +301,7 @@ class ResetPasswordScreenArguments {
     required this.email,
   });
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   final String? email;
 
@@ -311,7 +325,7 @@ class ResetPasswordScreenArguments {
 class ForgotPasswordScreenArguments {
   const ForgotPasswordScreenArguments({this.key});
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   @override
   String toString() {
@@ -336,7 +350,7 @@ class VerifyScreenArguments {
     required this.email,
   });
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   final String? email;
 
@@ -363,7 +377,7 @@ class SendMoneyScreenArguments {
     this.currency,
   });
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
   final String? currency;
 
@@ -390,9 +404,9 @@ class ViewWalletScreenArguments {
     required this.wallet,
   });
 
-  final _i17.Key? key;
+  final _i18.Key? key;
 
-  final _i18.Wallet? wallet;
+  final _i19.Wallet? wallet;
 
   @override
   String toString() {
@@ -411,7 +425,7 @@ class ViewWalletScreenArguments {
   }
 }
 
-extension NavigatorStateExtension on _i19.NavigationService {
+extension NavigatorStateExtension on _i20.NavigationService {
   Future<dynamic> navigateToOnboardingScreen([
     int? routerId,
     bool preventDuplicates = true,
@@ -469,7 +483,7 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> navigateToCreatePassworsScreen({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -527,7 +541,7 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> navigateToResetPasswordScreen({
-    _i17.Key? key,
+    _i18.Key? key,
     required String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -544,7 +558,7 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> navigateToForgotPasswordScreen({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -560,7 +574,7 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> navigateToVerifyScreen({
-    _i17.Key? key,
+    _i18.Key? key,
     required String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -577,7 +591,7 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> navigateToSendMoneyScreen({
-    _i17.Key? key,
+    _i18.Key? key,
     String? currency,
     int? routerId,
     bool preventDuplicates = true,
@@ -622,8 +636,8 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> navigateToViewWalletScreen({
-    _i17.Key? key,
-    required _i18.Wallet? wallet,
+    _i18.Key? key,
+    required _i19.Wallet? wallet,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -632,6 +646,20 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.viewWalletScreen,
         arguments: ViewWalletScreenArguments(key: key, wallet: wallet),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToChatScreen([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.chatScreen,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -695,7 +723,7 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> replaceWithCreatePassworsScreen({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -753,7 +781,7 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> replaceWithResetPasswordScreen({
-    _i17.Key? key,
+    _i18.Key? key,
     required String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -770,7 +798,7 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> replaceWithForgotPasswordScreen({
-    _i17.Key? key,
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -786,7 +814,7 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> replaceWithVerifyScreen({
-    _i17.Key? key,
+    _i18.Key? key,
     required String? email,
     int? routerId,
     bool preventDuplicates = true,
@@ -803,7 +831,7 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> replaceWithSendMoneyScreen({
-    _i17.Key? key,
+    _i18.Key? key,
     String? currency,
     int? routerId,
     bool preventDuplicates = true,
@@ -848,8 +876,8 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }
 
   Future<dynamic> replaceWithViewWalletScreen({
-    _i17.Key? key,
-    required _i18.Wallet? wallet,
+    _i18.Key? key,
+    required _i19.Wallet? wallet,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -858,6 +886,20 @@ extension NavigatorStateExtension on _i19.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.viewWalletScreen,
         arguments: ViewWalletScreenArguments(key: key, wallet: wallet),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithChatScreen([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.chatScreen,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

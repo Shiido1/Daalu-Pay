@@ -289,16 +289,16 @@ class AdminUsersScreen extends StatelessWidget {
                                                                 ),
                                                                 Container(
                                                                   padding: EdgeInsets.symmetric(
-                                                                      horizontal: i.status ==
-                                                                              'active'
-                                                                          ? 8.w
+                                                                      horizontal: i.kycStatus ==
+                                                                              'approved'
+                                                                          ? 4.w
                                                                           : 3.2
                                                                               .w,
                                                                       vertical:
                                                                           5.2.w),
                                                                   decoration: BoxDecoration(
-                                                                      color: i.status ==
-                                                                              'active'
+                                                                      color: i.kycStatus ==
+                                                                              'approved'
                                                                           ? AppColor.green.withOpacity(
                                                                               .17)
                                                                           : AppColor.greyKind.withOpacity(
@@ -308,22 +308,22 @@ class AdminUsersScreen extends StatelessWidget {
                                                                               4)),
                                                                   child:
                                                                       TextView(
-                                                                    text: i.status
+                                                                    text: i.kycStatus
                                                                             ?.capitalize() ??
                                                                         '',
-                                                                    fontSize: i.status ==
-                                                                            'active'
+                                                                    fontSize: i.kycStatus ==
+                                                                            'approved'
                                                                         ? 12.4
                                                                             .sp
                                                                         : 10.sp,
                                                                     color: i.status ==
-                                                                            'active'
+                                                                            'approved'
                                                                         ? AppColor
                                                                             .deeperGreen
                                                                         : AppColor
                                                                             .greyKind,
-                                                                    fontWeight: i.status ==
-                                                                            'active'
+                                                                    fontWeight: i.kycStatus ==
+                                                                            'approved'
                                                                         ? FontWeight
                                                                             .w500
                                                                         : FontWeight
@@ -452,16 +452,16 @@ class AdminUsersScreen extends StatelessWidget {
                                                                 ),
                                                                 Container(
                                                                   padding: EdgeInsets.symmetric(
-                                                                      horizontal: i.status ==
-                                                                              'active'
-                                                                          ? 8.w
+                                                                      horizontal: i.kycStatus ==
+                                                                              'approved'
+                                                                          ? 4.w
                                                                           : 3.2
                                                                               .w,
                                                                       vertical:
                                                                           5.2.w),
                                                                   decoration: BoxDecoration(
-                                                                      color: i.status ==
-                                                                              'active'
+                                                                      color: i.kycStatus ==
+                                                                              'approved'
                                                                           ? AppColor.green.withOpacity(
                                                                               .17)
                                                                           : AppColor.greyKind.withOpacity(
@@ -471,22 +471,22 @@ class AdminUsersScreen extends StatelessWidget {
                                                                               4)),
                                                                   child:
                                                                       TextView(
-                                                                    text: i.status
+                                                                    text: i.kycStatus
                                                                             ?.capitalize() ??
                                                                         '',
-                                                                    fontSize: i.status ==
-                                                                            'active'
+                                                                    fontSize: i.kycStatus ==
+                                                                            'approved'
                                                                         ? 12.4
                                                                             .sp
                                                                         : 10.sp,
-                                                                    color: i.status ==
-                                                                            'active'
+                                                                    color: i.kycStatus ==
+                                                                            'approved'
                                                                         ? AppColor
                                                                             .deeperGreen
                                                                         : AppColor
                                                                             .greyKind,
-                                                                    fontWeight: i.status ==
-                                                                            'active'
+                                                                    fontWeight: i.kycStatus ==
+                                                                            'approved'
                                                                         ? FontWeight
                                                                             .w500
                                                                         : FontWeight
@@ -624,16 +624,16 @@ class AdminUsersScreen extends StatelessWidget {
                                                                 ),
                                                                 Container(
                                                                   padding: EdgeInsets.symmetric(
-                                                                      horizontal: i.status ==
-                                                                              'active'
-                                                                          ? 8.w
+                                                                      horizontal: i.kycStatus ==
+                                                                              'approved'
+                                                                          ? 4.w
                                                                           : 3.2
                                                                               .w,
                                                                       vertical:
                                                                           5.2.w),
                                                                   decoration: BoxDecoration(
-                                                                      color: i.status ==
-                                                                              'active'
+                                                                      color: i.kycStatus ==
+                                                                              'approved'
                                                                           ? AppColor.green.withOpacity(
                                                                               .17)
                                                                           : AppColor.greyKind.withOpacity(
@@ -643,22 +643,22 @@ class AdminUsersScreen extends StatelessWidget {
                                                                               4)),
                                                                   child:
                                                                       TextView(
-                                                                    text: i.status
+                                                                    text: i.kycStatus
                                                                             ?.capitalize() ??
                                                                         '',
-                                                                    fontSize: i.status ==
-                                                                            'active'
+                                                                    fontSize: i.kycStatus ==
+                                                                            'approved'
                                                                         ? 12.4
                                                                             .sp
                                                                         : 10.sp,
-                                                                    color: i.status ==
-                                                                            'active'
+                                                                    color: i.kycStatus ==
+                                                                            'approved'
                                                                         ? AppColor
                                                                             .deeperGreen
                                                                         : AppColor
                                                                             .greyKind,
-                                                                    fontWeight: i.status ==
-                                                                            'active'
+                                                                    fontWeight: i.kycStatus ==
+                                                                            'approved'
                                                                         ? FontWeight
                                                                             .w500
                                                                         : FontWeight
@@ -793,16 +793,16 @@ class AdminUsersScreen extends StatelessWidget {
                                                                 ),
                                                                 Container(
                                                                   padding: EdgeInsets.symmetric(
-                                                                      horizontal: i.status ==
-                                                                              'active'
-                                                                          ? 8.w
+                                                                      horizontal: i.kycStatus ==
+                                                                              'approved'
+                                                                          ? 4.w
                                                                           : 3.2
                                                                               .w,
                                                                       vertical:
                                                                           5.2.w),
                                                                   decoration: BoxDecoration(
-                                                                      color: i.status ==
-                                                                              'active'
+                                                                      color: i.kycStatus ==
+                                                                              'approved'
                                                                           ? AppColor.green.withOpacity(
                                                                               .17)
                                                                           : AppColor.greyKind.withOpacity(
@@ -812,22 +812,22 @@ class AdminUsersScreen extends StatelessWidget {
                                                                               4)),
                                                                   child:
                                                                       TextView(
-                                                                    text: i.status
+                                                                    text: i.kycStatus
                                                                             ?.capitalize() ??
                                                                         '',
-                                                                    fontSize: i.status ==
-                                                                            'active'
+                                                                    fontSize: i.kycStatus ==
+                                                                            'approved'
                                                                         ? 12.4
                                                                             .sp
                                                                         : 10.sp,
-                                                                    color: i.status ==
-                                                                            'active'
+                                                                    color: i.kycStatus ==
+                                                                            'approved'
                                                                         ? AppColor
                                                                             .deeperGreen
                                                                         : AppColor
                                                                             .greyKind,
-                                                                    fontWeight: i.status ==
-                                                                            'active'
+                                                                    fontWeight: i.kycStatus ==
+                                                                            'approved'
                                                                         ? FontWeight
                                                                             .w500
                                                                         : FontWeight

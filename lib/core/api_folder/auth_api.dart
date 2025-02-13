@@ -2,17 +2,22 @@ import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/get_message_response/get_message_response.dart';
 import 'package:daalu_pay/core/connect_end/model/get_stats_response_model/get_stats_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/initiate_chat_response_model/initiate_chat_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/kyc_entity_model/kyc_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/kyc_response_model/kyc_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/notification_user_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/notification_user_response_model/notification_user_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/post_user_cloud_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/post_user_verification_cloud_response/post_user_verification_cloud_response.dart';
+import 'package:daalu_pay/core/connect_end/model/preference_response_model/preference_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
+import 'package:daalu_pay/core/connect_end/model/send_message_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/send_message_response_model/send_message_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
@@ -295,12 +300,62 @@ class AuthApi {
     }
   }
 
+  Future<PreferenceResponseModel> userPreference() async {
+    try {
+      final response = await _service.call(
+        UrlConfig.user_preference, RequestMethod.get);
+      logger.d(response.data);
+      return PreferenceResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
   Future<dynamic> deletNotificationToken(String id) async {
     try {
       final response = await _service.call(
           '${UrlConfig.notification_token}/$id', RequestMethod.delete);
       logger.d(response.data);
       return response.data;
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<InitiateChatResponseModel> initiateChat() async {
+    try {
+      final response = await _service.call(UrlConfig.chat, RequestMethod.post);
+      logger.d(response.data);
+      return InitiateChatResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<GetMessageResponse> getMessages(String id) async {
+    try {
+      final response = await _service.call(
+          '${UrlConfig.chat}/$id/messages', RequestMethod.get);
+      logger.d(response.data);
+      return GetMessageResponse.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<SendMessageResponseModel> sendMessage(
+      SendMessageEntityModel sendMessage) async {
+    try {
+      final response = await _service.call(
+          '${UrlConfig.chat}/${sendMessage.chatId}/messages',
+          RequestMethod.post,
+          data: sendMessage.toJson());
+      logger.d(response.data);
+      return SendMessageResponseModel.fromJson(response.data);
     } catch (e) {
       logger.d("response:$e");
       rethrow;

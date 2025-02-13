@@ -1,9 +1,7 @@
-import 'package:dio/dio.dart';
-
 class AliPayEntityModel {
   String? amount;
   String? walletId;
-  MultipartFile? receipt;
+  String? receipt;
 
   AliPayEntityModel({
     this.amount,
@@ -15,7 +13,7 @@ class AliPayEntityModel {
     return AliPayEntityModel(
       amount: json['amount']?.toString(),
       walletId: json['wallet_id']?.toString(),
-      receipt: json['proof'],
+      receipt: json['proof']?.toString(),
     );
   }
 

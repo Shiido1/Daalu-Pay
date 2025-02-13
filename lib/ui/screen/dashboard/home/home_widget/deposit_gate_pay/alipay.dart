@@ -1,6 +1,5 @@
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +11,7 @@ import '../../../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../../../app_assets/app_color.dart';
 import '../../../../../app_assets/app_utils.dart';
 import '../../../../../app_assets/app_validatiion.dart';
+import '../../../../../app_assets/contant.dart';
 import '../../../../../widget/button_widget.dart';
 import '../../../../../widget/text_form_widget.dart';
 import '../../../../../widget/text_widget.dart';
@@ -29,12 +29,12 @@ class _AlipayScreenState extends State<AlipayScreen> {
   List<String> amounts = [
     '1000',
     '5000',
-    '10,000',
-    '15,000',
-    '20,000',
-    '25,000',
-    '50,000',
-    '100,000',
+    '10000',
+    '15000',
+    '20000',
+    '25000',
+    '50000',
+    '100000',
   ];
 
   TextEditingController amountController = TextEditingController();
@@ -104,7 +104,7 @@ class _AlipayScreenState extends State<AlipayScreen> {
                                             ? AppColor.white
                                             : AppColor.textColor)),
                                 child: TextView(
-                                  text: e,
+                                  text: oCcy.format(double.parse(e)),
                                   fontSize: 14.sp,
                                   color: selected == e
                                       ? AppColor.white
@@ -192,7 +192,8 @@ class _AlipayScreenState extends State<AlipayScreen> {
                               fontWeight: FontWeight.w500,
                             ),
                             GestureDetector(
-                              onTap: () => model.getDocumentImage(context),
+                              onTap: () =>
+                                  model.getDocumentAlipayImage(context),
                               child: Container(
                                 padding: EdgeInsets.all(8.w),
                                 decoration: BoxDecoration(
@@ -226,21 +227,19 @@ class _AlipayScreenState extends State<AlipayScreen> {
                         isLoading: model.isLoading,
                         buttonColor: AppColor.primary,
                         buttonBorderColor: Colors.transparent,
-                        onPressed: () {
-                          if (formkey.currentState!.validate()) {
-                            model.alipayVerify(context,
-                                alipay: AliPayEntityModel(
-                                    walletId: walletId,
-                                    amount: amountController.text,
-                                    receipt: MultipartFile.fromBytes(
-                                        model
-                                            .formartFileImage(model.image)
-                                            .readAsBytesSync(),
-                                        filename: model.image!.path
-                                            .split("/")
-                                            .last)));
-                          }
-                        }),
+                        onPressed: model.isLoading == true
+                            ? () {}
+                            : () {
+                                if (formkey.currentState!.validate()) {
+                                  model.alipayVerify(context,
+                                      alipay: AliPayEntityModel(
+                                        walletId: walletId,
+                                        amount: amountController.text,
+                                        receipt:
+                                            '${model.postUserVerificationCloudResponse?.publicId}.${model.postUserVerificationCloudResponse?.format}',
+                                      ));
+                                }
+                              }),
                     SizedBox(
                       height: 60.h,
                     ),

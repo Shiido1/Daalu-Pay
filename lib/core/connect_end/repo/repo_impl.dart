@@ -17,13 +17,18 @@ import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/manager/shared_preference.dart';
 import '../contract/contract_impl.dart';
 import '../model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
+import '../model/get_message_response/get_message_response.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
 import '../model/get_transaction_response_model/get_transaction_response_model.dart';
+import '../model/initiate_chat_response_model/initiate_chat_response_model.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
 import '../model/notification_user_entity_model.dart';
 import '../model/post_user_verification_cloud_response/post_user_verification_cloud_response.dart';
+import '../model/preference_response_model/preference_response_model.dart';
 import '../model/register_entity_model.dart';
+import '../model/send_message_entity_model.dart';
+import '../model/send_message_response_model/send_message_response_model.dart';
 import '../model/user_response_model/user_response_model.dart';
 
 @lazySingleton
@@ -146,6 +151,27 @@ class AuthRepoImpl {
   Future<PostUserVerificationCloudResponse> postCloudinary(
       PostUserCloudEntityModel postCloudinary) async {
     final response = await _contract.postCloudinary(postCloudinary);
+    return response;
+  }
+
+  Future<InitiateChatResponseModel> initiateChat() async {
+    final response = await _contract.initiateChat();
+    return response;
+  }
+
+  Future<GetMessageResponse> getMessages(String id) async {
+    final response = await _contract.getMessages(id);
+    return response;
+  }
+
+  Future<PreferenceResponseModel> userPreference() async {
+    final response = await _contract.userPreference();
+    return response;
+  }
+
+  Future<SendMessageResponseModel> sendMessage(
+      SendMessageEntityModel sendMessage) async {
+    final response = await _contract.sendMessage(sendMessage);
     return response;
   }
 

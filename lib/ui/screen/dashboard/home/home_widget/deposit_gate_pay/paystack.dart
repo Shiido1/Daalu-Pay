@@ -1,4 +1,5 @@
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
+import 'package:daalu_pay/ui/app_assets/app_utils.dart';
 import 'package:daalu_pay/ui/app_assets/contant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,6 +38,8 @@ class _PaystackScreenState extends State<PaystackScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   String? walletId;
+  int dailyLimit = 0;
+  int transaction = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +52,13 @@ class _PaystackScreenState extends State<PaystackScreen> {
               walletId = e.id.toString();
               return e.currency == 'NGN';
             });
+            await model.usersPrefer(context);
+            dailyLimit = int.parse(model
+                .preferenceResponseModel!.data!.dailyTransactionLimit
+                .toString());
+            transaction = double.parse(
+                    model.preferenceResponseModel!.data!.transactionTotalToday)
+                .toInt();
           });
         },
         disposeViewModel: false,
@@ -120,14 +130,22 @@ class _PaystackScreenState extends State<PaystackScreen> {
                         border: 8,
                         buttonColor: AppColor.primary,
                         buttonBorderColor: Colors.transparent,
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            model.makePayment(
-                                amount: double.parse(amountController.text),
-                                walletId: walletId,
-                                context: context);
-                          }
-                        }),
+                        onPressed: dailyLimit > transaction
+                            ? () {
+                                if (formKey.currentState!.validate()) {
+                                  model.makePayment(
+                                      amount:
+                                          double.parse(amountController.text),
+                                      walletId: walletId,
+                                      context: context);
+                                }
+                              }
+                            : () {
+                                AppUtils.snackbar(context,
+                                    message:
+                                        'You have exceeded your daily limit..',
+                                    error: true);
+                              }),
                     SizedBox(
                       height: 30.h,
                     ),

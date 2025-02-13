@@ -15,13 +15,18 @@ import 'package:daalu_pay/core/connect_end/model/update_password_response_model/
 import 'package:injectable/injectable.dart';
 import '../../api_folder/auth_api.dart';
 import '../../core_folder/app/app.locator.dart';
+import '../model/get_message_response/get_message_response.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
+import '../model/initiate_chat_response_model/initiate_chat_response_model.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
 import '../model/notification_user_response_model/notification_user_response_model.dart';
 import '../model/post_user_verification_cloud_response/post_user_verification_cloud_response.dart';
+import '../model/preference_response_model/preference_response_model.dart';
 import '../model/register_entity_model.dart';
 import '../model/registration_response_model/registration_response_model.dart';
+import '../model/send_message_entity_model.dart';
+import '../model/send_message_response_model/send_message_response_model.dart';
 import '../model/swap_entiy_model.dart';
 import '../model/user_response_model/user_response_model.dart';
 
@@ -77,4 +82,13 @@ class AuthContractsImpl {
   Future<PostUserVerificationCloudResponse> postCloudinary(
           PostUserCloudEntityModel postCloudinary) async =>
       await _api.postTocloudinary(postCloudinary);
+  Future<InitiateChatResponseModel> initiateChat() async =>
+      await _api.initiateChat();
+  Future<GetMessageResponse> getMessages(String id) async =>
+      await _api.getMessages(id);
+  Future<PreferenceResponseModel> userPreference() async =>
+      await _api.userPreference();
+  Future<SendMessageResponseModel> sendMessage(
+          SendMessageEntityModel sendMessage) async =>
+      await _api.sendMessage(sendMessage);
 }

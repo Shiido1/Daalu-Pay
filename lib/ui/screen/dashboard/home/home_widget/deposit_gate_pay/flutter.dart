@@ -6,6 +6,7 @@ import 'package:stacked/stacked.dart';
 
 import '../../../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../../../app_assets/app_color.dart';
+import '../../../../../app_assets/app_utils.dart';
 import '../../../../../app_assets/app_validatiion.dart';
 import '../../../../../app_assets/contant.dart';
 import '../../../../../widget/button_widget.dart';
@@ -49,6 +50,7 @@ class _FlutterScreenState extends State<FlutterScreen> {
               return e.currency == 'NGN';
             });
           });
+          model.usersPrefer(context);
         },
         disposeViewModel: false,
         builder: (_, AuthViewModel model, __) {
@@ -120,14 +122,26 @@ class _FlutterScreenState extends State<FlutterScreen> {
                         // isLoading: model.isLoading,
                         buttonColor: AppColor.primary,
                         buttonBorderColor: Colors.transparent,
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            model.handleFlutterPaymentInitialization(
-                                amount: double.parse(amountController.text),
-                                walletId: walletId,
-                                context: context);
-                          }
-                        }),
+                        onPressed: int.parse(model.preferenceResponseModel!
+                                    .data!.dailyTransactionLimit!) >
+                                int.parse(model.preferenceResponseModel!.data!
+                                    .transactionTotalToday!
+                                    .toString())
+                            ? () {
+                                if (formKey.currentState!.validate()) {
+                                  model.handleFlutterPaymentInitialization(
+                                      amount:
+                                          double.parse(amountController.text),
+                                      walletId: walletId,
+                                      context: context);
+                                }
+                              }
+                            : () {
+                                AppUtils.snackbar(context,
+                                    message:
+                                        'You have exceeded your daily limit..',
+                                    error: true);
+                              }),
                     SizedBox(
                       height: 30.h,
                     ),

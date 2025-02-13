@@ -22,4 +22,7 @@ class UrlConfig {
   static const String update_password = 'user/password';
   // ignore: constant_identifier_names
   static const String notification_token = 'user/notification-tokens';
+  static const String chat = 'user/chats';
+  // ignore: constant_identifier_names
+  static const String user_preference = '/user/preferences';
 }

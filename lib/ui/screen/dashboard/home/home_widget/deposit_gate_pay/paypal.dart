@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../../app_assets/app_color.dart';
+import '../../../../../app_assets/contant.dart';
 import '../../../../../widget/button_widget.dart';
 import '../../../../../widget/text_form_widget.dart';
 import '../../../../../widget/text_widget.dart';
@@ -21,12 +22,12 @@ class _PaypalScreenState extends State<PaypalScreen> {
   List<String> amounts = [
     '1000',
     '5000',
-    '10,000',
-    '15,000',
-    '20,000',
-    '25,000',
-    '50,000',
-    '100,000',
+    '10000',
+    '15000',
+    '20000',
+    '25000',
+    '50000',
+    '100000',
   ];
 
   TextEditingController amountController = TextEditingController();
@@ -75,7 +76,7 @@ class _PaypalScreenState extends State<PaypalScreen> {
                                     ? AppColor.white
                                     : AppColor.textColor)),
                         child: TextView(
-                          text: e,
+                          text: oCcy.format(double.parse(e)),
                           fontSize: 14.sp,
                           color: selected == e
                               ? AppColor.white

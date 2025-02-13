@@ -206,7 +206,8 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                         paddedWind(
                           child: GestureDetector(
-                            onTap: () => navigate.navigateTo(Routes.chatScreen),
+                            onTap: () =>
+                                navigate.navigateTo(Routes.webviewChatScreen),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [

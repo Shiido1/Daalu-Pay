@@ -14,6 +14,7 @@ import 'package:daalu_pay/core/connect_end/model/notification_user_response_mode
 import 'package:daalu_pay/core/connect_end/model/post_user_cloud_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
+import 'package:daalu_pay/core/connect_end/model/send_message_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
@@ -41,13 +42,17 @@ import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/app/app.logger.dart';
 import '../../core_folder/app/app.router.dart';
 import '../../core_folder/manager/shared_preference.dart';
+import '../model/get_message_response/get_message_response.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
 import '../model/get_stats_response_model/wallet.dart';
 import '../model/get_transaction_response_model/datum.dart';
+import '../model/initiate_chat_response_model/initiate_chat_response_model.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
 import '../model/post_user_verification_cloud_response/post_user_verification_cloud_response.dart';
+import '../model/preference_response_model/preference_response_model.dart';
 import '../model/register_entity_model.dart';
+import '../model/send_message_response_model/send_message_response_model.dart';
 import '../repo/repo_impl.dart';
 import 'debouncer.dart';
 
@@ -156,6 +161,18 @@ class AuthViewModel extends BaseViewModel {
   PostUserVerificationCloudResponse? get postUserVerificationCloudResponse =>
       _postUserVerificationCloudResponse;
 
+  InitiateChatResponseModel? _initiateChatResponseModel;
+  InitiateChatResponseModel? get initiateChatResponseModel =>
+      _initiateChatResponseModel;
+  GetMessageResponse? get getMessageResponse => _getMessageResponse;
+  GetMessageResponse? _getMessageResponse;
+  SendMessageResponseModel? get sendMessageResponseModel =>
+      _sendMessageResponseModel;
+  SendMessageResponseModel? _sendMessageResponseModel;
+  PreferenceResponseModel? _preferenceResponseModel;
+  PreferenceResponseModel? get preferenceResponseModel =>
+      _preferenceResponseModel;
+
   TextEditingController currencyController = TextEditingController();
   TextEditingController recipientWalletIdController = TextEditingController();
   Wallet? _walletAmount;
@@ -245,6 +262,27 @@ class AuthViewModel extends BaseViewModel {
                         formartFileImage(image).readAsBytesSync(),
                         filename: image!.path.split("/").last),
                     uploadPreset: 'daalupay.staging.verification',
+                    apiKey: '163312741323182'));
+            notifyListeners();
+          });
+    } catch (e) {
+      logger.e(e);
+    }
+  }
+
+  void getDocumentAlipayImage(BuildContext context) {
+    try {
+      _pickImage.pickImage(
+          context: context,
+          file: (file) {
+            image = file;
+            filename = image!.path.split("/").last;
+            postToCloudinary(context,
+                postCloudinary: PostUserCloudEntityModel(
+                    file: MultipartFile.fromBytes(
+                        formartFileImage(image).readAsBytesSync(),
+                        filename: image!.path.split("/").last),
+                    uploadPreset: 'daalupay.staging.alipay',
                     apiKey: '163312741323182'));
             notifyListeners();
           });
@@ -1545,6 +1583,55 @@ class AuthViewModel extends BaseViewModel {
       //   AppUtils.snackbar(context, message: 'Kyc uploaded Successfully..!');
       // }
       // _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> usersPrefer(
+    context,
+  ) async {
+    try {
+      _preferenceResponseModel = await runBusyFuture(
+          repositoryImply.userPreference(),
+          throwException: true);
+    } catch (e) {
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> initiateMessage(context) async {
+    try {
+      _initiateChatResponseModel = await runBusyFuture(
+          repositoryImply.initiateChat(),
+          throwException: true);
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getMessage(context, {String? id}) async {
+    try {
+      _getMessageResponse = await runBusyFuture(
+          repositoryImply.getMessages(id!),
+          throwException: true);
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> sendMessage(context, {SendMessageEntityModel? send}) async {
+    try {
+      _sendMessageResponseModel = await runBusyFuture(
+          repositoryImply.sendMessage(send!),
+          throwException: true);
     } catch (e) {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);

@@ -16,6 +16,7 @@ import '../../../ui/screen/reset_password_screen.dart';
 import '../../../ui/screen/setup_screen.dart';
 import '../../../ui/screen/update_profile_screen.dart';
 import '../../../ui/screen/verify_screen.dart';
+import '../../../ui/screen/webview_chat_screen.dart';
 import '../../api_folder/auth_api.dart';
 import '../../connect_end/contract/contract_impl.dart';
 import '../../connect_end/repo/repo_impl.dart';
@@ -41,6 +42,7 @@ import '../network/network_service.dart';
   MaterialRoute(page: UploadDocumentsScreen, initial: false),
   MaterialRoute(page: ViewWalletScreen, initial: false),
   MaterialRoute(page: ChatScreen, initial: false),
+  MaterialRoute(page: WebviewChatScreen, initial: false),
 ], dependencies: [
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: DialogService),

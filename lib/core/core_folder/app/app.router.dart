@@ -259,8 +259,11 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i17.ChatScreen: (data) {
+      final args = data.getArgs<ChatScreenArguments>(
+        orElse: () => const ChatScreenArguments(),
+      );
       return _i18.MaterialPageRoute<dynamic>(
-        builder: (context) => _i17.ChatScreen(),
+        builder: (context) => _i17.ChatScreen(key: args.key),
         settings: data,
       );
     },
@@ -422,6 +425,28 @@ class ViewWalletScreenArguments {
   @override
   int get hashCode {
     return key.hashCode ^ wallet.hashCode;
+  }
+}
+
+class ChatScreenArguments {
+  const ChatScreenArguments({this.key});
+
+  final _i18.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant ChatScreenArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
   }
 }
 
@@ -652,14 +677,16 @@ extension NavigatorStateExtension on _i20.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToChatScreen([
+  Future<dynamic> navigateToChatScreen({
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.chatScreen,
+        arguments: ChatScreenArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -892,14 +919,16 @@ extension NavigatorStateExtension on _i20.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithChatScreen([
+  Future<dynamic> replaceWithChatScreen({
+    _i18.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.chatScreen,
+        arguments: ChatScreenArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

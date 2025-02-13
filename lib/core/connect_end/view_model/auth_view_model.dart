@@ -11,6 +11,7 @@ import 'package:daalu_pay/core/connect_end/model/kyc_entity_model/kyc_entity_mod
 import 'package:daalu_pay/core/connect_end/model/kyc_response_model/kyc_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/notification_user_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/notification_user_response_model/notification_user_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/post_user_cloud_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
@@ -20,6 +21,7 @@ import 'package:daalu_pay/core/connect_end/model/update_password_response_model/
 import 'package:daalu_pay/core/connect_end/model/user_response_model/user_response_model.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paystack_max/flutter_paystack_max.dart';
@@ -44,6 +46,7 @@ import '../model/get_stats_response_model/wallet.dart';
 import '../model/get_transaction_response_model/datum.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
+import '../model/post_user_verification_cloud_response/post_user_verification_cloud_response.dart';
 import '../model/register_entity_model.dart';
 import '../repo/repo_impl.dart';
 import 'debouncer.dart';
@@ -149,6 +152,9 @@ class AuthViewModel extends BaseViewModel {
   NotificationUserResponseModel? _notificationUserResponseModel;
   NotificationUserResponseModel? get notificationUserResponseModel =>
       _notificationUserResponseModel;
+  PostUserVerificationCloudResponse? _postUserVerificationCloudResponse;
+  PostUserVerificationCloudResponse? get postUserVerificationCloudResponse =>
+      _postUserVerificationCloudResponse;
 
   TextEditingController currencyController = TextEditingController();
   TextEditingController recipientWalletIdController = TextEditingController();
@@ -233,7 +239,13 @@ class AuthViewModel extends BaseViewModel {
           file: (file) {
             image = file;
             filename = image!.path.split("/").last;
-            print(filename);
+            postToCloudinary(context,
+                postCloudinary: PostUserCloudEntityModel(
+                    file: MultipartFile.fromBytes(
+                        formartFileImage(image).readAsBytesSync(),
+                        filename: image!.path.split("/").last),
+                    uploadPreset: 'daalupay.staging.verification',
+                    apiKey: '163312741323182'));
             notifyListeners();
           });
     } catch (e) {
@@ -1533,6 +1545,22 @@ class AuthViewModel extends BaseViewModel {
       //   AppUtils.snackbar(context, message: 'Kyc uploaded Successfully..!');
       // }
       // _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> postToCloudinary(context,
+      {PostUserCloudEntityModel? postCloudinary,
+      KycEntityModel? kycEntity}) async {
+    try {
+      _isLoading = true;
+      _postUserVerificationCloudResponse = await runBusyFuture(
+          repositoryImply.postCloudinary(postCloudinary!),
+          throwException: true);
+      _isLoading = false;
     } catch (e) {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);

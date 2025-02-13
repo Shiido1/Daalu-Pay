@@ -21,6 +21,7 @@ import '../../connect_end/contract/contract_impl.dart';
 import '../../connect_end/repo/repo_impl.dart';
 import '../../connect_end/view_model/auth_view_model.dart';
 import '../manager/shared_preference.dart';
+import '../network/cloudinary_network_service.dart';
 import '../network/network_service.dart';
 
 @StackedApp(routes: [
@@ -46,6 +47,7 @@ import '../network/network_service.dart';
   LazySingleton(classType: SnackbarService),
   LazySingleton(classType: SharedPreferencesService),
   LazySingleton(classType: NetworkService),
+  LazySingleton(classType: CloudinaryNetworkService),
   LazySingleton(classType: AuthApi),
   LazySingleton(classType: AuthContractsImpl),
   LazySingleton(classType: AuthRepoImpl),

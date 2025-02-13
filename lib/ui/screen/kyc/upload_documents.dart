@@ -2,7 +2,6 @@ import 'package:daalu_pay/core/connect_end/model/kyc_entity_model/kyc_entity_mod
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -285,26 +284,25 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                         isLoading: model.isLoading,
                         buttonColor: AppColor.primary,
                         buttonBorderColor: Colors.transparent,
-                        onPressed: () {
-                          if (formkey.currentState!.validate() &&
-                              model.filename != null) {
-                            model.uploadKyc(context,
-                                kycEntity: KycEntityModel(
-                                    documentType: idCardIdentity,
-                                    documentFile: MultipartFile.fromBytes(
-                                        model
-                                            .formartFileImage(model.image)
-                                            .readAsBytesSync(),
-                                        filename:
-                                            model.image!.path.split("/").last),
-                                    documentNumber: docNumberController.text));
-                          } else {
-                            AppUtils.snackbar(context,
-                                message:
-                                    'Kindly fill all necessary fields and Select image.',
-                                error: true);
-                          }
-                        }),
+                        onPressed: model.isLoading == true
+                            ? () {}
+                            : () {
+                                if (formkey.currentState!.validate() &&
+                                    model.filename != null) {
+                                  model.uploadKyc(context,
+                                      kycEntity: KycEntityModel(
+                                          documentType: idCardIdentity,
+                                          documentFile:
+                                              '${model.postUserVerificationCloudResponse?.publicId}.${model.postUserVerificationCloudResponse?.format}',
+                                          documentNumber:
+                                              docNumberController.text));
+                                } else {
+                                  AppUtils.snackbar(context,
+                                      message:
+                                          'Kindly fill all necessary fields and Select image.',
+                                      error: true);
+                                }
+                              }),
                     SizedBox(
                       height: 30.h,
                     ),

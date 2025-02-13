@@ -9,6 +9,8 @@ import 'package:daalu_pay/core/connect_end/model/kyc_entity_model/kyc_entity_mod
 import 'package:daalu_pay/core/connect_end/model/kyc_response_model/kyc_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/notification_user_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/notification_user_response_model/notification_user_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/post_user_cloud_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/post_user_verification_cloud_response/post_user_verification_cloud_response.dart';
 import 'package:daalu_pay/core/connect_end/model/registration_response_model/registration_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
@@ -23,12 +25,14 @@ import '../connect_end/model/register_entity_model.dart';
 import '../connect_end/model/user_response_model/user_response_model.dart';
 import '../core_folder/app/app.locator.dart';
 import '../core_folder/app/app.logger.dart';
+import '../core_folder/network/cloudinary_network_service.dart';
 import '../core_folder/network/network_service.dart';
 import '../core_folder/network/url_path.dart';
 
 @lazySingleton
 class AuthApi {
   final _service = locator<NetworkService>();
+  final _serviceCloud = locator<CloudinaryNetworkService>();
   final logger = getLogger('AuthViewModel');
 
   Future<RegistrationResponseModel> register(
@@ -268,7 +272,7 @@ class AuthApi {
   Future<KycResponseModel> kyc(KycEntityModel kyc) async {
     try {
       final response = await _service.call(UrlConfig.kyc, RequestMethod.post,
-          data: FormData.fromMap(kyc.toJson()));
+          data: kyc.toJson());
       logger.d(response.data);
       return KycResponseModel.fromJson(response.data);
     } catch (e) {
@@ -297,6 +301,20 @@ class AuthApi {
           '${UrlConfig.notification_token}/$id', RequestMethod.delete);
       logger.d(response.data);
       return response.data;
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<PostUserVerificationCloudResponse> postTocloudinary(
+      PostUserCloudEntityModel post) async {
+    try {
+      final response = await _serviceCloud.call(
+          'upload', CloudRequestMethod.upload,
+          data: FormData.fromMap(post.toJson()));
+      logger.d(response.data);
+      return PostUserVerificationCloudResponse.fromJson(response.data);
     } catch (e) {
       logger.d("response:$e");
       rethrow;

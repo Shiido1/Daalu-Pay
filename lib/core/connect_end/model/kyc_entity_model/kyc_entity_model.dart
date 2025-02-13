@@ -1,8 +1,6 @@
-import 'package:dio/dio.dart';
-
 class KycEntityModel {
   String? documentType;
-  MultipartFile? documentFile;
+  String? documentFile;
   String? documentNumber;
 
   KycEntityModel({
@@ -14,14 +12,14 @@ class KycEntityModel {
   factory KycEntityModel.fromJson(Map<String, dynamic> json) {
     return KycEntityModel(
       documentType: json['documentType']?.toString(),
-      documentFile: json['documentFile'],
+      documentFile: json['documentFile']?.toString(),
       documentNumber: json['documentNumber']?.toString(),
     );
   }
 
   Map<String, dynamic> toJson() => {
         if (documentType != null) 'documentType': documentType,
-        if (documentFile != null) 'lastName': documentFile,
-        if (documentNumber != null) 'email': documentNumber,
+        if (documentFile != null) 'documentFile': documentFile,
+        if (documentNumber != null) 'documentNumber': documentNumber,
       };
 }

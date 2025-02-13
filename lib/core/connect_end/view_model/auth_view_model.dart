@@ -4,6 +4,7 @@ import 'package:daalu_pay_admin/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import '../../../main.dart';
 import '../../../ui/app_assets/app_image.dart';
@@ -203,7 +204,8 @@ class AuthViewModel extends BaseViewModel {
                   paddedWing(
                     value: 20,
                     child: TextView(
-                      text: 'Last Active - 2 secs ago',
+                      text:
+                          'Last Active - ${DateFormat('yyyy MMM dd, hh:mm a').format(DateTime.parse(data.updatedAt.toString()))}',
                       fontSize: 14.4.sp,
                       color: AppColor.black,
                       fontStyle: FontStyle.italic,
@@ -250,72 +252,27 @@ class AuthViewModel extends BaseViewModel {
                     height: 8.h,
                   ),
                   paddedWing(
-                    value: 20,
-                    child: TextView(
-                      text: 'file-: ${data.kyc?.documentImage}'.capitalize(),
-                      fontSize: 14.sp,
-                      color: AppColor.black,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                      value: 20,
+                      child: data.kyc?.documentImage == null
+                          ? TextView(
+                              text: 'file-: ${data.kyc?.documentImage}'
+                                  .capitalize(),
+                              fontSize: 14.sp,
+                              color: AppColor.black,
+                              fontWeight: FontWeight.w400,
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.network(
+                                'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${data.kyc?.documentImage}',
+                                width: double.infinity,
+                                height: 150.h,
+                                fit: BoxFit.cover,
+                              ),
+                            )),
                   SizedBox(
                     height: 8.h,
                   ),
-                  // paddedWing(
-                  //   value: 20,
-                  //   child: TextView(
-                  //     text: 'Recent Transactions',
-                  //     fontSize: 15.4.sp,
-                  //     color: AppColor.black,
-                  //     fontWeight: FontWeight.w600,
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   height: 4.2.h,
-                  // ),
-                  // Divider(
-                  //   color: AppColor.grey,
-                  //   thickness: .3.sp,
-                  // ),
-                  // SizedBox(
-                  //   height: 4.2.h,
-                  // ),
-                  // paddedWing(
-                  //   value: 20,
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: [
-                  //       TextView(
-                  //         text: 'Txn ID',
-                  //         fontSize: 14.sp,
-                  //         color: AppColor.black,
-                  //         fontWeight: FontWeight.w600,
-                  //       ),
-                  //       TextView(
-                  //         text: 'Amount',
-                  //         fontSize: 14.sp,
-                  //         color: AppColor.black,
-                  //         fontWeight: FontWeight.w600,
-                  //       ),
-                  //       TextView(
-                  //         text: 'Status',
-                  //         fontSize: 14.sp,
-                  //         color: AppColor.black,
-                  //         fontWeight: FontWeight.w600,
-                  //       ),
-                  //       TextView(
-                  //         text: 'Date',
-                  //         fontSize: 14.sp,
-                  //         color: AppColor.black,
-                  //         fontWeight: FontWeight.w600,
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   height: 4.2.h,
-                  // ),
-                  // contRecentTranWidget(),
                   SizedBox(
                     height: 12.2.h,
                   ),
@@ -325,7 +282,7 @@ class AuthViewModel extends BaseViewModel {
                       label: 'Add Notes',
                       hint: null,
                       border: 10,
-                      maxline: 4,
+                      maxline: 2,
                       isFilled: true,
                       fillColor: AppColor.white,
                       alignLabelWithHint: true,
@@ -1042,7 +999,6 @@ class AuthViewModel extends BaseViewModel {
               });
         });
   }
-
 
   void modalBottomRejectReceiptSheet({context, String? id}) {
     showModalBottomSheet(

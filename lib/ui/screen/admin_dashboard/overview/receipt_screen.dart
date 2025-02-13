@@ -24,6 +24,7 @@ class ViewUsersReceiptScreen extends StatelessWidget {
         disposeViewModel: false,
         builder: (_, AuthViewModel model, __) {
           return Scaffold(
+            resizeToAvoidBottomInset: true,
             backgroundColor: AppColor.white.withOpacity(.99),
             body: Stack(
                 fit: StackFit.expand,
@@ -88,6 +89,75 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                                         SizedBox(
                                           height: 10.h,
                                         ),
+                                        o.status?.toLowerCase() == "approved"
+                                            ? const SizedBox.shrink()
+                                            : Row(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () => model
+                                                        .modalBottomApproveReceiptsSheet(
+                                                            context: context,
+                                                            id: o.id
+                                                                .toString()),
+                                                    child: Container(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10.w,
+                                                                    vertical:
+                                                                        4.w),
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                                AppColor.green,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        6)),
+                                                        child: TextView(
+                                                          text: 'Approve',
+                                                          fontSize: 12.sp,
+                                                          color: AppColor.white,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        )),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10.h,
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () => model
+                                                        .modalBottomRejectReceiptSheet(
+                                                            context: context,
+                                                            id: o.id
+                                                                .toString()),
+                                                    child: Container(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        17.0.w,
+                                                                    vertical:
+                                                                        4.w),
+                                                        decoration: BoxDecoration(
+                                                            color: AppColor.red,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        6)),
+                                                        child: TextView(
+                                                          text: 'Deny',
+                                                          fontSize: 13.2.sp,
+                                                          color: AppColor.white,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        )),
+                                                  ),
+                                                ],
+                                              ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
                                         Container(
                                             padding:
                                                 EdgeInsetsDirectional.symmetric(
@@ -130,66 +200,23 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    o.status?.toLowerCase() == "approved"
-                                        ? const SizedBox.shrink()
-                                        : Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () => model
-                                                    .modalBottomApproveReceiptsSheet(
-                                                        context: context,
-                                                        id: o.id.toString()),
-                                                child: Container(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    10.w,
-                                                                vertical: 4.w),
-                                                    decoration: BoxDecoration(
-                                                        color: AppColor.green,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(6)),
-                                                    child: TextView(
-                                                      text: 'Approve',
-                                                      fontSize: 12.sp,
-                                                      color: AppColor.white,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    )),
-                                              ),
-                                              SizedBox(
-                                                height: 20.h,
-                                              ),
-                                              GestureDetector(
-                                                onTap: () => model
-                                                    .modalBottomRejectReceiptSheet(
-                                                        context: context,
-                                                        id: o.id.toString()),
-                                                child: Container(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    17.0.w,
-                                                                vertical: 4.w),
-                                                    decoration: BoxDecoration(
-                                                        color: AppColor.red,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(6)),
-                                                    child: TextView(
-                                                      text: 'Deny',
-                                                      fontSize: 13.2.sp,
-                                                      color: AppColor.white,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    )),
-                                              ),
-                                            ],
+                                    o.receipt == null
+                                        ? TextView(
+                                            text: 'file-: ${o.receipt}'
+                                                .capitalize(),
+                                            fontSize: 14.sp,
+                                            color: AppColor.black,
+                                            fontWeight: FontWeight.w400,
+                                          )
+                                        : ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            child: Image.network(
+                                              'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${o.receipt}',
+                                              width: 90.w,
+                                              height: 120,
+                                              fit: BoxFit.cover,
+                                            ),
                                           )
                                   ],
                                 ),

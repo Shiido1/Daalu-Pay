@@ -34,5 +34,6 @@ class AuthContractsImpl {
       await _api.getUsersReceipts();
   Future<dynamic> approveReceipts(String id) async =>
       await _api.approveReceipts(id);
-  Future<dynamic> denyReceipts(String? id) async => await _api.denyReceipts(id);
+  Future<dynamic> denyReceipts({String? id, String? reason}) async =>
+      await _api.denyReceipts(id: id, reason: reason);
 }

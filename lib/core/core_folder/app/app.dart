@@ -2,6 +2,7 @@ import 'package:daalu_pay_admin/ui/screen/admin_dashboard/admin_dashboard.dart';
 import 'package:daalu_pay_admin/ui/screen/admin_dashboard/overview/receipt_screen.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
+import '../../../ui/screen/admin_dashboard/overview/view_receipt.dart';
 import '../../../ui/screen/admin_dashboard/transaction/admin_transaction_screen.dart';
 import '../../../ui/screen/onboarding/onboarding_screen.dart';
 import '../../api_folder/auth_api.dart';
@@ -16,6 +17,7 @@ import '../network/network_service.dart';
   MaterialRoute(page: AdminDashboard, initial: false),
   MaterialRoute(page: AdminTransactionScreen, initial: false),
   MaterialRoute(page: ViewUsersReceiptScreen, initial: false),
+  MaterialRoute(page: ViewReceipt, initial: false),
 ], dependencies: [
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: DialogService),

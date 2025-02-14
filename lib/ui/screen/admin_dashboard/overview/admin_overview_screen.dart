@@ -53,31 +53,36 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w500,
                       ),
-                      PopupMenuButton(
-                        onSelected: (value) {
-                          // your logic
-                        },
-                        color: AppColor.white,
-                        icon: Icon(
-                          Icons.more_vert_rounded,
-                          size: 24.sp,
-                          color: AppColor.primary,
-                        ),
-                        itemBuilder: (BuildContext bc) {
-                          return [
-                            PopupMenuItem(
-                              value: '/receipt',
-                              onTap: () => navigate
-                                  .navigateTo(Routes.viewUsersReceiptScreen),
-                              child: TextView(
-                                text: 'View Receipts',
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ];
-                        },
-                      )
+                      SizedBox(
+                        width: 36.0.w,
+                        height: 50.h,
+                      ),
+
+                      // PopupMenuButton(
+                      //   onSelected: (value) {
+                      //     // your logic
+                      //   },
+                      //   color: AppColor.white,
+                      //   icon: Icon(
+                      //     Icons.more_vert_rounded,
+                      //     size: 24.sp,
+                      //     color: AppColor.primary,
+                      //   ),
+                      //   itemBuilder: (BuildContext bc) {
+                      //     return [
+                      //       PopupMenuItem(
+                      //         value: '/receipt',
+                      //         onTap: () => navigate
+                      //             .navigateTo(Routes.viewUsersReceiptScreen),
+                      //         child: TextView(
+                      //           text: 'View Receipts',
+                      //           fontSize: 16.sp,
+                      //           fontWeight: FontWeight.w500,
+                      //         ),
+                      //       ),
+                      //     ];
+                      //   },
+                      // )
                     ],
                   ),
                   SizedBox(

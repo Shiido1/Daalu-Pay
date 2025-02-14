@@ -1079,8 +1079,8 @@ class AuthViewModel extends BaseViewModel {
                                   isLoading: model.isLoadingReceipts,
                                   buttonColor: AppColor.red,
                                   buttonBorderColor: Colors.transparent,
-                                  onPressed: () =>
-                                      denyReceipts(context, id: id)),
+                                  onPressed: () => denyReceipts(context,
+                                      id: id, reason: rejectController.text)),
                             ),
                             SizedBox(
                               height: 30.h,
@@ -1301,12 +1301,13 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> denyReceipts(contxt, {String? id}) async {
+  Future<void> denyReceipts(contxt, {String? id, String? reason}) async {
     try {
       _isLoadingReceipts = true;
       var v = await runBusyFuture(
           repositoryImply.denyReceipts(
-            id,
+            id: id,
+            reason: reason,
           ),
           throwException: true);
       if (v['status'] == 'success') {

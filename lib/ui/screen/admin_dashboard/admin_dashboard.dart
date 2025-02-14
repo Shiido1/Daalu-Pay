@@ -7,8 +7,8 @@ import 'package:flutter_svg/svg.dart';
 import '../../app_assets/app_color.dart';
 import '../../app_assets/app_image.dart';
 import '../../widget/text_widget.dart';
-import 'notification/admin_notification_screen.dart';
 import 'overview/admin_overview_screen.dart';
+import 'overview/receipt_screen.dart';
 import 'transaction/admin_transaction_screen.dart';
 import 'user/admin_user_screen.dart';
 
@@ -26,7 +26,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
     AdminOverviewScreen(),
     AdminUsersScreen(),
     AdminTransactionScreen(),
-    AdminNotificationScreen(),
+    ViewUsersReceiptScreen(),
   ];
 
   Future<bool> willPopControl() async {
@@ -127,11 +127,11 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(
-                    AppImage.bell,
+                    AppImage.filter,
                     color:
                         _currentIndex == 3 ? AppColor.primary : AppColor.black,
                   ),
-                  label: 'Notifications',
+                  label: 'Receipt',
                 ),
               ]),
         ),

@@ -1,3 +1,5 @@
+import 'package:daalu_pay_admin/core/core_folder/app/app.router.dart';
+import 'package:daalu_pay_admin/main.dart';
 import 'package:daalu_pay_admin/ui/app_assets/app_color.dart';
 import 'package:daalu_pay_admin/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -65,160 +67,96 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                         else if (model.getUsersReceiptResponseMode != null ||
                             model.getUsersReceiptResponseMode!.data!.isNotEmpty)
                           ...model.getUsersReceiptResponseMode!.data!.map((o) =>
-                              Container(
-                                margin: EdgeInsets.only(top: 20.w),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 12.w, vertical: 12.w),
-                                decoration: BoxDecoration(
-                                    color: AppColor.white,
-                                    borderRadius: BorderRadius.circular(6),
-                                    border: Border.all(
-                                        color: AppColor.grey.withOpacity(.3),
-                                        width: 1.4)),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        TextView(
-                                            text:
-                                                '${getAllCurrency('CNY')}${oCcy.format(double.parse(o.amount!))}'),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        o.status?.toLowerCase() == "approved"
-                                            ? const SizedBox.shrink()
-                                            : Row(
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () => model
-                                                        .modalBottomApproveReceiptsSheet(
-                                                            context: context,
-                                                            id: o.id
-                                                                .toString()),
-                                                    child: Container(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        10.w,
-                                                                    vertical:
-                                                                        4.w),
-                                                        decoration: BoxDecoration(
-                                                            color:
-                                                                AppColor.green,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        6)),
-                                                        child: TextView(
-                                                          text: 'Approve',
-                                                          fontSize: 12.sp,
-                                                          color: AppColor.white,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        )),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10.h,
-                                                  ),
-                                                  GestureDetector(
-                                                    onTap: () => model
-                                                        .modalBottomRejectReceiptSheet(
-                                                            context: context,
-                                                            id: o.id
-                                                                .toString()),
-                                                    child: Container(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        17.0.w,
-                                                                    vertical:
-                                                                        4.w),
-                                                        decoration: BoxDecoration(
-                                                            color: AppColor.red,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        6)),
-                                                        child: TextView(
-                                                          text: 'Deny',
-                                                          fontSize: 13.2.sp,
-                                                          color: AppColor.white,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        )),
-                                                  ),
-                                                ],
-                                              ),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        Container(
-                                            padding:
-                                                EdgeInsetsDirectional.symmetric(
-                                                    horizontal: 6.w,
-                                                    vertical: 4.w),
-                                            decoration: BoxDecoration(
-                                                color: o.status
-                                                            ?.toLowerCase() ==
+                              GestureDetector(
+                                onTap: () => navigate.navigateTo(
+                                    Routes.viewReceipt,
+                                    arguments: ViewReceiptArguments(datum: o)),
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 20.w),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 12.w),
+                                  decoration: BoxDecoration(
+                                      color: AppColor.white,
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(
+                                          color: AppColor.grey.withOpacity(.3),
+                                          width: 1.4)),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          TextView(
+                                              text:
+                                                  '${getAllCurrency('CNY')}${oCcy.format(double.parse(o.amount!))}'),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          Container(
+                                              padding: EdgeInsetsDirectional
+                                                  .symmetric(
+                                                      horizontal: 6.w,
+                                                      vertical: 4.w),
+                                              decoration: BoxDecoration(
+                                                  color: o.status
+                                                              ?.toLowerCase() ==
+                                                          'pending'
+                                                      ? AppColor.grey
+                                                          .withOpacity(.2)
+                                                      : o.status?.toLowerCase() ==
+                                                              'approved'
+                                                          ? AppColor.green
+                                                              .withOpacity(.2)
+                                                          : AppColor.red
+                                                              .withOpacity(.2),
+                                                  borderRadius:
+                                                      BorderRadius.circular(4)),
+                                              child: TextView(
+                                                text: o.status?.toLowerCase() ==
                                                         'pending'
-                                                    ? AppColor.grey
-                                                        .withOpacity(.2)
+                                                    ? 'Pending'
                                                     : o.status?.toLowerCase() ==
                                                             'approved'
-                                                        ? AppColor.green
-                                                            .withOpacity(.2)
-                                                        : AppColor.red
-                                                            .withOpacity(.2),
-                                                borderRadius:
-                                                    BorderRadius.circular(4)),
-                                            child: TextView(
-                                              text: o.status?.toLowerCase() ==
-                                                      'pending'
-                                                  ? 'Pending'
-                                                  : o.status?.toLowerCase() ==
-                                                          'approved'
-                                                      ? 'Approved'
-                                                      : 'Denied',
-                                              fontSize: 12.sp,
-                                            )),
-                                        SizedBox(
-                                          height: 6.h,
-                                        ),
-                                        TextView(
-                                          text:
-                                              DateFormat('yyyy MMM dd, hh:mm a')
-                                                  .format(DateTime.parse(
-                                                      o.createdAt.toString())),
-                                          fontSize: 11.4.sp,
-                                          color: AppColor.grey,
-                                        ),
-                                      ],
-                                    ),
-                                    o.receipt == null
-                                        ? TextView(
-                                            text: 'file-: ${o.receipt}'
-                                                .capitalize(),
-                                            fontSize: 14.sp,
-                                            color: AppColor.black,
-                                            fontWeight: FontWeight.w400,
-                                          )
-                                        : ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            child: Image.network(
-                                              'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${o.receipt}',
-                                              width: 90.w,
-                                              height: 120,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          )
-                                  ],
+                                                        ? 'Approved'
+                                                        : 'Denied',
+                                                fontSize: 12.sp,
+                                              )),
+                                          SizedBox(
+                                            height: 6.h,
+                                          ),
+                                          TextView(
+                                            text: DateFormat(
+                                                    'yyyy MMM dd, hh:mm a')
+                                                .format(DateTime.parse(
+                                                    o.createdAt.toString())),
+                                            fontSize: 11.4.sp,
+                                            color: AppColor.grey,
+                                          ),
+                                        ],
+                                      ),
+                                      o.receipt == null
+                                          ? TextView(
+                                              text: 'file-: ${o.receipt}'
+                                                  .capitalize(),
+                                              fontSize: 14.sp,
+                                              color: AppColor.black,
+                                              fontWeight: FontWeight.w400,
+                                            )
+                                          : ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              child: Image.network(
+                                                'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${o.receipt}',
+                                                width: 90.w,
+                                                height: 120,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            )
+                                    ],
+                                  ),
                                 ),
                               ))
                       ],

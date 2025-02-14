@@ -82,8 +82,8 @@ class AuthRepoImpl {
     return response;
   }
 
-  Future<dynamic> denyReceipts(String? id) async {
-    final response = await _contract.denyReceipts(id);
+  Future<dynamic> denyReceipts({String? id, String? reason}) async {
+    final response = await _contract.denyReceipts(id: id, reason: reason);
     return response;
   }
 

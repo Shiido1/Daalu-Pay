@@ -217,7 +217,7 @@ recentSwapTransWidget({context, required Swap e}) => Container(
               ),
               TextView(
                 text:
-                    '${getCurrency()}${oCcy.format(double.parse(e.toAmount!))}',
+                    '${getAllCurrency(e.fromCurrency)}${oCcy.format(double.parse(e.fromAmount!))} - ${getAllCurrency(e.toCurrency)}${oCcy.format(double.parse(e.toAmount!))}',
                 textStyle: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,

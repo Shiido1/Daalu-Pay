@@ -9,13 +9,18 @@ import 'package:stacked/stacked.dart';
 
 import '../../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../../app_assets/app_color.dart';
+import '../../../../app_assets/app_utils.dart';
 import '../../../../app_assets/contant.dart';
 import '../../../../widget/button_widget.dart';
 import '../../../../widget/text_form_widget.dart';
 import '../../../../widget/text_widget.dart';
 
+// ignore: must_be_immutable
 class SwapScreen extends StatelessWidget {
-  const SwapScreen({super.key});
+  SwapScreen({super.key});
+
+  int dailyLimit = 0;
+  int transaction = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +30,18 @@ class SwapScreen extends StatelessWidget {
           await model.exchangeRates(context, from: 'NGN', to: 'USD');
           // ignore: use_build_context_synchronously
           model.getStatistics(context);
+          await model.usersPrefer(context);
+          dailyLimit = int.parse(model
+              .preferenceResponseModel!.data!.dailyTransactionLimit
+              .toString());
+          transaction = double.parse(
+                  model.preferenceResponseModel!.data!.transactionTotalToday)
+              .toInt();
+          AppUtils.snackbar(
+            context,
+            message:
+                'Your limit for today is ${oCcy.format(dailyLimit - transaction)}.',
+          );
         },
         disposeViewModel: false,
         builder: (_, AuthViewModel model, __) {
@@ -275,17 +292,26 @@ class SwapScreen extends StatelessWidget {
                       isLoading: model.isLoading,
                       buttonColor: AppColor.primary,
                       buttonBorderColor: Colors.transparent,
-                      onPressed: () {
-                        model.swap(context,
-                            swap: SwapEntiyModel(
-                                fromAmount: model.fromCurrencylController.text,
-                                toAmount: model.toCurrencylController.text,
-                                fromCurrency: model.fromCurrencyCode,
-                                toCurrency: model.toCurrencyCode,
-                                amount: model.toCurrencylController.text,
-                                rate: model
-                                    .exchangeRateResponseModel!.data!.rate));
-                      }),
+                      onPressed: dailyLimit > transaction
+                          ? () {
+                              model.swap(context,
+                                  swap: SwapEntiyModel(
+                                      fromAmount:
+                                          model.fromCurrencylController.text,
+                                      toAmount:
+                                          model.toCurrencylController.text,
+                                      fromCurrency: model.fromCurrencyCode,
+                                      toCurrency: model.toCurrencyCode,
+                                      amount: model.toCurrencylController.text,
+                                      rate: model.exchangeRateResponseModel!
+                                          .data!.rate));
+                            }
+                          : () {
+                              AppUtils.snackbar(context,
+                                  message:
+                                      'You have exceeded your daily limit..',
+                                  error: true);
+                            }),
                   SizedBox(
                     height: 30.h,
                   ),

@@ -7,12 +7,12 @@ part of 'data.dart';
 // **************************************************************************
 
 Data _$DataFromJson(Map<String, dynamic> json) => Data(
-      userId: json['userId'] as dynamic,
+      userId: json['userId'],
       notifyEmail: json['notifyEmail'] as String?,
       notifySms: json['notifySms'] as String?,
       theme: json['theme'] as String?,
       dailyTransactionLimit: json['dailyTransactionLimit'] as String?,
-      transactionTotalToday: json['transactionTotalToday'] as dynamic,
+      transactionTotalToday: json['transactionTotalToday'],
       twoFaEnabled: json['twoFaEnabled'] as String?,
       updatedAt: json['updatedAt'] == null
           ? null
@@ -20,7 +20,7 @@ Data _$DataFromJson(Map<String, dynamic> json) => Data(
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
-      id: json['id'] as dynamic,
+      id: json['id'],
     );
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{

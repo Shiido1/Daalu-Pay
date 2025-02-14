@@ -276,11 +276,8 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i18.WebviewChatScreen: (data) {
-      final args = data.getArgs<WebviewChatScreenArguments>(
-        orElse: () => const WebviewChatScreenArguments(),
-      );
       return _i19.MaterialPageRoute<dynamic>(
-        builder: (context) => _i18.WebviewChatScreen(key: args.key),
+        builder: (context) => _i18.WebviewChatScreen(),
         settings: data,
       );
     },
@@ -457,28 +454,6 @@ class ChatScreenArguments {
 
   @override
   bool operator ==(covariant ChatScreenArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode;
-  }
-}
-
-class WebviewChatScreenArguments {
-  const WebviewChatScreenArguments({this.key});
-
-  final _i19.Key? key;
-
-  @override
-  String toString() {
-    return '{"key": "$key"}';
-  }
-
-  @override
-  bool operator ==(covariant WebviewChatScreenArguments other) {
     if (identical(this, other)) return true;
     return other.key == key;
   }
@@ -732,16 +707,14 @@ extension NavigatorStateExtension on _i21.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToWebviewChatScreen({
-    _i19.Key? key,
+  Future<dynamic> navigateToWebviewChatScreen([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  }) async {
+  ]) async {
     return navigateTo<dynamic>(Routes.webviewChatScreen,
-        arguments: WebviewChatScreenArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -990,16 +963,14 @@ extension NavigatorStateExtension on _i21.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithWebviewChatScreen({
-    _i19.Key? key,
+  Future<dynamic> replaceWithWebviewChatScreen([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  }) async {
+  ]) async {
     return replaceWith<dynamic>(Routes.webviewChatScreen,
-        arguments: WebviewChatScreenArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

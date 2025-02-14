@@ -38,11 +38,14 @@ class _FlutterScreenState extends State<FlutterScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String? walletId;
 
+  int dailyLimit = 0;
+  int transaction = 0;
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AuthViewModel>.reactive(
         viewModelBuilder: () => AuthViewModel(),
-        onViewModelReady: (model) {
+        onViewModelReady: (model) async {
           WidgetsBinding.instance.addPostFrameCallback((_) async {
             await model.getStatistics(context);
             model.getStatsResponseModel!.data!.wallets!.any((e) {
@@ -50,7 +53,13 @@ class _FlutterScreenState extends State<FlutterScreen> {
               return e.currency == 'NGN';
             });
           });
-          model.usersPrefer(context);
+          await model.usersPrefer(context);
+          dailyLimit = int.parse(model
+              .preferenceResponseModel!.data!.dailyTransactionLimit
+              .toString());
+          transaction = double.parse(
+                  model.preferenceResponseModel!.data!.transactionTotalToday)
+              .toInt();
         },
         disposeViewModel: false,
         builder: (_, AuthViewModel model, __) {
@@ -122,11 +131,7 @@ class _FlutterScreenState extends State<FlutterScreen> {
                         // isLoading: model.isLoading,
                         buttonColor: AppColor.primary,
                         buttonBorderColor: Colors.transparent,
-                        onPressed: int.parse(model.preferenceResponseModel!
-                                    .data!.dailyTransactionLimit!) >
-                                int.parse(model.preferenceResponseModel!.data!
-                                    .transactionTotalToday!
-                                    .toString())
+                        onPressed: dailyLimit > transaction
                             ? () {
                                 if (formKey.currentState!.validate()) {
                                   model.handleFlutterPaymentInitialization(

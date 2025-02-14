@@ -68,6 +68,7 @@ class ChatScreen extends StatelessWidget {
                       reverse: true,
                       child: Column(
                         children: [
+                          // ignore: unnecessary_null_comparison
                           if (model.getMessageResponse! == null ||
                               model.getMessageResponse!.data!.isEmpty)
                             Center(

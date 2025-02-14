@@ -59,6 +59,11 @@ class _PaystackScreenState extends State<PaystackScreen> {
             transaction = double.parse(
                     model.preferenceResponseModel!.data!.transactionTotalToday)
                 .toInt();
+            AppUtils.snackbar(
+              context,
+              message:
+                  'Your limit for today is ${oCcy.format(dailyLimit - transaction)}.',
+            );
           });
         },
         disposeViewModel: false,

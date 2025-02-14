@@ -1151,6 +1151,7 @@ class AuthViewModel extends BaseViewModel {
                                                         selectCountry =
                                                             e['code'];
                                                         model.notifyListeners();
+                                                        Navigator.pop(context);
                                                       },
                                                       child: Container(
                                                         decoration:
@@ -1228,6 +1229,9 @@ class AuthViewModel extends BaseViewModel {
                                                               e['code'];
                                                           model
                                                               .notifyListeners();
+
+                                                          Navigator.pop(
+                                                              context);
                                                         },
                                                         child: Container(
                                                           decoration:

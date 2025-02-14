@@ -70,12 +70,14 @@ class ReceiptScreen extends StatelessWidget {
                       right: e.status == 'completed'
                           ? 'Success'
                           : e.status?.capitalize()),
-                  contContainer(left: 'Transaction Fee', right: '500 NGN'),
+                  contContainer(
+                      left: 'Transaction Fee',
+                      right: '${oCcy.format(double.parse(e.amount!))}NGN'),
                   contContainer(left: 'Not Received', right: '49.99 USD'),
-                  contContainer(left: 'Payment Method', right: 'flutterwave'),
+                  contContainer(left: 'Payment Method', right: e.type),
                   contContainer(
                       left: 'Amount added to wallet',
-                      right: '49.99 USD (USD Wallet)'),
+                      right: '${oCcy.format(double.parse(e.amount!))}NGN'),
                 ],
               ),
             ),
@@ -116,7 +118,7 @@ class ReceiptScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                // width: 240.w,
+                width: 160.w,
                 child: TextView(
                   text: right,
                   fontSize: 12.sp,

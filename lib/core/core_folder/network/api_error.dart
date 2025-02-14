@@ -47,6 +47,7 @@ class ApiError {
                 extractDescriptionFromResponse(error.response);
           } else if (dioError.response?.statusCode == 400 ||
               dioError.response?.statusCode == 422 ||
+              dioError.response?.statusCode == 405 ||
               dioError.response?.statusCode == 403 ||
               dioError.response?.statusCode == 404 ||
               dioError.response?.statusCode == 409) {

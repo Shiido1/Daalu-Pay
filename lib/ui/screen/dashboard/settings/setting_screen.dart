@@ -337,7 +337,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               width: 10.w,
                             ),
                             TextView(
-                              text: 'Transaction Limit',
+                              text: 'Transactions',
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w400,
                             ),

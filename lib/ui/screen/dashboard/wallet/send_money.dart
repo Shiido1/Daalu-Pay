@@ -24,6 +24,9 @@ class SendMoneyScreen extends StatefulWidget {
 class _SendMoneyScreenState extends State<SendMoneyScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  int dailyLimit = 0;
+  int transaction = 0;
+
   TextEditingController sendAmountController = TextEditingController();
 
   @override
@@ -36,6 +39,18 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
             if (widget.currency != null) {
               model.currencyController.text = widget.currency!;
             }
+            await model.usersPrefer(context);
+            dailyLimit = int.parse(model
+                .preferenceResponseModel!.data!.dailyTransactionLimit
+                .toString());
+            transaction = double.parse(
+                    model.preferenceResponseModel!.data!.transactionTotalToday)
+                .toInt();
+            AppUtils.snackbar(
+              context,
+              message:
+                  'Your limit for today is ${oCcy.format(dailyLimit - transaction)}.',
+            );
           });
         },
         disposeViewModel: false,
@@ -141,23 +156,31 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                       buttonColor:
                           !model.isLoading ? AppColor.primary : AppColor.inGrey,
                       buttonBorderColor: Colors.transparent,
-                      onPressed: () {
-                        if (formKey.currentState!.validate() &&
-                            model.walletAmount!.balance! >
-                                int.parse(sendAmountController.text)) {
-                          model.sendMoney(context,
-                              sendMoney: SendMonetEntityModel(
-                                  amount: sendAmountController.text,
-                                  recipientAddress:
-                                      model.recipientWalletIdController.text,
-                                  currency: model.currencyController.text));
-                        } else {
-                          AppUtils.snackbar(context,
-                              message:
-                                  'Amount should not be greater than current balance in wallet',
-                              error: true);
-                        }
-                      },
+                      onPressed: dailyLimit > transaction
+                          ? () {
+                              if (formKey.currentState!.validate() &&
+                                  model.walletAmount!.balance! >
+                                      int.parse(sendAmountController.text)) {
+                                model.sendMoney(context,
+                                    sendMoney: SendMonetEntityModel(
+                                        amount: sendAmountController.text,
+                                        recipientAddress: model
+                                            .recipientWalletIdController.text,
+                                        currency:
+                                            model.currencyController.text));
+                              } else {
+                                AppUtils.snackbar(context,
+                                    message:
+                                        'Amount should not be greater than current balance in wallet',
+                                    error: true);
+                              }
+                            }
+                          : () {
+                              AppUtils.snackbar(context,
+                                  message:
+                                      'You have exceeded your daily limit..',
+                                  error: true);
+                            },
                     )
                   ],
                 ),

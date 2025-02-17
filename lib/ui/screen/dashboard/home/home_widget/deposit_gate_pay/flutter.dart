@@ -38,7 +38,7 @@ class _FlutterScreenState extends State<FlutterScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String? walletId;
 
-  int dailyLimit = 0;
+  dynamic dailyLimit;
   int transaction = 0;
 
   @override
@@ -54,12 +54,25 @@ class _FlutterScreenState extends State<FlutterScreen> {
             });
           });
           await model.usersPrefer(context);
-          dailyLimit = int.parse(model
-              .preferenceResponseModel!.data!.dailyTransactionLimit
-              .toString());
+          if (model.preferenceResponseModel!.data!.dailyTransactionLimit!
+                  .toLowerCase() ==
+              'unlimited') {
+            dailyLimit = 'unlimited';
+          } else {
+            dailyLimit = int.parse(model
+                .preferenceResponseModel!.data!.dailyTransactionLimit
+                .toString());
+          }
           transaction = double.parse(
                   model.preferenceResponseModel!.data!.transactionTotalToday)
               .toInt();
+          if (model.dailyLimit != 'unlimited') {
+            AppUtils.snackbar(
+              context,
+              message:
+                  'Your limit for today is ${oCcy.format(dailyLimit - transaction)}.',
+            );
+          }
         },
         disposeViewModel: false,
         builder: (_, AuthViewModel model, __) {
@@ -128,25 +141,30 @@ class _FlutterScreenState extends State<FlutterScreen> {
                         buttonText: 'Confirm Deposit',
                         color: AppColor.white,
                         border: 8,
-                        // isLoading: model.isLoading,
                         buttonColor: AppColor.primary,
                         buttonBorderColor: Colors.transparent,
-                        onPressed: dailyLimit > transaction
-                            ? () {
-                                if (formKey.currentState!.validate()) {
-                                  model.handleFlutterPaymentInitialization(
-                                      amount:
-                                          double.parse(amountController.text),
-                                      walletId: walletId,
-                                      context: context);
-                                }
-                              }
-                            : () {
-                                AppUtils.snackbar(context,
-                                    message:
-                                        'You have exceeded your daily limit..',
-                                    error: true);
-                              }),
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            if (dailyLimit == "unlimited") {
+                              model.handleFlutterPaymentInitialization(
+                                  amount: double.parse(amountController.text),
+                                  walletId: walletId,
+                                  context: context);
+                              return;
+                            }
+                            if (dailyLimit > transaction) {
+                              model.handleFlutterPaymentInitialization(
+                                  amount: double.parse(amountController.text),
+                                  walletId: walletId,
+                                  context: context);
+                            } else {
+                              AppUtils.snackbar(context,
+                                  message:
+                                      'You have exceeded your daily limit..',
+                                  error: true);
+                            }
+                          }
+                        }),
                     SizedBox(
                       height: 30.h,
                     ),

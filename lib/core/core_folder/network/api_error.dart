@@ -52,7 +52,7 @@ class ApiError {
               dioError.response?.statusCode == 404 ||
               dioError.response?.statusCode == 409) {
             apiErrorModel = ApiErrorModel.fromJson(dioError.response?.data);
-            print('..... ${apiErrorModel?.error}');
+            print('..u... ${apiErrorModel?.data}');
             if (apiErrorModel?.error != null) {
               if (apiErrorModel?.error['code'] != null) {
                 errorDescription = apiErrorModel?.error['code'][0];
@@ -70,11 +70,12 @@ class ApiError {
                 errorDescription = apiErrorModel?.error['discount'][0];
               } else if (apiErrorModel?.error['checked_in'] != null) {
                 errorDescription = apiErrorModel?.error['checked_in'][0];
-              } else if (apiErrorModel?.error['date'] != null) {
-                errorDescription = apiErrorModel?.error['date'][0];
+              } else if (apiErrorModel?.error['data'] != null) {
+                errorDescription = apiErrorModel?.error['data'];
               }
             } else {
               errorDescription = apiErrorModel?.msg ??
+                  apiErrorModel?.data ??
                   extractDescriptionFromResponse(error.response);
             }
           } else if (dioError.response?.statusCode == 500) {
@@ -122,16 +123,19 @@ class ApiError {
 class ApiErrorModel {
   String? code;
   String? msg;
+  String? data;
   bool? success;
   String? details;
   dynamic error;
 
-  ApiErrorModel({this.code, this.msg, this.success, this.details, this.error});
+  ApiErrorModel(
+      {this.code, this.msg, this.success, this.details, this.error, this.data});
 
   factory ApiErrorModel.fromJson(Map<String, dynamic> json) => ApiErrorModel(
       code: json["code"],
       msg: json["msg"] ?? json["message"],
       success: json["success"],
       details: json["details"],
-      error: json["errors"]);
+      error: json["errors"],
+      data: json["data"]);
 }

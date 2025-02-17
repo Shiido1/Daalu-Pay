@@ -1,6 +1,5 @@
 // ignore_for_file: collection_methods_unrelated_type
 
-import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,9 +18,6 @@ import '../../../../widget/text_widget.dart';
 class SwapScreen extends StatelessWidget {
   SwapScreen({super.key});
 
-  int dailyLimit = 0;
-  int transaction = 0;
-
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AuthViewModel>.reactive(
@@ -31,17 +27,25 @@ class SwapScreen extends StatelessWidget {
           // ignore: use_build_context_synchronously
           model.getStatistics(context);
           await model.usersPrefer(context);
-          dailyLimit = int.parse(model
-              .preferenceResponseModel!.data!.dailyTransactionLimit
-              .toString());
-          transaction = double.parse(
+          if (model.preferenceResponseModel!.data!.dailyTransactionLimit!
+                  .toLowerCase() ==
+              'unlimited') {
+            model.dailyLimit = 'unlimited';
+          } else {
+            model.dailyLimit = int.parse(model
+                .preferenceResponseModel!.data!.dailyTransactionLimit
+                .toString());
+          }
+          model.transaction = double.parse(
                   model.preferenceResponseModel!.data!.transactionTotalToday)
               .toInt();
-          AppUtils.snackbar(
-            context,
-            message:
-                'Your limit for today is ${oCcy.format(dailyLimit - transaction)}.',
-          );
+          if (model.dailyLimit != 'unlimited') {
+            AppUtils.snackbar(
+              context,
+              message:
+                  'Your limit for today is ${oCcy.format(model.dailyLimit - model.transaction)}.',
+            );
+          }
         },
         disposeViewModel: false,
         builder: (_, AuthViewModel model, __) {
@@ -286,32 +290,14 @@ class SwapScreen extends StatelessWidget {
                     height: 100.h,
                   ),
                   ButtonWidget(
-                      buttonText: 'Proceed',
-                      color: AppColor.white,
-                      border: 8,
-                      isLoading: model.isLoading,
-                      buttonColor: AppColor.primary,
-                      buttonBorderColor: Colors.transparent,
-                      onPressed: dailyLimit > transaction
-                          ? () {
-                              model.swap(context,
-                                  swap: SwapEntiyModel(
-                                      fromAmount:
-                                          model.fromCurrencylController.text,
-                                      toAmount:
-                                          model.toCurrencylController.text,
-                                      fromCurrency: model.fromCurrencyCode,
-                                      toCurrency: model.toCurrencyCode,
-                                      amount: model.toCurrencylController.text,
-                                      rate: model.exchangeRateResponseModel!
-                                          .data!.rate));
-                            }
-                          : () {
-                              AppUtils.snackbar(context,
-                                  message:
-                                      'You have exceeded your daily limit..',
-                                  error: true);
-                            }),
+                    buttonText: 'Proceed',
+                    color: AppColor.white,
+                    border: 8,
+                    isLoading: model.isLoading,
+                    buttonColor: AppColor.primary,
+                    buttonBorderColor: Colors.transparent,
+                    onPressed: () => model.swapFlowMeth(context),
+                  ),
                   SizedBox(
                     height: 30.h,
                   ),

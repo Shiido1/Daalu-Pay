@@ -402,11 +402,11 @@ class AuthViewModel extends BaseViewModel {
         groupBy(_getTransactionResponseModel!.data!, (obj) => obj.status);
     transactionListData!.clear();
     if (transStats == 'successful') {
-      transactionListData?.addAll(groupedValue['completed']!);
+      transactionListData?.addAll(groupedValue['completed'] ?? []);
     } else if (transStats == 'pending') {
-      transactionListData?.addAll(groupedValue['pending']!);
+      transactionListData?.addAll(groupedValue['pending'] ?? []);
     } else if (transStats == 'failed') {
-      transactionListData?.addAll(groupedValue['failed']!);
+      transactionListData?.addAll(groupedValue['failed'] ?? []);
     } else {
       transactionListData!.clear();
     }
@@ -1563,14 +1563,9 @@ class AuthViewModel extends BaseViewModel {
   Future<void> updateNotificationToken(context,
       {NotificationUserEntityModel? notificationUser}) async {
     try {
-      // _isLoading = true;
       _notificationUserResponseModel = await runBusyFuture(
           repositoryImply.notificationToke(notificationUser!),
           throwException: true);
-      // if (_kycResponseModel?.status == 'success') {
-      //   AppUtils.snackbar(context, message: 'Kyc uploaded Successfully..!');
-      // }
-      // _isLoading = false;
     } catch (e) {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);
@@ -1711,6 +1706,37 @@ class AuthViewModel extends BaseViewModel {
               channel: 'paystack',
               walletId: walletId));
     }
+  }
+
+  dynamic dailyLimit;
+  int transaction = 0;
+
+  swapFlowMeth(context) {
+    if (dailyLimit == "unlimited") {
+      swap(context,
+          swap: SwapEntiyModel(
+              fromAmount: fromCurrencylController.text,
+              toAmount: toCurrencylController.text,
+              fromCurrency: fromCurrencyCode,
+              toCurrency: toCurrencyCode,
+              amount: toCurrencylController.text,
+              rate: exchangeRateResponseModel!.data!.rate));
+      return;
+    }
+    if (dailyLimit > transaction) {
+      swap(context,
+          swap: SwapEntiyModel(
+              fromAmount: fromCurrencylController.text,
+              toAmount: toCurrencylController.text,
+              fromCurrency: fromCurrencyCode,
+              toCurrency: toCurrencyCode,
+              amount: toCurrencylController.text,
+              rate: exchangeRateResponseModel!.data!.rate));
+    } else {
+      AppUtils.snackbar(context,
+          message: 'You have exceeded your daily limit..', error: true);
+    }
+    notifyListeners();
   }
 
   handleFlutterPaymentInitialization(

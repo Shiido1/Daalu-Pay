@@ -38,7 +38,8 @@ class _PaystackScreenState extends State<PaystackScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   String? walletId;
-  int dailyLimit = 0;
+
+  dynamic dailyLimit;
   int transaction = 0;
 
   @override
@@ -53,17 +54,25 @@ class _PaystackScreenState extends State<PaystackScreen> {
               return e.currency == 'NGN';
             });
             await model.usersPrefer(context);
-            dailyLimit = int.parse(model
-                .preferenceResponseModel!.data!.dailyTransactionLimit
-                .toString());
+            if (model.preferenceResponseModel!.data!.dailyTransactionLimit!
+                    .toLowerCase() ==
+                'unlimited') {
+              dailyLimit = 'unlimited';
+            } else {
+              dailyLimit = int.parse(model
+                  .preferenceResponseModel!.data!.dailyTransactionLimit
+                  .toString());
+            }
             transaction = double.parse(
                     model.preferenceResponseModel!.data!.transactionTotalToday)
                 .toInt();
-            AppUtils.snackbar(
-              context,
-              message:
-                  'Your limit for today is ${oCcy.format(dailyLimit - transaction)}.',
-            );
+            if (model.dailyLimit != 'unlimited') {
+              AppUtils.snackbar(
+                context,
+                message:
+                    'Your limit for today is ${oCcy.format(dailyLimit - transaction)}.',
+              );
+            }
           });
         },
         disposeViewModel: false,
@@ -135,22 +144,46 @@ class _PaystackScreenState extends State<PaystackScreen> {
                         border: 8,
                         buttonColor: AppColor.primary,
                         buttonBorderColor: Colors.transparent,
-                        onPressed: dailyLimit > transaction
-                            ? () {
-                                if (formKey.currentState!.validate()) {
-                                  model.makePayment(
-                                      amount:
-                                          double.parse(amountController.text),
-                                      walletId: walletId,
-                                      context: context);
-                                }
-                              }
-                            : () {
-                                AppUtils.snackbar(context,
-                                    message:
-                                        'You have exceeded your daily limit..',
-                                    error: true);
-                              }),
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            if (dailyLimit == "unlimited") {
+                              model.makePayment(
+                                  amount: double.parse(amountController.text),
+                                  walletId: walletId,
+                                  context: context);
+                              return;
+                            }
+                            if (dailyLimit > transaction) {
+                              model.makePayment(
+                                  amount: double.parse(amountController.text),
+                                  walletId: walletId,
+                                  context: context);
+                            } else {
+                              AppUtils.snackbar(context,
+                                  message:
+                                      'You have exceeded your daily limit..',
+                                  error: true);
+                            }
+                          }
+                        }
+
+                        //  dailyLimit > transaction
+                        //     ? () {
+                        //         if (formKey.currentState!.validate()) {
+                        // model.makePayment(
+                        //     amount:
+                        //         double.parse(amountController.text),
+                        //     walletId: walletId,
+                        //     context: context);
+                        // }
+                        //       }
+                        //     : () {
+                        //         AppUtils.snackbar(context,
+                        //             message:
+                        //                 'You have exceeded your daily limit..',
+                        //             error: true);
+                        //       }
+                        ),
                     SizedBox(
                       height: 30.h,
                     ),

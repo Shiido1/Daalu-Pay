@@ -14,6 +14,7 @@ class AppImage {
   static const String roSwap = 'assets/svg/roswap.svg';
   static const String uk = 'assets/svg/g39.svg';
   static const String cal = 'assets/svg/cal.svg';
+  static const String send = 'assets/svg/send.svg';
   static const String flutter = 'assets/svg/flutter.svg';
   static const String fullFlutter = 'assets/svg/full_flutter.svg';
   static const String paystack = 'assets/svg/paystack.svg';

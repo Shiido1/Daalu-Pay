@@ -141,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         TextView(
                           text: 'Don’t have an account? ',
-                          fontSize: 16.2.sp,
+                          fontSize: 17.2.sp,
                           fontWeight: FontWeight.w500,
                           color: AppColor.darkGrey,
                         ),
@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               navigate.navigateTo(Routes.createAccountScreen),
                           child: TextView(
                             text: 'Sign up here',
-                            fontSize: 16.2.sp,
+                            fontSize: 17.2.sp,
                             fontWeight: FontWeight.w500,
                             color: AppColor.primary,
                           ),

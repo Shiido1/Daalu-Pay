@@ -111,6 +111,32 @@ class AuthViewModel extends BaseViewModel {
 
   final _firebaseMessage = FirebaseMessaging.instance;
 
+  int currentPageWallet = 0;
+
+  buildCarouselIndicator() {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          for (int i = 0; i < getStatsResponseModel!.data!.wallets!.length; i++)
+            Container(
+              margin: EdgeInsets.all(5.w),
+              height: i == currentPageWallet ? 10 : 9.2.h,
+              width: i == currentPageWallet ? 10 : 9.2.w,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    color: AppColor.grey,
+                  ),
+                  color: i == currentPageWallet
+                      ? AppColor.primary
+                      : AppColor.white,
+                  shape: BoxShape.circle),
+            )
+        ],
+      ),
+    );
+  }
+
   Future<void> initNotificationToken() async {
     await _firebaseMessage.requestPermission();
     globalfCMToken = await _firebaseMessage.getToken();
@@ -1845,10 +1871,14 @@ class AuthViewModel extends BaseViewModel {
                           ...model.getStatsResponseModel!.data!.wallets!.map(
                             (e) => GestureDetector(
                               onTap: () {
-                                currencyController.text = e.currency!;
-                                _walletAmount = e;
-                                notifyListeners();
+                                if (e.currency != 'NGN') {
+                                  currencyController.text = e.currency!;
+                                  _walletAmount = e;
+                                  notifyListeners();
+                                }
+
                                 Navigator.pop(context);
+                                return;
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

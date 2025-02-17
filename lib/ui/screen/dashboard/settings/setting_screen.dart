@@ -71,7 +71,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 text: getInitials(
                                         '${model.userResponseModel?.data?.firstName} ${model.userResponseModel?.data?.lastName}')
                                     .toUpperCase(),
-                                fontSize: 18.sp,
+                                fontSize: 22.sp,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -84,12 +84,12 @@ class _SettingScreenState extends State<SettingScreen> {
                           TextView(
                             text:
                                 '${model.userResponseModel?.data?.firstName ?? ""} ${model.userResponseModel?.data?.lastName ?? ''}',
-                            fontSize: 20.sp,
+                            fontSize: 22.0.sp,
                             fontWeight: FontWeight.w500,
                           ),
                           TextView(
                             text: model.userResponseModel?.data?.email ?? '',
-                            fontSize: 14.sp,
+                            fontSize: 15.4.sp,
                             fontWeight: FontWeight.w500,
                             color: AppColor.textColor,
                           ),
@@ -102,7 +102,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   TextView(
                     text: 'ACCOUNT',
-                    fontSize: 14.sp,
+                    fontSize: 16.4.sp,
                     fontWeight: FontWeight.w400,
                   ),
                   SizedBox(
@@ -131,14 +131,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                 Icon(
                                   Icons.person,
                                   color: AppColor.primary.withOpacity(.5),
-                                  size: 19.2.sp,
+                                  size: 22.2.sp,
                                 ),
                                 SizedBox(
                                   width: 10.w,
                                 ),
                                 TextView(
                                   text: 'Your Profile',
-                                  fontSize: 14.sp,
+                                  fontSize: 16.4.sp,
                                   fontWeight: FontWeight.w400,
                                 ),
                               ],
@@ -159,14 +159,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Icon(
                                     Icons.verified_outlined,
                                     color: AppColor.primary.withOpacity(.5),
-                                    size: 19.2.sp,
+                                    size: 22.2.sp,
                                   ),
                                   SizedBox(
                                     width: 10.w,
                                   ),
                                   TextView(
                                     text: 'Verification',
-                                    fontSize: 14.sp,
+                                    fontSize: 16.4.sp,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ],
@@ -185,7 +185,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   text: model.userResponseModel?.data?.status
                                           ?.capitalize() ??
                                       '',
-                                  fontSize: 13.4.sp,
+                                  fontSize: 14.4.sp,
                                   fontWeight: FontWeight.w500,
                                   color: model.userResponseModel?.data?.status
                                               ?.toLowerCase() ==
@@ -214,14 +214,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                 Icon(
                                   Icons.message,
                                   color: AppColor.primary.withOpacity(.5),
-                                  size: 19.2.sp,
+                                  size: 22.2.sp,
                                 ),
                                 SizedBox(
                                   width: 10.w,
                                 ),
                                 TextView(
                                   text: 'Live Chat',
-                                  fontSize: 14.sp,
+                                  fontSize: 16.4.sp,
                                   fontWeight: FontWeight.w400,
                                 ),
                               ],
@@ -245,14 +245,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Icon(
                                     Icons.notifications_none,
                                     color: AppColor.primary.withOpacity(.5),
-                                    size: 19.2.sp,
+                                    size: 22.2.sp,
                                   ),
                                   SizedBox(
                                     width: 10.w,
                                   ),
                                   TextView(
                                     text: 'Notification',
-                                    fontSize: 14.sp,
+                                    fontSize: 16.4.sp,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ],
@@ -307,7 +307,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   TextView(
                     text: 'FINANCES',
-                    fontSize: 14.sp,
+                    fontSize: 16.4.sp,
                     fontWeight: FontWeight.w400,
                   ),
                   SizedBox(
@@ -331,14 +331,14 @@ class _SettingScreenState extends State<SettingScreen> {
                             Icon(
                               Icons.monetization_on_outlined,
                               color: AppColor.primary.withOpacity(.5),
-                              size: 19.2.sp,
+                              size: 22.2.sp,
                             ),
                             SizedBox(
                               width: 10.w,
                             ),
                             TextView(
                               text: 'Transactions',
-                              fontSize: 14.sp,
+                              fontSize: 16.4.sp,
                               fontWeight: FontWeight.w400,
                             ),
                           ],
@@ -351,7 +351,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   TextView(
                     text: 'SECURITY',
-                    fontSize: 14.sp,
+                    fontSize: 16.4.sp,
                     fontWeight: FontWeight.w400,
                   ),
                   SizedBox(
@@ -380,14 +380,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                 Icon(
                                   Icons.password_outlined,
                                   color: AppColor.primary.withOpacity(.5),
-                                  size: 19.2.sp,
+                                  size: 22.2.sp,
                                 ),
                                 SizedBox(
                                   width: 10.w,
                                 ),
                                 TextView(
                                   text: 'Change Password',
-                                  fontSize: 14.sp,
+                                  fontSize: 16.4.sp,
                                   fontWeight: FontWeight.w400,
                                 ),
                               ],
@@ -408,34 +408,20 @@ class _SettingScreenState extends State<SettingScreen> {
                                 Icon(
                                   Icons.key_outlined,
                                   color: AppColor.primary.withOpacity(.5),
-                                  size: 19.2.sp,
+                                  size: 22.2.sp,
                                 ),
                                 SizedBox(
                                   width: 10.w,
                                 ),
                                 TextView(
                                   text: 'KYC',
-                                  fontSize: 14.sp,
+                                  fontSize: 16.4.sp,
                                   fontWeight: FontWeight.w400,
                                 ),
                               ],
                             ),
                           ),
                         ),
-                        // Divider(
-                        //   color: AppColor.grey,
-                        //   thickness: .4.sp,
-                        // ),
-                        // paddedWind(
-                        //   child: TextView(
-                        //     text: 'Change Pin',
-                        //     fontSize: 14.sp,
-                        //     fontWeight: FontWeight.w400,
-                        //   ),
-                        // ),
-                        // SizedBox(
-                        //   height: 2.h,
-                        // ),
                       ],
                     ),
                   ),
@@ -452,7 +438,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         children: [
                           TextView(
                             text: 'Logout',
-                            fontSize: 16.4.sp,
+                            fontSize: 17.4.sp,
                             fontWeight: FontWeight.w500,
                             color: AppColor.red,
                           ),
@@ -461,7 +447,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           ),
                           Icon(
                             Icons.logout_outlined,
-                            size: 19.2.sp,
+                            size: 22.2.sp,
                             color: AppColor.red,
                           )
                         ],

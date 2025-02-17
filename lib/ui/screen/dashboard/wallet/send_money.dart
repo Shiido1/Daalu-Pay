@@ -1,10 +1,12 @@
 import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../app_assets/app_color.dart';
+import '../../../app_assets/app_image.dart';
 import '../../../app_assets/app_utils.dart';
 import '../../../app_assets/app_validatiion.dart';
 import '../../../app_assets/contant.dart';
@@ -52,7 +54,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
             transaction = double.parse(
                     model.preferenceResponseModel!.data!.transactionTotalToday)
                 .toInt();
-            if (model.dailyLimit != 'unlimited') {
+            if (dailyLimit != 'unlimited') {
               AppUtils.snackbar(
                 context,
                 message:
@@ -128,17 +130,123 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                     SizedBox(
                       height: 20.h,
                     ),
-                    TextFormWidget(
-                        label: 'UUID',
-                        hint: 'Recipient\'s Wallet Address',
-                        border: 10,
-                        isFilled: true,
-                        fillColor: AppColor.white,
-                        controller: model.recipientWalletIdController,
-                        validator: AppValidator.validateString(),
-                        onChange: (p0) {
-                          model.onGetUserWalletRate(context, p0);
-                        }),
+                    Padding(
+                      padding: EdgeInsets.only(right: 8.w),
+                      child: Row(
+                        children: <Widget>[
+                          Radio(
+                            value: 'wallet',
+                            groupValue: _radioValue,
+                            onChanged: (v) {
+                              radioButtonChanges(v!);
+                            },
+                          ),
+                          Text(
+                            "Wallet Address",
+                          ),
+                          Spacer(),
+                          Radio(
+                            value: 'upload',
+                            groupValue: _radioValue,
+                            onChanged: (v) {
+                              radioButtonChanges(v!);
+                            },
+                          ),
+                          Text(
+                            "Upload Image",
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    choice == 'wallet'
+                        ? TextFormWidget(
+                            label: 'Alipay Wallet Id',
+                            hint: 'Recipient\'s Wallet Address',
+                            border: 10,
+                            isFilled: true,
+                            fillColor: AppColor.white,
+                            controller: model.recipientWalletIdController,
+                            validator: AppValidator.validateString(),
+                            onChange: (p0) {
+                              model.onGetUserWalletRate(context, p0);
+                            })
+                        : choice == 'upload'
+                            ? Container(
+                                child: Column(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () => model
+                                              .getDocumentAlipayImage(context),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              SvgPicture.asset(AppImage.cal),
+                                              SizedBox(
+                                                width: 10.w,
+                                              ),
+                                              TextView(
+                                                text: 'Upload File',
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColor.darkGrey,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20.h,
+                                    ), // Row(
+
+                                    model.filename != null
+                                        ? Container(
+                                            padding: EdgeInsets.all(6.w),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: AppColor.inGrey),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                SvgPicture.asset(AppImage.pdf),
+                                                SizedBox(
+                                                  width: 10.w,
+                                                ),
+                                                SizedBox(
+                                                  width: 230.w,
+                                                  child: TextView(
+                                                    text: model.filename!,
+                                                    fontSize: 14.sp,
+                                                    textOverflow:
+                                                        TextOverflow.ellipsis,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: AppColor.darkGrey,
+                                                  ),
+                                                ),
+                                                const Spacer(),
+                                                // Icon(
+                                                //   Icons.delete_outline_rounded,
+                                                //   color: AppColor.red,
+                                                //   size: 26.sp,
+                                                // )
+                                              ],
+                                            ),
+                                          )
+                                        : SizedBox.shrink(),
+                                  ],
+                                ),
+                              )
+                            : SizedBox.shrink(),
                     SizedBox(
                       height: 10.h,
                     ),
@@ -172,8 +280,12 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                             model.sendMoney(context,
                                 sendMoney: SendMonetEntityModel(
                                     amount: sendAmountController.text,
-                                    recipientAddress:
-                                        model.recipientWalletIdController.text,
+                                    documentType: choice == 'wallet'
+                                        ? 'alipay_id'
+                                        : 'barcode',
+                                    recipientAddress: choice == 'wallet'
+                                        ? model.recipientWalletIdController.text
+                                        : '${model.postUserVerificationCloudResponse?.publicId}.${model.postUserVerificationCloudResponse?.format}',
                                     currency: model.currencyController.text));
 
                             return;
@@ -182,8 +294,12 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                             model.sendMoney(context,
                                 sendMoney: SendMonetEntityModel(
                                     amount: sendAmountController.text,
-                                    recipientAddress:
-                                        model.recipientWalletIdController.text,
+                                    documentType: choice == 'wallet'
+                                        ? 'alipay_id'
+                                        : 'barcode',
+                                    recipientAddress: choice == 'wallet'
+                                        ? model.recipientWalletIdController.text
+                                        : '${model.postUserVerificationCloudResponse?.publicId}.${model.postUserVerificationCloudResponse?.format}',
                                     currency: model.currencyController.text));
                           } else {
                             AppUtils.snackbar(context,
@@ -204,5 +320,25 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
             ),
           );
         });
+  }
+
+  String? _radioValue; //Initial definition of radio button value
+  String? choice = '';
+
+  radioButtonChanges(String value) {
+    setState(() {
+      _radioValue = value;
+      switch (value) {
+        case 'wallet':
+          choice = value;
+          break;
+        case 'upload':
+          choice = value;
+          break;
+        default:
+          choice = "";
+      }
+      debugPrint(choice); //Debug the choice in console
+    });
   }
 }

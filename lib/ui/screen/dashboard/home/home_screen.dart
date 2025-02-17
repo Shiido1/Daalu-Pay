@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
-import 'package:daalu_pay/ui/app_assets/app_utils.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/home_widget/deposit_screen.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/swap/swap_screen.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
@@ -11,6 +10,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
+import '../../../../core/core_folder/app/app.router.dart';
+import '../../../../main.dart';
 import '../../../app_assets/app_color.dart';
 import '../../../app_assets/contant.dart';
 
@@ -49,27 +50,34 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       model.userResponseModel == null
                           ? SizedBox.shrink()
-                          : Container(
-                              padding: EdgeInsets.all(5.2.w),
-                              decoration: const BoxDecoration(
-                                color: AppColor.inGrey,
-                                shape: BoxShape.circle,
-                              ),
-                              child: TextView(
-                                text: getInitials(
-                                        '${model.userResponseModel?.data?.firstName} ${model.userResponseModel?.data?.lastName}')
-                                    .toUpperCase(),
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w400,
+                          : GestureDetector(
+                              onTap: () =>
+                                  navigate.navigateTo(Routes.profileScreen),
+                              child: Container(
+                                padding: EdgeInsets.all(5.2.w),
+                                decoration: const BoxDecoration(
+                                  color: AppColor.inGrey,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: TextView(
+                                  text: getInitials(
+                                          '${model.userResponseModel?.data?.firstName} ${model.userResponseModel?.data?.lastName}')
+                                      .toUpperCase(),
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ),
                       TextView(
                         text:
                             'Welcome ${model.userResponseModel?.data?.firstName ?? ''}',
-                        fontSize: 20.sp,
+                        fontSize: 21.20.sp,
                         fontWeight: FontWeight.w500,
                       ),
-                      SvgPicture.asset(AppImage.bell)
+                      SizedBox(
+                        width: 26.70.w,
+                      )
+                      // SvgPicture.asset(AppImage.bell)
                     ],
                   ),
                 ),
@@ -100,146 +108,135 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (model.getStatsResponseModel != null)
                   CarouselSlider(
                     items: [
-                      ...model.getStatsResponseModel!.data!.wallets!
-                          .map((e) => paddedWing(
-                                value: 12.w,
-                                child: Container(
-                                  height: 120.h,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      color: AppColor.primary,
-                                      borderRadius: BorderRadius.circular(14)),
-                                  child: paddedWing(
-                                    value: 16.w,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            TextView(
-                                              text: 'Available Balance',
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: AppColor.white,
-                                            ),
-                                            TextView(
-                                              text: isTapped
-                                                  ? '${getAllCurrency(e.currency)}${oCcy.format(e.balance ?? 0)}'
-                                                  : '********',
-                                              textStyle: TextStyle(
-                                                fontSize: 28.sp,
-                                                fontWeight: FontWeight.w400,
-                                                color: AppColor.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(top: 32.w),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 12.w),
-                                                child: GestureDetector(
-                                                    onTap: () => setState(() =>
-                                                        isTapped = !isTapped),
-                                                    child: SvgPicture.asset(
-                                                        isTapped
-                                                            ? AppImage.openEye
-                                                            : AppImage.eye)),
-                                              ),
-                                              SizedBox(
-                                                height: 14.0.h,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(right: 6.w),
-                                                child: IconButton(
-                                                    onPressed: () {
-                                                      Clipboard.setData(
-                                                          ClipboardData(
-                                                              text: e.uuid
-                                                                  .toString()));
-                                                      AppUtils.snackbar(context,
-                                                          message:
-                                                              'Copied Wallet Id');
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.copy,
-                                                      color: AppColor.white,
-                                                      size: 20.sp,
-                                                    )),
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                      ...model.getStatsResponseModel!.data!.wallets!.map((e) =>
+                          paddedWing(
+                            value: 12.w,
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: AppColor.primary.withOpacity(.8),
+                                  borderRadius: BorderRadius.circular(14)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 2.w),
+                                        child: SvgPicture.asset(model
+                                            .getWalletCurrencyCode(e.currency)),
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      TextView(
+                                        text: '${e.currency}',
+                                        color: AppColor.white,
+                                        fontSize: 22.sp,
+                                        fontWeight: FontWeight.w500,
+                                      )
+                                    ],
                                   ),
-                                ),
-                              ))
+                                  SizedBox(
+                                    height: 2.h,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      TextView(
+                                        text: isTapped
+                                            ? '${getAllCurrency(e.currency)}${oCcy.format(e.balance ?? 0)}'
+                                            : '*********',
+                                        textStyle: TextStyle(
+                                            fontSize: 28.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColor.white,
+                                            letterSpacing: isTapped ? 1 : 3),
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 12.w),
+                                        child: GestureDetector(
+                                            onTap: () => setState(
+                                                () => isTapped = !isTapped),
+                                            child: SvgPicture.asset(isTapped
+                                                ? AppImage.openEye
+                                                : AppImage.eye)),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 2.h,
+                                  ),
+                                  paddedWing(
+                                      value: 30.w,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          homePageTransFlowWidget(
+                                              image: AppImage.homeSwap,
+                                              text: 'Convert',
+                                              onTap: () => Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            SwapScreen()),
+                                                  )),
+                                          homePageTransFlowWidget(
+                                              image: AppImage.addCard,
+                                              text: 'Deposit',
+                                              onTap: () => Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const DepositScreen()),
+                                                  )),
+                                          homePageTransFlowWidget(
+                                            image: AppImage.send,
+                                            text: 'Send',
+                                            onTap: () => navigate.navigateTo(
+                                                Routes.sendMoneyScreen),
+                                          ),
+                                        ],
+                                      )),
+                                ],
+                              ),
+                            ),
+                          ))
                     ],
 
                     //Slider Container properties
                     options: CarouselOptions(
-                      height: 120.0,
-                      enlargeCenterPage: false,
+                      height: 180.0,
+                      enlargeCenterPage: true,
                       autoPlay: false,
                       aspectRatio: 1,
                       autoPlayCurve: Curves.fastOutSlowIn,
                       enableInfiniteScroll: false,
                       autoPlayAnimationDuration: Duration(milliseconds: 800),
                       viewportFraction: 1.0,
+                      onPageChanged: (index, _) {
+                        model.currentPageWallet = index;
+                        model.notifyListeners();
+                      },
                     ),
                   ),
+                SizedBox(height: 12.h),
+                model.getStatsResponseModel == null
+                    ? SizedBox.shrink()
+                    : model.buildCarouselIndicator(),
                 SizedBox(height: 40.h),
-                paddedWing(
-                    value: 10.w,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        homeTransFlowWidget(
-                            image: AppImage.homeSwap,
-                            text: 'Swap',
-                            color: AppColor.darkGrey,
-                            onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SwapScreen()),
-                                )),
-                        homeTransFlowWidget(
-                            image: AppImage.addCard,
-                            text: 'Deposit',
-                            color: AppColor.darkGrey,
-                            onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const DepositScreen()),
-                                )),
-                        homeTransFlowWidget(
-                            image: AppImage.homeHelp,
-                            text: 'Get Help',
-                            color: AppColor.darkGrey,
-                            onTap: () {}),
-                      ],
-                    )),
-                SizedBox(height: 46.h),
                 paddedWing(
                   value: 10.w,
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: TextView(
                       text: 'Swap Transaction',
-                      fontSize: 16.sp,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.w500,
                       color: AppColor.darkGrey,
                     ),
@@ -257,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ? Center(
                             child: TextView(
                               text: 'No Transations',
-                              fontSize: 20.sp,
+                              fontSize: 22.sp,
                             ),
                           )
                         : Column(
@@ -278,13 +275,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       TextView(
                         text: 'Recent Transaction',
-                        fontSize: 16.sp,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.w500,
                         color: AppColor.darkGrey,
                       ),
                       TextView(
                         text: 'View All',
-                        fontSize: 12.sp,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.w400,
                         color: AppColor.darkGrey,
                       ),

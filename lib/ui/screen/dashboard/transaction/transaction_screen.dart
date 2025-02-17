@@ -1,16 +1,12 @@
-import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:daalu_pay/ui/app_assets/contant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
-
 import '../../../../core/connect_end/model/get_transaction_response_model/datum.dart';
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../app_assets/app_color.dart';
-import '../../../widget/text_form_widget.dart';
 import '../../../widget/text_widget.dart';
 
 class TransactionScreen extends StatelessWidget {
@@ -43,32 +39,32 @@ class TransactionScreen extends StatelessWidget {
                     child: Center(
                         child: TextView(
                       text: 'Transactions',
-                      fontSize: 20.sp,
+                      fontSize: 22.0.sp,
                       fontWeight: FontWeight.w500,
                     )),
                   ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  paddedWing(
-                    child: TextFormWidget(
-                      label: 'Transaction ID',
-                      labelColor: AppColor.grey,
-                      hint: null,
-                      border: 10,
-                      borderColor: AppColor.transparent,
-                      isFilled: true,
-                      fillColor: AppColor.inGreyOut,
-                      prefixWidget: Padding(
-                        padding: EdgeInsets.all(12.w),
-                        child: SvgPicture.asset(
-                          AppImage.search,
-                        ),
-                      ),
-                      // controller: emailController,
-                      // validator: AppValidator.validateEmail(),
-                    ),
-                  ),
+                  // SizedBox(
+                  //   height: 30.h,
+                  // ),
+                  // paddedWing(
+                  //   child: TextFormWidget(
+                  //     label: 'Transaction ID',
+                  //     labelColor: AppColor.grey,
+                  //     hint: null,
+                  //     border: 10,
+                  //     borderColor: AppColor.transparent,
+                  //     isFilled: true,
+                  //     fillColor: AppColor.inGreyOut,
+                  //     prefixWidget: Padding(
+                  //       padding: EdgeInsets.all(12.w),
+                  //       child: SvgPicture.asset(
+                  //         AppImage.search,
+                  //       ),
+                  //     ),
+                  //     // controller: emailController,
+                  //     // validator: AppValidator.validateEmail(),
+                  //   ),
+                  // ),
                   SizedBox(
                     height: 30.h,
                   ),
@@ -76,7 +72,6 @@ class TransactionScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Container(
-                            height: 40.h,
                             width: double.infinity,
                             padding: EdgeInsets.symmetric(horizontal: 6.w),
                             decoration: BoxDecoration(
@@ -91,8 +86,8 @@ class TransactionScreen extends StatelessWidget {
                                 TextView(
                                   text: model.transStats.capitalize(),
                                   color: AppColor.darkGrey,
-                                  fontSize: 17.4.sp,
-                                  fontWeight: FontWeight.w400,
+                                  fontSize: 20.4.sp,
+                                  fontWeight: FontWeight.w500,
                                 ),
                                 PopupMenuButton(
                                   onSelected: (value) {
@@ -114,7 +109,7 @@ class TransactionScreen extends StatelessWidget {
                                         },
                                         child: TextView(
                                           text: 'All',
-                                          fontSize: 16.sp,
+                                          fontSize: 20.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -127,7 +122,7 @@ class TransactionScreen extends StatelessWidget {
                                         },
                                         child: TextView(
                                           text: 'Successful',
-                                          fontSize: 16.sp,
+                                          fontSize: 20.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -140,7 +135,7 @@ class TransactionScreen extends StatelessWidget {
                                         },
                                         child: TextView(
                                           text: 'Pending',
-                                          fontSize: 16.sp,
+                                          fontSize: 20.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -153,7 +148,7 @@ class TransactionScreen extends StatelessWidget {
                                         },
                                         child: TextView(
                                           text: 'Failed',
-                                          fontSize: 16.sp,
+                                          fontSize: 20.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -165,17 +160,16 @@ class TransactionScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: Container(
-                          height: 40.h,
+                          padding: EdgeInsets.symmetric(vertical: 11.4.w),
                           width: double.infinity,
                           decoration: BoxDecoration(
                             border: Border.all(color: AppColor.grey),
                           ),
                           child: Center(
                             child: TextView(
-                              // text: '07/11/24-13/11/24',
-                              text: '',
+                              text: '07/11/24',
                               color: AppColor.darkGrey,
-                              fontSize: 12.sp,
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
@@ -190,7 +184,7 @@ class TransactionScreen extends StatelessWidget {
                     child: TextView(
                       text: 'Recent Transaction',
                       color: AppColor.greyKind,
-                      fontSize: 18.sp,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -249,9 +243,8 @@ class TransactionScreen extends StatelessWidget {
                   SizedBox(
                     width: 180.0.w,
                     child: TextView(
-                      text:
-                          ' REF ID- ${e.referenceNumber?.toUpperCase() ?? ''}',
-                      fontSize: 12.sp,
+                      text: 'REF ID- ${e.referenceNumber?.toUpperCase() ?? ''}',
+                      fontSize: 15.2.sp,
                       maxLines: 1,
                       textOverflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.w500,
@@ -260,7 +253,7 @@ class TransactionScreen extends StatelessWidget {
                   TextView(
                     text: DateFormat('yyyy-MM-dd hh:mm a')
                         .format(DateTime.parse(e.createdAt.toString())),
-                    fontSize: 12.sp,
+                    fontSize: 14.2.sp,
                     color: AppColor.grey,
                     fontWeight: FontWeight.w400,
                   ),
@@ -273,7 +266,7 @@ class TransactionScreen extends StatelessWidget {
                     text: e.status?.toLowerCase() == 'completed'
                         ? 'Successful'
                         : e.status!.capitalize(),
-                    fontSize: 13.2.sp,
+                    fontSize: 15.2.sp,
                     fontWeight: FontWeight.w400,
                     color: e.status?.toLowerCase() == 'completed'
                         ? AppColor.green

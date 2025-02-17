@@ -68,6 +68,37 @@ homeTransFlowWidget(
       ],
     );
 
+homePageTransFlowWidget(
+        {required String image,
+        required String text,
+        required Function() onTap}) =>
+    Column(
+      children: [
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: EdgeInsets.all(8.2.w),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColor.white)),
+            child: SvgPicture.asset(
+              image,
+              color: AppColor.white,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 5.2.h,
+        ),
+        TextView(
+          text: text,
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w600,
+          color: AppColor.white,
+        )
+      ],
+    );
+
 sendTransFlowWidget(
         {required String image,
         required String text,
@@ -123,14 +154,14 @@ recentTransWidget({context, required Transaction e}) => GestureDetector(
               children: [
                 TextView(
                   text: e.type?.capitalize() ?? "",
-                  fontSize: 14.sp,
+                  fontSize: 16.2.sp,
                   fontWeight: FontWeight.w400,
                   color: AppColor.darkGrey,
                 ),
                 TextView(
                   text: DateFormat('yyyy-MM-dd hh:mm a')
                       .format(DateTime.parse(e.createdAt.toString())),
-                  fontSize: 12.sp,
+                  fontSize: 14.2.sp,
                   fontWeight: FontWeight.w300,
                   color: AppColor.darkGrey,
                 ),
@@ -143,7 +174,7 @@ recentTransWidget({context, required Transaction e}) => GestureDetector(
                   text: e.status?.toLowerCase() == 'completed'
                       ? 'Successful'
                       : e.status!.capitalize(),
-                  fontSize: 13.2.sp,
+                  fontSize: 15.2.sp,
                   fontWeight: FontWeight.w400,
                   color: e.status?.toLowerCase() == 'completed'
                       ? AppColor.green
@@ -155,7 +186,7 @@ recentTransWidget({context, required Transaction e}) => GestureDetector(
                   text:
                       '${getCurrency()}${oCcy.format(double.parse(e.amount!))}',
                   textStyle: TextStyle(
-                    fontSize: 12.sp,
+                    fontSize: 14.22.sp,
                     fontWeight: FontWeight.w400,
                     color: e.status?.toLowerCase() == 'completed'
                         ? AppColor.green
@@ -187,15 +218,15 @@ recentSwapTransWidget({context, required Swap e}) => Container(
             children: [
               TextView(
                 text: "${e.fromCurrency} - ${e.toCurrency}",
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w400,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
                 color: AppColor.darkGrey,
               ),
               TextView(
                 text: DateFormat('yyyy-MM-dd hh:mm a')
                     .format(DateTime.parse(e.createdAt.toString())),
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w300,
+                fontSize: 14.4.sp,
+                fontWeight: FontWeight.w400,
                 color: AppColor.darkGrey,
               ),
             ],
@@ -207,8 +238,8 @@ recentSwapTransWidget({context, required Swap e}) => Container(
                 text: e.status?.toLowerCase() == 'approved'
                     ? 'Successful'
                     : e.status!.capitalize(),
-                fontSize: 13.2.sp,
-                fontWeight: FontWeight.w400,
+                fontSize: 16.2.sp,
+                fontWeight: FontWeight.w500,
                 color: e.status?.toLowerCase() == 'approved'
                     ? AppColor.green
                     : e.status?.toLowerCase() == 'pending'
@@ -219,8 +250,8 @@ recentSwapTransWidget({context, required Swap e}) => Container(
                 text:
                     '${getAllCurrency(e.fromCurrency)}${oCcy.format(double.parse(e.fromAmount!))} - ${getAllCurrency(e.toCurrency)}${oCcy.format(double.parse(e.toAmount!))}',
                 textStyle: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
                   color: e.status?.toLowerCase() == 'approved'
                       ? AppColor.green
                       : e.status?.toLowerCase() == 'pending'

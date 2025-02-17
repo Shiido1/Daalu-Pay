@@ -26,7 +26,7 @@ class TextView extends StatelessWidget {
     this.textAlign = TextAlign.left,
     this.color,
     this.onTap,
-    this.fontSize = 14.0,
+    this.fontSize = 16.0,
     this.letterSpacing,
     this.lineHeight,
     this.textStyle,

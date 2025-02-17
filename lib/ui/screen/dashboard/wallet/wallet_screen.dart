@@ -47,7 +47,7 @@ class WalletScreen extends StatelessWidget {
                       child: Center(
                           child: TextView(
                         text: 'Wallet',
-                        fontSize: 20.sp,
+                        fontSize: 22.0.sp,
                         fontWeight: FontWeight.w500,
                       )),
                     ),
@@ -122,16 +122,16 @@ class WalletScreen extends StatelessWidget {
                                       TextView(
                                         text:
                                             model.getWalletCountry(e.currency),
-                                        fontSize: 14.sp,
+                                        fontSize: 17.4.sp,
                                         fontWeight: FontWeight.w500,
                                       ),
                                       TextView(
                                         text:
                                             '${getAllCurrency(e.currency)}${oCcy.format(double.parse(e.balance.toString()))}',
                                         textStyle: TextStyle(
-                                          fontSize: 18.sp,
+                                          fontSize: 19.8.sp,
                                           color: AppColor.grey,
-                                          fontWeight: FontWeight.w400,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ],
@@ -149,7 +149,7 @@ class WalletScreen extends StatelessWidget {
                         TextView(
                           text: 'Transaction History',
                           color: AppColor.greyKind,
-                          fontSize: 18.sp,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.w500,
                         ),
                         GestureDetector(
@@ -165,7 +165,7 @@ class WalletScreen extends StatelessWidget {
                             child: TextView(
                               text: 'Send Money',
                               color: AppColor.white,
-                              fontSize: 14.2.sp,
+                              fontSize: 16.2.sp,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -209,7 +209,7 @@ class WalletScreen extends StatelessWidget {
                                           child: TextView(
                                             text:
                                                 'Ref No-: ${o.referenceNumber?.toUpperCase()}',
-                                            fontSize: 12.sp,
+                                            fontSize: 16.sp,
                                             maxLines: 1,
                                             textOverflow: TextOverflow.ellipsis,
                                             fontWeight: FontWeight.w500,
@@ -219,7 +219,7 @@ class WalletScreen extends StatelessWidget {
                                           text: DateFormat('yyyy-MM-dd hh:mm a')
                                               .format(DateTime.parse(
                                                   o.createdAt.toString())),
-                                          fontSize: 12.sp,
+                                          fontSize: 14.4.sp,
                                           color: AppColor.grey,
                                           fontWeight: FontWeight.w400,
                                         ),
@@ -233,8 +233,14 @@ class WalletScreen extends StatelessWidget {
                                           text:
                                               '${getCurrency()}${oCcy.format(double.parse(o.amount!))}',
                                           textStyle: TextStyle(
-                                            color: AppColor.greyNice,
-                                            fontSize: 12.sp,
+                                            color: o.status?.toLowerCase() ==
+                                                    'completed'
+                                                ? AppColor.green
+                                                : o.status?.toLowerCase() ==
+                                                        'pending'
+                                                    ? AppColor.grey
+                                                    : AppColor.red,
+                                            fontSize: 15.2.sp,
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
@@ -243,7 +249,7 @@ class WalletScreen extends StatelessWidget {
                                                   'completed'
                                               ? 'Successful'
                                               : o.status!.capitalize(),
-                                          fontSize: 13.2.sp,
+                                          fontSize: 15.2.sp,
                                           fontWeight: FontWeight.w400,
                                           color: o.status?.toLowerCase() ==
                                                   'completed'

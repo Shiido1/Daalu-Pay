@@ -199,7 +199,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                             image: AppImage.send,
                                             text: 'Send',
                                             onTap: () => navigate.navigateTo(
-                                                Routes.sendMoneyScreen),
+                                                Routes.sendMoneyScreen,
+                                                arguments:
+                                                    SendMoneyScreenArguments(
+                                                        wallet: e)),
                                           ),
                                         ],
                                       )),

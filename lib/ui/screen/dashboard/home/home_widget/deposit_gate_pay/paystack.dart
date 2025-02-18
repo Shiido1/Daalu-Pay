@@ -66,7 +66,7 @@ class _PaystackScreenState extends State<PaystackScreen> {
             transaction = double.parse(
                     model.preferenceResponseModel!.data!.transactionTotalToday)
                 .toInt();
-            if (model.dailyLimit != 'unlimited') {
+            if (dailyLimit != 'unlimited') {
               AppUtils.snackbar(
                 context,
                 message:

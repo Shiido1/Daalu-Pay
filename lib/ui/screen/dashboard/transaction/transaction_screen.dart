@@ -9,8 +9,10 @@ import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../app_assets/app_color.dart';
 import '../../../widget/text_widget.dart';
 
+// ignore: must_be_immutable
 class TransactionScreen extends StatelessWidget {
   const TransactionScreen({super.key});
+
   paddedWing({child}) => Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: child,
@@ -20,8 +22,10 @@ class TransactionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AuthViewModel>.reactive(
         viewModelBuilder: () => AuthViewModel(),
-        onViewModelReady: (model) {
-          model.getTransaction(context);
+        onViewModelReady: (model) async {
+          await model.getTransaction(context);
+          model.filterDateTime = DateFormat('yyyy-MM-dd')
+              .format(DateTime.parse(model.nowFilter.toString()));
         },
         disposeViewModel: false,
         builder: (_, AuthViewModel model, __) {
@@ -104,7 +108,7 @@ class TransactionScreen extends StatelessWidget {
                                         value: '/all',
                                         onTap: () {
                                           model.transStats = 'all';
-                                          model.groupTransationStatus();
+                                          model.groupTransationStatus(context);
                                           model.notifyListeners();
                                         },
                                         child: TextView(
@@ -117,7 +121,7 @@ class TransactionScreen extends StatelessWidget {
                                         value: '/successful',
                                         onTap: () {
                                           model.transStats = 'successful';
-                                          model.groupTransationStatus();
+                                          model.groupTransationStatus(context);
                                           model.notifyListeners();
                                         },
                                         child: TextView(
@@ -130,7 +134,7 @@ class TransactionScreen extends StatelessWidget {
                                         value: '/pending',
                                         onTap: () {
                                           model.transStats = 'pending';
-                                          model.groupTransationStatus();
+                                          model.groupTransationStatus(context);
                                           model.notifyListeners();
                                         },
                                         child: TextView(
@@ -143,7 +147,7 @@ class TransactionScreen extends StatelessWidget {
                                         value: '/failed',
                                         onTap: () {
                                           model.transStats = 'failed';
-                                          model.groupTransationStatus();
+                                          model.groupTransationStatus(context);
                                           model.notifyListeners();
                                         },
                                         child: TextView(
@@ -160,17 +164,31 @@ class TransactionScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 11.4.w),
                           width: double.infinity,
                           decoration: BoxDecoration(
                             border: Border.all(color: AppColor.grey),
                           ),
                           child: Center(
-                            child: TextView(
-                              text: '07/11/24',
-                              color: AppColor.darkGrey,
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w400,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                TextView(
+                                  text: model.filterDateTime ?? '',
+                                  color: AppColor.darkGrey,
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                SizedBox(
+                                  width: 1.2.w,
+                                ),
+                                IconButton(
+                                    onPressed: () =>
+                                        model.filterTransDate(context),
+                                    icon: Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      size: 20.sp,
+                                    ))
+                              ],
                             ),
                           ),
                         ),

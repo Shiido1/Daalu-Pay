@@ -18,6 +18,7 @@ import '../../core_folder/manager/shared_preference.dart';
 import '../contract/contract_impl.dart';
 import '../model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
 import '../model/get_message_response/get_message_response.dart';
+import '../model/get_payment_gate_response_model/get_payment_gate_response_model.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
 import '../model/get_transaction_response_model/get_transaction_response_model.dart';
 import '../model/initiate_chat_response_model/initiate_chat_response_model.dart';
@@ -166,6 +167,11 @@ class AuthRepoImpl {
 
   Future<PreferenceResponseModel> userPreference() async {
     final response = await _contract.userPreference();
+    return response;
+  }
+
+  Future<GetPaymentGateResponseModel> paymentMethod() async {
+    final response = await _contract.paymentMethod();
     return response;
   }
 

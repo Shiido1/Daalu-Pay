@@ -3,6 +3,7 @@ import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dar
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_message_response/get_message_response.dart';
+import 'package:daalu_pay/core/connect_end/model/get_payment_gate_response_model/get_payment_gate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_stats_response_model/get_stats_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
@@ -302,8 +303,8 @@ class AuthApi {
 
   Future<PreferenceResponseModel> userPreference() async {
     try {
-      final response = await _service.call(
-        UrlConfig.user_preference, RequestMethod.get);
+      final response =
+          await _service.call(UrlConfig.user_preference, RequestMethod.get);
       logger.d(response.data);
       return PreferenceResponseModel.fromJson(response.data);
     } catch (e) {
@@ -329,6 +330,18 @@ class AuthApi {
       final response = await _service.call(UrlConfig.chat, RequestMethod.post);
       logger.d(response.data);
       return InitiateChatResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<GetPaymentGateResponseModel> paymentGate() async {
+    try {
+      final response =
+          await _service.call(UrlConfig.payment_gate, RequestMethod.get);
+      logger.d(response.data);
+      return GetPaymentGateResponseModel.fromJson(response.data);
     } catch (e) {
       logger.d("response:$e");
       rethrow;

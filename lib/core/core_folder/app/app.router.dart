@@ -201,7 +201,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i8.TransactionScreen: (data) {
       return _i19.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i8.TransactionScreen(),
+        builder: (context) => _i8.TransactionScreen(),
         settings: data,
       );
     },
@@ -242,7 +242,7 @@ class StackedRouter extends _i1.RouterBase {
       );
       return _i19.MaterialPageRoute<dynamic>(
         builder: (context) =>
-            _i13.SendMoneyScreen(key: args.key, currency: args.currency),
+            _i13.SendMoneyScreen(key: args.key, wallet: args.wallet),
         settings: data,
       );
     },
@@ -391,27 +391,27 @@ class VerifyScreenArguments {
 class SendMoneyScreenArguments {
   const SendMoneyScreenArguments({
     this.key,
-    this.currency,
+    this.wallet,
   });
 
   final _i19.Key? key;
 
-  final String? currency;
+  final _i20.Wallet? wallet;
 
   @override
   String toString() {
-    return '{"key": "$key", "currency": "$currency"}';
+    return '{"key": "$key", "wallet": "$wallet"}';
   }
 
   @override
   bool operator ==(covariant SendMoneyScreenArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key && other.currency == currency;
+    return other.key == key && other.wallet == wallet;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ currency.hashCode;
+    return key.hashCode ^ wallet.hashCode;
   }
 }
 
@@ -631,7 +631,7 @@ extension NavigatorStateExtension on _i21.NavigationService {
 
   Future<dynamic> navigateToSendMoneyScreen({
     _i19.Key? key,
-    String? currency,
+    _i20.Wallet? wallet,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -639,7 +639,7 @@ extension NavigatorStateExtension on _i21.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.sendMoneyScreen,
-        arguments: SendMoneyScreenArguments(key: key, currency: currency),
+        arguments: SendMoneyScreenArguments(key: key, wallet: wallet),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -887,7 +887,7 @@ extension NavigatorStateExtension on _i21.NavigationService {
 
   Future<dynamic> replaceWithSendMoneyScreen({
     _i19.Key? key,
-    String? currency,
+    _i20.Wallet? wallet,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -895,7 +895,7 @@ extension NavigatorStateExtension on _i21.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.sendMoneyScreen,
-        arguments: SendMoneyScreenArguments(key: key, currency: currency),
+        arguments: SendMoneyScreenArguments(key: key, wallet: wallet),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

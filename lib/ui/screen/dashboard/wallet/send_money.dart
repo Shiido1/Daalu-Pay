@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../../core/connect_end/model/get_stats_response_model/wallet.dart';
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../app_assets/app_color.dart';
 import '../../../app_assets/app_image.dart';
@@ -16,8 +17,8 @@ import '../../../widget/text_widget.dart';
 
 // ignore: must_be_immutable
 class SendMoneyScreen extends StatefulWidget {
-  SendMoneyScreen({super.key, this.currency});
-  String? currency;
+  SendMoneyScreen({super.key, this.wallet});
+  Wallet? wallet;
 
   @override
   State<SendMoneyScreen> createState() => _SendMoneyScreenState();
@@ -38,8 +39,8 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
         onViewModelReady: (model) {
           WidgetsBinding.instance.addPostFrameCallback((e) async {
             await model.getStatistics(context);
-            if (widget.currency != null) {
-              model.currencyController.text = widget.currency!;
+            if (widget.wallet!.currency != "NGN") {
+              model.currencyController.text = widget.wallet!.currency!;
             }
             await model.usersPrefer(context);
             if (model.preferenceResponseModel!.data!.dailyTransactionLimit!
@@ -171,7 +172,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                             controller: model.recipientWalletIdController,
                             validator: AppValidator.validateString(),
                             onChange: (p0) {
-                              model.onGetUserWalletRate(context, p0);
+                              // model.onGetUserWalletRate(context, p0);
                             })
                         : choice == 'upload'
                             ? Container(
@@ -247,20 +248,20 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                                 ),
                               )
                             : SizedBox.shrink(),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    model.getWalletIdResponseModel != null
-                        ? TextView(
-                            text:
-                                'Recipient: ${model.getWalletIdResponseModel?.data?.user?.firstName} ${model.getWalletIdResponseModel?.data?.user?.lastName}',
-                            textStyle: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColor.grey,
-                            ),
-                          )
-                        : const SizedBox.shrink(),
+                    // SizedBox(
+                    //   height: 10.h,
+                    // ),
+                    // model.getWalletIdResponseModel != null
+                    //     ? TextView(
+                    //         text:
+                    //             'Recipient: ${model.getWalletIdResponseModel?.data?.user?.firstName} ${model.getWalletIdResponseModel?.data?.user?.lastName}',
+                    //         textStyle: TextStyle(
+                    //           fontSize: 14.sp,
+                    //           fontWeight: FontWeight.w400,
+                    //           color: AppColor.grey,
+                    //         ),
+                    //       )
+                    //     : const SizedBox.shrink(),
                     SizedBox(
                       height: 40.h,
                     ),

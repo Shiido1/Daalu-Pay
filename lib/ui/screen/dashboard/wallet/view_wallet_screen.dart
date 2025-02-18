@@ -143,7 +143,7 @@ class _ViewWalletScreenState extends State<ViewWalletScreen> {
                               onTap: () => navigate.navigateTo(
                                   Routes.sendMoneyScreen,
                                   arguments: SendMoneyScreenArguments(
-                                      currency: widget.wallet!.currency))),
+                                      wallet: widget.wallet))),
                           homeTransFlowWidget(
                               image: AppImage.addCard,
                               text: 'Deposit',

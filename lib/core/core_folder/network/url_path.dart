@@ -24,5 +24,7 @@ class UrlConfig {
   static const String notification_token = 'user/notification-tokens';
   static const String chat = 'user/chats';
   // ignore: constant_identifier_names
+  static const String payment_gate = 'user/payment-methods';
+  // ignore: constant_identifier_names
   static const String user_preference = '/user/preferences';
 }

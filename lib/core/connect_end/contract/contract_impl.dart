@@ -16,6 +16,7 @@ import 'package:injectable/injectable.dart';
 import '../../api_folder/auth_api.dart';
 import '../../core_folder/app/app.locator.dart';
 import '../model/get_message_response/get_message_response.dart';
+import '../model/get_payment_gate_response_model/get_payment_gate_response_model.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
 import '../model/initiate_chat_response_model/initiate_chat_response_model.dart';
 import '../model/login_entity.dart';
@@ -88,6 +89,8 @@ class AuthContractsImpl {
       await _api.getMessages(id);
   Future<PreferenceResponseModel> userPreference() async =>
       await _api.userPreference();
+  Future<GetPaymentGateResponseModel> paymentMethod() async =>
+      await _api.paymentGate();
   Future<SendMessageResponseModel> sendMessage(
           SendMessageEntityModel sendMessage) async =>
       await _api.sendMessage(sendMessage);

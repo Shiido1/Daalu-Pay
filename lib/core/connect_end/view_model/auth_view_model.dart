@@ -43,6 +43,7 @@ import '../../core_folder/app/app.logger.dart';
 import '../../core_folder/app/app.router.dart';
 import '../../core_folder/manager/shared_preference.dart';
 import '../model/get_message_response/get_message_response.dart';
+import '../model/get_payment_gate_response_model/get_payment_gate_response_model.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
 import '../model/get_stats_response_model/wallet.dart';
 import '../model/get_transaction_response_model/datum.dart';
@@ -106,6 +107,10 @@ class AuthViewModel extends BaseViewModel {
       _depositWalletResponseModel;
   KycResponseModel? get kycResponseModel => _kycResponseModel;
   KycResponseModel? _kycResponseModel;
+
+  GetPaymentGateResponseModel? _paymentGateResponseModel;
+  GetPaymentGateResponseModel? get paymentGateResponseModel =>
+      _paymentGateResponseModel;
 
   // firebase generate token call
 
@@ -229,6 +234,7 @@ class AuthViewModel extends BaseViewModel {
   String? selectCountry;
 
   String transStats = 'all';
+  String transDate = 'all';
   bool initializingPayment = false;
   GetWalletIdResponseModel? _getWalletIdResponseModel;
   GetWalletIdResponseModel? get getWalletIdResponseModel =>
@@ -266,6 +272,25 @@ class AuthViewModel extends BaseViewModel {
       _formattedDob = DateFormat('dd-MM-yyyy').format(selectedDOB);
 
       dobController.text = _formattedDob!;
+      notifyListeners();
+    }
+  }
+
+  DateTime nowFilter = DateTime.now();
+  String? filterDateTime;
+
+  Future<void> filterTransDate(BuildContext? context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context!,
+        initialDate: nowFilter,
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != nowFilter) {
+      nowFilter = picked;
+
+      filterDateTime = DateFormat('yyyy-MM-dd').format(nowFilter);
+
+      groupTransationByDate(context);
       notifyListeners();
     }
   }
@@ -421,7 +446,7 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  groupTransationStatus() {
+  groupTransationStatus(context) {
     Map<String?, List<Datum>> groupedValue;
 
     groupedValue =
@@ -435,6 +460,25 @@ class AuthViewModel extends BaseViewModel {
       transactionListData?.addAll(groupedValue['failed'] ?? []);
     } else {
       transactionListData!.clear();
+    }
+    if (transactionListData!.isEmpty) {
+      AppUtils.snackbar(context,
+          message: 'No $transStats transaction ', error: true);
+    }
+    notifyListeners();
+  }
+
+  groupTransationByDate(context) {
+    Map<String?, List<Datum>> groupedValue;
+    print('object');
+    groupedValue = groupBy(_getTransactionResponseModel!.data!,
+        (obj) => obj.createdAt.toString().substring(0, 10));
+    transactionListData!.clear();
+    transactionListData?.addAll(groupedValue[filterDateTime] ?? []);
+
+    if (transactionListData!.isEmpty) {
+      AppUtils.snackbar(context,
+          message: 'No transaction made on $filterDateTime', error: true);
     }
     notifyListeners();
   }
@@ -1601,13 +1645,8 @@ class AuthViewModel extends BaseViewModel {
 
   Future<void> deleteNotificationToken(context, {String? id}) async {
     try {
-      // _isLoading = true;
       await runBusyFuture(repositoryImply.deleteNotificationToke(id!),
           throwException: true);
-      // if (_kycResponseModel?.status == 'success') {
-      //   AppUtils.snackbar(context, message: 'Kyc uploaded Successfully..!');
-      // }
-      // _isLoading = false;
     } catch (e) {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);
@@ -1623,6 +1662,23 @@ class AuthViewModel extends BaseViewModel {
           repositoryImply.userPreference(),
           throwException: true);
     } catch (e) {
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> paymentMethod(
+    context,
+  ) async {
+    try {
+      _isLoading = true;
+      _paymentGateResponseModel = await runBusyFuture(
+          repositoryImply.paymentMethod(),
+          throwException: true);
+
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);
     }
     notifyListeners();

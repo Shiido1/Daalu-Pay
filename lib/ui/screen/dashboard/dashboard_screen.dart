@@ -11,6 +11,7 @@ import '../../app_assets/app_image.dart';
 import '../../widget/text_widget.dart';
 import 'settings/setting_screen.dart';
 import 'transaction/transaction_screen.dart';
+import 'wallet/send_money.dart';
 import 'wallet/wallet_screen.dart';
 
 class Dashboard extends StatefulWidget {
@@ -23,8 +24,9 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   int _currentIndex = 0;
 
-  final List<Widget> _body = const [
+  final List<Widget> _body = [
     HomeScreen(),
+    SendMoneyScreen(),
     WalletScreen(),
     TransactionScreen(),
     SettingScreen(),
@@ -111,10 +113,22 @@ class _DashboardState extends State<Dashboard> {
                   label: 'Home',
                 ),
                 BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: EdgeInsets.only(top: 5.4.w),
+                    child: SvgPicture.asset(
+                      AppImage.send,
+                      color: _currentIndex == 1
+                          ? AppColor.primary
+                          : AppColor.black,
+                    ),
+                  ),
+                  label: 'Send',
+                ),
+                BottomNavigationBarItem(
                   icon: SvgPicture.asset(
                     AppImage.wallet,
                     color:
-                        _currentIndex == 1 ? AppColor.primary : AppColor.black,
+                        _currentIndex == 2 ? AppColor.primary : AppColor.black,
                   ),
                   label: 'Wallet',
                 ),
@@ -122,7 +136,7 @@ class _DashboardState extends State<Dashboard> {
                   icon: SvgPicture.asset(
                     AppImage.trans,
                     color:
-                        _currentIndex == 2 ? AppColor.primary : AppColor.black,
+                        _currentIndex == 3 ? AppColor.primary : AppColor.black,
                   ),
                   label: 'Transaction',
                 ),
@@ -130,7 +144,7 @@ class _DashboardState extends State<Dashboard> {
                   icon: SvgPicture.asset(
                     AppImage.person,
                     color:
-                        _currentIndex == 3 ? AppColor.primary : AppColor.black,
+                        _currentIndex == 4 ? AppColor.primary : AppColor.black,
                   ),
                   label: 'Settings',
                 ),

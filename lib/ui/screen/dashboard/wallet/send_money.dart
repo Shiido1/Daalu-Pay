@@ -39,10 +39,10 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
         onViewModelReady: (model) {
           WidgetsBinding.instance.addPostFrameCallback((e) async {
             await model.getStatistics(context);
-            if (widget.wallet!.currency != "NGN") {
-              model.currencyController.text = widget.wallet!.currency!;
-            }
             await model.usersPrefer(context);
+            if (widget.wallet?.currency != "NGN") {
+              model.currencyController.text = widget.wallet?.currency ?? '';
+            }
             if (model.preferenceResponseModel!.data!.dailyTransactionLimit!
                     .toLowerCase() ==
                 'unlimited') {

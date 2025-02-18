@@ -172,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 2.h,
                                   ),
                                   paddedWing(
-                                      value: 30.w,
+                                      value: 28.w,
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -238,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: TextView(
-                      text: 'Swap Transaction',
+                      text: 'Convert Transaction',
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w500,
                       color: AppColor.darkGrey,

@@ -77,7 +77,7 @@ class SwapScreen extends StatelessWidget {
                             width: 10.w,
                           ),
                           TextView(
-                            text: 'Swap',
+                            text: 'Convert',
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w500,
                           ),
@@ -109,7 +109,7 @@ class SwapScreen extends StatelessWidget {
                   ),
                   TextFormWidget(
                     label: '',
-                    hint: 'Amount to swap',
+                    hint: 'Amount to Convert',
                     border: 10,
                     isFilled: true,
                     keyboardType: TextInputType.number,

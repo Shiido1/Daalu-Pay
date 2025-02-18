@@ -137,11 +137,12 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                                           ),
                                         ],
                                       ),
-                                      o.receipt == null
+                                      o.documentType == 'alipay_id'
                                           ? TextView(
-                                              text: 'file-: ${o.receipt}'
-                                                  .capitalize(),
-                                              fontSize: 14.sp,
+                                              text: o.documentType
+                                                      ?.capitalize() ??
+                                                  '',
+                                              fontSize: 16.sp,
                                               color: AppColor.black,
                                               fontWeight: FontWeight.w400,
                                             )
@@ -149,7 +150,7 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(8.0),
                                               child: Image.network(
-                                                'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${o.receipt}',
+                                                'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${o.recipientAlipayId}',
                                                 width: 90.w,
                                                 height: 120,
                                                 fit: BoxFit.cover,

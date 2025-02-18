@@ -3,12 +3,15 @@ import 'package:injectable/injectable.dart';
 import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/manager/shared_preference.dart';
 import '../contract/contract_impl.dart';
+import '../model/approve_receipt_entity_model.dart';
 import '../model/get_admin_stats_response_model/get_admin_stats_response_model.dart';
 import '../model/get_admin_transactions_response_model/get_admin_transactions_response_model.dart';
 import '../model/get_all_user_response_model/get_all_user_response_model.dart';
 import '../model/get_users_receipt_response_model/get_users_receipt_response_model.dart';
 import '../model/login_entity_model.dart';
 import '../model/login_response_model/login_response_model.dart';
+import '../model/post_user_cloud_entity_model.dart';
+import '../model/post_user_verification_cloud_response/post_user_verification_cloud_response.dart';
 
 @lazySingleton
 class AuthRepoImpl {
@@ -77,13 +80,20 @@ class AuthRepoImpl {
     return response;
   }
 
-  Future<dynamic> approveReceipts(String id) async {
-    final response = await _contract.approveReceipts(id);
+  Future<dynamic> approveReceipts(
+      {String? id, ApproveReceiptEntityModel? approve}) async {
+    final response = await _contract.approveReceipts(id: id, approve: approve);
     return response;
   }
 
   Future<dynamic> denyReceipts({String? id, String? reason}) async {
     final response = await _contract.denyReceipts(id: id, reason: reason);
+    return response;
+  }
+
+  Future<PostUserVerificationCloudResponse> postCloudinary(
+      PostUserCloudEntityModel postCloudinary) async {
+    final response = await _contract.postCloudinary(postCloudinary);
     return response;
   }
 

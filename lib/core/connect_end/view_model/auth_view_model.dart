@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import '../../../../core/connect_end/model/get_users_receipt_response_model/datum.dart'
+    as r;
 import 'package:daalu_pay_admin/ui/app_assets/app_color.dart';
 import 'package:daalu_pay_admin/ui/app_assets/contant.dart';
 import 'package:daalu_pay_admin/ui/widget/text_widget.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,12 +15,14 @@ import '../../../main.dart';
 import '../../../ui/app_assets/app_image.dart';
 import '../../../ui/app_assets/app_utils.dart';
 import '../../../ui/app_assets/app_validatiion.dart';
+import '../../../ui/app_assets/image_picker.dart';
 import '../../../ui/widget/button_widget.dart';
 import '../../../ui/widget/text_form_widget.dart';
 import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/app/app.logger.dart';
 import '../../core_folder/app/app.router.dart';
 import '../../core_folder/manager/shared_preference.dart';
+import '../model/approve_receipt_entity_model.dart';
 import '../model/get_admin_stats_response_model/get_admin_stats_response_model.dart';
 import '../model/get_admin_transactions_response_model/datum.dart';
 import '../model/get_admin_transactions_response_model/get_admin_transactions_response_model.dart';
@@ -24,6 +31,8 @@ import '../model/get_all_user_response_model/get_all_user_response_model.dart';
 import '../model/get_users_receipt_response_model/get_users_receipt_response_model.dart';
 import '../model/login_entity_model.dart';
 import '../model/login_response_model/login_response_model.dart';
+import '../model/post_user_cloud_entity_model.dart';
+import '../model/post_user_verification_cloud_response/post_user_verification_cloud_response.dart';
 import '../repo/repo_impl.dart';
 import "package:collection/collection.dart";
 
@@ -43,6 +52,7 @@ class AuthViewModel extends BaseViewModel {
 
   bool get isTogglePassword => _isTogglePassword;
   bool _isTogglePassword = false;
+  DateTime now = DateTime.now();
 
   bool isOnTogglePassword() {
     _isTogglePassword = !_isTogglePassword;
@@ -83,6 +93,56 @@ class AuthViewModel extends BaseViewModel {
   GetUsersReceiptResponseModel? _getUsersReceiptResponseModel;
   GetUsersReceiptResponseModel? get getUsersReceiptResponseMode =>
       _getUsersReceiptResponseModel;
+  PostUserVerificationCloudResponse? _postUserVerificationCloudResponse;
+  PostUserVerificationCloudResponse? get postUserVerificationCloudResponse =>
+      _postUserVerificationCloudResponse;
+
+  final _pickImage = ImagePickerHandler();
+  File? image;
+  String? filename;
+
+  formartFileImage(File? imageFile) {
+    if (imageFile == null) return;
+    return File(imageFile.path.replaceAll('\'', '').replaceAll('File: ', ''));
+  }
+
+  void getDocumentAlipayImage(BuildContext context) {
+    try {
+      _pickImage.pickImage(
+          context: context,
+          file: (file) {
+            image = file;
+            filename = image!.path.split("/").last;
+            postToCloudinary(context,
+                postCloudinary: PostUserCloudEntityModel(
+                    file: MultipartFile.fromBytes(
+                        formartFileImage(image).readAsBytesSync(),
+                        filename: image!.path.split("/").last),
+                    uploadPreset: 'daalupay.staging.alipay',
+                    apiKey: '163312741323182'));
+            notifyListeners();
+          });
+    } catch (e) {
+      logger.e(e);
+    }
+  }
+
+  Future<void> postToCloudinary(
+    context, {
+    PostUserCloudEntityModel? postCloudinary,
+  }) async {
+    try {
+      _isLoading = true;
+      _postUserVerificationCloudResponse = await runBusyFuture(
+          repositoryImply.postCloudinary(postCloudinary!),
+          throwException: true);
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
 
   // login flow so api call for method can be called here
 
@@ -582,7 +642,12 @@ class AuthViewModel extends BaseViewModel {
         });
   }
 
-  void modalBottomApproveReceiptsSheet({context, String? id}) {
+  void modalBottomApproveReceiptsSheet(
+      {context,
+      String? id,
+      String? choice,
+      TextEditingController? recipientWalletIdController,
+      r.Datum? datum}) {
     showModalBottomSheet(
         context: context,
         builder: (builder) {
@@ -645,8 +710,27 @@ class AuthViewModel extends BaseViewModel {
                                   isLoading: model.isLoadingReceipts,
                                   buttonColor: AppColor.primary,
                                   buttonBorderColor: Colors.transparent,
-                                  onPressed: () =>
-                                      approveReceipts(context, id: id)),
+                                  onPressed: () {
+                                    approveReceipts(context,
+                                        id: id,
+                                        approve: ApproveReceiptEntityModel(
+                                          amount: datum?.amount,
+                                          recipientAddress:
+                                              recipientWalletIdController?.text,
+                                          currency: 'CNY',
+                                          createdAt: now.toString(),
+                                          updatedAt: now.toString(),
+                                          status: 'approved',
+                                          documentType: choice == 'wallet'
+                                              ? 'alipay_id'
+                                              : 'barcode',
+                                          proofOfPayment: choice == 'wallet'
+                                              ? recipientWalletIdController!
+                                                  .text
+                                              : '${model.postUserVerificationCloudResponse?.publicId}.${model.postUserVerificationCloudResponse?.format}',
+                                        ));
+                                    notifyListeners();
+                                  }),
                             ),
                             SizedBox(
                               height: 30.h,
@@ -1278,10 +1362,12 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> approveReceipts(contxt, {String? id}) async {
+  Future<void> approveReceipts(contxt,
+      {String? id, ApproveReceiptEntityModel? approve}) async {
     try {
       _isLoadingReceipts = true;
-      var res = await runBusyFuture(repositoryImply.approveReceipts(id!),
+      var res = await runBusyFuture(
+          repositoryImply.approveReceipts(id: id, approve: approve),
           throwException: true);
       if (res['status'] == 'success') {
         AppUtils.snackbar(
@@ -1290,6 +1376,8 @@ class AuthViewModel extends BaseViewModel {
         );
 
         getUsersReceiptAgain(contxt);
+
+        filename = '';
       }
 
       _isLoadingReceipts = false;

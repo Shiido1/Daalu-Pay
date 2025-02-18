@@ -9,7 +9,7 @@ class ButtonWidget extends StatelessWidget {
       this.buttonText,
       this.color,
       this.buttonColor,
-      this.buttonHeight = 50,
+      this.buttonHeight = 54,
       this.buttonWidth = double.infinity,
       this.isLight = true,
       this.buttonBorderColor,
@@ -44,7 +44,7 @@ class ButtonWidget extends StatelessWidget {
           child: isLoading == false || isLoading == null
               ? TextView(
                   text: buttonText!,
-                  fontSize: 16.sp,
+                  fontSize: 20.sp,
                   color: color,
                   fontWeight: FontWeight.w600,
                 )

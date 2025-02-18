@@ -7,27 +7,25 @@ class Datum {
   num? id;
   num? userId;
   String? amount;
-  String? receipt;
-  num? adminId;
   String? status;
-  dynamic notes;
+  String? recipientAlipayId;
+  num? transactionId;
+  String? documentType;
+  String? proofOfPayment;
   DateTime? createdAt;
   DateTime? updatedAt;
-  dynamic walletId;
-  String? url;
 
   Datum({
     this.id,
     this.userId,
     this.amount,
-    this.receipt,
-    this.adminId,
     this.status,
-    this.notes,
+    this.recipientAlipayId,
+    this.transactionId,
+    this.documentType,
+    this.proofOfPayment,
     this.createdAt,
     this.updatedAt,
-    this.walletId,
-    this.url,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => _$DatumFromJson(json);

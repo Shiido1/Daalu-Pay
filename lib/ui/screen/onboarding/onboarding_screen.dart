@@ -82,7 +82,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: Column(
           children: [
             Stack(children: [
-              
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

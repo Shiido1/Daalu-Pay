@@ -100,6 +100,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
               backgroundColor: AppColor.white,
               selectedItemColor: AppColor.primary,
               type: BottomNavigationBarType.fixed,
+              selectedFontSize: 14.8.sp,
+              unselectedFontSize: 14.6.sp,
               items: [
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(

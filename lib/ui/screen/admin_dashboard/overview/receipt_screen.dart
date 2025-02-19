@@ -90,8 +90,10 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           TextView(
-                                              text:
-                                                  '${getAllCurrency('CNY')}${oCcy.format(double.parse(o.amount!))}'),
+                                            text:
+                                                '${getAllCurrency('CNY')}${oCcy.format(double.parse(o.amount!))}',
+                                            fontSize: 18.sp,
+                                          ),
                                           SizedBox(
                                             height: 10.h,
                                           ),
@@ -107,7 +109,7 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                                                       ? AppColor.grey
                                                           .withOpacity(.2)
                                                       : o.status?.toLowerCase() ==
-                                                              'approved'
+                                                              'completed'
                                                           ? AppColor.green
                                                               .withOpacity(.2)
                                                           : AppColor.red
@@ -115,15 +117,23 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                                                   borderRadius:
                                                       BorderRadius.circular(4)),
                                               child: TextView(
-                                                text: o.status?.toLowerCase() ==
-                                                        'pending'
-                                                    ? 'Pending'
-                                                    : o.status?.toLowerCase() ==
-                                                            'approved'
-                                                        ? 'Approved'
-                                                        : 'Denied',
-                                                fontSize: 12.sp,
-                                              )),
+                                                  text: o.status
+                                                              ?.toLowerCase() ==
+                                                          'pending'
+                                                      ? 'Pending'
+                                                      : o.status?.toLowerCase() ==
+                                                              'completed'
+                                                          ? 'Approved'
+                                                          : 'Denied',
+                                                  fontSize: 14.8.sp,
+                                                  color: o.status
+                                                              ?.toLowerCase() ==
+                                                          'pending'
+                                                      ? AppColor.grey
+                                                      : o.status?.toLowerCase() ==
+                                                              'completed'
+                                                          ? AppColor.green
+                                                          : AppColor.red)),
                                           SizedBox(
                                             height: 6.h,
                                           ),
@@ -132,17 +142,15 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                                                     'yyyy MMM dd, hh:mm a')
                                                 .format(DateTime.parse(
                                                     o.createdAt.toString())),
-                                            fontSize: 11.4.sp,
+                                            fontSize: 14.4.sp,
                                             color: AppColor.grey,
                                           ),
                                         ],
                                       ),
                                       o.documentType == 'alipay_id'
                                           ? TextView(
-                                              text: o.documentType
-                                                      ?.capitalize() ??
-                                                  '',
-                                              fontSize: 16.sp,
+                                              text: 'Alipay ID',
+                                              fontSize: 18.sp,
                                               color: AppColor.black,
                                               fontWeight: FontWeight.w400,
                                             )

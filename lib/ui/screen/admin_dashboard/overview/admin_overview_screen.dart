@@ -50,39 +50,13 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                       ),
                       TextView(
                         text: 'Overview',
-                        fontSize: 20.sp,
+                        fontSize: 22.0.sp,
                         fontWeight: FontWeight.w500,
                       ),
                       SizedBox(
                         width: 36.0.w,
                         height: 50.h,
                       ),
-
-                      // PopupMenuButton(
-                      //   onSelected: (value) {
-                      //     // your logic
-                      //   },
-                      //   color: AppColor.white,
-                      //   icon: Icon(
-                      //     Icons.more_vert_rounded,
-                      //     size: 24.sp,
-                      //     color: AppColor.primary,
-                      //   ),
-                      //   itemBuilder: (BuildContext bc) {
-                      //     return [
-                      //       PopupMenuItem(
-                      //         value: '/receipt',
-                      //         onTap: () => navigate
-                      //             .navigateTo(Routes.viewUsersReceiptScreen),
-                      //         child: TextView(
-                      //           text: 'View Receipts',
-                      //           fontSize: 16.sp,
-                      //           fontWeight: FontWeight.w500,
-                      //         ),
-                      //       ),
-                      //     ];
-                      //   },
-                      // )
                     ],
                   ),
                   SizedBox(
@@ -172,9 +146,9 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                       : const SizedBox.shrink(),
                   model.pend.isNotEmpty
                       ? TextView(
-                          text: 'Pending Swaps',
+                          text: 'Pending Converts',
                           color: AppColor.greyKind,
-                          fontSize: 16.sp,
+                          fontSize: 19.2.sp,
                           fontWeight: FontWeight.w500,
                         )
                       : const SizedBox.shrink(),
@@ -200,14 +174,14 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                               child: TextView(
                                 text: DateFormat('yyyy MMM dd, hh:mm a').format(
                                     DateTime.parse(o.createdAt.toString())),
-                                fontSize: 14.sp,
+                                fontSize: 14.8.sp,
                                 fontWeight: FontWeight.w500,
                                 color: AppColor.grey,
                               ),
                             ),
                             TextView(
                               text: 'ID-: ${o.transactionId}',
-                              fontSize: 14.sp,
+                              fontSize: 17.4.sp,
                               fontWeight: FontWeight.w500,
                             ),
                             SizedBox(
@@ -232,7 +206,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                                       context: context, id: o.id.toString()),
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: 12.w, vertical: 6.w),
+                                        horizontal: 10.w, vertical: 6.w),
                                     decoration: BoxDecoration(
                                         color: AppColor.green.withOpacity(.17),
                                         borderRadius: BorderRadius.circular(4)),
@@ -248,7 +222,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                                         ),
                                         TextView(
                                           text: 'Approved',
-                                          fontSize: 12.4.sp,
+                                          fontSize: 14.4.sp,
                                           color: AppColor.deeperGreen,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -261,7 +235,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                                       context: context, id: o.id.toString()),
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: 12.w, vertical: 6.w),
+                                        horizontal: 10.w, vertical: 6.w),
                                     decoration: BoxDecoration(
                                         color: AppColor.red.withOpacity(.17),
                                         borderRadius: BorderRadius.circular(4)),
@@ -277,7 +251,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                                         ),
                                         TextView(
                                           text: 'Reject',
-                                          fontSize: 12.4.sp,
+                                          fontSize: 14.4.sp,
                                           color: AppColor.red,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -287,7 +261,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                                 ),
                                 Container(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 12.w, vertical: 6.w),
+                                      horizontal: 10.w, vertical: 6.w),
                                   decoration: BoxDecoration(
                                       color: AppColor.greyKind.withOpacity(.17),
                                       borderRadius: BorderRadius.circular(4)),
@@ -303,7 +277,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                                       ),
                                       TextView(
                                         text: 'Hold',
-                                        fontSize: 12.4.sp,
+                                        fontSize: 14.4.sp,
                                         color: AppColor.greyNice,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -325,7 +299,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                       TextView(
                         text: 'Transaction History',
                         color: AppColor.greyKind,
-                        fontSize: 18.sp,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.w500,
                       ),
                       GestureDetector(
@@ -334,7 +308,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                         child: TextView(
                           text: 'View All',
                           color: AppColor.grey,
-                          fontSize: 13.2.sp,
+                          fontSize: 15.2.sp,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -375,7 +349,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                                 children: [
                                   TextView(
                                     text: 'ID:- ${o.transactionId}',
-                                    fontSize: 14.sp,
+                                    fontSize: 17.4.sp,
                                     fontWeight: FontWeight.w500,
                                   ),
                                   SizedBox(
@@ -385,7 +359,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                                     text: DateFormat('yyyy-MM-dd hh:mm a')
                                         .format(DateTime.parse(
                                             o.createdAt.toString())),
-                                    fontSize: 14.sp,
+                                    fontSize: 15.4.sp,
                                     color: AppColor.grey,
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -396,7 +370,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                                     text:
                                         '${getAllCurrency(o.fromCurrency)}${oCcy.format(double.parse(o.fromAmount!))} -> ${oCcy.format(double.parse(o.toAmount!))}${getAllCurrency(o.toCurrency)}',
                                     textStyle: TextStyle(
-                                      fontSize: 14.sp,
+                                      fontSize: 16.4.sp,
                                       fontWeight: FontWeight.w500,
                                       color: o.status == 'approved'
                                           ? AppColor.green
@@ -420,7 +394,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                                 ),
                                 child: TextView(
                                   text: o.status?.capitalize() ?? '',
-                                  fontSize: 14.sp,
+                                  fontSize: 16.4.sp,
                                   color: o.status == 'approved'
                                       ? AppColor.green
                                       : o.status == 'rejected'
@@ -470,7 +444,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                   text: text1,
                   textOverflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  fontSize: 14.sp,
+                  fontSize: 16.4.sp,
                   color: AppColor.grey,
                   fontWeight: FontWeight.w400,
                 ),

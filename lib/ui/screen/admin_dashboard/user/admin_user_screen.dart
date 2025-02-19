@@ -40,7 +40,7 @@ class AdminUsersScreen extends StatelessWidget {
                       ),
                       TextView(
                         text: 'User Management',
-                        fontSize: 20.sp,
+                        fontSize: 22.0.sp,
                         fontWeight: FontWeight.w500,
                       ),
                       SvgPicture.asset(
@@ -193,7 +193,7 @@ class AdminUsersScreen extends StatelessWidget {
                                       children: [
                                         TextView(
                                           text: 'Name',
-                                          fontSize: 14.sp,
+                                          fontSize: 16.4.sp,
                                           color: AppColor.navyBlueGrey,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -202,7 +202,7 @@ class AdminUsersScreen extends StatelessWidget {
                                         ),
                                         TextView(
                                           text: 'Email',
-                                          fontSize: 14.sp,
+                                          fontSize: 16.4.sp,
                                           fontWeight: FontWeight.w500,
                                           color: AppColor.navyBlueGrey,
                                         ),
@@ -211,13 +211,13 @@ class AdminUsersScreen extends StatelessWidget {
                                         ),
                                         TextView(
                                           text: 'Status',
-                                          fontSize: 14.sp,
+                                          fontSize: 16.4.sp,
                                           color: AppColor.navyBlueGrey,
                                           fontWeight: FontWeight.w500,
                                         ),
                                         TextView(
                                           text: 'Actions',
-                                          fontSize: 14.sp,
+                                          fontSize: 16.4.sp,
                                           color: AppColor.navyBlueGrey,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -258,7 +258,7 @@ class AdminUsersScreen extends StatelessWidget {
                                                                         i.firstName ??
                                                                             '',
                                                                     fontSize:
-                                                                        14.sp,
+                                                                        16.4.sp,
                                                                     maxLines: 1,
                                                                     textOverflow:
                                                                         TextOverflow
@@ -277,7 +277,7 @@ class AdminUsersScreen extends StatelessWidget {
                                                                             ?.toLowerCase() ??
                                                                         '',
                                                                     fontSize:
-                                                                        14.sp,
+                                                                        16.4.sp,
                                                                     maxLines: 1,
                                                                     textOverflow:
                                                                         TextOverflow
@@ -306,7 +306,7 @@ class AdminUsersScreen extends StatelessWidget {
                                                                       borderRadius: BorderRadius.circular(4)),
                                                                   child: TextView(
                                                                       text: i.status == 'suspended' ? i.status!.capitalize() : i.kycStatus?.capitalize() ?? '',
-                                                                      fontSize: 11.2.sp,
+                                                                      fontSize: i.kycStatus == 'approved' ? 12.sp : 13.2.sp,
                                                                       color: i.status == 'suspended'
                                                                           ? AppColor.greyKind
                                                                           : i.kycStatus == 'approved'
@@ -409,7 +409,7 @@ class AdminUsersScreen extends StatelessWidget {
                                                                         i.firstName ??
                                                                             '',
                                                                     fontSize:
-                                                                        14.sp,
+                                                                        16.4.sp,
                                                                     maxLines: 1,
                                                                     textOverflow:
                                                                         TextOverflow
@@ -428,7 +428,7 @@ class AdminUsersScreen extends StatelessWidget {
                                                                             ?.toLowerCase() ??
                                                                         '',
                                                                     fontSize:
-                                                                        14.sp,
+                                                                        16.4.sp,
                                                                     maxLines: 1,
                                                                     textOverflow:
                                                                         TextOverflow
@@ -460,7 +460,7 @@ class AdminUsersScreen extends StatelessWidget {
                                                                       borderRadius: BorderRadius.circular(4)),
                                                                   child: TextView(
                                                                       text: i.status == 'suspended' ? i.status!.capitalize() : i.kycStatus?.capitalize() ?? '',
-                                                                      fontSize: 11.2.sp,
+                                                                      fontSize: i.kycStatus == 'approved' ? 12.sp : 13.2.sp,
                                                                       color: i.status == 'suspended'
                                                                           ? AppColor.greyKind
                                                                           : i.kycStatus == 'approved'
@@ -572,7 +572,7 @@ class AdminUsersScreen extends StatelessWidget {
                                                                         i.firstName ??
                                                                             '',
                                                                     fontSize:
-                                                                        14.sp,
+                                                                        16.4.sp,
                                                                     maxLines: 1,
                                                                     textOverflow:
                                                                         TextOverflow
@@ -591,7 +591,7 @@ class AdminUsersScreen extends StatelessWidget {
                                                                             ?.toLowerCase() ??
                                                                         '',
                                                                     fontSize:
-                                                                        14.sp,
+                                                                        16.4.sp,
                                                                     maxLines: 1,
                                                                     textOverflow:
                                                                         TextOverflow
@@ -620,7 +620,7 @@ class AdminUsersScreen extends StatelessWidget {
                                                                       borderRadius: BorderRadius.circular(4)),
                                                                   child: TextView(
                                                                       text: i.status == 'suspended' ? i.status!.capitalize() : i.kycStatus?.capitalize() ?? '',
-                                                                      fontSize: 11.2.sp,
+                                                                      fontSize: i.kycStatus == 'approved' ? 12.sp : 13.2.sp,
                                                                       color: i.status == 'suspended'
                                                                           ? AppColor.greyKind
                                                                           : i.kycStatus == 'approved'
@@ -729,7 +729,7 @@ class AdminUsersScreen extends StatelessWidget {
                                                                         i.firstName ??
                                                                             '',
                                                                     fontSize:
-                                                                        14.sp,
+                                                                        16.4.sp,
                                                                     maxLines: 1,
                                                                     textOverflow:
                                                                         TextOverflow
@@ -748,7 +748,7 @@ class AdminUsersScreen extends StatelessWidget {
                                                                             ?.toLowerCase() ??
                                                                         '',
                                                                     fontSize:
-                                                                        14.sp,
+                                                                        16.4.sp,
                                                                     maxLines: 1,
                                                                     textOverflow:
                                                                         TextOverflow
@@ -777,7 +777,7 @@ class AdminUsersScreen extends StatelessWidget {
                                                                       borderRadius: BorderRadius.circular(4)),
                                                                   child: TextView(
                                                                       text: i.status == 'suspended' ? i.status!.capitalize() : i.kycStatus?.capitalize() ?? '',
-                                                                      fontSize: 11.2.sp,
+                                                                      fontSize: i.kycStatus == 'approved' ? 12.sp : 13.2.sp,
                                                                       color: i.status == 'suspended'
                                                                           ? AppColor.greyKind
                                                                           : i.kycStatus == 'approved'

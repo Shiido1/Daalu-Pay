@@ -94,33 +94,32 @@ class _ViewReceiptState extends State<ViewReceipt> {
                   SizedBox(
                     height: 50.h,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 8.w),
-                    child: Row(
-                      children: <Widget>[
-                        Radio(
-                          value: 'wallet',
-                          groupValue: _radioValue,
-                          onChanged: (v) {
-                            radioButtonChanges(v!);
-                          },
-                        ),
-                        const Text(
-                          "Wallet Address",
-                        ),
-                        const Spacer(),
-                        Radio(
-                          value: 'upload',
-                          groupValue: _radioValue,
-                          onChanged: (v) {
-                            radioButtonChanges(v!);
-                          },
-                        ),
-                        const Text(
-                          "Upload Image",
-                        ),
-                      ],
-                    ),
+                  Row(
+                    children: <Widget>[
+                      Radio(
+                        value: 'wallet',
+                        groupValue: _radioValue,
+                        onChanged: (v) {
+                          radioButtonChanges(v!);
+                        },
+                      ),
+                      TextView(
+                        text: "Wallet Address",
+                        fontSize: 15.6.sp,
+                      ),
+                      const Spacer(),
+                      Radio(
+                        value: 'upload',
+                        groupValue: _radioValue,
+                        onChanged: (v) {
+                          radioButtonChanges(v!);
+                        },
+                      ),
+                      TextView(
+                        text: "Upload Image",
+                        fontSize: 15.6.sp,
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 20.h,
@@ -169,8 +168,7 @@ class _ViewReceiptState extends State<ViewReceipt> {
                                   ),
                                   SizedBox(
                                     height: 20.h,
-                                  ), // Row(
-
+                                  ),
                                   model.filename != null
                                       ? Container(
                                           padding: EdgeInsets.all(6.w),
@@ -198,11 +196,6 @@ class _ViewReceiptState extends State<ViewReceipt> {
                                                 ),
                                               ),
                                               const Spacer(),
-                                              // Icon(
-                                              //   Icons.delete_outline_rounded,
-                                              //   color: AppColor.red,
-                                              //   size: 26.sp,
-                                              // )
                                             ],
                                           ),
                                         )
@@ -214,7 +207,7 @@ class _ViewReceiptState extends State<ViewReceipt> {
                   SizedBox(
                     height: 50.h,
                   ),
-                  widget.datum?.status?.toLowerCase() == "approved"
+                  widget.datum?.status?.toLowerCase() == "completed"
                       ? const SizedBox.shrink()
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.center,

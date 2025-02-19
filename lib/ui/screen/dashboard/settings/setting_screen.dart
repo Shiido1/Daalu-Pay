@@ -50,7 +50,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   Center(
                       child: TextView(
                     text: 'Settings',
-                    fontSize: 20.sp,
+                    fontSize: 22.0.sp,
                     fontWeight: FontWeight.w600,
                   )),
                   SizedBox(

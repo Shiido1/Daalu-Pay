@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
-import '../../../../core/connect_end/model/get_transaction_response_model/datum.dart';
+import '../../../../core/connect_end/model/get_swapped_transactions_response_model/datum.dart';
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../app_assets/app_color.dart';
 import '../../../widget/text_widget.dart';
@@ -23,7 +23,8 @@ class TransactionScreen extends StatelessWidget {
     return ViewModelBuilder<AuthViewModel>.reactive(
         viewModelBuilder: () => AuthViewModel(),
         onViewModelReady: (model) async {
-          await model.getTransaction(context);
+          await model.getSwapTransaction(context);
+          await model.getStatistics(context);
           model.filterDateTime = DateFormat('yyyy-MM-dd')
               .format(DateTime.parse(model.nowFilter.toString()));
         },
@@ -88,7 +89,7 @@ class TransactionScreen extends StatelessWidget {
                                   width: 4.4.w,
                                 ),
                                 TextView(
-                                  text: model.transStats.capitalize(),
+                                  text: model.transStats,
                                   color: AppColor.darkGrey,
                                   fontSize: 20.4.sp,
                                   fontWeight: FontWeight.w500,
@@ -104,58 +105,65 @@ class TransactionScreen extends StatelessWidget {
                                   ),
                                   itemBuilder: (BuildContext bc) {
                                     return [
-                                      PopupMenuItem(
-                                        value: '/all',
-                                        onTap: () {
-                                          model.transStats = 'all';
-                                          model.groupTransationStatus(context);
-                                          model.notifyListeners();
-                                        },
-                                        child: TextView(
-                                          text: 'All',
-                                          fontSize: 20.sp,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        value: '/successful',
-                                        onTap: () {
-                                          model.transStats = 'successful';
-                                          model.groupTransationStatus(context);
-                                          model.notifyListeners();
-                                        },
-                                        child: TextView(
-                                          text: 'Successful',
-                                          fontSize: 20.sp,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        value: '/pending',
-                                        onTap: () {
-                                          model.transStats = 'pending';
-                                          model.groupTransationStatus(context);
-                                          model.notifyListeners();
-                                        },
-                                        child: TextView(
-                                          text: 'Pending',
-                                          fontSize: 20.sp,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        value: '/failed',
-                                        onTap: () {
-                                          model.transStats = 'failed';
-                                          model.groupTransationStatus(context);
-                                          model.notifyListeners();
-                                        },
-                                        child: TextView(
-                                          text: 'Failed',
-                                          fontSize: 20.sp,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
+                                      if (model.getStatsResponseModel != null)
+                                        ...model.getStatsResponseModel!.data!
+                                            .wallets!
+                                            .map(
+                                          (e) => PopupMenuItem(
+                                            value: '/${e.currency}',
+                                            onTap: () {
+                                              model.transStats = e.currency!;
+                                              model
+                                                  .groupSwapTransationByFromCur(
+                                                      context);
+                                              model.notifyListeners();
+                                            },
+                                            child: TextView(
+                                              text: e.currency!,
+                                              fontSize: 20.sp,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        )
+                                      // PopupMenuItem(
+                                      //   value: '/successful',
+                                      //   onTap: () {
+                                      //     model.transStats = 'successful';
+                                      //     model.groupTransationStatus(context);
+                                      //     model.notifyListeners();
+                                      //   },
+                                      //   child: TextView(
+                                      //     text: 'Successful',
+                                      //     fontSize: 20.sp,
+                                      //     fontWeight: FontWeight.w500,
+                                      //   ),
+                                      // ),
+                                      // PopupMenuItem(
+                                      //   value: '/pending',
+                                      //   onTap: () {
+                                      //     model.transStats = 'pending';
+                                      //     model.groupTransationStatus(context);
+                                      //     model.notifyListeners();
+                                      //   },
+                                      //   child: TextView(
+                                      //     text: 'Pending',
+                                      //     fontSize: 20.sp,
+                                      //     fontWeight: FontWeight.w500,
+                                      //   ),
+                                      // ),
+                                      // PopupMenuItem(
+                                      //   value: '/failed',
+                                      //   onTap: () {
+                                      //     model.transStats = 'failed';
+                                      //     model.groupTransationStatus(context);
+                                      //     model.notifyListeners();
+                                      //   },
+                                      //   child: TextView(
+                                      //     text: 'Failed',
+                                      //     fontSize: 20.sp,
+                                      //     fontWeight: FontWeight.w500,
+                                      //   ),
+                                      // ),
                                     ];
                                   },
                                 )
@@ -209,12 +217,12 @@ class TransactionScreen extends StatelessWidget {
                   SizedBox(
                     height: 30.h,
                   ),
-                  model.getTransactionResponseModel == null
+                  model.getSwappedTransactionsResponseModel == null
                       ? SpinKitCircle(
                           color: AppColor.primary,
                           size: 43.0.sp,
                         )
-                      : model.getTransactionResponseModel!.data!.isEmpty
+                      : model.getSwappedTransactionsResponseModel!.data!.isEmpty
                           ? Center(
                               child: TextView(
                                 text: 'No Transations',
@@ -229,8 +237,8 @@ class TransactionScreen extends StatelessWidget {
                                             e: e,
                                           ))
                                 else
-                                  ...model.getTransactionResponseModel!.data!
-                                      .reversed
+                                  ...model.getSwappedTransactionsResponseModel!
+                                      .data!.reversed
                                       .map((e) => recentTransWidget(
                                             e: e,
                                           ))
@@ -261,7 +269,8 @@ class TransactionScreen extends StatelessWidget {
                   SizedBox(
                     width: 180.0.w,
                     child: TextView(
-                      text: 'REF ID- ${e.referenceNumber?.toUpperCase() ?? ''}',
+                      text:
+                          'From: ${e.fromCurrency ?? ''} - ${e.toCurrency ?? ''}',
                       fontSize: 15.2.sp,
                       maxLines: 1,
                       textOverflow: TextOverflow.ellipsis,

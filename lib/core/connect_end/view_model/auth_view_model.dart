@@ -46,7 +46,7 @@ import '../model/get_message_response/get_message_response.dart';
 import '../model/get_payment_gate_response_model/get_payment_gate_response_model.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
 import '../model/get_stats_response_model/wallet.dart';
-import '../model/get_transaction_response_model/datum.dart';
+import '../model/get_swapped_transactions_response_model/get_swapped_transactions_response_model.dart';
 import '../model/initiate_chat_response_model/initiate_chat_response_model.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
@@ -55,6 +55,7 @@ import '../model/preference_response_model/preference_response_model.dart';
 import '../model/register_entity_model.dart';
 import '../model/send_message_response_model/send_message_response_model.dart';
 import '../repo/repo_impl.dart';
+import '../model/get_swapped_transactions_response_model/datum.dart' as sp;
 import 'debouncer.dart';
 
 class AuthViewModel extends BaseViewModel {
@@ -183,7 +184,7 @@ class AuthViewModel extends BaseViewModel {
       _updatePasswordResponseModel;
   UpdatePasswordResponseModel? _updatePasswordResponseModel;
   TextEditingController dobController = TextEditingController();
-  List<Datum>? transactionListData = [];
+  List<sp.Datum>? transactionListData = [];
 
   NotificationUserResponseModel? _notificationUserResponseModel;
   NotificationUserResponseModel? get notificationUserResponseModel =>
@@ -203,6 +204,11 @@ class AuthViewModel extends BaseViewModel {
   PreferenceResponseModel? _preferenceResponseModel;
   PreferenceResponseModel? get preferenceResponseModel =>
       _preferenceResponseModel;
+
+  GetSwappedTransactionsResponseModel? _getSwappedTransactionsResponseModel;
+  GetSwappedTransactionsResponseModel?
+      get getSwappedTransactionsResponseModel =>
+          _getSwappedTransactionsResponseModel;
 
   TextEditingController currencyController = TextEditingController();
   TextEditingController recipientWalletIdController = TextEditingController();
@@ -233,8 +239,7 @@ class AuthViewModel extends BaseViewModel {
   String querySignUpCountry = '';
   String? selectCountry;
 
-  String transStats = 'all';
-  String transDate = 'all';
+  String transStats = 'From';
   bool initializingPayment = false;
   GetWalletIdResponseModel? _getWalletIdResponseModel;
   GetWalletIdResponseModel? get getWalletIdResponseModel =>
@@ -243,6 +248,8 @@ class AuthViewModel extends BaseViewModel {
   String? _formattedDob = DateFormat('EEEE, d MMM yyyy').format(DateTime.now());
   Timer? timer;
   int startTimerCount = 0;
+  dynamic dailyLimit;
+  int transaction = 0;
 
   void startTimer() {
     startTimerCount = 30;
@@ -446,21 +453,13 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  groupTransationStatus(context) {
-    Map<String?, List<Datum>> groupedValue;
+  groupSwapTransationByFromCur(context) {
+    Map<String?, List<sp.Datum>> groupedValue;
 
-    groupedValue =
-        groupBy(_getTransactionResponseModel!.data!, (obj) => obj.status);
+    groupedValue = groupBy(
+        _getSwappedTransactionsResponseModel!.data!, (obj) => obj.fromCurrency);
     transactionListData!.clear();
-    if (transStats == 'successful') {
-      transactionListData?.addAll(groupedValue['completed'] ?? []);
-    } else if (transStats == 'pending') {
-      transactionListData?.addAll(groupedValue['pending'] ?? []);
-    } else if (transStats == 'failed') {
-      transactionListData?.addAll(groupedValue['failed'] ?? []);
-    } else {
-      transactionListData!.clear();
-    }
+    transactionListData?.addAll(groupedValue[transStats] ?? []);
     if (transactionListData!.isEmpty) {
       AppUtils.snackbar(context,
           message: 'No $transStats transaction ', error: true);
@@ -469,9 +468,8 @@ class AuthViewModel extends BaseViewModel {
   }
 
   groupTransationByDate(context) {
-    Map<String?, List<Datum>> groupedValue;
-    print('object');
-    groupedValue = groupBy(_getTransactionResponseModel!.data!,
+    Map<String?, List<sp.Datum>> groupedValue;
+    groupedValue = groupBy(_getSwappedTransactionsResponseModel!.data!,
         (obj) => obj.createdAt.toString().substring(0, 10));
     transactionListData!.clear();
     transactionListData?.addAll(groupedValue[filterDateTime] ?? []);
@@ -1451,6 +1449,19 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<void> getSwapTransaction(context) async {
+    try {
+      _isLoading = true;
+      _getSwappedTransactionsResponseModel =
+          await runBusyFuture(repositoryImply.getSwap(), throwException: true);
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
   Future<void> updateProfile(context, {RegisterEntityModel? update}) async {
     try {
       _isLoading = true;
@@ -1721,8 +1732,7 @@ class AuthViewModel extends BaseViewModel {
   }
 
   Future<void> postToCloudinary(context,
-      {PostUserCloudEntityModel? postCloudinary,
-      KycEntityModel? kycEntity}) async {
+      {PostUserCloudEntityModel? postCloudinary}) async {
     try {
       _isLoading = true;
       _postUserVerificationCloudResponse = await runBusyFuture(
@@ -1789,9 +1799,6 @@ class AuthViewModel extends BaseViewModel {
               walletId: walletId));
     }
   }
-
-  dynamic dailyLimit;
-  int transaction = 0;
 
   swapFlowMeth(context) {
     if (dailyLimit == "unlimited") {

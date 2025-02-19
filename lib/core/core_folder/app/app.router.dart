@@ -201,7 +201,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i8.TransactionScreen: (data) {
       return _i19.MaterialPageRoute<dynamic>(
-        builder: (context) => _i8.TransactionScreen(),
+        builder: (context) => const _i8.TransactionScreen(),
         settings: data,
       );
     },

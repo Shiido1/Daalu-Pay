@@ -20,6 +20,7 @@ import '../model/deposit_wallet_response_model/deposit_wallet_response_model.dar
 import '../model/get_message_response/get_message_response.dart';
 import '../model/get_payment_gate_response_model/get_payment_gate_response_model.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
+import '../model/get_swapped_transactions_response_model/get_swapped_transactions_response_model.dart';
 import '../model/get_transaction_response_model/get_transaction_response_model.dart';
 import '../model/initiate_chat_response_model/initiate_chat_response_model.dart';
 import '../model/login_entity.dart';
@@ -78,6 +79,11 @@ class AuthRepoImpl {
 
   Future<dynamic> swap(SwapEntiyModel swap) async {
     final response = await _contract.swap(swap);
+    return response;
+  }
+
+  Future<GetSwappedTransactionsResponseModel> getSwap() async {
+    final response = await _contract.getSwap();
     return response;
   }
 

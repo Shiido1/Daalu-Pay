@@ -18,6 +18,7 @@ import '../../core_folder/app/app.locator.dart';
 import '../model/get_message_response/get_message_response.dart';
 import '../model/get_payment_gate_response_model/get_payment_gate_response_model.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
+import '../model/get_swapped_transactions_response_model/get_swapped_transactions_response_model.dart';
 import '../model/initiate_chat_response_model/initiate_chat_response_model.dart';
 import '../model/login_entity.dart';
 import '../model/login_response_model/login_response_model.dart';
@@ -51,6 +52,8 @@ class AuthContractsImpl {
   Future<dynamic> createWallet({String? currencyCode}) async =>
       await _api.createWallet(currencyCode);
   Future<dynamic> swap(SwapEntiyModel? swap) async => await _api.swap(swap);
+  Future<GetSwappedTransactionsResponseModel> getSwap() async =>
+      await _api.getSwap();
   Future<dynamic> updateProfile(RegisterEntityModel? update) async =>
       await _api.userProfile(update);
   Future<dynamic> resetPassword(ResetPasswordEntity? resetPassword) async =>

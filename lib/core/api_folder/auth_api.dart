@@ -25,6 +25,7 @@ import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_p
 import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import '../connect_end/model/get_swapped_transactions_response_model/get_swapped_transactions_response_model.dart';
 import '../connect_end/model/login_entity.dart';
 import '../connect_end/model/login_response_model/login_response_model.dart';
 import '../connect_end/model/register_entity_model.dart';
@@ -136,6 +137,17 @@ class AuthApi {
           data: swapEntity!.toJson());
       logger.d(response.data);
       return response.data;
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<GetSwappedTransactionsResponseModel> getSwap() async {
+    try {
+      final response = await _service.call(UrlConfig.swap, RequestMethod.get);
+      logger.d(response.data);
+      return GetSwappedTransactionsResponseModel.fromJson(response.data);
     } catch (e) {
       logger.d("response:$e");
       rethrow;

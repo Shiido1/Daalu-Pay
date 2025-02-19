@@ -103,6 +103,8 @@ class _DashboardState extends State<Dashboard> {
               backgroundColor: AppColor.white,
               selectedItemColor: AppColor.primary,
               type: BottomNavigationBarType.fixed,
+              selectedFontSize: 14.8.sp,
+              unselectedFontSize: 14.6.sp,
               items: [
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(

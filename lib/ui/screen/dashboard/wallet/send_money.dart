@@ -1,4 +1,5 @@
 import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,6 +32,9 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
   int transaction = 0;
 
   TextEditingController sendAmountController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController desController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +135,45 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                     SizedBox(
                       height: 20.h,
                     ),
+                    TextFormWidget(
+                      label: 'Recipient\'s Name',
+                      hint: 'Name of Receiver',
+                      border: 10,
+                      isFilled: true,
+                      fillColor: AppColor.white,
+                      keyboardType: TextInputType.number,
+                      controller: nameController,
+                      validator: AppValidator.validateString(),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    TextFormWidget(
+                      label: 'Recipient\'s Email',
+                      hint: 'Email Address',
+                      border: 10,
+                      isFilled: true,
+                      fillColor: AppColor.white,
+                      keyboardType: TextInputType.number,
+                      controller: emailController,
+                      validator: AppValidator.validateString(),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    TextFormWidget(
+                      hint: 'Description',
+                      border: 10,
+                      isFilled: true,
+                      maxline: 4,
+                      fillColor: AppColor.white,
+                      keyboardType: TextInputType.number,
+                      controller: desController,
+                      validator: AppValidator.validateString(),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
                     Padding(
                       padding: EdgeInsets.only(right: 8.w),
                       child: Row(
@@ -175,93 +218,89 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                               // model.onGetUserWalletRate(context, p0);
                             })
                         : choice == 'upload'
-                            ? Container(
-                                child: Column(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () => model
-                                              .getDocumentAlipayImage(context),
+                            ? Column(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => model
+                                            .getDocumentAlipayImage(context),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            SvgPicture.asset(AppImage.cal),
+                                            SizedBox(
+                                              width: 10.w,
+                                            ),
+                                            TextView(
+                                              text: 'Upload File',
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColor.darkGrey,
+                                            ),
+                                            Spacer(),
+                                            DottedBorder(
+                                                color: AppColor.grey,
+                                                strokeWidth: 1,
+                                                radius: Radius.circular(22),
+                                                padding: EdgeInsets.all(8),
+                                                dashPattern: [10, 2],
+                                                child: Container(
+                                                  width: 158.0.w,
+                                                  child: TextView(
+                                                    text:
+                                                        'The file you are uploading should be clear so admin can confirm approval',
+                                                    fontSize: 12.sp,
+                                                    maxLines: 4,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: AppColor.black,
+                                                  ),
+                                                )),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  model.filename != null
+                                      ? Container(
+                                          padding: EdgeInsets.all(6.w),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: AppColor.inGrey),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
                                             children: [
-                                              SvgPicture.asset(AppImage.cal),
+                                              SvgPicture.asset(AppImage.pdf),
                                               SizedBox(
                                                 width: 10.w,
                                               ),
-                                              TextView(
-                                                text: 'Upload File',
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.w400,
-                                                color: AppColor.darkGrey,
+                                              SizedBox(
+                                                width: 230.w,
+                                                child: TextView(
+                                                  text: model.filename!,
+                                                  fontSize: 14.sp,
+                                                  textOverflow:
+                                                      TextOverflow.ellipsis,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: AppColor.darkGrey,
+                                                ),
                                               ),
+                                              const Spacer(),
                                             ],
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20.h,
-                                    ), // Row(
-
-                                    model.filename != null
-                                        ? Container(
-                                            padding: EdgeInsets.all(6.w),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: AppColor.inGrey),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                SvgPicture.asset(AppImage.pdf),
-                                                SizedBox(
-                                                  width: 10.w,
-                                                ),
-                                                SizedBox(
-                                                  width: 230.w,
-                                                  child: TextView(
-                                                    text: model.filename!,
-                                                    fontSize: 14.sp,
-                                                    textOverflow:
-                                                        TextOverflow.ellipsis,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: AppColor.darkGrey,
-                                                  ),
-                                                ),
-                                                const Spacer(),
-                                                // Icon(
-                                                //   Icons.delete_outline_rounded,
-                                                //   color: AppColor.red,
-                                                //   size: 26.sp,
-                                                // )
-                                              ],
-                                            ),
-                                          )
-                                        : SizedBox.shrink(),
-                                  ],
-                                ),
+                                        )
+                                      : SizedBox.shrink(),
+                                ],
                               )
                             : SizedBox.shrink(),
-                    // SizedBox(
-                    //   height: 10.h,
-                    // ),
-                    // model.getWalletIdResponseModel != null
-                    //     ? TextView(
-                    //         text:
-                    //             'Recipient: ${model.getWalletIdResponseModel?.data?.user?.firstName} ${model.getWalletIdResponseModel?.data?.user?.lastName}',
-                    //         textStyle: TextStyle(
-                    //           fontSize: 14.sp,
-                    //           fontWeight: FontWeight.w400,
-                    //           color: AppColor.grey,
-                    //         ),
-                    //       )
-                    //     : const SizedBox.shrink(),
                     SizedBox(
                       height: 40.h,
                     ),
@@ -295,6 +334,9 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                             model.sendMoney(context,
                                 sendMoney: SendMonetEntityModel(
                                     amount: sendAmountController.text,
+                                    description: desController.text,
+                                    recipientEmail: emailController.text,
+                                    recipientName: nameController.text,
                                     documentType: choice == 'wallet'
                                         ? 'alipay_id'
                                         : 'barcode',

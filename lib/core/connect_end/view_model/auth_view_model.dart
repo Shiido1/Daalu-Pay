@@ -25,11 +25,11 @@ import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_paystack_max/flutter_paystack_max.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutterwave_standard_smart/flutterwave.dart';
 import 'package:intl/intl.dart';
+import 'package:pay_with_paystack/pay_with_paystack.dart';
 import 'package:stacked/stacked.dart';
 import '../../../ui/app_assets/app_color.dart';
 import '../../../ui/app_assets/app_utils.dart';
@@ -384,7 +384,8 @@ class AuthViewModel extends BaseViewModel {
         _isLoading = false;
         await AppUtils.snackbar(contxt,
             message: _loginResponse?.message!.toString());
-        navigate.navigateTo(Routes.dashboard);
+        navigate.navigateTo(Routes.dashboard,
+            arguments: DashboardArguments(index: 0));
       }
     } catch (e) {
       _isLoading = false;
@@ -515,6 +516,7 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Wallet? w;
   void modalBottomSheetMenuFrom(context) {
     showModalBottomSheet(
         context: context,
@@ -578,27 +580,42 @@ class AuthViewModel extends BaseViewModel {
                                                   null)
                                                 ...model.getStatsResponseModel!
                                                     .data!.wallets!
-                                                    .map((e) => GestureDetector(
+                                                    .map((e) => InkResponse(
                                                           onTap: () {
+                                                            w = e;
+                                                            model
+                                                                .notifyListeners();
                                                             fromCurrency =
                                                                 getWalletCurrencyCode(
                                                                     e.currency);
                                                             fromCurrencyCode =
                                                                 e.currency!;
-                                                            Navigator.pop(
-                                                                context);
                                                             notifyListeners();
+                                                            Future.delayed(
+                                                                Duration(
+                                                                    seconds: 1),
+                                                                () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            });
                                                           },
                                                           child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: const Color
-                                                                  .fromARGB(
-                                                                  219,
-                                                                  223,
-                                                                  233,
-                                                                  242),
-                                                            ),
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10.w,
+                                                                    vertical:
+                                                                        4.w),
+                                                            decoration: BoxDecoration(
+                                                                color: e == w
+                                                                    ? AppColor
+                                                                        .white
+                                                                    : AppColor
+                                                                        .transparent,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            14.r)),
                                                             padding: EdgeInsets
                                                                 .symmetric(
                                                                     vertical:
@@ -638,65 +655,86 @@ class AuthViewModel extends BaseViewModel {
                                           )
                                         : Column(
                                             children: [
-                                              ...model.getStatsResponseModel!
-                                                  .data!.wallets!
-                                                  .where((o) => o.currency!
-                                                      .toLowerCase()
-                                                      .contains(queryFrom
-                                                          .toLowerCase()))
-                                                  .map((e) => GestureDetector(
-                                                        onTap: () {
-                                                          fromCurrency =
-                                                              getWalletCurrencyCode(
-                                                                  e.currency);
-                                                          fromCurrencyCode =
-                                                              e.currency!;
+                                              if (model.getStatsResponseModel !=
+                                                  null)
+                                                ...model.getStatsResponseModel!
+                                                    .data!.wallets!
+                                                    .where((o) => o.currency!
+                                                        .toLowerCase()
+                                                        .contains(queryFrom
+                                                            .toLowerCase()))
+                                                    .map((e) => GestureDetector(
+                                                          onTap: () {
+                                                            w = e;
+                                                            model
+                                                                .notifyListeners();
+                                                            fromCurrency =
+                                                                getWalletCurrencyCode(
+                                                                    e.currency);
+                                                            fromCurrencyCode =
+                                                                e.currency!;
 
-                                                          Navigator.pop(
-                                                              context);
-                                                          notifyListeners();
-                                                        },
-                                                        child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: const Color
-                                                                .fromARGB(219,
-                                                                223, 233, 242),
-                                                          ),
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical:
-                                                                      10.w,
-                                                                  horizontal:
-                                                                      20.w),
-                                                          child: Row(
-                                                            children: [
-                                                              SvgPicture.asset(
-                                                                  getWalletCurrencyCode(
-                                                                      e.currency)),
-                                                              SizedBox(
-                                                                width: 15.6.w,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 180.w,
-                                                                child: TextView(
-                                                                  text:
-                                                                      '${e.currency}',
-                                                                  fontSize:
-                                                                      17.6,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  maxLines: 1,
-                                                                  textOverflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
+                                                            Future.delayed(
+                                                                Duration(
+                                                                    seconds: 1),
+                                                                () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            });
+                                                            notifyListeners();
+                                                          },
+                                                          child: Container(
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10.w,
+                                                                    vertical:
+                                                                        4.w),
+                                                            decoration: BoxDecoration(
+                                                                color: e == w
+                                                                    ? AppColor
+                                                                        .white
+                                                                    : AppColor
+                                                                        .transparent,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            14.r)),
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10.w,
+                                                                    horizontal:
+                                                                        20.w),
+                                                            child: Row(
+                                                              children: [
+                                                                SvgPicture.asset(
+                                                                    getWalletCurrencyCode(
+                                                                        e.currency)),
+                                                                SizedBox(
+                                                                  width: 15.6.w,
                                                                 ),
-                                                              )
-                                                            ],
+                                                                SizedBox(
+                                                                  width: 180.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text:
+                                                                        '${e.currency}',
+                                                                    fontSize:
+                                                                        17.6,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
                                                           ),
-                                                        ),
-                                                      )),
+                                                        )),
                                             ],
                                           )
                                   ],
@@ -779,25 +817,40 @@ class AuthViewModel extends BaseViewModel {
                                                     .data!.wallets!
                                                     .map((e) => GestureDetector(
                                                           onTap: () {
+                                                            w = e;
+                                                            model
+                                                                .notifyListeners();
                                                             toCurrency =
                                                                 getWalletCurrencyCode(
                                                                     e.currency);
                                                             toCurrencyCode =
                                                                 e.currency!;
-                                                            Navigator.pop(
-                                                                context);
+                                                            Future.delayed(
+                                                                Duration(
+                                                                    seconds: 1),
+                                                                () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            });
                                                             notifyListeners();
                                                           },
                                                           child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: const Color
-                                                                  .fromARGB(
-                                                                  219,
-                                                                  223,
-                                                                  233,
-                                                                  242),
-                                                            ),
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10.w,
+                                                                    vertical:
+                                                                        4.w),
+                                                            decoration: BoxDecoration(
+                                                                color: e == w
+                                                                    ? AppColor
+                                                                        .white
+                                                                    : AppColor
+                                                                        .transparent,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            14.r)),
                                                             padding: EdgeInsets
                                                                 .symmetric(
                                                                     vertical:
@@ -837,64 +890,85 @@ class AuthViewModel extends BaseViewModel {
                                           )
                                         : Column(
                                             children: [
-                                              ...model.getStatsResponseModel!
-                                                  .data!.wallets!
-                                                  .where((o) => o.currency!
-                                                      .toLowerCase()
-                                                      .contains(queryTo
-                                                          .toLowerCase()))
-                                                  .map((e) => GestureDetector(
-                                                        onTap: () {
-                                                          toCurrency =
-                                                              getWalletCurrencyCode(
-                                                                  e.currency);
-                                                          toCurrencyCode =
-                                                              e.currency!;
-                                                          Navigator.pop(
-                                                              context);
-                                                          notifyListeners();
-                                                        },
-                                                        child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: const Color
-                                                                .fromARGB(219,
-                                                                223, 233, 242),
-                                                          ),
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical:
-                                                                      10.w,
-                                                                  horizontal:
-                                                                      20.w),
-                                                          child: Row(
-                                                            children: [
-                                                              SvgPicture.asset(
-                                                                  getWalletCurrencyCode(
-                                                                      e.currency)),
-                                                              SizedBox(
-                                                                width: 15.6.w,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 180.w,
-                                                                child: TextView(
-                                                                  text:
-                                                                      '${e.currency}',
-                                                                  fontSize:
-                                                                      17.6,
-                                                                  maxLines: 1,
-                                                                  textOverflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
+                                              if (model.getStatsResponseModel !=
+                                                  null)
+                                                ...model.getStatsResponseModel!
+                                                    .data!.wallets!
+                                                    .where((o) => o.currency!
+                                                        .toLowerCase()
+                                                        .contains(queryTo
+                                                            .toLowerCase()))
+                                                    .map((e) => GestureDetector(
+                                                          onTap: () {
+                                                            w = e;
+                                                            model
+                                                                .notifyListeners();
+                                                            toCurrency =
+                                                                getWalletCurrencyCode(
+                                                                    e.currency);
+                                                            toCurrencyCode =
+                                                                e.currency!;
+                                                            Future.delayed(
+                                                                Duration(
+                                                                    seconds: 1),
+                                                                () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            });
+                                                            notifyListeners();
+                                                          },
+                                                          child: Container(
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10.w,
+                                                                    vertical:
+                                                                        4.w),
+                                                            decoration: BoxDecoration(
+                                                                color: e == w
+                                                                    ? AppColor
+                                                                        .white
+                                                                    : AppColor
+                                                                        .transparent,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            14.r)),
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10.w,
+                                                                    horizontal:
+                                                                        20.w),
+                                                            child: Row(
+                                                              children: [
+                                                                SvgPicture.asset(
+                                                                    getWalletCurrencyCode(
+                                                                        e.currency)),
+                                                                SizedBox(
+                                                                  width: 15.6.w,
                                                                 ),
-                                                              )
-                                                            ],
+                                                                SizedBox(
+                                                                  width: 180.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text:
+                                                                        '${e.currency}',
+                                                                    fontSize:
+                                                                        17.6,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ))
+                                                        ))
                                             ],
                                           )
                                   ],
@@ -1615,6 +1689,9 @@ class AuthViewModel extends BaseViewModel {
           repositoryImply.depositWallet(depositMoney!),
           throwException: true);
       if (_depositWalletResponseModel?.status == 'success') {
+        await navigate.navigateTo(Routes.dashboard,
+            arguments: DashboardArguments(index: 2));
+
         AppUtils.snackbar(context, message: 'Deposit Successful..!');
       }
       _isLoading = false;
@@ -1747,57 +1824,78 @@ class AuthViewModel extends BaseViewModel {
   }
 
   void makePayment({amount, context, String? walletId}) async {
-    const secretKey = 'sk_test_d9830d6c7a17c2b69f22ccb0589b560c902f6059';
+    // const secretKey = 'sk_test_d9830d6c7a17c2b69f22ccb0589b560c902f6059';
 
-    final request = PaystackTransactionRequest(
-      reference: 'ps_${DateTime.now().microsecondsSinceEpoch}',
-      secretKey: secretKey,
-      email: session.usersData['user']['email'],
-      amount: amount * 100,
-      currency: PaystackCurrency.ngn,
-      channel: [
-        PaystackPaymentChannel.mobileMoney,
-        PaystackPaymentChannel.card,
-        PaystackPaymentChannel.ussd,
-        PaystackPaymentChannel.bankTransfer,
-        PaystackPaymentChannel.bank,
-        PaystackPaymentChannel.qr,
-        PaystackPaymentChannel.eft,
-      ],
-    );
+    // final request = PaystackTransactionRequest(
+    //   reference: 'ps_${DateTime.now().microsecondsSinceEpoch}',
+    //   secretKey: secretKey,
+    //   email: session.usersData['user']['email'],
+    //   amount: amount * 100,
+    //   currency: PaystackCurrency.ngn,
+    //   channel: [
+    //     PaystackPaymentChannel.mobileMoney,
+    //     PaystackPaymentChannel.card,
+    //     PaystackPaymentChannel.ussd,
+    //     PaystackPaymentChannel.bankTransfer,
+    //     PaystackPaymentChannel.bank,
+    //     PaystackPaymentChannel.qr,
+    //     PaystackPaymentChannel.eft,
+    //   ],
+    // );
 
-    initializingPayment = true;
-    final initializedTransaction =
-        await PaymentService.initializeTransaction(request);
+    // initializingPayment = true;
+    // final initializedTransaction =
+    //     await PaymentService.initializeTransaction(request);
 
-    if (!initializedTransaction.status) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.red,
-        content: Text(initializedTransaction.message),
-      ));
+    // if (!initializedTransaction.status) {
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //     backgroundColor: Colors.red,
+    //     content: Text(initializedTransaction.message),
+    //   ));
 
-      return;
-    }
+    //   return;
+    // }
 
-    final response = await PaymentService.showPaymentModal(context,
-            transaction: initializedTransaction,
-            // Callback URL must match the one specified on your paystack dashboard,
-            callbackUrl:
-                'https://snappy.appypie.com/webservices/InAppPaymentGateway/paystack/response.php?method=success')
-        .then((_) async {
-      return await PaymentService.verifyTransaction(
-        paystackSecretKey: secretKey,
-        initializedTransaction.data?.reference ?? request.reference,
-      );
-    });
-    if (response.data.status == PaystackTransactionStatus.success) {
-      depositMoney(context,
-          depositMoney: DepositWalletEntityModel(
-              amount: amount.toString(),
-              currency: 'NGN',
-              channel: 'paystack',
-              walletId: walletId));
-    }
+    // final response = await PaymentService.showPaymentModal(context,
+    //         transaction: initializedTransaction,
+    //         // Callback URL must match the one specified on your paystack dashboard,
+    //         callbackUrl:
+    //             'https://snappy.appypie.com/webservices/InAppPaymentGateway/paystack/response.php?method=success')
+    //     .then((_) async {
+    //   return await PaymentService.verifyTransaction(
+    //     paystackSecretKey: secretKey,
+    //     initializedTransaction.data?.reference ?? request.reference,
+    //   );
+    // });
+
+    // print("response:::$response");
+
+    final uniqueTransRef = PayWithPayStack().generateUuidV4();
+
+    PayWithPayStack().now(
+        context: context,
+        secretKey: "sk_test_d9830d6c7a17c2b69f22ccb0589b560c902f6059",
+        customerEmail: session.usersData['user']['email'],
+        reference: uniqueTransRef,
+        currency: "NGN",
+        amount: amount,
+        callbackUrl:
+            "https://snappy.appypie.com/webservices/InAppPaymentGateway/paystack/response.php?method=success",
+        transactionCompleted: (paymentData) async {
+          print('complete:${paymentData.status}');
+          if (paymentData.status == 'success') {
+            await depositMoney(context,
+                depositMoney: DepositWalletEntityModel(
+                    amount: amount.toString(),
+                    currency: 'NGN',
+                    channel: 'paystack',
+                    walletId: walletId));
+          }
+          debugPrint(paymentData.toString());
+        },
+        transactionNotCompleted: (reason) {
+          debugPrint("==> Transaction failed reason $reason");
+        });
   }
 
   swapFlowMeth(context) {
@@ -1848,6 +1946,8 @@ class AuthViewModel extends BaseViewModel {
 
     final ChargeResponse response = await flutterwave.charge();
     if (response.status?.toLowerCase() == 'successful') {
+      await navigate.navigateTo(Routes.dashboard,
+          arguments: DashboardArguments(index: 2));
       depositMoney(context,
           depositMoney: DepositWalletEntityModel(
               amount: amount.toString(),
@@ -1943,19 +2043,22 @@ class AuthViewModel extends BaseViewModel {
                                 Navigator.pop(context);
                                 return;
                               },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TextView(
-                                    text: e.currency ?? '',
-                                    color: AppColor.black,
-                                    fontSize: 16.2.sp,
-                                  ),
-                                  SizedBox(
-                                    height: 3.2.h,
-                                  ),
-                                ],
-                              ),
+                              child: e.currency == 'NGN'
+                                  ? SizedBox.shrink()
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        TextView(
+                                          text: e.currency ?? '',
+                                          color: AppColor.black,
+                                          fontSize: 16.2.sp,
+                                        ),
+                                        SizedBox(
+                                          height: 3.2.h,
+                                        ),
+                                      ],
+                                    ),
                             ),
                           ),
                       ],

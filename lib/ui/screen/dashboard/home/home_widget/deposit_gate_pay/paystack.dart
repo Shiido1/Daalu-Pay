@@ -165,25 +165,7 @@ class _PaystackScreenState extends State<PaystackScreen> {
                                   error: true);
                             }
                           }
-                        }
-
-                        //  dailyLimit > transaction
-                        //     ? () {
-                        //         if (formKey.currentState!.validate()) {
-                        // model.makePayment(
-                        //     amount:
-                        //         double.parse(amountController.text),
-                        //     walletId: walletId,
-                        //     context: context);
-                        // }
-                        //       }
-                        //     : () {
-                        //         AppUtils.snackbar(context,
-                        //             message:
-                        //                 'You have exceeded your daily limit..',
-                        //             error: true);
-                        //       }
-                        ),
+                        }),
                     SizedBox(
                       height: 30.h,
                     ),

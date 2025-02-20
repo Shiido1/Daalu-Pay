@@ -14,8 +14,10 @@ import 'transaction/transaction_screen.dart';
 import 'wallet/send_money.dart';
 import 'wallet/wallet_screen.dart';
 
+// ignore: must_be_immutable
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  Dashboard({super.key, this.index});
+  int? index;
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -31,6 +33,12 @@ class _DashboardState extends State<Dashboard> {
     TransactionScreen(),
     SettingScreen(),
   ];
+
+  @override
+  void initState() {
+    _currentIndex = widget.index!;
+    super.initState();
+  }
 
   Future<bool> willPopControl() async {
     return (await showDialog(

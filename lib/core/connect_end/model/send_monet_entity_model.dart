@@ -31,9 +31,9 @@ class SendMonetEntityModel {
   Map<String, dynamic> toJson() => {
         if (amount != null) 'amount': amount,
         if (recipientAddress != null) 'recipient_address': recipientAddress,
-        if (recipientName != null) 'recipient_name': recipientAddress,
-        if (recipientEmail != null) 'recipient_email': recipientAddress,
-        if (description != null) 'description': recipientAddress,
+        if (recipientName != null) 'recipient_name': recipientName,
+        if (recipientEmail != null) 'recipient_email': recipientEmail,
+        if (description != null) 'description': description,
         if (currency != null) 'currency': currency,
         if (documentType != null) 'document_type': documentType,
       };

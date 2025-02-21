@@ -1,4 +1,5 @@
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/create_pin_response_model/create_pin_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
@@ -32,6 +33,7 @@ import '../model/register_entity_model.dart';
 import '../model/send_message_entity_model.dart';
 import '../model/send_message_response_model/send_message_response_model.dart';
 import '../model/user_response_model/user_response_model.dart';
+import '../model/verify_pin_response_model/verify_pin_response_model.dart';
 
 @lazySingleton
 class AuthRepoImpl {
@@ -184,6 +186,16 @@ class AuthRepoImpl {
   Future<SendMessageResponseModel> sendMessage(
       SendMessageEntityModel sendMessage) async {
     final response = await _contract.sendMessage(sendMessage);
+    return response;
+  }
+
+  Future<CreatePinResponseModel> createPin(String pin) async {
+    final response = await _contract.createPin(pin);
+    return response;
+  }
+
+  Future<VerifyPinResponseModel> verifyPin(String pin) async {
+    final response = await _contract.verifyPin(pin);
     return response;
   }
 

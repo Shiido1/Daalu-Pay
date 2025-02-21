@@ -1,10 +1,8 @@
-import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
-
 import '../../../../core/connect_end/model/get_stats_response_model/wallet.dart';
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../app_assets/app_color.dart';
@@ -30,11 +28,6 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
 
   dynamic dailyLimit;
   int transaction = 0;
-
-  TextEditingController sendAmountController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController desController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -108,10 +101,10 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    model.walletAmount != null
+                    model.walletAmount != null || widget.wallet != null
                         ? TextView(
                             text:
-                                ' Balance: ${getAllCurrency(model.walletAmount!.currency)}${oCcy.format(double.parse(model.walletAmount!.balance.toString()))}',
+                                ' Balance: ${getAllCurrency(model.walletAmount?.currency ?? widget.wallet?.currency)}${oCcy.format(double.parse('${model.walletAmount?.balance ?? widget.wallet?.balance}'))}',
                             textStyle: TextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w400,
@@ -129,7 +122,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                       isFilled: true,
                       fillColor: AppColor.white,
                       keyboardType: TextInputType.number,
-                      controller: sendAmountController,
+                      controller: model.sendAmountController,
                       validator: AppValidator.validateString(),
                     ),
                     SizedBox(
@@ -142,7 +135,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                       isFilled: true,
                       fillColor: AppColor.white,
                       keyboardType: TextInputType.number,
-                      controller: nameController,
+                      controller: model.nameController,
                       validator: AppValidator.validateString(),
                     ),
                     SizedBox(
@@ -155,7 +148,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                       isFilled: true,
                       fillColor: AppColor.white,
                       keyboardType: TextInputType.number,
-                      controller: emailController,
+                      controller: model.emailController,
                       validator: AppValidator.validateString(),
                     ),
                     SizedBox(
@@ -168,7 +161,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                       maxline: 4,
                       fillColor: AppColor.white,
                       keyboardType: TextInputType.number,
-                      controller: desController,
+                      controller: model.desController,
                       validator: AppValidator.validateString(),
                     ),
                     SizedBox(
@@ -180,9 +173,9 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                         children: <Widget>[
                           Radio(
                             value: 'wallet',
-                            groupValue: _radioValue,
+                            groupValue: model.radioValue,
                             onChanged: (v) {
-                              radioButtonChanges(v!);
+                              model.radioButtonChanges(v!);
                             },
                           ),
                           Text(
@@ -191,9 +184,9 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                           Spacer(),
                           Radio(
                             value: 'upload',
-                            groupValue: _radioValue,
+                            groupValue: model.radioValue,
                             onChanged: (v) {
-                              radioButtonChanges(v!);
+                              model.radioButtonChanges(v!);
                             },
                           ),
                           Text(
@@ -205,7 +198,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                     SizedBox(
                       height: 20.h,
                     ),
-                    choice == 'wallet'
+                    model.choice == 'wallet'
                         ? TextFormWidget(
                             label: 'Alipay Wallet Id',
                             hint: 'Recipient\'s Wallet Address',
@@ -217,7 +210,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                             onChange: (p0) {
                               // model.onGetUserWalletRate(context, p0);
                             })
-                        : choice == 'upload'
+                        : model.choice == 'upload'
                             ? Column(
                                 children: [
                                   Column(
@@ -312,50 +305,47 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                       buttonColor:
                           !model.isLoading ? AppColor.primary : AppColor.inGrey,
                       buttonBorderColor: Colors.transparent,
-                      onPressed: () {
-                        if (formKey.currentState!.validate() &&
-                            model.walletAmount!.balance! >
-                                int.parse(sendAmountController.text)) {
-                          if (dailyLimit == "unlimited") {
-                            model.sendMoney(context,
-                                sendMoney: SendMonetEntityModel(
-                                    amount: sendAmountController.text,
-                                    documentType: choice == 'wallet'
-                                        ? 'alipay_id'
-                                        : 'barcode',
-                                    recipientAddress: choice == 'wallet'
-                                        ? model.recipientWalletIdController.text
-                                        : '${model.postUserVerificationCloudResponse?.publicId}.${model.postUserVerificationCloudResponse?.format}',
-                                    currency: model.currencyController.text));
+                      onPressed: model.isLoading
+                          ? () {}
+                          : () {
+                              print(model.postUserVerificationCloudResponse);
+                              if (formKey.currentState!.validate() &&
+                                      model.walletAmount != null &&
+                                      model.walletAmount!.balance! >
+                                          int.parse(model
+                                              .sendAmountController.text) ||
+                                  widget.wallet != null &&
+                                      widget.wallet!.balance! >
+                                          int.parse(model
+                                              .sendAmountController.text)) {
+                                if (dailyLimit == "unlimited") {
+                                  model.showSendMoneyDialog(
+                                      context,
+                                      model.sendAmountController.text,
+                                      model.currencyController.text,
+                                      wallet: widget.wallet);
 
-                            return;
-                          }
-                          if (dailyLimit > transaction) {
-                            model.sendMoney(context,
-                                sendMoney: SendMonetEntityModel(
-                                    amount: sendAmountController.text,
-                                    description: desController.text,
-                                    recipientEmail: emailController.text,
-                                    recipientName: nameController.text,
-                                    documentType: choice == 'wallet'
-                                        ? 'alipay_id'
-                                        : 'barcode',
-                                    recipientAddress: choice == 'wallet'
-                                        ? model.recipientWalletIdController.text
-                                        : '${model.postUserVerificationCloudResponse?.publicId}.${model.postUserVerificationCloudResponse?.format}',
-                                    currency: model.currencyController.text));
-                          } else {
-                            AppUtils.snackbar(context,
-                                message: 'You have exceeded your daily limit..',
-                                error: true);
-                          }
-                        } else {
-                          AppUtils.snackbar(context,
-                              message:
-                                  'Amount should not be greater than current balance in wallet',
-                              error: true);
-                        }
-                      },
+                                  return;
+                                }
+                                if (dailyLimit > transaction) {
+                                  model.showSendMoneyDialog(
+                                      context,
+                                      model.sendAmountController.text,
+                                      model.currencyController.text,
+                                      wallet: widget.wallet);
+                                } else {
+                                  AppUtils.snackbar(context,
+                                      message:
+                                          'You have exceeded your daily limit..',
+                                      error: true);
+                                }
+                              } else {
+                                AppUtils.snackbar(context,
+                                    message:
+                                        'Amount should not be greater than current balance in wallet',
+                                    error: true);
+                              }
+                            },
                     )
                   ],
                 ),
@@ -363,25 +353,5 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
             ),
           );
         });
-  }
-
-  String? _radioValue; //Initial definition of radio button value
-  String? choice = '';
-
-  radioButtonChanges(String value) {
-    setState(() {
-      _radioValue = value;
-      switch (value) {
-        case 'wallet':
-          choice = value;
-          break;
-        case 'upload':
-          choice = value;
-          break;
-        default:
-          choice = "";
-      }
-      debugPrint(choice); //Debug the choice in console
-    });
   }
 }

@@ -23,7 +23,7 @@ class SwapScreen extends StatelessWidget {
     return ViewModelBuilder<AuthViewModel>.reactive(
         viewModelBuilder: () => AuthViewModel(),
         onViewModelReady: (model) async {
-          await model.exchangeRates(context, from: 'NGN', to: 'USD');
+          await model.exchangeRates(context, from: 'NGN', to: 'CNY');
           // ignore: use_build_context_synchronously
           model.getStatistics(context);
           await model.usersPrefer(context);
@@ -40,7 +40,7 @@ class SwapScreen extends StatelessWidget {
                   model.preferenceResponseModel!.data!.transactionTotalToday)
               .toInt();
           if (model.dailyLimit != 'unlimited') {
-            AppUtils.snackbar(
+            await AppUtils.snackbar(
               context,
               message:
                   'Your limit for today is ${oCcy.format(model.dailyLimit - model.transaction)}.',
@@ -151,6 +151,7 @@ class SwapScreen extends StatelessWidget {
                     isFilled: true,
                     keyboardType: TextInputType.number,
                     fillColor: AppColor.white,
+                    readOnly: true,
                     prefixWidget: Padding(
                       padding: EdgeInsets.all(8.w),
                       child: GestureDetector(
@@ -293,10 +294,9 @@ class SwapScreen extends StatelessWidget {
                     buttonText: 'Proceed',
                     color: AppColor.white,
                     border: 8,
-                    isLoading: model.isLoading,
                     buttonColor: AppColor.primary,
                     buttonBorderColor: Colors.transparent,
-                    onPressed: () => model.swapFlowMeth(context),
+                    onPressed: () => model.showConvertDialog(context),
                   ),
                   SizedBox(
                     height: 30.h,

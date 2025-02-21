@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import "package:collection/collection.dart";
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/create_pin_response_model/create_pin_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
@@ -20,6 +21,7 @@ import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/user_response_model/user_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/verify_pin_response_model/verify_pin_response_model.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:dio/dio.dart';
@@ -33,6 +35,7 @@ import 'package:pay_with_paystack/pay_with_paystack.dart';
 import 'package:stacked/stacked.dart';
 import '../../../ui/app_assets/app_color.dart';
 import '../../../ui/app_assets/app_utils.dart';
+import '../../../ui/app_assets/contant.dart';
 import '../../../ui/app_assets/country_const.dart';
 import '../../../ui/app_assets/image_picker.dart';
 import '../../../ui/widget/button_widget.dart';
@@ -118,6 +121,160 @@ class AuthViewModel extends BaseViewModel {
   final _firebaseMessage = FirebaseMessaging.instance;
 
   int currentPageWallet = 0;
+
+  String? radioValue; //Initial definition of radio button value
+  String? choice = '';
+
+  TextEditingController sendAmountController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController desController = TextEditingController();
+  TextEditingController recipientWalletIdController = TextEditingController();
+
+  radioButtonChanges(String value) {
+    radioValue = value;
+    switch (value) {
+      case 'wallet':
+        choice = value;
+        break;
+      case 'upload':
+        choice = value;
+        break;
+      default:
+        choice = "";
+    }
+    debugPrint(choice); //Debug the choice in console
+    notifyListeners();
+  }
+
+  showSendMoneyDialog(context, amount, code, {Wallet? wallet}) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => AuthViewModel(),
+              onViewModelReady: (model) {},
+              disposeViewModel: false,
+              builder: (_, AuthViewModel model, __) {
+                return Dialog(
+                  backgroundColor: AppColor.white,
+                  insetPadding:
+                      EdgeInsets.symmetric(horizontal: 22.w, vertical: 16.w),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20.w),
+                    height: 250.w,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 16.2.h,
+                          ),
+                          TextView(
+                            text: 'Confirm Send Money',
+                            color: AppColor.black,
+                            fontSize: 17.2.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          SizedBox(
+                            height: 10.2.h,
+                          ),
+                          TextView(
+                            text:
+                                'Are your sure you want to send $amount $code',
+                            color: AppColor.black,
+                            fontSize: 15.2.sp,
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () => Navigator.pop(context),
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 6.w, horizontal: 10.w),
+                                  decoration: BoxDecoration(
+                                      color: AppColor.white,
+                                      border: Border.all(
+                                          color: AppColor.primary, width: .6.w),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Center(
+                                    child: TextView(
+                                      text: 'Back',
+                                      color: AppColor.primary,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  model.sendMoney(context,
+                                      sendMoney: SendMonetEntityModel(
+                                          amount: sendAmountController.text,
+                                          recipientEmail: emailController.text,
+                                          description: desController.text,
+                                          recipientName: nameController.text,
+                                          documentType: choice == 'wallet'
+                                              ? 'alipay_id'
+                                              : 'barcode',
+                                          recipientAddress: choice == 'wallet'
+                                              ? recipientWalletIdController.text
+                                              : '${_postUserVerificationCloudResponse?.publicId}.${_postUserVerificationCloudResponse?.format}',
+                                          currency: wallet != null
+                                              ? wallet.currency
+                                              : currencyController.text));
+                                  model.notifyListeners();
+                                },
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 6.w, horizontal: 10.w),
+                                  decoration: BoxDecoration(
+                                      color: AppColor.primary,
+                                      border: Border.all(
+                                          color: AppColor.white, width: .6.w),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Center(
+                                    child: TextView(
+                                      text: 'Confirm',
+                                      color: AppColor.white,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          model.isLoading
+                              ? TextView(
+                                  text: 'Loading...',
+                                  color: AppColor.grey,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                )
+                              : SizedBox.shrink(),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              });
+        });
+  }
 
   buildCarouselIndicator() {
     return Container(
@@ -211,7 +368,6 @@ class AuthViewModel extends BaseViewModel {
           _getSwappedTransactionsResponseModel;
 
   TextEditingController currencyController = TextEditingController();
-  TextEditingController recipientWalletIdController = TextEditingController();
   Wallet? _walletAmount;
   Wallet? get walletAmount => _walletAmount;
 
@@ -220,15 +376,15 @@ class AuthViewModel extends BaseViewModel {
   String? filename;
 
   String fromCurrency = AppImage.nigeria_flag;
-  String toCurrency = AppImage.united_states;
+  String toCurrency = AppImage.china_flag;
   String fromCurrencyCode = 'NGN';
-  String toCurrencyCode = 'USD';
+  String toCurrencyCode = 'CNY';
   String createCurrencyCode = '';
 
   TextEditingController fromCurrencylController =
-      TextEditingController(text: '1');
+      TextEditingController(text: '0');
   TextEditingController toCurrencylController =
-      TextEditingController(text: '1');
+      TextEditingController(text: '0');
   final debouncer = Debouncer();
   TextEditingController curcodeFromController = TextEditingController();
   TextEditingController curcodeToController = TextEditingController();
@@ -250,6 +406,62 @@ class AuthViewModel extends BaseViewModel {
   int startTimerCount = 0;
   dynamic dailyLimit;
   int transaction = 0;
+
+  CreatePinResponseModel? get createPinResponseModel => _createPinResponseModel;
+  CreatePinResponseModel? _createPinResponseModel;
+  VerifyPinResponseModel? get verifyPinResponseModel => _verifyPinResponseModel;
+  VerifyPinResponseModel? _verifyPinResponseModel;
+
+  Future<void> createPin({String? transaction, String? pin, contxt}) async {
+    try {
+      _isLoading = true;
+      _createPinResponseModel = await runBusyFuture(
+          repositoryImply.createPin(pin!),
+          throwException: true);
+
+      if (_createPinResponseModel?.status == 'success') {
+        _isLoading = false;
+        // await AppUtils.snackbar(contxt,
+        //     message: _loginResponse?.message!.toString());
+        // navigate.navigateTo(Routes.dashboard,
+        //     arguments: DashboardArguments(index: 0));
+      }
+    } catch (e) {
+      _isLoading = false;
+      logger.d(e);
+      AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> verifyPin(contxt,
+      {String? transaction, String? pin, SwapEntiyModel? swap}) async {
+    try {
+      _isLoading = true;
+      _verifyPinResponseModel = await runBusyFuture(
+          repositoryImply.verifyPin(pin!),
+          throwException: true);
+
+      if (_verifyPinResponseModel!.status == 'success') {
+        print('tr:::$transaction');
+        if (transaction == 'convert') {
+          await usersPrefer(contxt);
+          swapFlowMeth(contxt, swapEntity: swap);
+        }
+        // await AppUtils.snackbar(contxt,
+        //     message: _loginResponse?.message!.toString());
+        // navigate.navigateTo(Routes.dashboard,
+        //     arguments: DashboardArguments(index: 0));
+      }
+
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      logger.d(e);
+      AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
 
   void startTimer() {
     startTimerCount = 30;
@@ -503,18 +715,18 @@ class AuthViewModel extends BaseViewModel {
   exchangeTheRate(o) {
     toCurrencylController.text =
         (double.parse(_exchangeRateResponseModel!.data!.rate!) *
-                double.parse(o))
+                double.parse(o == '' ? '0' : o))
             .toString();
 
     notifyListeners();
   }
 
-  getUSerWalletUUID(context, o) {
-    recipientWalletIdController.text = o;
-    getWalletId(context, id: o);
+  // getUSerWalletUUID(context, o) {
+  //   recipientWalletIdController.text = o;
+  //   getWalletId(context, id: o);
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 
   Wallet? w;
   void modalBottomSheetMenuFrom(context) {
@@ -1293,7 +1505,13 @@ class AuthViewModel extends BaseViewModel {
                                                         selectCountry =
                                                             e['code'];
                                                         model.notifyListeners();
-                                                        Navigator.pop(context);
+                                                        Future.delayed(
+                                                            Duration(
+                                                                seconds: 1),
+                                                            () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        });
                                                       },
                                                       child: Container(
                                                         decoration:
@@ -1372,8 +1590,13 @@ class AuthViewModel extends BaseViewModel {
                                                           model
                                                               .notifyListeners();
 
-                                                          Navigator.pop(
-                                                              context);
+                                                          Future.delayed(
+                                                              Duration(
+                                                                  seconds: 1),
+                                                              () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          });
                                                         },
                                                         child: Container(
                                                           decoration:
@@ -1458,10 +1681,10 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void onGetUserWalletRate(context, p0) {
-    debouncer.run(() => getUSerWalletUUID(context, p0));
-    notifyListeners();
-  }
+  // void onGetUserWalletRate(context, p0) {
+  //   debouncer.run(() => getUSerWalletUUID(context, p0));
+  //   notifyListeners();
+  // }
 
   String getWalletCurrencyCode(currencyCode) {
     String flag = '';
@@ -1507,14 +1730,22 @@ class AuthViewModel extends BaseViewModel {
   }
 
   Future<void> swap(context, {SwapEntiyModel? swap}) async {
+    logger.d(swap?.toJson());
     try {
       _isLoading = true;
       var v = await runBusyFuture(repositoryImply.swap(swap!),
           throwException: true);
       _isLoading = false;
       if (v['status'] == true) {
-        AppUtils.snackbar(context, message: v['message']);
-        getStatistics(context);
+        await Future.delayed(Duration(seconds: 1), () async {
+          await AppUtils.snackbar(context, message: v['message']);
+          Navigator.pop(context);
+
+          getStatistics(context);
+        });
+
+        await navigate.navigateTo(Routes.dashboard,
+            arguments: DashboardArguments(index: 0));
       }
     } catch (e) {
       _isLoading = false;
@@ -1671,7 +1902,13 @@ class AuthViewModel extends BaseViewModel {
       var v = await runBusyFuture(repositoryImply.sendMoney(sendMoney!),
           throwException: true);
       if (v['status'] == 'success') {
-        AppUtils.snackbar(context, message: 'Transfer Successful..!');
+        await Future.delayed(Duration(seconds: 1), () async {
+          Navigator.pop(context);
+        });
+
+        await AppUtils.snackbar(context, message: 'Transfer Successful..!');
+        navigate.navigateTo(Routes.dashboard,
+            arguments: DashboardArguments(index: 2));
       }
       _isLoading = false;
     } catch (e) {
@@ -1898,27 +2135,313 @@ class AuthViewModel extends BaseViewModel {
         });
   }
 
-  swapFlowMeth(context) {
+  showConvertDialog(context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => AuthViewModel(),
+              onViewModelReady: (model) async {},
+              disposeViewModel: false,
+              builder: (_, AuthViewModel model, __) {
+                return Dialog(
+                  backgroundColor: AppColor.white,
+                  insetPadding:
+                      EdgeInsets.symmetric(horizontal: 22.w, vertical: 16.w),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20.w),
+                    height: 340.w,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 16.2.h,
+                          ),
+                          TextView(
+                            text: 'Review Convert Transaction',
+                            color: AppColor.black,
+                            fontSize: 18.2.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          SizedBox(
+                            height: 10.2.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextView(
+                                text: 'Amount Convert',
+                                color: AppColor.black,
+                                fontSize: 15.2.sp,
+                              ),
+                              SizedBox(
+                                width: 150.w,
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: TextView(
+                                    text:
+                                        '${oCcy.format(double.parse(fromCurrencylController.text))} $fromCurrencyCode',
+                                    color: AppColor.black,
+                                    maxLines: 1,
+                                    textOverflow: TextOverflow.fade,
+                                    fontSize: 15.2.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextView(
+                                text: 'Amount Recieve',
+                                color: AppColor.black,
+                                fontSize: 15.2.sp,
+                              ),
+                              SizedBox(
+                                width: 150.w,
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: TextView(
+                                    text:
+                                        '${oCcy.format(double.parse(toCurrencylController.text))} $toCurrencyCode',
+                                    color: AppColor.black,
+                                    fontSize: 15.2.sp,
+                                    maxLines: 1,
+                                    textOverflow: TextOverflow.fade,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          Divider(
+                            color: AppColor.grey,
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextView(
+                                text: 'Currency Pair',
+                                color: AppColor.black,
+                                fontSize: 15.2.sp,
+                              ),
+                              TextView(
+                                text: '$fromCurrencyCode / $toCurrencyCode',
+                                color: AppColor.black,
+                                fontSize: 15.2.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          SizedBox(
+                            height: 40.h,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TextView(
+                                  text: 'Exchanged Rate',
+                                  color: AppColor.black,
+                                  fontSize: 15.2.sp,
+                                ),
+                                SizedBox(
+                                  width: 20.w,
+                                ),
+                                Wrap(children: [
+                                  SizedBox(
+                                    width: 150.w,
+                                    child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: TextView(
+                                        text:
+                                            '1 $fromCurrencyCode = ${exchangeRateResponseModel?.data?.rate ?? 0} $toCurrencyCode',
+                                        fontSize: 15.4.sp,
+                                        maxLines: 3,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ])
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextView(
+                                text: 'Transfer fee',
+                                color: AppColor.black,
+                                fontSize: 16.2.sp,
+                              ),
+                              TextView(
+                                text: transferFee(),
+                                fontSize: 15.2.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          Divider(
+                            color: AppColor.grey,
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextView(
+                                text: 'Final Amount',
+                                color: AppColor.black,
+                                fontSize: 15.2.sp,
+                              ),
+                              SizedBox(
+                                width: 130.w,
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: TextView(
+                                    text:
+                                        '${oCcy.format(double.parse(toCurrencylController.text))} ${getAllCurrency(toCurrencyCode)}',
+                                    color: AppColor.black,
+                                    fontSize: 15.2.sp,
+                                    maxLines: 1,
+                                    textOverflow: TextOverflow.fade,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () => Navigator.pop(context),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 6.w, horizontal: 10.w),
+                                  decoration: BoxDecoration(
+                                      color: AppColor.white,
+                                      border: Border.all(
+                                          color: AppColor.primary, width: .6.w),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: TextView(
+                                    text: 'Back',
+                                    color: AppColor.primary,
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  // print(
+                                  //     '.....${
+                                  //       SwapEntiyModel(
+                                  //         fromAmount: fromCurrencylController.text,
+                                  //         toAmount: toCurrencylController.text,
+                                  //         fromCurrency: fromCurrencyCode,
+                                  //         toCurrency: toCurrencyCode,
+                                  //         amount: toCurrencylController.text,
+                                  //         rate: exchangeRateResponseModel?.data?.rate).toJson()}');
+                                  await Future.delayed(Duration(seconds: 1),
+                                      () {
+                                    Navigator.pop(context);
+                                  });
+                                  navigate.navigateTo(Routes.welcomeBackScreen,
+                                      arguments: WelcomeBackScreenArguments(
+                                          name: session.usersData['user']
+                                                  ['firstName'] ??
+                                              '',
+                                          transaction: 'convert',
+                                          swap: SwapEntiyModel(
+                                              fromAmount:
+                                                  fromCurrencylController.text,
+                                              toAmount:
+                                                  toCurrencylController.text,
+                                              fromCurrency: fromCurrencyCode,
+                                              toCurrency: toCurrencyCode,
+                                              amount:
+                                                  toCurrencylController.text,
+                                              rate: exchangeRateResponseModel
+                                                  ?.data?.rate)));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 6.w, horizontal: 10.w),
+                                  decoration: BoxDecoration(
+                                      color: AppColor.primary,
+                                      border: Border.all(
+                                          color: AppColor.white, width: .6.w),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: TextView(
+                                    text: 'Submit',
+                                    color: AppColor.white,
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          _isLoading
+                              ? TextView(
+                                  text: 'Loading...',
+                                  color: AppColor.grey,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                )
+                              : SizedBox.shrink(),
+                          SizedBox(
+                            height: 40.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              });
+        });
+  }
+
+  swapFlowMeth(context, {SwapEntiyModel? swapEntity}) {
+    print(dailyLimit);
+    print(transaction);
     if (dailyLimit == "unlimited") {
-      swap(context,
-          swap: SwapEntiyModel(
-              fromAmount: fromCurrencylController.text,
-              toAmount: toCurrencylController.text,
-              fromCurrency: fromCurrencyCode,
-              toCurrency: toCurrencyCode,
-              amount: toCurrencylController.text,
-              rate: exchangeRateResponseModel!.data!.rate));
+      swap(context, swap: swapEntity);
       return;
     }
     if (dailyLimit > transaction) {
-      swap(context,
-          swap: SwapEntiyModel(
-              fromAmount: fromCurrencylController.text,
-              toAmount: toCurrencylController.text,
-              fromCurrency: fromCurrencyCode,
-              toCurrency: toCurrencyCode,
-              amount: toCurrencylController.text,
-              rate: exchangeRateResponseModel!.data!.rate));
+      print('mmmmmm');
+      print(
+          '.....${SwapEntiyModel(fromAmount: fromCurrencylController.text, toAmount: toCurrencylController.text, fromCurrency: fromCurrencyCode, toCurrency: toCurrencyCode, amount: toCurrencylController.text, rate: exchangeRateResponseModel?.data?.rate).toJson()}');
+
+      swap(context, swap: swapEntity);
     } else {
       AppUtils.snackbar(context,
           message: 'You have exceeded your daily limit..', error: true);

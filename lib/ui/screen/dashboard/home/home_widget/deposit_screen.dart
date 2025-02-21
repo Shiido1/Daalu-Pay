@@ -70,23 +70,38 @@ class DepositScreen extends StatelessWidget {
                     SizedBox(
                       height: 30.h,
                     ),
-                    TabBar(
-                      indicatorColor: AppColor.primary,
-                      dividerColor: AppColor.transparent,
-                      labelPadding: EdgeInsets.only(bottom: 4.w),
-                      padding: EdgeInsets.zero,
-                      tabs: [
-                        if (model.paymentGateResponseModel != null &&
-                            model.paymentGateResponseModel!.data!.isNotEmpty)
-                          ...model.paymentGateResponseModel!.data!.map(
-                            (e) => TextView(
-                              text: e.name ?? '',
-                              fontSize: 18.sp,
-                              color: AppColor.darkGrey,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )
-                      ],
+                    Container(
+                      padding: EdgeInsets.all(6.w),
+                      color: AppColor.primary.withOpacity(.1),
+                      child: TabBar(
+                        indicatorColor: AppColor.primary,
+                        dividerColor: AppColor.transparent,
+                        labelPadding:
+                            EdgeInsets.only(right: 60), // Space between tabs
+                        indicator: UnderlineTabIndicator(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12)),
+                          borderSide: BorderSide(
+                              color: AppColor.primary,
+                              width: 3.0), // Indicator height
+                          // insets: EdgeInsets.symmetric(
+                          //     horizontal: 48), // Indicator width
+                        ),
+                        isScrollable: true,
+                        tabs: [
+                          if (model.paymentGateResponseModel != null &&
+                              model.paymentGateResponseModel!.data!.isNotEmpty)
+                            ...model.paymentGateResponseModel!.data!.map(
+                              (e) => TextView(
+                                text: e.name ?? '',
+                                fontSize: 18.sp,
+                                color: AppColor.darkGrey,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            )
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 50.h,
@@ -122,7 +137,7 @@ class DepositScreen extends StatelessWidget {
                                           if (e.name == 'Alipay') {
                                             return AlipayScreen();
                                           }
-                                          if (e.name == 'Paypal') {
+                                          if (e.name == 'PayPal') {
                                             return PaypalScreen();
                                           }
                                           if (e.name == 'Flutterwave') {

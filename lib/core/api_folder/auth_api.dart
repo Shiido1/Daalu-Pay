@@ -1,4 +1,5 @@
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/create_pin_response_model/create_pin_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
@@ -30,6 +31,7 @@ import '../connect_end/model/login_entity.dart';
 import '../connect_end/model/login_response_model/login_response_model.dart';
 import '../connect_end/model/register_entity_model.dart';
 import '../connect_end/model/user_response_model/user_response_model.dart';
+import '../connect_end/model/verify_pin_response_model/verify_pin_response_model.dart';
 import '../core_folder/app/app.locator.dart';
 import '../core_folder/app/app.logger.dart';
 import '../core_folder/network/cloudinary_network_service.dart';
@@ -395,6 +397,30 @@ class AuthApi {
           data: FormData.fromMap(post.toJson()));
       logger.d(response.data);
       return PostUserVerificationCloudResponse.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<CreatePinResponseModel> createPin(String pin) async {
+    try {
+      final response = await _service
+          .call(UrlConfig.create_pin, RequestMethod.post, data: {'pin': pin});
+      logger.d(response.data);
+      return CreatePinResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<VerifyPinResponseModel> verifyPin(String pin) async {
+    try {
+      final response = await _service
+          .call(UrlConfig.verify_pin, RequestMethod.post, data: {'pin': pin});
+      logger.d(response.data);
+      return VerifyPinResponseModel.fromJson(response.data);
     } catch (e) {
       logger.d("response:$e");
       rethrow;

@@ -27,4 +27,8 @@ class UrlConfig {
   static const String payment_gate = 'user/payment-methods';
   // ignore: constant_identifier_names
   static const String user_preference = '/user/preferences';
+  // ignore: constant_identifier_names
+  static const String create_pin = '/user/pin';
+  // ignore: constant_identifier_names
+  static const String verify_pin = '/user/pin/verify';
 }

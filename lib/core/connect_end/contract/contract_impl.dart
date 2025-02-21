@@ -15,6 +15,7 @@ import 'package:daalu_pay/core/connect_end/model/update_password_response_model/
 import 'package:injectable/injectable.dart';
 import '../../api_folder/auth_api.dart';
 import '../../core_folder/app/app.locator.dart';
+import '../model/create_pin_response_model/create_pin_response_model.dart';
 import '../model/get_message_response/get_message_response.dart';
 import '../model/get_payment_gate_response_model/get_payment_gate_response_model.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
@@ -31,6 +32,7 @@ import '../model/send_message_entity_model.dart';
 import '../model/send_message_response_model/send_message_response_model.dart';
 import '../model/swap_entiy_model.dart';
 import '../model/user_response_model/user_response_model.dart';
+import '../model/verify_pin_response_model/verify_pin_response_model.dart';
 
 @lazySingleton
 class AuthContractsImpl {
@@ -97,4 +99,8 @@ class AuthContractsImpl {
   Future<SendMessageResponseModel> sendMessage(
           SendMessageEntityModel sendMessage) async =>
       await _api.sendMessage(sendMessage);
+  Future<CreatePinResponseModel> createPin(String pin) async =>
+      await _api.createPin(pin);
+  Future<VerifyPinResponseModel> verifyPin(String pin) async =>
+      await _api.verifyPin(pin);
 }

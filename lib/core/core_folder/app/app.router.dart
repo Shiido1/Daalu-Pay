@@ -7,7 +7,6 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:daalu_pay/core/connect_end/model/get_stats_response_model/wallet.dart'
     as _i22;
-import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart' as _i23;
 import 'package:daalu_pay/ui/screen/chat_screen.dart' as _i17;
 import 'package:daalu_pay/ui/screen/create_account_screen.dart' as _i5;
 import 'package:daalu_pay/ui/screen/create_password_screen.dart' as _i6;
@@ -33,7 +32,7 @@ import 'package:daalu_pay/ui/screen/welcome_back_screen.dart' as _i20;
 import 'package:flutter/material.dart' as _i21;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i24;
+import 'package:stacked_services/stacked_services.dart' as _i23;
 
 class Routes {
   static const onboardingScreen = '/';
@@ -312,10 +311,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<WelcomeBackScreenArguments>(nullOk: false);
       return _i21.MaterialPageRoute<dynamic>(
         builder: (context) => _i20.WelcomeBackScreen(
-            key: args.key,
-            name: args.name,
-            transaction: args.transaction,
-            swap: args.swap),
+            key: args.key, name: args.name, transaction: args.transaction),
         settings: data,
       );
     },
@@ -534,7 +530,6 @@ class WelcomeBackScreenArguments {
     this.key,
     required this.name,
     required this.transaction,
-    required this.swap,
   });
 
   final _i21.Key? key;
@@ -543,11 +538,9 @@ class WelcomeBackScreenArguments {
 
   final String? transaction;
 
-  final _i23.SwapEntiyModel? swap;
-
   @override
   String toString() {
-    return '{"key": "$key", "name": "$name", "transaction": "$transaction", "swap": "$swap"}';
+    return '{"key": "$key", "name": "$name", "transaction": "$transaction"}';
   }
 
   @override
@@ -555,17 +548,16 @@ class WelcomeBackScreenArguments {
     if (identical(this, other)) return true;
     return other.key == key &&
         other.name == name &&
-        other.transaction == transaction &&
-        other.swap == swap;
+        other.transaction == transaction;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ name.hashCode ^ transaction.hashCode ^ swap.hashCode;
+    return key.hashCode ^ name.hashCode ^ transaction.hashCode;
   }
 }
 
-extension NavigatorStateExtension on _i24.NavigationService {
+extension NavigatorStateExtension on _i23.NavigationService {
   Future<dynamic> navigateToOnboardingScreen([
     int? routerId,
     bool preventDuplicates = true,
@@ -843,7 +835,6 @@ extension NavigatorStateExtension on _i24.NavigationService {
     _i21.Key? key,
     required String? name,
     required String? transaction,
-    required _i23.SwapEntiyModel? swap,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -852,7 +843,7 @@ extension NavigatorStateExtension on _i24.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.welcomeBackScreen,
         arguments: WelcomeBackScreenArguments(
-            key: key, name: name, transaction: transaction, swap: swap),
+            key: key, name: name, transaction: transaction),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1136,7 +1127,6 @@ extension NavigatorStateExtension on _i24.NavigationService {
     _i21.Key? key,
     required String? name,
     required String? transaction,
-    required _i23.SwapEntiyModel? swap,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1145,7 +1135,7 @@ extension NavigatorStateExtension on _i24.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.welcomeBackScreen,
         arguments: WelcomeBackScreenArguments(
-            key: key, name: name, transaction: transaction, swap: swap),
+            key: key, name: name, transaction: transaction),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

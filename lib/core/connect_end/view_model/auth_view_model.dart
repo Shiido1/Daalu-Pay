@@ -412,7 +412,7 @@ class AuthViewModel extends BaseViewModel {
   VerifyPinResponseModel? get verifyPinResponseModel => _verifyPinResponseModel;
   VerifyPinResponseModel? _verifyPinResponseModel;
 
-  Future<void> createPin({String? transaction, String? pin, contxt}) async {
+  Future<void> createPin({String? pin, contxt}) async {
     try {
       _isLoading = true;
       _createPinResponseModel = await runBusyFuture(
@@ -421,10 +421,11 @@ class AuthViewModel extends BaseViewModel {
 
       if (_createPinResponseModel?.status == 'success') {
         _isLoading = false;
-        // await AppUtils.snackbar(contxt,
-        //     message: _loginResponse?.message!.toString());
-        // navigate.navigateTo(Routes.dashboard,
-        //     arguments: DashboardArguments(index: 0));
+        SharedPreferencesService.instance.isVerified = true;
+        await AppUtils.snackbar(contxt,
+            message: _loginResponse?.message!.toString());
+        navigate.navigateTo(Routes.dashboard,
+            arguments: DashboardArguments(index: 0));
       }
     } catch (e) {
       _isLoading = false;
@@ -434,8 +435,7 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> verifyPin(contxt,
-      {String? transaction, String? pin, SwapEntiyModel? swap}) async {
+  Future<void> verifyPin(contxt, {String? transaction, String? pin}) async {
     try {
       _isLoading = true;
       _verifyPinResponseModel = await runBusyFuture(
@@ -444,14 +444,12 @@ class AuthViewModel extends BaseViewModel {
 
       if (_verifyPinResponseModel!.status == 'success') {
         print('tr:::$transaction');
-        if (transaction == 'convert') {
-          await usersPrefer(contxt);
-          swapFlowMeth(contxt, swapEntity: swap);
+        if (transaction == 'send money') {
+          // await usersPrefer(contxt);
+        } else {
+          navigate.navigateTo(Routes.dashboard,
+              arguments: DashboardArguments(index: 0));
         }
-        // await AppUtils.snackbar(contxt,
-        //     message: _loginResponse?.message!.toString());
-        // navigate.navigateTo(Routes.dashboard,
-        //     arguments: DashboardArguments(index: 0));
       }
 
       _isLoading = false;
@@ -593,11 +591,18 @@ class AuthViewModel extends BaseViewModel {
           throwException: true);
 
       if (_loginResponse?.status == 'success') {
+        if (session.isVerified == false) {
+          navigate.navigateTo(Routes.welcomeBackScreen,
+              arguments: WelcomeBackScreenArguments(
+                  name: session.usersData['user']['firstName'],
+                  transaction: 'login'));
+        } else {
+          await AppUtils.snackbar(contxt,
+              message: _loginResponse?.message!.toString());
+          navigate.navigateTo(Routes.dashboard,
+              arguments: DashboardArguments(index: 0));
+        }
         _isLoading = false;
-        await AppUtils.snackbar(contxt,
-            message: _loginResponse?.message!.toString());
-        navigate.navigateTo(Routes.dashboard,
-            arguments: DashboardArguments(index: 0));
       }
     } catch (e) {
       _isLoading = false;
@@ -2370,23 +2375,24 @@ class AuthViewModel extends BaseViewModel {
                                       () {
                                     Navigator.pop(context);
                                   });
-                                  navigate.navigateTo(Routes.welcomeBackScreen,
-                                      arguments: WelcomeBackScreenArguments(
-                                          name: session.usersData['user']
-                                                  ['firstName'] ??
-                                              '',
-                                          transaction: 'convert',
-                                          swap: SwapEntiyModel(
-                                              fromAmount:
-                                                  fromCurrencylController.text,
-                                              toAmount:
-                                                  toCurrencylController.text,
-                                              fromCurrency: fromCurrencyCode,
-                                              toCurrency: toCurrencyCode,
-                                              amount:
-                                                  toCurrencylController.text,
-                                              rate: exchangeRateResponseModel
-                                                  ?.data?.rate)));
+                                  swapFlowMeth(context);
+                                  // navigate.navigateTo(Routes.welcomeBackScreen,
+                                  //     arguments: WelcomeBackScreenArguments(
+                                  //         name: session.usersData['user']
+                                  //                 ['firstName'] ??
+                                  //             '',
+                                  //         transaction: 'convert',
+                                  //         swap: SwapEntiyModel(
+                                  //             fromAmount:
+                                  //                 fromCurrencylController.text,
+                                  //             toAmount:
+                                  //                 toCurrencylController.text,
+                                  //             fromCurrency: fromCurrencyCode,
+                                  //             toCurrency: toCurrencyCode,
+                                  //             amount:
+                                  //                 toCurrencylController.text,
+                                  //             rate: exchangeRateResponseModel
+                                  //                 ?.data?.rate)));
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
@@ -2429,11 +2435,18 @@ class AuthViewModel extends BaseViewModel {
         });
   }
 
-  swapFlowMeth(context, {SwapEntiyModel? swapEntity}) {
+  swapFlowMeth(context) {
     print(dailyLimit);
     print(transaction);
     if (dailyLimit == "unlimited") {
-      swap(context, swap: swapEntity);
+      swap(context,
+          swap: SwapEntiyModel(
+              fromAmount: fromCurrencylController.text,
+              toAmount: toCurrencylController.text,
+              fromCurrency: fromCurrencyCode,
+              toCurrency: toCurrencyCode,
+              amount: toCurrencylController.text,
+              rate: exchangeRateResponseModel!.data!.rate));
       return;
     }
     if (dailyLimit > transaction) {
@@ -2441,7 +2454,14 @@ class AuthViewModel extends BaseViewModel {
       print(
           '.....${SwapEntiyModel(fromAmount: fromCurrencylController.text, toAmount: toCurrencylController.text, fromCurrency: fromCurrencyCode, toCurrency: toCurrencyCode, amount: toCurrencylController.text, rate: exchangeRateResponseModel?.data?.rate).toJson()}');
 
-      swap(context, swap: swapEntity);
+      swap(context,
+          swap: SwapEntiyModel(
+              fromAmount: fromCurrencylController.text,
+              toAmount: toCurrencylController.text,
+              fromCurrency: fromCurrencyCode,
+              toCurrency: toCurrencyCode,
+              amount: toCurrencylController.text,
+              rate: exchangeRateResponseModel!.data!.rate));
     } else {
       AppUtils.snackbar(context,
           message: 'You have exceeded your daily limit..', error: true);

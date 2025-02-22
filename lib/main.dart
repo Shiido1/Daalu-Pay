@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        initialRoute: Routes.onboardingScreen,
+        initialRoute: SharedPreferencesService.instance.isLoggedIn?Routes.walletScreen: Routes.onboardingScreen,
         navigatorKey: StackedService.navigatorKey,
         onGenerateRoute: StackedRouter().onGenerateRoute,
       ),

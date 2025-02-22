@@ -8,20 +8,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stacked/stacked.dart';
-import '../../core/connect_end/model/swap_entiy_model.dart';
 import '../../core/connect_end/view_model/auth_view_model.dart';
+import '../../core/core_folder/manager/shared_preference.dart';
 import '../widget/button_widget.dart';
 
 // ignore: must_be_immutable
 class WelcomeBackScreen extends StatefulWidget {
-  WelcomeBackScreen(
-      {super.key,
-      required this.name,
-      required this.transaction,
-      required this.swap});
+  WelcomeBackScreen({
+    super.key,
+    required this.name,
+    required this.transaction,
+  });
   String? name;
   String? transaction;
-  SwapEntiyModel? swap;
 
   @override
   State<WelcomeBackScreen> createState() => _WelcomeBackScreenState();
@@ -47,8 +46,8 @@ class _WelcomeBackScreenState extends State<WelcomeBackScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextView(
-                text: widget.transaction == 'login'
-                    ? 'Welcome back ${widget.name}'
+                text: widget.transaction == null
+                    ? 'Welcome back ${SharedPreferencesService.instance.usersData['user']['firstName']}'
                     : 'Pin verification screen',
                 fontSize: 20.sp,
                 fontWeight: FontWeight.w600,
@@ -58,7 +57,9 @@ class _WelcomeBackScreenState extends State<WelcomeBackScreen> {
                 height: 10.h,
               ),
               TextView(
-                text: 'Enter your pin to ${widget.transaction?.capitalize()}',
+                text: widget.transaction == null
+                    ? 'Enter your pin to logn'
+                    : 'Enter your pin to ${widget.transaction?.capitalize()}',
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
                 color: AppColor.grey,
@@ -147,10 +148,14 @@ class _WelcomeBackScreenState extends State<WelcomeBackScreen> {
                         buttonBorderColor: Colors.transparent,
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            model.verifyPin(context,
-                                transaction: widget.transaction,
-                                pin: textEditingController.text,
-                                swap: widget.swap);
+                            SharedPreferencesService.instance.isVerified ==
+                                    false
+                                ? model.createPin(
+                                    contxt: context,
+                                    pin: textEditingController.text)
+                                : model.verifyPin(context,
+                                    transaction: widget.transaction,
+                                    pin: textEditingController.text);
                           }
                         });
                   }),

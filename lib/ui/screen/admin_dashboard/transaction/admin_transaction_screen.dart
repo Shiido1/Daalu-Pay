@@ -60,7 +60,7 @@ class AdminTransactionScreen extends StatelessWidget {
                           padding: EdgeInsets.all(16.w),
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            color: AppColor.inGrey,
+                            color: AppColor.transparent,
                           ),
                         )
                       ],
@@ -69,26 +69,26 @@ class AdminTransactionScreen extends StatelessWidget {
                   SizedBox(
                     height: 30.h,
                   ),
-                  paddedWing(
-                    child: TextFormWidget(
-                      label: 'Search',
-                      labelColor: AppColor.grey,
-                      hint: null,
-                      border: 10,
-                      borderColor: AppColor.transparent,
-                      isFilled: true,
-                      fillColor: AppColor.inGreyOut,
-                      prefixWidget: Padding(
-                        padding: EdgeInsets.all(12.w),
-                        child: SvgPicture.asset(
-                          AppImage.search,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
+                  // paddedWing(
+                  //   child: TextFormWidget(
+                  //     label: 'Search',
+                  //     labelColor: AppColor.grey,
+                  //     hint: null,
+                  //     border: 10,
+                  //     borderColor: AppColor.transparent,
+                  //     isFilled: true,
+                  //     fillColor: AppColor.inGreyOut,
+                  //     prefixWidget: Padding(
+                  //       padding: EdgeInsets.all(12.w),
+                  //       child: SvgPicture.asset(
+                  //         AppImage.search,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 30.h,
+                  // ),
                   Row(
                     children: [
                       Expanded(
@@ -103,12 +103,12 @@ class AdminTransactionScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 12.w),
+                                  padding: EdgeInsets.only(left: 16.w),
                                   child: TextView(
                                     text: model.transStats.capitalize(),
                                     color: AppColor.darkGrey,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400,
+                                    fontSize: 15.6.sp,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 PopupMenuButton(
@@ -234,7 +234,8 @@ class AdminTransactionScreen extends StatelessWidget {
                     Column(
                       children: [
                         if (model.transactionListData!.isNotEmpty)
-                          ...model.transactionListData!.map((o) => paddedWing(
+                          ...model.transactionListData!.reversed.map((o) =>
+                              paddedWing(
                                 child: Container(
                                   padding: EdgeInsets.all(10.w),
                                   margin: EdgeInsets.only(bottom: 16.w),
@@ -327,7 +328,8 @@ class AdminTransactionScreen extends StatelessWidget {
                                 ),
                               ))
                         else
-                          ...model.adminTransactionsResponseModel!.data!
+                          ...model
+                              .adminTransactionsResponseModel!.data!.reversed
                               .map((o) => paddedWing(
                                     child: Container(
                                       padding: EdgeInsets.all(10.w),

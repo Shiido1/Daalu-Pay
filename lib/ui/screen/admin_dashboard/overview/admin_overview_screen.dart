@@ -115,28 +115,9 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                       SizedBox(
                         width: 10.w,
                       ),
-
                       SizedBox(
                         width: 170.w,
                       )
-                      // overviewTransWidget(
-                      //     icon: SizedBox(
-                      //       width: 200,
-                      //       child: TextView(
-                      //         text: 'EXCHANGE RATE',
-                      //         fontSize: 13.sp,
-                      //         maxLines: 1,
-                      //         textOverflow: TextOverflow.ellipsis,
-                      //         color: AppColor.grey,
-                      //         fontWeight: FontWeight.w500,
-                      //       ),
-                      //     ),
-                      //     text: TextView(
-                      //       text: '1 USD = 1500 NGN ',
-                      //       fontSize: 16.4.sp,
-                      //       fontWeight: FontWeight.w900,
-                      //     ),
-                      //     text1: 'Updated- 2 mins ago'),
                     ],
                   ),
                   model.pend.isNotEmpty
@@ -156,7 +137,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                     height: 14.0.h,
                   ),
                   if (model.pend.isNotEmpty)
-                    ...model.pend.map(
+                    ...model.pend.reversed.map(
                       (o) => Container(
                         padding: EdgeInsets.symmetric(
                             vertical: 16.w, horizontal: 16.w),

@@ -10,6 +10,7 @@ import 'package:stacked/stacked.dart';
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../../core/core_folder/app/app.locator.dart';
 import '../../../app_assets/contant.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class ViewUsersReceiptScreen extends StatelessWidget {
   const ViewUsersReceiptScreen({super.key});
@@ -148,11 +149,11 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                                         ],
                                       ),
                                       o.documentType == 'alipay_id'
-                                          ? TextView(
-                                              text: 'Alipay ID',
-                                              fontSize: 18.sp,
-                                              color: AppColor.black,
-                                              fontWeight: FontWeight.w400,
+                                          ? QrImageView(
+                                              data: o.recipientAlipayId ?? '',
+                                              version: QrVersions.auto,
+                                              size: 90,
+                                              gapless: false,
                                             )
                                           : ClipRRect(
                                               borderRadius:

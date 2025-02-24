@@ -1,14 +1,17 @@
 import 'package:daalu_pay_admin/ui/app_assets/contant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:stacked/stacked.dart';
-
 import '../../../../core/connect_end/model/get_users_receipt_response_model/datum.dart';
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../../core/core_folder/app/app.locator.dart';
 import '../../../app_assets/app_color.dart';
 import '../../../app_assets/app_image.dart';
+import '../../../app_assets/app_utils.dart';
 import '../../../app_assets/app_validatiion.dart';
 import '../../../widget/text_form_widget.dart';
 import '../../../widget/text_widget.dart';
@@ -52,15 +55,66 @@ class _ViewReceiptState extends State<ViewReceipt> {
                     height: 23.h,
                   ),
                   widget.datum?.documentType == 'alipay_id'
-                      ? SizedBox(
-                          width: 200.w,
-                          child: TextView(
-                            text: widget.datum?.recipientAlipayId ?? '',
-                            fontSize: 24.0.sp,
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                            color: AppColor.black,
-                            fontWeight: FontWeight.w500,
+                      ? Center(
+                          child: Container(
+                            margin: EdgeInsets.all(20.w),
+                            padding: EdgeInsets.all(10.w),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColor.grey.withOpacity(.4)),
+                                borderRadius: BorderRadius.circular(6)),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 6.h,
+                                ),
+                                TextView(
+                                  text: 'Scan QR Code to Pay',
+                                  fontSize: 18.sp,
+                                  color: AppColor.darkGrey,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                QrImageView(
+                                  data: widget.datum?.recipientAlipayId ?? '',
+                                  version: QrVersions.auto,
+                                  size: 200,
+                                  gapless: false,
+                                ),
+                                SizedBox(
+                                  height: 14.20.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextView(
+                                      text: 'Copy address:',
+                                      fontSize: 15.2.sp,
+                                      color: AppColor.darkGrey,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    SizedBox(width: 10.h),
+                                    IconButton(
+                                        onPressed: () {
+                                          Clipboard.setData(ClipboardData(
+                                              text: widget.datum
+                                                      ?.recipientAlipayId ??
+                                                  ''));
+                                          AppUtils.snackbar(context,
+                                              message:
+                                                  'Barcode Address Copied..!');
+                                        },
+                                        icon: Icon(
+                                          Icons.copy,
+                                          color: AppColor.black,
+                                          size: 24.0.sp,
+                                        ))
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         )
                       : ClipRRect(
@@ -207,80 +261,88 @@ class _ViewReceiptState extends State<ViewReceipt> {
                   SizedBox(
                     height: 50.h,
                   ),
-                  widget.datum?.status?.toLowerCase() == "completed"
-                      ? const SizedBox.shrink()
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ViewModelBuilder<AuthViewModel>.reactive(
-                                viewModelBuilder: () => AuthViewModel(),
-                                onViewModelReady: (model) {},
-                                disposeViewModel: false,
-                                builder: (_, AuthViewModel model, __) {
-                                  return GestureDetector(
-                                    onTap: () =>
-                                        model.modalBottomApproveReceiptsSheet(
-                                      context: context,
-                                      id: widget.datum?.id.toString(),
-                                      choice: choice,
-                                      recipientWalletIdController:
-                                          widget.datum != null
+                  model.isLoading
+                      ? Center(
+                          child: SpinKitRing(
+                          color: AppColor.primary,
+                          size: 44.sp,
+                        ))
+                      : widget.datum?.status?.toLowerCase() == "completed"
+                          ? const SizedBox.shrink()
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ViewModelBuilder<AuthViewModel>.reactive(
+                                    viewModelBuilder: () => AuthViewModel(),
+                                    onViewModelReady: (model) {},
+                                    disposeViewModel: false,
+                                    builder: (_, AuthViewModel model, __) {
+                                      return GestureDetector(
+                                        onTap: () => model
+                                            .modalBottomApproveReceiptsSheet(
+                                          context: context,
+                                          id: widget.datum?.id.toString(),
+                                          choice: choice,
+                                          recipientWalletIdController: widget
+                                                      .datum !=
+                                                  null
                                               ? TextEditingController(
                                                   text: widget.datum
                                                           ?.recipientAlipayId ??
                                                       "")
                                               : recipientWalletIdController,
-                                      datum: widget.datum,
-                                    ),
-                                    child: Container(
-                                        padding:
-                                            EdgeInsetsDirectional.symmetric(
-                                                horizontal: 13.2.w,
-                                                vertical: 10.w),
-                                        decoration: BoxDecoration(
-                                            color: AppColor.green,
-                                            borderRadius:
-                                                BorderRadius.circular(6)),
-                                        child: TextView(
-                                          text: 'Approve',
-                                          fontSize: 18.sp,
-                                          color: AppColor.white,
-                                          fontWeight: FontWeight.w600,
-                                        )),
-                                  );
-                                }),
-                            SizedBox(
-                              width: 40.h,
+                                          datum: widget.datum,
+                                        ),
+                                        child: Container(
+                                            padding:
+                                                EdgeInsetsDirectional.symmetric(
+                                                    horizontal: 13.2.w,
+                                                    vertical: 10.w),
+                                            decoration: BoxDecoration(
+                                                color: AppColor.green,
+                                                borderRadius:
+                                                    BorderRadius.circular(6)),
+                                            child: TextView(
+                                              text: 'Approve',
+                                              fontSize: 18.sp,
+                                              color: AppColor.white,
+                                              fontWeight: FontWeight.w600,
+                                            )),
+                                      );
+                                    }),
+                                SizedBox(
+                                  width: 40.h,
+                                ),
+                                ViewModelBuilder<AuthViewModel>.reactive(
+                                    viewModelBuilder: () => AuthViewModel(),
+                                    onViewModelReady: (model) {},
+                                    disposeViewModel: false,
+                                    builder: (_, AuthViewModel model, __) {
+                                      return GestureDetector(
+                                        onTap: () =>
+                                            model.modalBottomRejectReceiptSheet(
+                                                context: context,
+                                                id: widget.datum?.id
+                                                    .toString()),
+                                        child: Container(
+                                            padding:
+                                                EdgeInsetsDirectional.symmetric(
+                                                    horizontal: 20.0.w,
+                                                    vertical: 10.w),
+                                            decoration: BoxDecoration(
+                                                color: AppColor.red,
+                                                borderRadius:
+                                                    BorderRadius.circular(6)),
+                                            child: TextView(
+                                              text: 'Deny',
+                                              fontSize: 18.2.sp,
+                                              color: AppColor.white,
+                                              fontWeight: FontWeight.w600,
+                                            )),
+                                      );
+                                    }),
+                              ],
                             ),
-                            ViewModelBuilder<AuthViewModel>.reactive(
-                                viewModelBuilder: () => AuthViewModel(),
-                                onViewModelReady: (model) {},
-                                disposeViewModel: false,
-                                builder: (_, AuthViewModel model, __) {
-                                  return GestureDetector(
-                                    onTap: () =>
-                                        model.modalBottomRejectReceiptSheet(
-                                            context: context,
-                                            id: widget.datum?.id.toString()),
-                                    child: Container(
-                                        padding:
-                                            EdgeInsetsDirectional.symmetric(
-                                                horizontal: 20.0.w,
-                                                vertical: 10.w),
-                                        decoration: BoxDecoration(
-                                            color: AppColor.red,
-                                            borderRadius:
-                                                BorderRadius.circular(6)),
-                                        child: TextView(
-                                          text: 'Deny',
-                                          fontSize: 18.2.sp,
-                                          color: AppColor.white,
-                                          fontWeight: FontWeight.w600,
-                                        )),
-                                  );
-                                }),
-                          ],
-                        ),
                   SizedBox(
                     height: 100.h,
                   ),

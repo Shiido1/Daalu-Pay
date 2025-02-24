@@ -308,7 +308,6 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                       onPressed: model.isLoading
                           ? () {}
                           : () {
-                              print(model.postUserVerificationCloudResponse);
                               if (formKey.currentState!.validate() &&
                                       model.walletAmount != null &&
                                       model.walletAmount!.balance! >

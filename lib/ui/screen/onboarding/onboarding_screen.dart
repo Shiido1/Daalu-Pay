@@ -1,9 +1,11 @@
 import 'package:daalu_pay/core/core_folder/app/app.router.dart';
+import 'package:daalu_pay/core/core_folder/manager/shared_preference.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/connect_end/model/send_monet_entity_model.dart' show SendMonetEntityModel;
 import '../../widget/button_widget.dart';
 import '../../widget/text_widget.dart';
 
@@ -75,6 +77,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (SharedPreferencesService.instance.isLoggedIn == false) {
+        return;
+      } else {
+        navigate.navigateTo(Routes.welcomeBackScreen,
+            arguments: WelcomeBackScreenArguments(
+                name: SharedPreferencesService.instance.usersData['user']
+                    ['firstName'],
+                transaction: 'login',sendMoney: SendMonetEntityModel()),
+                );
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.white,
@@ -83,15 +102,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: Column(
           children: [
             Stack(children: [
-              // Align(
-              //   alignment: Alignment.topRight,
-              //   child: TextView(
-              //     text: 'Skip',
-              //     fontSize: 14.sp,
-              //     fontWeight: FontWeight.w400,
-              //     color: const Color.fromARGB(255, 10, 15, 22),
-              //   ),
-              // ),
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

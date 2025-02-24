@@ -215,21 +215,43 @@ class AuthViewModel extends BaseViewModel {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  model.sendMoney(context,
-                                      sendMoney: SendMonetEntityModel(
-                                          amount: sendAmountController.text,
-                                          recipientEmail: emailController.text,
-                                          description: desController.text,
-                                          recipientName: nameController.text,
-                                          documentType: choice == 'wallet'
-                                              ? 'alipay_id'
-                                              : 'barcode',
-                                          recipientAddress: choice == 'wallet'
-                                              ? recipientWalletIdController.text
-                                              : '${_postUserVerificationCloudResponse?.publicId}.${_postUserVerificationCloudResponse?.format}',
-                                          currency: wallet != null
-                                              ? wallet.currency
-                                              : currencyController.text));
+                                  // model.sendMoney(context,
+                                  //     sendMoney: SendMonetEntityModel(
+                                  //         amount: sendAmountController.text,
+                                  //         recipientEmail: emailController.text,
+                                  //         description: desController.text,
+                                  //         recipientName: nameController.text,
+                                  //         documentType: choice == 'wallet'
+                                  //             ? 'alipay_id'
+                                  //             : 'barcode',
+                                  //         recipientAddress: choice == 'wallet'
+                                  //             ? recipientWalletIdController.text
+                                  //             : '${_postUserVerificationCloudResponse?.publicId}.${_postUserVerificationCloudResponse?.format}',
+                                  //         currency: wallet != null
+                                  //             ? wallet.currency
+                                  //             : currencyController.text));
+                                  navigate.navigateTo(Routes.welcomeBackScreen,
+                                      arguments: WelcomeBackScreenArguments(
+                                          name: '',
+                                          transaction: 'send money',
+                                          sendMoney: SendMonetEntityModel(
+                                              amount: sendAmountController.text,
+                                              recipientEmail:
+                                                  emailController.text,
+                                              description: desController.text,
+                                              recipientName:
+                                                  nameController.text,
+                                              documentType: choice == 'wallet'
+                                                  ? 'alipay_id'
+                                                  : 'barcode',
+                                              recipientAddress: choice ==
+                                                      'wallet'
+                                                  ? recipientWalletIdController
+                                                      .text
+                                                  : '${_postUserVerificationCloudResponse?.publicId}.${_postUserVerificationCloudResponse?.format}',
+                                              currency: wallet != null
+                                                  ? wallet.currency
+                                                  : currencyController.text)));
                                   model.notifyListeners();
                                 },
                                 child: Container(
@@ -435,7 +457,11 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> verifyPin(contxt, {String? transaction, String? pin}) async {
+  Future<void> verifyPin(contxt,
+      {String? transaction,
+      String? pin,
+      Wallet? wallet,
+      SendMonetEntityModel? send}) async {
     try {
       _isLoading = true;
       _verifyPinResponseModel = await runBusyFuture(
@@ -445,7 +471,19 @@ class AuthViewModel extends BaseViewModel {
       if (_verifyPinResponseModel!.status == 'success') {
         print('tr:::$transaction');
         if (transaction == 'send money') {
-          // await usersPrefer(contxt);
+          sendMoney(context, sendMoney: send);
+          // SendMonetEntityModel(
+          //     amount: sendAmountController.text,
+          //     recipientEmail: emailController.text,
+          //     description: desController.text,
+          //     recipientName: nameController.text,
+          //     documentType: choice == 'wallet' ? 'alipay_id' : 'barcode',
+          //     recipientAddress: choice == 'wallet'
+          //         ? recipientWalletIdController.text
+          //         : '${_postUserVerificationCloudResponse?.publicId}.${_postUserVerificationCloudResponse?.format}',
+          //     currency: wallet != null
+          //         ? wallet.currency
+          //         : currencyController.text)
         } else {
           navigate.navigateTo(Routes.dashboard,
               arguments: DashboardArguments(index: 0));
@@ -595,7 +633,8 @@ class AuthViewModel extends BaseViewModel {
           navigate.navigateTo(Routes.welcomeBackScreen,
               arguments: WelcomeBackScreenArguments(
                   name: session.usersData['user']['firstName'],
-                  transaction: 'login'));
+                  transaction: 'login',
+                  sendMoney: SendMonetEntityModel()));
         } else {
           await AppUtils.snackbar(contxt,
               message: _loginResponse?.message!.toString());
@@ -720,7 +759,7 @@ class AuthViewModel extends BaseViewModel {
   exchangeTheRate(o) {
     toCurrencylController.text =
         (double.parse(_exchangeRateResponseModel!.data!.rate!) *
-                double.parse(o == '' ? '0' : o))
+                double.parse(o == '' ? '0.0' : o))
             .toString();
 
     notifyListeners();
@@ -748,13 +787,13 @@ class AuthViewModel extends BaseViewModel {
                 return Container(
                   height: 400.0,
                   decoration: BoxDecoration(
-                      color: const Color.fromARGB(219, 223, 233, 242),
+                      color: AppColor.white,
                       borderRadius: BorderRadius.only(
                           topLeft: const Radius.circular(14.0),
                           topRight: const Radius.circular(14.0))),
                   child: Container(
                       decoration: BoxDecoration(
-                          color: const Color.fromARGB(219, 223, 233, 242),
+                          color: AppColor.white,
                           borderRadius: BorderRadius.only(
                               topLeft: const Radius.circular(14.0),
                               topRight: const Radius.circular(14.0))),
@@ -825,8 +864,12 @@ class AuthViewModel extends BaseViewModel {
                                                                         4.w),
                                                             decoration: BoxDecoration(
                                                                 color: e == w
-                                                                    ? AppColor
-                                                                        .white
+                                                                    ? const Color
+                                                                        .fromARGB(
+                                                                        219,
+                                                                        223,
+                                                                        233,
+                                                                        242)
                                                                     : AppColor
                                                                         .transparent,
                                                                 borderRadius:
@@ -909,8 +952,248 @@ class AuthViewModel extends BaseViewModel {
                                                                         4.w),
                                                             decoration: BoxDecoration(
                                                                 color: e == w
-                                                                    ? AppColor
-                                                                        .white
+                                                                    ? const Color
+                                                                        .fromARGB(
+                                                                        219,
+                                                                        223,
+                                                                        233,
+                                                                        242)
+                                                                    : AppColor
+                                                                        .transparent,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            14.r)),
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10.w,
+                                                                    horizontal:
+                                                                        20.w),
+                                                            child: Row(
+                                                              children: [
+                                                                SvgPicture.asset(
+                                                                    getWalletCurrencyCode(
+                                                                        e.currency)),
+                                                                SizedBox(
+                                                                  width: 15.6.w,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 180.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text:
+                                                                        '${e.currency}',
+                                                                    fontSize:
+                                                                        17.6,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )),
+                                            ],
+                                          )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                        ],
+                      )),
+                );
+              });
+        });
+  }
+
+  Wallet? walletHome;
+
+  void modalBottomSheetMenuWallet(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => AuthViewModel(),
+              onViewModelReady: (model) {
+                model.getStatistics(context);
+              },
+              disposeViewModel: false,
+              builder: (_, AuthViewModel model, __) {
+                return Container(
+                  height: 400.0,
+                  decoration: BoxDecoration(
+                      color: AppColor.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: const Radius.circular(14.0),
+                          topRight: const Radius.circular(14.0))),
+                  child: Container(
+                      decoration: BoxDecoration(
+                          color: AppColor.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: const Radius.circular(14.0),
+                              topRight: const Radius.circular(14.0))),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 6.0.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(12.w),
+                            child: TextFormWidget(
+                              label: 'Search country',
+                              hint: '',
+                              border: 10,
+                              isFilled: true,
+                              fillColor: AppColor.white,
+
+                              onChange: (p0) {
+                                queryFrom = p0;
+                                model.notifyListeners();
+                              },
+                              suffixIcon: Icons.search_sharp,
+                              controller: curcodeFromController,
+                              // validator: AppValidator.validateAmount(),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              height: 320,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    queryFrom == ''
+                                        ? Column(
+                                            children: [
+                                              if (model.getStatsResponseModel !=
+                                                  null)
+                                                ...model.getStatsResponseModel!
+                                                    .data!.wallets!
+                                                    .map((e) => InkResponse(
+                                                          onTap: () {
+                                                            walletHome = e;
+                                                            model
+                                                                .notifyListeners();
+                                                            Future.delayed(
+                                                                Duration(
+                                                                    seconds: 1),
+                                                                () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            });
+                                                            notifyListeners();
+                                                          },
+                                                          child: Container(
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10.w,
+                                                                    vertical:
+                                                                        4.w),
+                                                            decoration: BoxDecoration(
+                                                                color: e ==
+                                                                        walletHome
+                                                                    ? const Color
+                                                                        .fromARGB(
+                                                                        219,
+                                                                        223,
+                                                                        233,
+                                                                        242)
+                                                                    : AppColor
+                                                                        .transparent,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            14.r)),
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10.w,
+                                                                    horizontal:
+                                                                        20.w),
+                                                            child: Row(
+                                                              children: [
+                                                                SvgPicture.asset(
+                                                                    getWalletCurrencyCode(
+                                                                        e.currency)),
+                                                                SizedBox(
+                                                                  width: 15.6.w,
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 180.w,
+                                                                  child:
+                                                                      TextView(
+                                                                    text:
+                                                                        '${e.currency}',
+                                                                    fontSize:
+                                                                        17.6,
+                                                                    maxLines: 1,
+                                                                    textOverflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )),
+                                            ],
+                                          )
+                                        : Column(
+                                            children: [
+                                              if (model.getStatsResponseModel !=
+                                                  null)
+                                                ...model.getStatsResponseModel!
+                                                    .data!.wallets!
+                                                    .where((o) => o.currency!
+                                                        .toLowerCase()
+                                                        .contains(queryFrom
+                                                            .toLowerCase()))
+                                                    .map((e) => GestureDetector(
+                                                          onTap: () {
+                                                            walletHome = e;
+                                                            model
+                                                                .notifyListeners();
+                                                            Future.delayed(
+                                                                Duration(
+                                                                    seconds: 1),
+                                                                () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            });
+                                                            notifyListeners();
+                                                          },
+                                                          child: Container(
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10.w,
+                                                                    vertical:
+                                                                        4.w),
+                                                            decoration: BoxDecoration(
+                                                                color: e ==
+                                                                        walletHome
+                                                                    ? const Color
+                                                                        .fromARGB(
+                                                                        219,
+                                                                        223,
+                                                                        233,
+                                                                        242)
                                                                     : AppColor
                                                                         .transparent,
                                                                 borderRadius:
@@ -983,13 +1266,13 @@ class AuthViewModel extends BaseViewModel {
                 return Container(
                   height: 400.0,
                   decoration: BoxDecoration(
-                      color: const Color.fromARGB(219, 223, 233, 242),
+                      color: AppColor.white,
                       borderRadius: BorderRadius.only(
                           topLeft: const Radius.circular(14.0),
                           topRight: const Radius.circular(14.0))),
                   child: Container(
                       decoration: BoxDecoration(
-                          color: const Color.fromARGB(219, 223, 233, 242),
+                          color: AppColor.white,
                           borderRadius: BorderRadius.only(
                               topLeft: const Radius.circular(14.0),
                               topRight: const Radius.circular(14.0))),
@@ -1060,8 +1343,12 @@ class AuthViewModel extends BaseViewModel {
                                                                         4.w),
                                                             decoration: BoxDecoration(
                                                                 color: e == w
-                                                                    ? AppColor
-                                                                        .white
+                                                                    ? const Color
+                                                                        .fromARGB(
+                                                                        219,
+                                                                        223,
+                                                                        233,
+                                                                        242)
                                                                     : AppColor
                                                                         .transparent,
                                                                 borderRadius:
@@ -1143,8 +1430,12 @@ class AuthViewModel extends BaseViewModel {
                                                                         4.w),
                                                             decoration: BoxDecoration(
                                                                 color: e == w
-                                                                    ? AppColor
-                                                                        .white
+                                                                    ? const Color
+                                                                        .fromARGB(
+                                                                        219,
+                                                                        223,
+                                                                        233,
+                                                                        242)
                                                                     : AppColor
                                                                         .transparent,
                                                                 borderRadius:
@@ -1212,13 +1503,13 @@ class AuthViewModel extends BaseViewModel {
                 return Container(
                   height: 500.0,
                   decoration: BoxDecoration(
-                      color: const Color.fromARGB(219, 223, 233, 242),
+                      color: AppColor.white,
                       borderRadius: BorderRadius.only(
                           topLeft: const Radius.circular(14.0),
                           topRight: const Radius.circular(14.0))),
                   child: Container(
                       decoration: BoxDecoration(
-                          color: const Color.fromARGB(219, 223, 233, 242),
+                          color: AppColor.white,
                           borderRadius: BorderRadius.only(
                               topLeft: const Radius.circular(14.0),
                               topRight: const Radius.circular(14.0))),
@@ -1270,9 +1561,7 @@ class AuthViewModel extends BaseViewModel {
                                                       child: Container(
                                                         decoration:
                                                             BoxDecoration(
-                                                          color: const Color
-                                                              .fromARGB(219,
-                                                              223, 233, 242),
+                                                          color: AppColor.white,
                                                         ),
                                                         padding: EdgeInsets
                                                             .symmetric(
@@ -1290,8 +1579,12 @@ class AuthViewModel extends BaseViewModel {
                                                                           10),
                                                               color: selectCountry ==
                                                                       e['code']
-                                                                  ? AppColor
-                                                                      .white
+                                                                  ? const Color
+                                                                      .fromARGB(
+                                                                      219,
+                                                                      223,
+                                                                      233,
+                                                                      242)
                                                                   : AppColor
                                                                       .transparent),
                                                           child: Row(
@@ -1345,9 +1638,8 @@ class AuthViewModel extends BaseViewModel {
                                                         child: Container(
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: const Color
-                                                                .fromARGB(219,
-                                                                223, 233, 242),
+                                                            color:
+                                                                AppColor.white,
                                                           ),
                                                           padding: EdgeInsets
                                                               .symmetric(
@@ -1367,8 +1659,12 @@ class AuthViewModel extends BaseViewModel {
                                                                 color: selectCountry ==
                                                                         e[
                                                                             'code']
-                                                                    ? AppColor
-                                                                        .white
+                                                                    ? const Color
+                                                                        .fromARGB(
+                                                                        219,
+                                                                        223,
+                                                                        233,
+                                                                        242)
                                                                     : AppColor
                                                                         .transparent),
                                                             child: Row(
@@ -1455,13 +1751,13 @@ class AuthViewModel extends BaseViewModel {
                 return Container(
                   height: 500.0,
                   decoration: BoxDecoration(
-                      color: const Color.fromARGB(219, 223, 233, 242),
+                      color: AppColor.white,
                       borderRadius: BorderRadius.only(
                           topLeft: const Radius.circular(14.0),
                           topRight: const Radius.circular(14.0))),
                   child: Container(
                       decoration: BoxDecoration(
-                          color: const Color.fromARGB(219, 223, 233, 242),
+                          color: AppColor.white,
                           borderRadius: BorderRadius.only(
                               topLeft: const Radius.circular(14.0),
                               topRight: const Radius.circular(14.0))),
@@ -1517,13 +1813,12 @@ class AuthViewModel extends BaseViewModel {
                                                           Navigator.pop(
                                                               context);
                                                         });
+                                                        notifyListeners();
                                                       },
                                                       child: Container(
                                                         decoration:
                                                             BoxDecoration(
-                                                          color: const Color
-                                                              .fromARGB(219,
-                                                              223, 233, 242),
+                                                          color: AppColor.white,
                                                         ),
                                                         padding: EdgeInsets
                                                             .symmetric(
@@ -1541,8 +1836,12 @@ class AuthViewModel extends BaseViewModel {
                                                                           10),
                                                               color: selectCountry ==
                                                                       e['code']
-                                                                  ? AppColor
-                                                                      .white
+                                                                  ? const Color
+                                                                      .fromARGB(
+                                                                      219,
+                                                                      223,
+                                                                      233,
+                                                                      242)
                                                                   : AppColor
                                                                       .transparent),
                                                           child: Row(
@@ -1602,13 +1901,13 @@ class AuthViewModel extends BaseViewModel {
                                                             Navigator.pop(
                                                                 context);
                                                           });
+                                                          notifyListeners();
                                                         },
                                                         child: Container(
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: const Color
-                                                                .fromARGB(219,
-                                                                223, 233, 242),
+                                                            color:
+                                                                AppColor.white,
                                                           ),
                                                           padding: EdgeInsets
                                                               .symmetric(
@@ -1628,8 +1927,12 @@ class AuthViewModel extends BaseViewModel {
                                                                 color: selectCountry ==
                                                                         e[
                                                                             'code']
-                                                                    ? AppColor
-                                                                        .white
+                                                                    ? const Color
+                                                                        .fromARGB(
+                                                                        219,
+                                                                        223,
+                                                                        233,
+                                                                        242)
                                                                     : AppColor
                                                                         .transparent),
                                                             child: Row(
@@ -1742,18 +2045,21 @@ class AuthViewModel extends BaseViewModel {
           throwException: true);
       _isLoading = false;
       if (v['status'] == true) {
+        await AppUtils.snackbar(context, message: v['message']);
         await Future.delayed(Duration(seconds: 1), () async {
-          await AppUtils.snackbar(context, message: v['message']);
           Navigator.pop(context);
 
           getStatistics(context);
         });
 
-        await navigate.navigateTo(Routes.dashboard,
+        navigate.navigateTo(Routes.dashboard,
             arguments: DashboardArguments(index: 0));
       }
     } catch (e) {
       _isLoading = false;
+      await Future.delayed(Duration(seconds: 1), () async {
+        Navigator.pop(context);
+      });
       AppUtils.snackbar(context, message: e.toString(), error: true);
     }
     notifyListeners();
@@ -1908,10 +2214,10 @@ class AuthViewModel extends BaseViewModel {
           throwException: true);
       if (v['status'] == 'success') {
         await Future.delayed(Duration(seconds: 1), () async {
+          await AppUtils.snackbar(context, message: 'Transfer Successful..!');
+
           Navigator.pop(context);
         });
-
-        await AppUtils.snackbar(context, message: 'Transfer Successful..!');
         navigate.navigateTo(Routes.dashboard,
             arguments: DashboardArguments(index: 2));
       }
@@ -2362,37 +2668,8 @@ class AuthViewModel extends BaseViewModel {
                               ),
                               GestureDetector(
                                 onTap: () async {
-                                  // print(
-                                  //     '.....${
-                                  //       SwapEntiyModel(
-                                  //         fromAmount: fromCurrencylController.text,
-                                  //         toAmount: toCurrencylController.text,
-                                  //         fromCurrency: fromCurrencyCode,
-                                  //         toCurrency: toCurrencyCode,
-                                  //         amount: toCurrencylController.text,
-                                  //         rate: exchangeRateResponseModel?.data?.rate).toJson()}');
-                                  await Future.delayed(Duration(seconds: 1),
-                                      () {
-                                    Navigator.pop(context);
-                                  });
                                   swapFlowMeth(context);
-                                  // navigate.navigateTo(Routes.welcomeBackScreen,
-                                  //     arguments: WelcomeBackScreenArguments(
-                                  //         name: session.usersData['user']
-                                  //                 ['firstName'] ??
-                                  //             '',
-                                  //         transaction: 'convert',
-                                  //         swap: SwapEntiyModel(
-                                  //             fromAmount:
-                                  //                 fromCurrencylController.text,
-                                  //             toAmount:
-                                  //                 toCurrencylController.text,
-                                  //             fromCurrency: fromCurrencyCode,
-                                  //             toCurrency: toCurrencyCode,
-                                  //             amount:
-                                  //                 toCurrencylController.text,
-                                  //             rate: exchangeRateResponseModel
-                                  //                 ?.data?.rate)));
+                                  model.notifyListeners();
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
@@ -2436,8 +2713,6 @@ class AuthViewModel extends BaseViewModel {
   }
 
   swapFlowMeth(context) {
-    print(dailyLimit);
-    print(transaction);
     if (dailyLimit == "unlimited") {
       swap(context,
           swap: SwapEntiyModel(
@@ -2450,10 +2725,6 @@ class AuthViewModel extends BaseViewModel {
       return;
     }
     if (dailyLimit > transaction) {
-      print('mmmmmm');
-      print(
-          '.....${SwapEntiyModel(fromAmount: fromCurrencylController.text, toAmount: toCurrencylController.text, fromCurrency: fromCurrencyCode, toCurrency: toCurrencyCode, amount: toCurrencylController.text, rate: exchangeRateResponseModel?.data?.rate).toJson()}');
-
       swap(context,
           swap: SwapEntiyModel(
               fromAmount: fromCurrencylController.text,

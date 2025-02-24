@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stacked/stacked.dart';
+import '../../core/connect_end/model/send_monet_entity_model.dart'
+    show SendMonetEntityModel;
 import '../../core/connect_end/view_model/auth_view_model.dart';
 import '../../core/core_folder/manager/shared_preference.dart';
 import '../widget/button_widget.dart';
@@ -18,9 +20,11 @@ class WelcomeBackScreen extends StatefulWidget {
     super.key,
     required this.name,
     required this.transaction,
+    required this.sendMoney,
   });
   String? name;
   String? transaction;
+  SendMonetEntityModel? sendMoney;
 
   @override
   State<WelcomeBackScreen> createState() => _WelcomeBackScreenState();
@@ -39,17 +43,17 @@ class _WelcomeBackScreenState extends State<WelcomeBackScreen> {
     return Scaffold(
       backgroundColor: AppColor.light,
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 100.w, horizontal: 16.w),
+        padding: EdgeInsets.symmetric(vertical: 100.w, horizontal: 22.w),
         child: Form(
           key: formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextView(
-                text: widget.transaction == null
+                text: widget.transaction == 'login'
                     ? 'Welcome back ${SharedPreferencesService.instance.usersData['user']['firstName']}'
                     : 'Pin verification screen',
-                fontSize: 20.sp,
+                fontSize: 22.sp,
                 fontWeight: FontWeight.w600,
                 color: AppColor.primary,
               ),
@@ -57,15 +61,13 @@ class _WelcomeBackScreenState extends State<WelcomeBackScreen> {
                 height: 10.h,
               ),
               TextView(
-                text: widget.transaction == null
-                    ? 'Enter your pin to logn'
-                    : 'Enter your pin to ${widget.transaction?.capitalize()}',
-                fontSize: 14.sp,
+                text: 'Enter your pin to ${widget.transaction?.capitalize()}',
+                fontSize: 16.4.sp,
                 fontWeight: FontWeight.w400,
                 color: AppColor.grey,
               ),
               SizedBox(
-                height: 20.h,
+                height: 30.h,
               ),
               Padding(
                   padding:
@@ -155,7 +157,8 @@ class _WelcomeBackScreenState extends State<WelcomeBackScreen> {
                                     pin: textEditingController.text)
                                 : model.verifyPin(context,
                                     transaction: widget.transaction,
-                                    pin: textEditingController.text);
+                                    pin: textEditingController.text,
+                                    send: widget.sendMoney);
                           }
                         });
                   }),

@@ -77,13 +77,13 @@ homePageTransFlowWidget(
         GestureDetector(
           onTap: onTap,
           child: Container(
-            padding: EdgeInsets.all(8.2.w),
+            padding: EdgeInsets.all(13.2.w),
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColor.white)),
+                border: Border.all(color: AppColor.primary)),
             child: SvgPicture.asset(
               image,
-              color: AppColor.white,
+              color: AppColor.primary,
             ),
           ),
         ),
@@ -94,7 +94,7 @@ homePageTransFlowWidget(
           text: text,
           fontSize: 14.sp,
           fontWeight: FontWeight.w600,
-          color: AppColor.white,
+          color: AppColor.primary,
         )
       ],
     );
@@ -156,14 +156,14 @@ recentTransWidget({context, required Transaction e}) => GestureDetector(
                   text: e.type?.capitalize() ?? "",
                   fontSize: 16.2.sp,
                   fontWeight: FontWeight.w400,
-                  color: AppColor.darkGrey,
+                  color: AppColor.primary,
                 ),
                 TextView(
                   text: DateFormat('EEE MMM hh:mm a')
                       .format(DateTime.parse(e.createdAt.toString())),
-                  fontSize: 14.2.sp,
-                  fontWeight: FontWeight.w300,
-                  color: AppColor.darkGrey,
+                  fontSize: 15.2.sp,
+                  fontWeight: FontWeight.w400,
+                  color: AppColor.primary,
                 ),
               ],
             ),
@@ -175,7 +175,7 @@ recentTransWidget({context, required Transaction e}) => GestureDetector(
                       ? 'Successful'
                       : e.status!.capitalize(),
                   fontSize: 15.2.sp,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                   color: e.status?.toLowerCase() == 'completed'
                       ? AppColor.green
                       : e.status?.toLowerCase() == 'pending'
@@ -186,8 +186,8 @@ recentTransWidget({context, required Transaction e}) => GestureDetector(
                   text:
                       '${getCurrency()}${oCcy.format(double.parse(e.amount!))}',
                   textStyle: TextStyle(
-                    fontSize: 14.22.sp,
-                    fontWeight: FontWeight.w400,
+                    fontSize: 15.22.sp,
+                    fontWeight: FontWeight.w500,
                     color: e.status?.toLowerCase() == 'completed'
                         ? AppColor.green
                         : e.status?.toLowerCase() == 'pending'
@@ -220,32 +220,20 @@ recentSwapTransWidget({context, required Swap e}) => Container(
                 text: "${e.fromCurrency} - ${e.toCurrency}",
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
-                color: AppColor.darkGrey,
+                color: AppColor.primary.withOpacity(.9),
               ),
               TextView(
                 text: DateFormat('EEE MMM hh:mm a')
                     .format(DateTime.parse(e.createdAt.toString())),
                 fontSize: 14.4.sp,
                 fontWeight: FontWeight.w400,
-                color: AppColor.darkGrey,
+                color: AppColor.primary.withOpacity(.9),
               ),
             ],
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              TextView(
-                text: e.status?.toLowerCase() == 'approved'
-                    ? 'Successful'
-                    : e.status!.capitalize(),
-                fontSize: 16.2.sp,
-                fontWeight: FontWeight.w500,
-                color: e.status?.toLowerCase() == 'approved'
-                    ? AppColor.green
-                    : e.status?.toLowerCase() == 'pending'
-                        ? AppColor.grey
-                        : AppColor.red,
-              ),
               TextView(
                 text:
                     '${getAllCurrency(e.fromCurrency)}${oCcy.format(double.parse(e.fromAmount!))} - ${getAllCurrency(e.toCurrency)}${oCcy.format(double.parse(e.toAmount!))}',
@@ -258,6 +246,18 @@ recentSwapTransWidget({context, required Swap e}) => Container(
                           ? AppColor.grey
                           : AppColor.red,
                 ),
+              ),
+              TextView(
+                text: e.status?.toLowerCase() == 'approved'
+                    ? 'Successful'
+                    : e.status!.capitalize(),
+                fontSize: 16.2.sp,
+                fontWeight: FontWeight.w500,
+                color: e.status?.toLowerCase() == 'approved'
+                    ? AppColor.green
+                    : e.status?.toLowerCase() == 'pending'
+                        ? AppColor.grey
+                        : AppColor.red,
               ),
             ],
           )

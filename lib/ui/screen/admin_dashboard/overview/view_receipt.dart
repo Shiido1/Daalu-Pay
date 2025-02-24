@@ -124,6 +124,23 @@ class _ViewReceiptState extends State<ViewReceipt> {
                             width: 300.w,
                             height: 320,
                             fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: AppColor.grey.withOpacity(.3),
+                              ),
+                              width: 300.w,
+                              height: 320,
+                              child: Center(
+                                child: TextView(
+                                  text: 'File Error',
+                                  fontSize: 23.2.sp,
+                                  color: AppColor.black,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                   SizedBox(

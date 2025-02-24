@@ -338,6 +338,25 @@ class AuthViewModel extends BaseViewModel {
                                       width: double.infinity,
                                       height: 150.h,
                                       fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: AppColor.grey.withOpacity(.3),
+                                        ),
+                                        width: double.infinity,
+                                        height: 150.h,
+                                        child: Center(
+                                          child: TextView(
+                                            text: 'File Error',
+                                            fontSize: 13.2.sp,
+                                            color: AppColor.black,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   )),
                         SizedBox(
@@ -735,7 +754,7 @@ class AuthViewModel extends BaseViewModel {
                                   buttonText: 'Approve Receipts',
                                   color: AppColor.white,
                                   border: 8,
-                                  isLoading: model.isLoadingReceipts,
+                                  isLoading: _isLoadingReceipts,
                                   buttonColor: AppColor.primary,
                                   buttonBorderColor: Colors.transparent,
                                   onPressed: () {
@@ -757,7 +776,7 @@ class AuthViewModel extends BaseViewModel {
                                                   .text
                                               : '${model.postUserVerificationCloudResponse?.publicId}.${model.postUserVerificationCloudResponse?.format}',
                                         ));
-                                    notifyListeners();
+                                    model.notifyListeners();
                                   }),
                             ),
                             SizedBox(
@@ -1190,11 +1209,14 @@ class AuthViewModel extends BaseViewModel {
                                   buttonText: 'Reject Receipt',
                                   color: AppColor.white,
                                   border: 8,
-                                  isLoading: model.isLoadingReceipts,
+                                  isLoading: _isLoadingReceipts,
                                   buttonColor: AppColor.red,
                                   buttonBorderColor: Colors.transparent,
-                                  onPressed: () => denyReceipts(context,
-                                      id: id, reason: rejectController.text)),
+                                  onPressed: () {
+                                    denyReceipts(context,
+                                        id: id, reason: rejectController.text);
+                                    model.notifyListeners();
+                                  }),
                             ),
                             SizedBox(
                               height: 30.h,
@@ -1402,6 +1424,7 @@ class AuthViewModel extends BaseViewModel {
       var res = await runBusyFuture(
           repositoryImply.approveReceipts(id: id, approve: approve),
           throwException: true);
+      Navigator.pop(contxt);
       if (res['status'] == 'success') {
         AppUtils.snackbar(
           contxt,
@@ -1417,6 +1440,7 @@ class AuthViewModel extends BaseViewModel {
     } catch (e) {
       _isLoadingReceipts = false;
       logger.d(e);
+      Navigator.pop(contxt);
       AppUtils.snackbar(contxt, message: e.toString(), error: true);
     }
     notifyListeners();
@@ -1431,6 +1455,7 @@ class AuthViewModel extends BaseViewModel {
             reason: reason,
           ),
           throwException: true);
+      Navigator.pop(contxt);
       if (v['status'] == 'success') {
         AppUtils.snackbar(
           contxt,
@@ -1442,6 +1467,7 @@ class AuthViewModel extends BaseViewModel {
     } catch (e) {
       _isLoadingReceipts = false;
       logger.d(e);
+      Navigator.pop(contxt);
       AppUtils.snackbar(contxt, message: e.toString(), error: true);
     }
     notifyListeners();

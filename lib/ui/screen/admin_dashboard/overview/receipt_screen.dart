@@ -67,108 +67,136 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                           )
                         else if (model.getUsersReceiptResponseMode != null ||
                             model.getUsersReceiptResponseMode!.data!.isNotEmpty)
-                          ...model.getUsersReceiptResponseMode!.data!.map((o) =>
-                              GestureDetector(
-                                onTap: () => navigate.navigateTo(
-                                    Routes.viewReceipt,
-                                    arguments: ViewReceiptArguments(datum: o)),
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 20.w),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.w, vertical: 12.w),
-                                  decoration: BoxDecoration(
-                                      color: AppColor.white,
-                                      borderRadius: BorderRadius.circular(6),
-                                      border: Border.all(
-                                          color: AppColor.grey.withOpacity(.3),
-                                          width: 1.4)),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                          ...model.getUsersReceiptResponseMode!.data!.reversed
+                              .map((o) => GestureDetector(
+                                    onTap: () => navigate.navigateTo(
+                                        Routes.viewReceipt,
+                                        arguments:
+                                            ViewReceiptArguments(datum: o)),
+                                    child: Container(
+                                      margin: EdgeInsets.only(top: 20.w),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12.w, vertical: 12.w),
+                                      decoration: BoxDecoration(
+                                          color: AppColor.white,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                          border: Border.all(
+                                              color:
+                                                  AppColor.grey.withOpacity(.3),
+                                              width: 1.4)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          TextView(
-                                            text:
-                                                '${getAllCurrency('CNY')}${oCcy.format(double.parse(o.amount!))}',
-                                            fontSize: 18.sp,
-                                          ),
-                                          SizedBox(
-                                            height: 10.h,
-                                          ),
-                                          Container(
-                                              padding: EdgeInsetsDirectional
-                                                  .symmetric(
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              TextView(
+                                                text:
+                                                    '${getAllCurrency('CNY')}${oCcy.format(double.parse(o.amount!))}',
+                                                fontSize: 18.sp,
+                                              ),
+                                              SizedBox(
+                                                height: 10.h,
+                                              ),
+                                              Container(
+                                                  padding: EdgeInsetsDirectional.symmetric(
                                                       horizontal: 6.w,
                                                       vertical: 4.w),
-                                              decoration: BoxDecoration(
-                                                  color: o.status
-                                                              ?.toLowerCase() ==
-                                                          'pending'
-                                                      ? AppColor.grey
-                                                          .withOpacity(.2)
-                                                      : o.status?.toLowerCase() ==
-                                                              'completed'
-                                                          ? AppColor.green
+                                                  decoration: BoxDecoration(
+                                                      color: o.status?.toLowerCase() ==
+                                                              'pending'
+                                                          ? AppColor.grey
                                                               .withOpacity(.2)
-                                                          : AppColor.red
-                                                              .withOpacity(.2),
+                                                          : o.status?.toLowerCase() ==
+                                                                  'completed'
+                                                              ? AppColor.green
+                                                                  .withOpacity(
+                                                                      .2)
+                                                              : AppColor.red
+                                                                  .withOpacity(
+                                                                      .2),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4)),
+                                                  child: TextView(
+                                                      text: o.status?.toLowerCase() ==
+                                                              'pending'
+                                                          ? 'Pending'
+                                                          : o.status?.toLowerCase() ==
+                                                                  'completed'
+                                                              ? 'Approved'
+                                                              : 'Denied',
+                                                      fontSize: 14.8.sp,
+                                                      color: o.status?.toLowerCase() ==
+                                                              'pending'
+                                                          ? AppColor.grey
+                                                          : o.status?.toLowerCase() ==
+                                                                  'completed'
+                                                              ? AppColor.green
+                                                              : AppColor.red)),
+                                              SizedBox(
+                                                height: 6.h,
+                                              ),
+                                              TextView(
+                                                text: DateFormat(
+                                                        'yyyy MMM dd, hh:mm a')
+                                                    .format(DateTime.parse(o
+                                                        .createdAt
+                                                        .toString())),
+                                                fontSize: 14.4.sp,
+                                                color: AppColor.grey,
+                                              ),
+                                            ],
+                                          ),
+                                          o.documentType == 'alipay_id'
+                                              ? QrImageView(
+                                                  data:
+                                                      o.recipientAlipayId ?? '',
+                                                  version: QrVersions.auto,
+                                                  size: 90,
+                                                  gapless: false,
+                                                )
+                                              : ClipRRect(
                                                   borderRadius:
-                                                      BorderRadius.circular(4)),
-                                              child: TextView(
-                                                  text: o.status
-                                                              ?.toLowerCase() ==
-                                                          'pending'
-                                                      ? 'Pending'
-                                                      : o.status?.toLowerCase() ==
-                                                              'completed'
-                                                          ? 'Approved'
-                                                          : 'Denied',
-                                                  fontSize: 14.8.sp,
-                                                  color: o.status
-                                                              ?.toLowerCase() ==
-                                                          'pending'
-                                                      ? AppColor.grey
-                                                      : o.status?.toLowerCase() ==
-                                                              'completed'
-                                                          ? AppColor.green
-                                                          : AppColor.red)),
-                                          SizedBox(
-                                            height: 6.h,
-                                          ),
-                                          TextView(
-                                            text: DateFormat(
-                                                    'yyyy MMM dd, hh:mm a')
-                                                .format(DateTime.parse(
-                                                    o.createdAt.toString())),
-                                            fontSize: 14.4.sp,
-                                            color: AppColor.grey,
-                                          ),
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                  child: Image.network(
+                                                    'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${o.recipientAlipayId}',
+                                                    width: 90.w,
+                                                    height: 120,
+                                                    fit: BoxFit.cover,
+                                                    errorBuilder: (context,
+                                                            error,
+                                                            stackTrace) =>
+                                                        Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                        color: AppColor.grey
+                                                            .withOpacity(.3),
+                                                      ),
+                                                      width: 90.w,
+                                                      height: 120,
+                                                      child: Center(
+                                                        child: TextView(
+                                                          text: 'File Error',
+                                                          fontSize: 13.2.sp,
+                                                          color: AppColor.black,
+                                                          fontWeight:
+                                                              FontWeight.w300,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
                                         ],
                                       ),
-                                      o.documentType == 'alipay_id'
-                                          ? QrImageView(
-                                              data: o.recipientAlipayId ?? '',
-                                              version: QrVersions.auto,
-                                              size: 90,
-                                              gapless: false,
-                                            )
-                                          : ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              child: Image.network(
-                                                'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${o.recipientAlipayId}',
-                                                width: 90.w,
-                                                height: 120,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            )
-                                    ],
-                                  ),
-                                ),
-                              ))
+                                    ),
+                                  ))
                       ],
                     ),
                   ),

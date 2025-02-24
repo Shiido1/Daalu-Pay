@@ -129,44 +129,47 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 20.w),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(28),
-                              color: AppColor.inGrey.withOpacity(.22),
-                              border: Border.all(
-                                  color: AppColor.primary.withOpacity(.24)),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 2.w),
-                                  child: SvgPicture.asset(
-                                      model.getWalletCurrencyCode(
-                                          model.walletHome?.currency)),
-                                ),
-                                SizedBox(
-                                  width: 30.w,
-                                ),
-                                TextView(
-                                  text: '${model.walletHome?.currency}',
-                                  color: AppColor.primary,
-                                  fontSize: 22.sp,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                SizedBox(
-                                  width: 20.w,
-                                ),
-                                IconButton(
-                                    onPressed: () => model
-                                        .modalBottomSheetMenuWallet(context),
-                                    icon: Icon(
-                                      Icons.keyboard_arrow_down_outlined,
-                                      color: AppColor.primary,
-                                      size: 32.sp,
-                                    ))
-                              ],
+                          paddedWing(
+                            value: 16,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 20.w),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(28),
+                                color: AppColor.inGrey.withOpacity(.22),
+                                border: Border.all(
+                                    color: AppColor.primary.withOpacity(.24)),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 2.w),
+                                    child: SvgPicture.asset(
+                                        model.getWalletCurrencyCode(
+                                            model.walletHome?.currency)),
+                                  ),
+                                  SizedBox(
+                                    width: 16.w,
+                                  ),
+                                  TextView(
+                                    text: '${model.walletHome?.currency}',
+                                    color: AppColor.primary,
+                                    fontSize: 22.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  IconButton(
+                                      onPressed: () => model
+                                          .modalBottomSheetMenuWallet(context),
+                                      icon: Icon(
+                                        Icons.keyboard_arrow_down_outlined,
+                                        color: AppColor.primary,
+                                        size: 32.sp,
+                                      ))
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(

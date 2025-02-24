@@ -444,6 +444,7 @@ class AuthViewModel extends BaseViewModel {
       if (_createPinResponseModel?.status == 'success') {
         _isLoading = false;
         SharedPreferencesService.instance.isVerified = true;
+        SharedPreferencesService.instance.isFirstLogin = true;
         await AppUtils.snackbar(contxt,
             message: _loginResponse?.message!.toString());
         navigate.navigateTo(Routes.dashboard,
@@ -472,18 +473,6 @@ class AuthViewModel extends BaseViewModel {
         print('tr:::$transaction');
         if (transaction == 'send money') {
           sendMoney(context, sendMoney: send);
-          // SendMonetEntityModel(
-          //     amount: sendAmountController.text,
-          //     recipientEmail: emailController.text,
-          //     description: desController.text,
-          //     recipientName: nameController.text,
-          //     documentType: choice == 'wallet' ? 'alipay_id' : 'barcode',
-          //     recipientAddress: choice == 'wallet'
-          //         ? recipientWalletIdController.text
-          //         : '${_postUserVerificationCloudResponse?.publicId}.${_postUserVerificationCloudResponse?.format}',
-          //     currency: wallet != null
-          //         ? wallet.currency
-          //         : currencyController.text)
         } else {
           navigate.navigateTo(Routes.dashboard,
               arguments: DashboardArguments(index: 0));
@@ -1030,7 +1019,7 @@ class AuthViewModel extends BaseViewModel {
               disposeViewModel: false,
               builder: (_, AuthViewModel model, __) {
                 return Container(
-                  height: 400.0,
+                  height: 350.0,
                   decoration: BoxDecoration(
                       color: AppColor.white,
                       borderRadius: BorderRadius.only(

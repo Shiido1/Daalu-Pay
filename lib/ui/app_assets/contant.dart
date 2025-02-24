@@ -159,7 +159,7 @@ recentTransWidget({context, required Transaction e}) => GestureDetector(
                   color: AppColor.primary,
                 ),
                 TextView(
-                  text: DateFormat('EEE MMM hh:mm a')
+                  text: DateFormat('EEE dd, MMM hh:mm a')
                       .format(DateTime.parse(e.createdAt.toString())),
                   fontSize: 15.2.sp,
                   fontWeight: FontWeight.w400,
@@ -223,7 +223,7 @@ recentSwapTransWidget({context, required Swap e}) => Container(
                 color: AppColor.primary.withOpacity(.9),
               ),
               TextView(
-                text: DateFormat('EEE MMM hh:mm a')
+                text: DateFormat('EEE dd,MMM hh:mm a')
                     .format(DateTime.parse(e.createdAt.toString())),
                 fontSize: 14.4.sp,
                 fontWeight: FontWeight.w400,

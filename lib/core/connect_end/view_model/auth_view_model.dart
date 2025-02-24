@@ -2834,36 +2834,36 @@ class AuthViewModel extends BaseViewModel {
                         if (model.getStatsResponseModel != null &&
                             model.getStatsResponseModel!.data!.wallets!
                                 .isNotEmpty)
-                          ...model.getStatsResponseModel!.data!.wallets!.map(
-                            (e) => GestureDetector(
-                              onTap: () {
-                                if (e.currency != 'NGN') {
-                                  currencyController.text = e.currency!;
-                                  _walletAmount = e;
-                                  notifyListeners();
-                                }
-
-                                Navigator.pop(context);
-                                return;
-                              },
-                              child: e.currency == 'NGN'
-                                  ? SizedBox.shrink()
-                                  : Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        TextView(
-                                          text: e.currency ?? '',
-                                          color: AppColor.black,
-                                          fontSize: 16.2.sp,
-                                        ),
-                                        SizedBox(
-                                          height: 3.2.h,
-                                        ),
-                                      ],
-                                    ),
-                            ),
-                          ),
+                          ...model.getStatsResponseModel!.data!.wallets!
+                              .where((e) => e.currency != 'NGN')
+                              .map(
+                                (e) => PopupMenuItem(
+                                  value: '/${e.currency}',
+                                  onTap: () {
+                                    if (e.currency != 'NGN') {
+                                      currencyController.text = e.currency!;
+                                      _walletAmount = e;
+                                      notifyListeners();
+                                    }
+                                    return;
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      TextView(
+                                        text: e.currency ?? '',
+                                        color: AppColor.black,
+                                        fontSize: 22.2.sp,
+                                      ),
+                                      Divider(
+                                        color: AppColor.navyBlueGrey,
+                                        thickness: .8,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
                       ],
                     ),
                   ),

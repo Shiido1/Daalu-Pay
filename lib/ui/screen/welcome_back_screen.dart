@@ -71,8 +71,10 @@ class _WelcomeBackScreenState extends State<WelcomeBackScreen> {
                       height: 10.h,
                     ),
                     TextView(
-                      text:
-                          'Enter your pin to ${widget.transaction?.capitalize()}',
+                      text: SharedPreferencesService.instance.isVerified ==
+                              false
+                          ? 'Create your pin to ${widget.transaction?.capitalize()}'
+                          : 'Enter your pin to ${widget.transaction?.capitalize()}',
                       fontSize: 16.4.sp,
                       fontWeight: FontWeight.w400,
                       color: AppColor.grey,

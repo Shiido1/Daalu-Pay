@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../../core/core_folder/app/app.router.dart';
@@ -109,6 +110,100 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 if (model.getStatsResponseModel != null)
+                  model.userResponseModel?.data?.kycStatus?.toLowerCase() ==
+                          'pending'
+                      ? paddedWing(
+                          value: 8,
+                          child: InkWell(
+                            onTap: () => navigate
+                                .navigateTo(Routes.uploadDocumentsScreen),
+                            highlightColor: AppColor.white,
+                            child: Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.only(
+                                  top: 20.w,
+                                  bottom: 20.w,
+                                  right: 5.4.w,
+                                  left: 20.w),
+                              decoration: BoxDecoration(
+                                  color: const Color.fromARGB(255, 37, 50, 77),
+                                  borderRadius: BorderRadius.circular(14)),
+                              child: Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      TextView(
+                                        text: 'ID VERIFICATION',
+                                        color: AppColor.white,
+                                        fontSize: 12.2.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      SizedBox(
+                                        height: 7.4.h,
+                                      ),
+                                      SizedBox(
+                                        width: 210.w,
+                                        child: TextView(
+                                          text:
+                                              'Verify your ID to\nfinish setting up your Account',
+                                          maxLines: 3,
+                                          textStyle: GoogleFonts.lato(
+                                            color: AppColor.white,
+                                            fontSize: 16.2.sp,
+                                            fontWeight: FontWeight.w800,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      margin: EdgeInsets.all(10.2.w),
+                                      padding: EdgeInsets.all(4.w),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10.r),
+                                          color: AppColor.primary),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          TextView(
+                                            text: 'Begin',
+                                            color: AppColor.white,
+                                            fontSize: 15.2.sp,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          SizedBox(
+                                            width: 4.w,
+                                          ),
+                                          Icon(
+                                            Icons.arrow_forward,
+                                            color: AppColor.white,
+                                            size: 18.sp,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      : SizedBox.shrink(),
+                SizedBox(
+                  height: model.userResponseModel == null ||
+                          model.userResponseModel?.data?.kycStatus
+                                  ?.toLowerCase() ==
+                              'pending'
+                      ? 20.h
+                      : 0.h,
+                ),
+                if (model.getStatsResponseModel != null &&
+                    model.getStatsResponseModel!.data!.wallets!.isNotEmpty)
                   Card(
                     elevation: 2,
                     child: Container(
@@ -142,17 +237,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 2.w),
-                                    child: SvgPicture.asset(
-                                        model.getWalletCurrencyCode(
-                                            model.walletHome?.currency)),
-                                  ),
+                                  model.walletHome?.currency == null
+                                      ? SizedBox.shrink()
+                                      : Padding(
+                                          padding: EdgeInsets.only(top: 2.w),
+                                          child: SvgPicture.asset(
+                                              model.getWalletCurrencyCode(
+                                                  model.walletHome?.currency)),
+                                        ),
                                   SizedBox(
                                     width: 16.w,
                                   ),
                                   TextView(
-                                    text: '${model.walletHome?.currency}',
+                                    text: model.walletHome?.currency ?? '...',
                                     color: AppColor.primary,
                                     fontSize: 22.sp,
                                     fontWeight: FontWeight.w500,
@@ -173,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 40.h,
+                            height: 30.h,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -277,133 +374,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-
-                //   CarouselSlider(
-                //     items: [
-                //       ...model.getStatsResponseModel!.data!.wallets!.map((e) =>
-                //           paddedWing(
-                //             value: 12.w,
-                //             child: Container(
-                //               width: double.infinity,
-                //               decoration: BoxDecoration(
-                //                   color: AppColor.primary.withOpacity(.8),
-                //                   borderRadius: BorderRadius.circular(14)),
-                //               child: Column(
-                //                 mainAxisAlignment: MainAxisAlignment.center,
-                //                 children: [
-                //                   Row(
-                //                     mainAxisAlignment: MainAxisAlignment.center,
-                //                     children: [
-                //                       Padding(
-                //                         padding: EdgeInsets.only(top: 2.w),
-                //                         child: SvgPicture.asset(model
-                //                             .getWalletCurrencyCode(e.currency)),
-                //                       ),
-                //                       SizedBox(
-                //                         width: 10.w,
-                //                       ),
-                //                       TextView(
-                //                         text: '${e.currency}',
-                //                         color: AppColor.white,
-                //                         fontSize: 22.sp,
-                //                         fontWeight: FontWeight.w500,
-                //                       )
-                //                     ],
-                //                   ),
-                //                   SizedBox(
-                //                     height: 2.h,
-                //                   ),
-                //                   Row(
-                //                     mainAxisAlignment: MainAxisAlignment.center,
-                //                     children: [
-                //                       TextView(
-                //                         text: isTapped
-                //                             ? '${getAllCurrency(e.currency)}${oCcy.format(e.balance ?? 0)}'
-                //                             : '*********',
-                //                         textStyle: TextStyle(
-                //                             fontSize: 28.sp,
-                //                             fontWeight: FontWeight.w400,
-                //                             color: AppColor.white,
-                //                             letterSpacing: isTapped ? 1 : 3),
-                //                       ),
-                //                       SizedBox(
-                //                         width: 10.w,
-                //                       ),
-                //                       Padding(
-                //                         padding: EdgeInsets.only(left: 12.w),
-                //                         child: GestureDetector(
-                //                             onTap: () => setState(
-                //                                 () => isTapped = !isTapped),
-                //                             child: SvgPicture.asset(isTapped
-                //                                 ? AppImage.openEye
-                //                                 : AppImage.eye)),
-                //                       ),
-                //                     ],
-                //                   ),
-                //                   SizedBox(
-                //                     height: 2.h,
-                //                   ),
-                //                   paddedWing(
-                //                       value: 28.w,
-                //                       child: Row(
-                //                         mainAxisAlignment:
-                //                             MainAxisAlignment.spaceBetween,
-                //                         children: [
-                //                           homePageTransFlowWidget(
-                //                               image: AppImage.homeSwap,
-                //                               text: 'Convert',
-                //                               onTap: () => Navigator.push(
-                //                                     context,
-                //                                     MaterialPageRoute(
-                //                                         builder: (context) =>
-                //                                             SwapScreen()),
-                //                                   )),
-                //                           homePageTransFlowWidget(
-                //                               image: AppImage.addCard,
-                //                               text: 'Deposit',
-                //                               onTap: () => Navigator.push(
-                //                                     context,
-                //                                     MaterialPageRoute(
-                //                                         builder: (context) =>
-                //                                             const DepositScreen()),
-                //                                   )),
-                //                           homePageTransFlowWidget(
-                //                             image: AppImage.send,
-                //                             text: 'Send',
-                //                             onTap: () => navigate.navigateTo(
-                //                                 Routes.sendMoneyScreen,
-                //                                 arguments:
-                //                                     SendMoneyScreenArguments(
-                //                                         wallet: e)),
-                //                           ),
-                //                         ],
-                //                       )),
-                //                 ],
-                //               ),
-                //             ),
-                //           ))
-                //     ],
-
-                //     //Slider Container properties
-                //     options: CarouselOptions(
-                //       height: 180.0,
-                //       enlargeCenterPage: true,
-                //       autoPlay: false,
-                //       aspectRatio: 1,
-                //       autoPlayCurve: Curves.fastOutSlowIn,
-                //       enableInfiniteScroll: false,
-                //       autoPlayAnimationDuration: Duration(milliseconds: 800),
-                //       viewportFraction: 1.0,
-                //       onPageChanged: (index, _) {
-                //         model.currentPageWallet = index;
-                //         model.notifyListeners();
-                //       },
-                //     ),
-                //   ),
-                // // SizedBox(height: 12.h),
-                // model.getStatsResponseModel == null
-                //     ? SizedBox.shrink()
-                //     : model.buildCarouselIndicator(),
                 SizedBox(height: 40.h),
                 paddedWing(
                   value: 10.w,

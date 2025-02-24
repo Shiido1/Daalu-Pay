@@ -23,10 +23,7 @@ class Dashboard extends StatefulWidget {
   State<Dashboard> createState() => _DashboardState();
 }
 
-class _DashboardState extends
-
-
- State<Dashboard> {
+class _DashboardState extends State<Dashboard> {
   int _currentIndex = 0;
 
   final List<Widget> _body = [
@@ -151,7 +148,7 @@ class _DashboardState extends
                     color:
                         _currentIndex == 3 ? AppColor.primary : AppColor.black,
                   ),
-                  label: 'Transaction',
+                  label: 'TXNs',
                 ),
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(

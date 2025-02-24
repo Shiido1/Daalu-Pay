@@ -125,45 +125,6 @@ class TransactionScreen extends StatelessWidget {
                                             ),
                                           ),
                                         )
-                                      // PopupMenuItem(
-                                      //   value: '/successful',
-                                      //   onTap: () {
-                                      //     model.transStats = 'successful';
-                                      //     model.groupTransationStatus(context);
-                                      //     model.notifyListeners();
-                                      //   },
-                                      //   child: TextView(
-                                      //     text: 'Successful',
-                                      //     fontSize: 20.sp,
-                                      //     fontWeight: FontWeight.w500,
-                                      //   ),
-                                      // ),
-                                      // PopupMenuItem(
-                                      //   value: '/pending',
-                                      //   onTap: () {
-                                      //     model.transStats = 'pending';
-                                      //     model.groupTransationStatus(context);
-                                      //     model.notifyListeners();
-                                      //   },
-                                      //   child: TextView(
-                                      //     text: 'Pending',
-                                      //     fontSize: 20.sp,
-                                      //     fontWeight: FontWeight.w500,
-                                      //   ),
-                                      // ),
-                                      // PopupMenuItem(
-                                      //   value: '/failed',
-                                      //   onTap: () {
-                                      //     model.transStats = 'failed';
-                                      //     model.groupTransationStatus(context);
-                                      //     model.notifyListeners();
-                                      //   },
-                                      //   child: TextView(
-                                      //     text: 'Failed',
-                                      //     fontSize: 20.sp,
-                                      //     fontWeight: FontWeight.w500,
-                                      //   ),
-                                      // ),
                                     ];
                                   },
                                 )
@@ -290,12 +251,12 @@ class TransactionScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   TextView(
-                    text: e.status?.toLowerCase() == 'completed'
+                    text: e.status?.toLowerCase() == 'approved'
                         ? 'Successful'
                         : e.status!.capitalize(),
                     fontSize: 15.2.sp,
                     fontWeight: FontWeight.w400,
-                    color: e.status?.toLowerCase() == 'completed'
+                    color: e.status?.toLowerCase() == 'approved'
                         ? AppColor.green
                         : e.status?.toLowerCase() == 'pending'
                             ? AppColor.grey

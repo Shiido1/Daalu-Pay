@@ -14,6 +14,7 @@ import 'firebase_options.dart';
 
 final navigate = locator<NavigationService>();
 var globalfCMToken;
+
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);

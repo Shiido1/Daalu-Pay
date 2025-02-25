@@ -181,12 +181,13 @@ class SwapScreen extends StatelessWidget {
                         width: 2.w,
                       ),
                       SizedBox(
-                        // width: 160.w,
+                        width: 140.w,
                         child: TextView(
                             text:
                                 '${getAllCurrency(model.toCurrencyCode)}${oCcy.format(double.parse(model.toCurrencylController.text))}',
                             maxLines: 2,
                             textOverflow: TextOverflow.fade,
+                            textAlign: TextAlign.end,
                             textStyle: TextStyle(
                               fontSize: 15.6.sp,
                               fontWeight: FontWeight.w500,

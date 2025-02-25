@@ -10,6 +10,7 @@ import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../app_assets/app_color.dart';
 import '../../../app_assets/contant.dart';
 import '../../../widget/text_widget.dart';
+import '../home/swap/swap_screen.dart';
 
 class WalletScreen extends StatelessWidget {
   const WalletScreen({super.key});
@@ -143,32 +144,63 @@ class WalletScreen extends StatelessWidget {
                     SizedBox(
                       height: 40.h,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextView(
-                          text: 'Transaction History',
-                          color: AppColor.greyKind,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
                         GestureDetector(
-                          onTap: () =>
-                              navigate.navigateTo(Routes.sendMoneyScreen),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SwapScreen()),
+                          ),
                           child: Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 10.w, vertical: 8.w),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
-                              color: AppColor.primary,
+                              border: Border.all(
+                                  color: AppColor.primary, width: 1.6),
+                              color: AppColor.light,
                             ),
                             child: TextView(
-                              text: 'Send Money',
-                              color: AppColor.white,
-                              fontSize: 16.2.sp,
+                              text: 'Convert',
+                              color: AppColor.primary,
+                              fontSize: 17.2.sp,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TextView(
+                              text: 'Transaction History',
+                              color: AppColor.greyKind,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            GestureDetector(
+                              onTap: () =>
+                                  navigate.navigateTo(Routes.sendMoneyScreen),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w, vertical: 8.w),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(6),
+                                  color: AppColor.primary,
+                                ),
+                                child: TextView(
+                                  text: 'Send Money',
+                                  color: AppColor.white,
+                                  fontSize: 16.2.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

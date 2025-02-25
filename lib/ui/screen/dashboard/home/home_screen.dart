@@ -11,6 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../../core/core_folder/app/app.router.dart';
+import '../../../../core/core_folder/manager/shared_preference.dart';
 import '../../../../main.dart';
 import '../../../app_assets/app_color.dart';
 import '../../../app_assets/contant.dart';
@@ -146,8 +147,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       SizedBox(
                                         width: 210.w,
                                         child: TextView(
-                                          text:
-                                              'Verify your ID to\nfinish setting up your Account',
+                                          text: SharedPreferencesService
+                                                      .instance.isKycVerified ==
+                                                  false
+                                              ? 'Verify your ID to\nfinish setting up your Account'
+                                              : 'Your KYC has been uploaded,\nyou will be verified\nonce admin approves.',
                                           maxLines: 3,
                                           textStyle: GoogleFonts.lato(
                                             color: AppColor.white,

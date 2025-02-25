@@ -50,7 +50,7 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                   children: [
                     TextView(
                       text: 'Upload Documents',
-                      fontSize: 22.sp,
+                      fontSize: 24.sp,
                       fontWeight: FontWeight.w600,
                       color: AppColor.primary,
                     ),
@@ -60,7 +60,7 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                     TextView(
                       text:
                           'Please upload a clear photo of your government-issued ID (e.g., National ID, Passport, or Driver’s License)',
-                      fontSize: 14.sp,
+                      fontSize: 17.2.sp,
                       fontWeight: FontWeight.w400,
                       color: AppColor.grey,
                     ),
@@ -69,7 +69,7 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                     ),
                     TextView(
                       text: 'Select Id',
-                      fontSize: 14.sp,
+                      fontSize: 16.4.sp,
                       fontWeight: FontWeight.w400,
                       color: AppColor.grey,
                     ),
@@ -92,7 +92,7 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                             ),
                             TextView(
                               text: 'National Id',
-                              fontSize: 14.sp,
+                              fontSize: 16.4.sp,
                               fontWeight: FontWeight.w400,
                               color: AppColor.grey,
                             ),
@@ -114,7 +114,7 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                             ),
                             TextView(
                               text: 'Passport',
-                              fontSize: 14.sp,
+                              fontSize: 16.4.sp,
                               fontWeight: FontWeight.w400,
                               color: AppColor.grey,
                             ),
@@ -136,7 +136,7 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                             ),
                             TextView(
                               text: 'Driver’s License',
-                              fontSize: 14.sp,
+                              fontSize: 16.4.sp,
                               fontWeight: FontWeight.w400,
                               color: AppColor.grey,
                             ),
@@ -158,7 +158,7 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                             ),
                             TextView(
                               text: 'Voters Card',
-                              fontSize: 14.sp,
+                              fontSize: 16.4.sp,
                               fontWeight: FontWeight.w400,
                               color: AppColor.grey,
                             ),
@@ -180,7 +180,7 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                             ),
                             TextView(
                               text: 'Other',
-                              fontSize: 14.sp,
+                              fontSize: 16.4.sp,
                               fontWeight: FontWeight.w400,
                               color: AppColor.grey,
                             ),
@@ -203,13 +203,20 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                     SizedBox(
                       height: 30.h,
                     ),
-                    TextView(
-                      text:
-                          'Ensure your document is not expired, and all text is visible and legible.',
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                      fontStyle: FontStyle.italic,
-                      color: AppColor.grey,
+                    GestureDetector(
+                      onTap: () {},
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => PassportPhotoScreen())),
+                      child: TextView(
+                        text:
+                            'Ensure your document is not expired, and all text is visible and legible.',
+                        fontSize: 15.4.sp,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.italic,
+                        color: AppColor.grey,
+                      ),
                     ),
                     SizedBox(
                       height: 20.h,
@@ -228,7 +235,7 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                               ),
                               TextView(
                                 text: 'Upload File',
-                                fontSize: 14.sp,
+                                fontSize: 16.4.sp,
                                 fontWeight: FontWeight.w400,
                                 color: AppColor.darkGrey,
                               ),
@@ -265,11 +272,6 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                                   ),
                                 ),
                                 const Spacer(),
-                                // Icon(
-                                //   Icons.delete_outline_rounded,
-                                //   color: AppColor.red,
-                                //   size: 26.sp,
-                                // )
                               ],
                             ),
                           )

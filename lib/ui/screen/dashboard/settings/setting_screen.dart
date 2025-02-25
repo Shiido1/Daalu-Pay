@@ -22,9 +22,10 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   paddedWind({child}) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.w),
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 1.w),
         child: child,
       );
+
   paddedWindNot({child}) => Padding(
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 0.w),
         child: child,
@@ -118,30 +119,34 @@ class _SettingScreenState extends State<SettingScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 10.h,
-                        ),
                         paddedWind(
                           child: GestureDetector(
                             onTap: () =>
                                 navigate.navigateTo(Routes.profileScreen),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Icon(
-                                  Icons.person,
-                                  color: AppColor.primary.withOpacity(.5),
-                                  size: 22.2.sp,
+                            child: Container(
+                              color: AppColor.transparent,
+                              width: double.infinity,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 12.w),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Icon(
+                                      Icons.person,
+                                      color: AppColor.primary.withOpacity(.5),
+                                      size: 22.2.sp,
+                                    ),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    TextView(
+                                      text: 'Your Profile',
+                                      fontSize: 16.4.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                TextView(
-                                  text: 'Your Profile',
-                                  fontSize: 16.4.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
@@ -208,23 +213,27 @@ class _SettingScreenState extends State<SettingScreen> {
                           child: GestureDetector(
                             onTap: () =>
                                 navigate.navigateTo(Routes.webviewChatScreen),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Icon(
-                                  Icons.message,
-                                  color: AppColor.primary.withOpacity(.5),
-                                  size: 22.2.sp,
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                TextView(
-                                  text: 'Live Chat',
-                                  fontSize: 16.4.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ],
+                            child: Container(
+                              color: AppColor.transparent,
+                              width: double.infinity,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Icon(
+                                    Icons.message,
+                                    color: AppColor.primary.withOpacity(.5),
+                                    size: 22.2.sp,
+                                  ),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  TextView(
+                                    text: 'Live Chat',
+                                    fontSize: 16.4.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -314,38 +323,80 @@ class _SettingScreenState extends State<SettingScreen> {
                     height: 20.h,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 6.w),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColor.white,
-                      border: Border.all(color: AppColor.grey),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: paddedWind(
-                      child: GestureDetector(
-                        onTap: () =>
-                            navigate.navigateTo(Routes.transactionScreen),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Icon(
-                              Icons.monetization_on_outlined,
-                              color: AppColor.primary.withOpacity(.5),
-                              size: 22.2.sp,
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            TextView(
-                              text: 'Transactions',
-                              fontSize: 16.4.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ],
-                        ),
+                      padding: EdgeInsets.symmetric(vertical: 6.w),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: AppColor.white,
+                        border: Border.all(color: AppColor.grey),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    ),
-                  ),
+                      child: Column(children: [
+                        paddedWind(
+                          child: GestureDetector(
+                            onTap: () =>
+                                navigate.navigateTo(Routes.transactionScreen),
+                            child: Container(
+                              color: AppColor.transparent,
+                              width: double.infinity,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 4.w, bottom: 4.w),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Icon(
+                                      Icons.monetization_on_outlined,
+                                      color: AppColor.primary.withOpacity(.5),
+                                      size: 22.2.sp,
+                                    ),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    TextView(
+                                      text: 'Transactions',
+                                      fontSize: 16.4.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Divider(
+                          color: AppColor.grey,
+                          thickness: .4.sp,
+                        ),
+                        paddedWind(
+                          child: GestureDetector(
+                            onTap: () => print('money'),
+                            child: Container(
+                              color: AppColor.transparent,
+                              width: double.infinity,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 1.w, bottom: 8.w),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Icon(
+                                      Icons.money_off_sharp,
+                                      color: AppColor.primary.withOpacity(.5),
+                                      size: 22.2.sp,
+                                    ),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    TextView(
+                                      text: 'Withdraw',
+                                      fontSize: 16.4.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ])),
                   SizedBox(
                     height: 50.h,
                   ),
@@ -367,30 +418,34 @@ class _SettingScreenState extends State<SettingScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 10.h,
-                        ),
                         paddedWind(
                           child: GestureDetector(
                             onTap: () => navigate
                                 .navigateTo(Routes.createPassworsScreen),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Icon(
-                                  Icons.password_outlined,
-                                  color: AppColor.primary.withOpacity(.5),
-                                  size: 22.2.sp,
+                            child: Container(
+                              color: AppColor.transparent,
+                              width: double.infinity,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 6.w, bottom: 2.w),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Icon(
+                                      Icons.password_outlined,
+                                      color: AppColor.primary.withOpacity(.5),
+                                      size: 22.2.sp,
+                                    ),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    TextView(
+                                      text: 'Change Password',
+                                      fontSize: 16.4.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                TextView(
-                                  text: 'Change Password',
-                                  fontSize: 16.4.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
@@ -402,23 +457,30 @@ class _SettingScreenState extends State<SettingScreen> {
                           child: GestureDetector(
                             onTap: () => navigate
                                 .navigateTo(Routes.uploadDocumentsScreen),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Icon(
-                                  Icons.key_outlined,
-                                  color: AppColor.primary.withOpacity(.5),
-                                  size: 22.2.sp,
+                            child: Container(
+                              color: AppColor.transparent,
+                              width: double.infinity,
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 1.w, bottom: 8.w),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Icon(
+                                      Icons.key_outlined,
+                                      color: AppColor.primary.withOpacity(.5),
+                                      size: 22.2.sp,
+                                    ),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    TextView(
+                                      text: 'KYC',
+                                      fontSize: 16.4.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                TextView(
-                                  text: 'KYC',
-                                  fontSize: 16.4.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ],
+                              ),
                             ),
                           ),
                         ),

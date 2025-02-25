@@ -28,6 +28,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutterwave_standard_smart/flutterwave.dart';
 import 'package:intl/intl.dart';
@@ -434,6 +435,12 @@ class AuthViewModel extends BaseViewModel {
   VerifyPinResponseModel? get verifyPinResponseModel => _verifyPinResponseModel;
   VerifyPinResponseModel? _verifyPinResponseModel;
 
+  DateTime nowFilter = DateTime.now();
+  String? filterDateTime;
+
+  Wallet? w;
+  Wallet? walletHome;
+
   Future<void> createPin({String? pin, contxt}) async {
     try {
       _isLoading = true;
@@ -520,9 +527,6 @@ class AuthViewModel extends BaseViewModel {
     }
   }
 
-  DateTime nowFilter = DateTime.now();
-  String? filterDateTime;
-
   Future<void> filterTransDate(BuildContext? context) async {
     final DateTime? picked = await showDatePicker(
         context: context!,
@@ -596,7 +600,7 @@ class AuthViewModel extends BaseViewModel {
 
       if (_registrationResponseModel?.status == 'success') {
         _isLoading = false;
-        AppUtils.snackbar(contxt,
+        await AppUtils.snackbar(contxt,
             message: 'Registration is successfully', error: true);
         navigate.navigateTo(Routes.verifyScreen,
             arguments: VerifyScreenArguments(email: registerEntity.email));
@@ -754,14 +758,6 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  // getUSerWalletUUID(context, o) {
-  //   recipientWalletIdController.text = o;
-  //   getWalletId(context, id: o);
-
-  //   notifyListeners();
-  // }
-
-  Wallet? w;
   void modalBottomSheetMenuFrom(context) {
     showModalBottomSheet(
         context: context,
@@ -1004,8 +1000,6 @@ class AuthViewModel extends BaseViewModel {
               });
         });
   }
-
-  Wallet? walletHome;
 
   void modalBottomSheetMenuWallet(context) {
     showModalBottomSheet(
@@ -1521,7 +1515,6 @@ class AuthViewModel extends BaseViewModel {
                               },
                               suffixIcon: Icons.search_sharp,
                               controller: curcodeToController,
-                              // validator: AppValidator.validateAmount(),
                             ),
                           ),
                           SizedBox(
@@ -1769,7 +1762,6 @@ class AuthViewModel extends BaseViewModel {
                               },
                               suffixIcon: Icons.search_sharp,
                               controller: signUpCountryController,
-                              // validator: AppValidator.validateAmount(),
                             ),
                           ),
                           SizedBox(
@@ -1977,11 +1969,6 @@ class AuthViewModel extends BaseViewModel {
     debouncer.run(() => exchangeTheRate(p0));
     notifyListeners();
   }
-
-  // void onGetUserWalletRate(context, p0) {
-  //   debouncer.run(() => getUSerWalletUUID(context, p0));
-  //   notifyListeners();
-  // }
 
   String getWalletCurrencyCode(currencyCode) {
     String flag = '';
@@ -2245,7 +2232,12 @@ class AuthViewModel extends BaseViewModel {
       _kycResponseModel = await runBusyFuture(repositoryImply.kyc(kycEntity!),
           throwException: true);
       if (_kycResponseModel?.status == 'success') {
-        AppUtils.snackbar(context, message: 'Kyc uploaded Successfully..!');
+        _isLoading = false;
+        SharedPreferencesService.instance.isKycVerified = true;
+        await AppUtils.snackbarLong(context,
+            message: 'Kyc uploaded Successfully..!');
+        navigate.navigateTo(Routes.dashboard,
+            arguments: DashboardArguments(index: 0));
       }
       _isLoading = false;
     } catch (e) {
@@ -2361,52 +2353,6 @@ class AuthViewModel extends BaseViewModel {
   }
 
   void makePayment({amount, context, String? walletId}) async {
-    // const secretKey = 'sk_test_d9830d6c7a17c2b69f22ccb0589b560c902f6059';
-
-    // final request = PaystackTransactionRequest(
-    //   reference: 'ps_${DateTime.now().microsecondsSinceEpoch}',
-    //   secretKey: secretKey,
-    //   email: session.usersData['user']['email'],
-    //   amount: amount * 100,
-    //   currency: PaystackCurrency.ngn,
-    //   channel: [
-    //     PaystackPaymentChannel.mobileMoney,
-    //     PaystackPaymentChannel.card,
-    //     PaystackPaymentChannel.ussd,
-    //     PaystackPaymentChannel.bankTransfer,
-    //     PaystackPaymentChannel.bank,
-    //     PaystackPaymentChannel.qr,
-    //     PaystackPaymentChannel.eft,
-    //   ],
-    // );
-
-    // initializingPayment = true;
-    // final initializedTransaction =
-    //     await PaymentService.initializeTransaction(request);
-
-    // if (!initializedTransaction.status) {
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     backgroundColor: Colors.red,
-    //     content: Text(initializedTransaction.message),
-    //   ));
-
-    //   return;
-    // }
-
-    // final response = await PaymentService.showPaymentModal(context,
-    //         transaction: initializedTransaction,
-    //         // Callback URL must match the one specified on your paystack dashboard,
-    //         callbackUrl:
-    //             'https://snappy.appypie.com/webservices/InAppPaymentGateway/paystack/response.php?method=success')
-    //     .then((_) async {
-    //   return await PaymentService.verifyTransaction(
-    //     paystackSecretKey: secretKey,
-    //     initializedTransaction.data?.reference ?? request.reference,
-    //   );
-    // });
-
-    // print("response:::$response");
-
     final uniqueTransRef = PayWithPayStack().generateUuidV4();
 
     PayWithPayStack().now(
@@ -2419,7 +2365,6 @@ class AuthViewModel extends BaseViewModel {
         callbackUrl:
             "https://snappy.appypie.com/webservices/InAppPaymentGateway/paystack/response.php?method=success",
         transactionCompleted: (paymentData) async {
-          print('complete:${paymentData.status}');
           if (paymentData.status == 'success') {
             await depositMoney(context,
                 depositMoney: DepositWalletEntityModel(
@@ -2449,8 +2394,8 @@ class AuthViewModel extends BaseViewModel {
                   insetPadding:
                       EdgeInsets.symmetric(horizontal: 22.w, vertical: 16.w),
                   child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20.w),
-                    height: 340.w,
+                    margin: EdgeInsets.symmetric(horizontal: 12.w),
+                    padding: EdgeInsets.symmetric(vertical: 12.w),
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
@@ -2472,21 +2417,18 @@ class AuthViewModel extends BaseViewModel {
                               TextView(
                                 text: 'Amount Convert',
                                 color: AppColor.black,
-                                fontSize: 15.2.sp,
+                                fontSize: 16.2.sp,
                               ),
-                              SizedBox(
-                                width: 150.w,
-                                child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: TextView(
-                                    text:
-                                        '${oCcy.format(double.parse(fromCurrencylController.text))} $fromCurrencyCode',
-                                    color: AppColor.black,
-                                    maxLines: 1,
-                                    textOverflow: TextOverflow.fade,
-                                    fontSize: 15.2.sp,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: TextView(
+                                  text:
+                                      '${oCcy.format(double.parse(fromCurrencylController.text))} $fromCurrencyCode',
+                                  color: AppColor.black,
+                                  maxLines: 1,
+                                  textOverflow: TextOverflow.fade,
+                                  fontSize: 16.2.sp,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ],
@@ -2500,21 +2442,18 @@ class AuthViewModel extends BaseViewModel {
                               TextView(
                                 text: 'Amount Recieve',
                                 color: AppColor.black,
-                                fontSize: 15.2.sp,
+                                fontSize: 16.2.sp,
                               ),
-                              SizedBox(
-                                width: 150.w,
-                                child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: TextView(
-                                    text:
-                                        '${oCcy.format(double.parse(toCurrencylController.text))} $toCurrencyCode',
-                                    color: AppColor.black,
-                                    fontSize: 15.2.sp,
-                                    maxLines: 1,
-                                    textOverflow: TextOverflow.fade,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: TextView(
+                                  text:
+                                      '${oCcy.format(double.parse(toCurrencylController.text))} $toCurrencyCode',
+                                  color: AppColor.black,
+                                  fontSize: 16.2.sp,
+                                  maxLines: 1,
+                                  textOverflow: TextOverflow.fade,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ],
@@ -2534,12 +2473,12 @@ class AuthViewModel extends BaseViewModel {
                               TextView(
                                 text: 'Currency Pair',
                                 color: AppColor.black,
-                                fontSize: 15.2.sp,
+                                fontSize: 16.2.sp,
                               ),
                               TextView(
                                 text: '$fromCurrencyCode / $toCurrencyCode',
                                 color: AppColor.black,
-                                fontSize: 15.2.sp,
+                                fontSize: 16.2.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ],
@@ -2547,37 +2486,33 @@ class AuthViewModel extends BaseViewModel {
                           SizedBox(
                             height: 2.h,
                           ),
-                          SizedBox(
-                            height: 40.h,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TextView(
-                                  text: 'Exchanged Rate',
-                                  color: AppColor.black,
-                                  fontSize: 15.2.sp,
-                                ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextView(
+                                text: 'Exchanged Rate',
+                                color: AppColor.black,
+                                fontSize: 16.2.sp,
+                              ),
+                              // SizedBox(
+                              //   width: 16.20.w,
+                              // ),
+                              Wrap(children: [
                                 SizedBox(
-                                  width: 20.w,
-                                ),
-                                Wrap(children: [
-                                  SizedBox(
-                                    width: 150.w,
-                                    child: Align(
-                                      alignment: Alignment.topRight,
-                                      child: TextView(
-                                        text:
-                                            '1 $fromCurrencyCode = ${exchangeRateResponseModel?.data?.rate ?? 0} $toCurrencyCode',
-                                        fontSize: 15.4.sp,
-                                        maxLines: 3,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: TextView(
+                                      text:
+                                          '1 $fromCurrencyCode = ${exchangeRateResponseModel?.data?.rate ?? 0} $toCurrencyCode',
+                                      fontSize: 16.4.sp,
+                                      maxLines: 3,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                ])
-                              ],
-                            ),
+                                ),
+                              ])
+                            ],
                           ),
                           SizedBox(
                             height: 2.h,
@@ -2592,7 +2527,7 @@ class AuthViewModel extends BaseViewModel {
                               ),
                               TextView(
                                 text: transferFee(),
-                                fontSize: 15.2.sp,
+                                fontSize: 16.2.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ],
@@ -2612,21 +2547,18 @@ class AuthViewModel extends BaseViewModel {
                               TextView(
                                 text: 'Final Amount',
                                 color: AppColor.black,
-                                fontSize: 15.2.sp,
+                                fontSize: 16.2.sp,
                               ),
-                              SizedBox(
-                                width: 130.w,
-                                child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: TextView(
-                                    text:
-                                        '${oCcy.format(double.parse(toCurrencylController.text))} ${getAllCurrency(toCurrencyCode)}',
-                                    color: AppColor.black,
-                                    fontSize: 15.2.sp,
-                                    maxLines: 1,
-                                    textOverflow: TextOverflow.fade,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: TextView(
+                                  text:
+                                      '${oCcy.format(double.parse(toCurrencylController.text))} ${getAllCurrency(toCurrencyCode)}',
+                                  color: AppColor.black,
+                                  fontSize: 16.2.sp,
+                                  maxLines: 1,
+                                  textOverflow: TextOverflow.fade,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ],
@@ -2650,7 +2582,7 @@ class AuthViewModel extends BaseViewModel {
                                   child: TextView(
                                     text: 'Back',
                                     color: AppColor.primary,
-                                    fontSize: 16.sp,
+                                    fontSize: 18.sp,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -2671,7 +2603,7 @@ class AuthViewModel extends BaseViewModel {
                                   child: TextView(
                                     text: 'Submit',
                                     color: AppColor.white,
-                                    fontSize: 16.sp,
+                                    fontSize: 18.sp,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -2682,11 +2614,9 @@ class AuthViewModel extends BaseViewModel {
                             height: 10.h,
                           ),
                           _isLoading
-                              ? TextView(
-                                  text: 'Loading...',
-                                  color: AppColor.grey,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
+                              ? SpinKitWave(
+                                  color: AppColor.primary,
+                                  size: 18.20.sp,
                                 )
                               : SizedBox.shrink(),
                           SizedBox(

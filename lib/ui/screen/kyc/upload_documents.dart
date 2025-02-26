@@ -1,4 +1,5 @@
-import 'package:daalu_pay/core/connect_end/model/kyc_entity_model/kyc_entity_model.dart';
+import 'package:daalu_pay/core/core_folder/app/app.router.dart';
+import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
@@ -196,27 +197,20 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                       border: 10,
                       isFilled: true,
                       fillColor: AppColor.white,
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.text,
                       controller: docNumberController,
                       validator: AppValidator.validateString(),
                     ),
                     SizedBox(
                       height: 30.h,
                     ),
-                    GestureDetector(
-                      onTap: () {},
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => PassportPhotoScreen())),
-                      child: TextView(
-                        text:
-                            'Ensure your document is not expired, and all text is visible and legible.',
-                        fontSize: 15.4.sp,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.italic,
-                        color: AppColor.grey,
-                      ),
+                    TextView(
+                      text:
+                          'Ensure your document is not expired, and all text is visible and legible.',
+                      fontSize: 15.4.sp,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.italic,
+                      color: AppColor.grey,
                     ),
                     SizedBox(
                       height: 20.h,
@@ -291,13 +285,14 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                             : () {
                                 if (formkey.currentState!.validate() &&
                                     model.filename != null) {
-                                  model.uploadKyc(context,
-                                      kycEntity: KycEntityModel(
-                                          documentType: idCardIdentity,
-                                          documentFile:
-                                              '${model.postUserVerificationCloudResponse?.publicId}.${model.postUserVerificationCloudResponse?.format}',
-                                          documentNumber:
-                                              docNumberController.text));
+                                  navigate.navigateTo(
+                                      Routes.passportPhotoScreen,
+                                      arguments: PassportPhotoScreenArguments(
+                                        docFile:
+                                            '${model.postUserVerificationCloudResponse?.publicId}.${model.postUserVerificationCloudResponse?.format}',
+                                        docNumber: docNumberController.text,
+                                        docType: idCardIdentity,
+                                      ));
                                 } else {
                                   AppUtils.snackbar(context,
                                       message:

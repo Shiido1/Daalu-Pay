@@ -1,3 +1,4 @@
+import 'package:daalu_pay/core/connect_end/model/withdrawal_entity_model.dart';
 import 'package:daalu_pay/core/core_folder/app/app.router.dart';
 import 'package:daalu_pay/core/core_folder/manager/shared_preference.dart';
 import 'package:daalu_pay/main.dart';
@@ -5,7 +6,8 @@ import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/connect_end/model/send_monet_entity_model.dart' show SendMonetEntityModel;
+import '../../../core/connect_end/model/send_monet_entity_model.dart'
+    show SendMonetEntityModel;
 import '../../widget/button_widget.dart';
 import '../../widget/text_widget.dart';
 
@@ -82,12 +84,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       if (SharedPreferencesService.instance.isLoggedIn == false) {
         return;
       } else {
-        navigate.navigateTo(Routes.welcomeBackScreen,
-            arguments: WelcomeBackScreenArguments(
-                name: SharedPreferencesService.instance.usersData['user']
-                    ['firstName'],
-                transaction: 'login',sendMoney: SendMonetEntityModel()),
-                );
+        navigate.navigateTo(
+          Routes.welcomeBackScreen,
+          arguments: WelcomeBackScreenArguments(
+              name: SharedPreferencesService.instance.usersData['user']
+                  ['firstName'],
+              transaction: 'login',
+              withdraw: WithdrawalEntityModel(),
+              sendMoney: SendMonetEntityModel()),
+        );
       }
     });
     super.initState();

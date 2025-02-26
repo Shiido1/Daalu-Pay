@@ -1,7 +1,10 @@
+import 'package:daalu_pay/core/connect_end/model/add_account_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/add_account_response_model/add_account_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/create_pin_response_model/create_pin_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/get_bank_account_response_model/get_bank_account_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_message_response/get_message_response.dart';
 import 'package:daalu_pay/core/connect_end/model/get_payment_gate_response_model/get_payment_gate_response_model.dart';
@@ -24,6 +27,9 @@ import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/withdrawal_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/withdrawal_history_response_model/withdrawal_history_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/withdrawal_response_model/withdrawal_response_model.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import '../connect_end/model/get_swapped_transactions_response_model/get_swapped_transactions_response_model.dart';
@@ -421,6 +427,58 @@ class AuthApi {
           .call(UrlConfig.verify_pin, RequestMethod.post, data: {'pin': pin});
       logger.d(response.data);
       return VerifyPinResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<AddAccountResponseModel> addAccount(
+      AddAccountEntityModel addAccount) async {
+    try {
+      final response = await _service.call(
+          UrlConfig.bank_account, RequestMethod.post,
+          data: addAccount.toJson());
+      logger.d(response.data);
+      return AddAccountResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<GetBankAccountResponseModel> getAccount() async {
+    try {
+      final response =
+          await _service.call(UrlConfig.bank_account, RequestMethod.get);
+      logger.d(response.data);
+      return GetBankAccountResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<WithdrawalResponseModel> withdrawalFund(
+      WithdrawalEntityModel withdraw) async {
+    try {
+      final response = await _service.call(
+          UrlConfig.user_withdraw, RequestMethod.post,
+          data: withdraw.toJson());
+      logger.d(response.data);
+      return WithdrawalResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<WithdrawalHistoryResponseModel> withdrawalHistory() async {
+    try {
+      final response =
+          await _service.call(UrlConfig.user_withdraw, RequestMethod.get);
+      logger.d(response.data);
+      return WithdrawalHistoryResponseModel.fromJson(response.data);
     } catch (e) {
       logger.d("response:$e");
       rethrow;

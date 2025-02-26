@@ -1,6 +1,9 @@
+import 'package:daalu_pay/core/connect_end/model/add_account_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/add_account_response_model/add_account_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/get_bank_account_response_model/get_bank_account_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
@@ -12,6 +15,9 @@ import 'package:daalu_pay/core/connect_end/model/reset_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/withdrawal_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/withdrawal_history_response_model/withdrawal_history_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/withdrawal_response_model/withdrawal_response_model.dart';
 import 'package:injectable/injectable.dart';
 import '../../api_folder/auth_api.dart';
 import '../../core_folder/app/app.locator.dart';
@@ -103,4 +109,14 @@ class AuthContractsImpl {
       await _api.createPin(pin);
   Future<VerifyPinResponseModel> verifyPin(String pin) async =>
       await _api.verifyPin(pin);
+  Future<AddAccountResponseModel> addAccount(
+          AddAccountEntityModel addEntity) async =>
+      await _api.addAccount(addEntity);
+  Future<GetBankAccountResponseModel> getAccount() async =>
+      await _api.getAccount();
+  Future<WithdrawalResponseModel> withdrawFund(
+          WithdrawalEntityModel withdrawEntity) async =>
+      await _api.withdrawalFund(withdrawEntity);
+  Future<WithdrawalHistoryResponseModel> withdrawHistory() async =>
+      await _api.withdrawalHistory();
 }

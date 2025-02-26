@@ -379,7 +379,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               text: 'Gender',
               color: AppColor.black,
               textAlign: TextAlign.center,
-              fontSize: 19.2.sp,
+              fontSize: 22.2.sp,
             ),
             titleTextStyle: TextStyle(),
             contentPadding:
@@ -396,11 +396,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     child: TextView(
                       text: 'Male',
                       color: AppColor.black,
-                      fontSize: 16.2.sp,
+                      fontSize: 20.2.sp,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   SizedBox(
-                    width: 10.w,
+                    height: 10.w,
                   ),
                   Divider(thickness: .3),
                   GestureDetector(
@@ -412,7 +413,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     child: TextView(
                       text: 'Female',
                       color: AppColor.black,
-                      fontSize: 16.2.sp,
+                      fontSize: 20.2.sp,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   SizedBox(

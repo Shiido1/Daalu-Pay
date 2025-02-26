@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:daalu_pay/core/bio_authentication.dart/authentication.dart';
+import 'package:daalu_pay/core/connect_end/model/withdrawal_entity_model.dart';
 import 'package:daalu_pay/core/core_folder/app/app.locator.dart';
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/app_assets/contant.dart';
@@ -24,10 +25,12 @@ class WelcomeBackScreen extends StatefulWidget {
     required this.name,
     required this.transaction,
     required this.sendMoney,
+    required this.withdraw,
   });
   String? name;
   String? transaction;
   SendMonetEntityModel? sendMoney;
+  WithdrawalEntityModel? withdraw;
 
   @override
   State<WelcomeBackScreen> createState() => _WelcomeBackScreenState();
@@ -156,6 +159,10 @@ class _WelcomeBackScreenState extends State<WelcomeBackScreen> {
                                   if (widget.transaction == 'send money') {
                                     model.sendMoney(context,
                                         sendMoney: widget.sendMoney);
+                                  }
+                                  if (widget.transaction == 'withdraw money') {
+                                    model.withdrawFunds(context,
+                                        withdrawEntity: widget.withdraw);
                                   } else {
                                     navigate.navigateTo(Routes.dashboard,
                                         arguments:
@@ -203,6 +210,7 @@ class _WelcomeBackScreenState extends State<WelcomeBackScreen> {
                                 : model.verifyPin(context,
                                     transaction: widget.transaction,
                                     pin: textEditingController.text,
+                                    withdraw: widget.withdraw,
                                     send: widget.sendMoney);
                           }
                         }),

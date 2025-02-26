@@ -17,7 +17,10 @@ import 'package:injectable/injectable.dart';
 import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/manager/shared_preference.dart';
 import '../contract/contract_impl.dart';
+import '../model/add_account_entity_model.dart';
+import '../model/add_account_response_model/add_account_response_model.dart';
 import '../model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
+import '../model/get_bank_account_response_model/get_bank_account_response_model.dart';
 import '../model/get_message_response/get_message_response.dart';
 import '../model/get_payment_gate_response_model/get_payment_gate_response_model.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
@@ -34,6 +37,9 @@ import '../model/send_message_entity_model.dart';
 import '../model/send_message_response_model/send_message_response_model.dart';
 import '../model/user_response_model/user_response_model.dart';
 import '../model/verify_pin_response_model/verify_pin_response_model.dart';
+import '../model/withdrawal_entity_model.dart';
+import '../model/withdrawal_history_response_model/withdrawal_history_response_model.dart';
+import '../model/withdrawal_response_model/withdrawal_response_model.dart';
 
 @lazySingleton
 class AuthRepoImpl {
@@ -196,6 +202,28 @@ class AuthRepoImpl {
 
   Future<VerifyPinResponseModel> verifyPin(String pin) async {
     final response = await _contract.verifyPin(pin);
+    return response;
+  }
+
+  Future<AddAccountResponseModel> addAccount(
+      AddAccountEntityModel addEntity) async {
+    final response = await _contract.addAccount(addEntity);
+    return response;
+  }
+
+  Future<GetBankAccountResponseModel> getAccount() async {
+    final response = await _contract.getAccount();
+    return response;
+  }
+
+  Future<WithdrawalResponseModel> withdrawFund(
+      WithdrawalEntityModel withdrawEntity) async {
+    final response = await _contract.withdrawFund(withdrawEntity);
+    return response;
+  }
+
+  Future<WithdrawalHistoryResponseModel> withdrawHistory() async {
+    final response = await _contract.withdrawHistory();
     return response;
   }
 

@@ -9,6 +9,8 @@ import 'package:daalu_pay/core/connect_end/model/get_stats_response_model/wallet
     as _i23;
 import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart'
     as _i24;
+import 'package:daalu_pay/core/connect_end/model/withdrawal_entity_model.dart'
+    as _i25;
 import 'package:daalu_pay/ui/screen/chat_screen.dart' as _i17;
 import 'package:daalu_pay/ui/screen/create_account_screen.dart' as _i5;
 import 'package:daalu_pay/ui/screen/create_password_screen.dart' as _i6;
@@ -35,7 +37,7 @@ import 'package:daalu_pay/ui/screen/welcome_back_screen.dart' as _i20;
 import 'package:flutter/material.dart' as _i22;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i25;
+import 'package:stacked_services/stacked_services.dart' as _i26;
 
 class Routes {
   static const onboardingScreen = '/';
@@ -324,7 +326,8 @@ class StackedRouter extends _i1.RouterBase {
             key: args.key,
             name: args.name,
             transaction: args.transaction,
-            sendMoney: args.sendMoney),
+            sendMoney: args.sendMoney,
+            withdraw: args.withdraw),
         settings: data,
       );
     },
@@ -335,8 +338,7 @@ class StackedRouter extends _i1.RouterBase {
             key: args.key,
             docFile: args.docFile,
             docNumber: args.docNumber,
-            docType: args.docType,
-            passport: args.passport),
+            docType: args.docType),
         settings: data,
       );
     },
@@ -556,6 +558,7 @@ class WelcomeBackScreenArguments {
     required this.name,
     required this.transaction,
     required this.sendMoney,
+    required this.withdraw,
   });
 
   final _i22.Key? key;
@@ -566,9 +569,11 @@ class WelcomeBackScreenArguments {
 
   final _i24.SendMonetEntityModel? sendMoney;
 
+  final _i25.WithdrawalEntityModel? withdraw;
+
   @override
   String toString() {
-    return '{"key": "$key", "name": "$name", "transaction": "$transaction", "sendMoney": "$sendMoney"}';
+    return '{"key": "$key", "name": "$name", "transaction": "$transaction", "sendMoney": "$sendMoney", "withdraw": "$withdraw"}';
   }
 
   @override
@@ -577,7 +582,8 @@ class WelcomeBackScreenArguments {
     return other.key == key &&
         other.name == name &&
         other.transaction == transaction &&
-        other.sendMoney == sendMoney;
+        other.sendMoney == sendMoney &&
+        other.withdraw == withdraw;
   }
 
   @override
@@ -585,7 +591,8 @@ class WelcomeBackScreenArguments {
     return key.hashCode ^
         name.hashCode ^
         transaction.hashCode ^
-        sendMoney.hashCode;
+        sendMoney.hashCode ^
+        withdraw.hashCode;
   }
 }
 
@@ -595,7 +602,6 @@ class PassportPhotoScreenArguments {
     required this.docFile,
     required this.docNumber,
     required this.docType,
-    required this.passport,
   });
 
   final _i22.Key? key;
@@ -606,11 +612,9 @@ class PassportPhotoScreenArguments {
 
   final String? docType;
 
-  final String? passport;
-
   @override
   String toString() {
-    return '{"key": "$key", "docFile": "$docFile", "docNumber": "$docNumber", "docType": "$docType", "passport": "$passport"}';
+    return '{"key": "$key", "docFile": "$docFile", "docNumber": "$docNumber", "docType": "$docType"}';
   }
 
   @override
@@ -619,8 +623,7 @@ class PassportPhotoScreenArguments {
     return other.key == key &&
         other.docFile == docFile &&
         other.docNumber == docNumber &&
-        other.docType == docType &&
-        other.passport == passport;
+        other.docType == docType;
   }
 
   @override
@@ -628,12 +631,11 @@ class PassportPhotoScreenArguments {
     return key.hashCode ^
         docFile.hashCode ^
         docNumber.hashCode ^
-        docType.hashCode ^
-        passport.hashCode;
+        docType.hashCode;
   }
 }
 
-extension NavigatorStateExtension on _i25.NavigationService {
+extension NavigatorStateExtension on _i26.NavigationService {
   Future<dynamic> navigateToOnboardingScreen([
     int? routerId,
     bool preventDuplicates = true,
@@ -912,6 +914,7 @@ extension NavigatorStateExtension on _i25.NavigationService {
     required String? name,
     required String? transaction,
     required _i24.SendMonetEntityModel? sendMoney,
+    required _i25.WithdrawalEntityModel? withdraw,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -923,7 +926,8 @@ extension NavigatorStateExtension on _i25.NavigationService {
             key: key,
             name: name,
             transaction: transaction,
-            sendMoney: sendMoney),
+            sendMoney: sendMoney,
+            withdraw: withdraw),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -935,7 +939,6 @@ extension NavigatorStateExtension on _i25.NavigationService {
     required String? docFile,
     required String? docNumber,
     required String? docType,
-    required String? passport,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -944,11 +947,7 @@ extension NavigatorStateExtension on _i25.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.passportPhotoScreen,
         arguments: PassportPhotoScreenArguments(
-            key: key,
-            docFile: docFile,
-            docNumber: docNumber,
-            docType: docType,
-            passport: passport),
+            key: key, docFile: docFile, docNumber: docNumber, docType: docType),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1233,6 +1232,7 @@ extension NavigatorStateExtension on _i25.NavigationService {
     required String? name,
     required String? transaction,
     required _i24.SendMonetEntityModel? sendMoney,
+    required _i25.WithdrawalEntityModel? withdraw,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1244,7 +1244,8 @@ extension NavigatorStateExtension on _i25.NavigationService {
             key: key,
             name: name,
             transaction: transaction,
-            sendMoney: sendMoney),
+            sendMoney: sendMoney,
+            withdraw: withdraw),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1256,7 +1257,6 @@ extension NavigatorStateExtension on _i25.NavigationService {
     required String? docFile,
     required String? docNumber,
     required String? docType,
-    required String? passport,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1265,11 +1265,7 @@ extension NavigatorStateExtension on _i25.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.passportPhotoScreen,
         arguments: PassportPhotoScreenArguments(
-            key: key,
-            docFile: docFile,
-            docNumber: docNumber,
-            docType: docType,
-            passport: passport),
+            key: key, docFile: docFile, docNumber: docNumber, docType: docType),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

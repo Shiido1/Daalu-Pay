@@ -1,5 +1,6 @@
 import 'package:daalu_pay/core/core_folder/app/app.router.dart';
 import 'package:daalu_pay/main.dart';
+import 'package:daalu_pay/ui/screen/dashboard/wallet/withdrawal_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -147,28 +148,56 @@ class WalletScreen extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SwapScreen()),
-                          ),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10.w, vertical: 8.w),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(
-                                  color: AppColor.primary, width: 1.6),
-                              color: AppColor.light,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SwapScreen()),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w, vertical: 8.w),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(6),
+                                  border: Border.all(
+                                      color: AppColor.white, width: 1.6),
+                                  color: AppColor.primary,
+                                ),
+                                child: TextView(
+                                  text: 'Convert',
+                                  color: AppColor.white,
+                                  fontSize: 17.2.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ),
-                            child: TextView(
-                              text: 'Convert',
-                              color: AppColor.primary,
-                              fontSize: 17.2.sp,
-                              fontWeight: FontWeight.w600,
+                            GestureDetector(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => WithdrawalScreen()),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w, vertical: 8.w),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(6),
+                                  border: Border.all(
+                                      color: AppColor.primary, width: 1.6),
+                                  color: AppColor.white,
+                                ),
+                                child: TextView(
+                                  text: 'Withdraw',
+                                  color: AppColor.primary,
+                                  fontSize: 17.2.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                         SizedBox(
                           height: 20.h,

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import "package:collection/collection.dart";
+import 'package:daalu_pay/core/connect_end/model/add_account_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/create_pin_response_model/create_pin_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
@@ -22,6 +23,7 @@ import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_p
 import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/user_response_model/user_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/verify_pin_response_model/verify_pin_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/withdrawal_entity_model.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:dio/dio.dart';
@@ -31,14 +33,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutterwave_standard_smart/flutterwave.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:pay_with_paystack/pay_with_paystack.dart';
 import 'package:stacked/stacked.dart';
 import '../../../ui/app_assets/app_color.dart';
 import '../../../ui/app_assets/app_utils.dart';
+import '../../../ui/app_assets/app_validatiion.dart';
 import '../../../ui/app_assets/contant.dart';
 import '../../../ui/app_assets/country_const.dart';
 import '../../../ui/app_assets/image_picker.dart';
+import '../../../ui/screen/dashboard/wallet/withdrawal_screen.dart';
 import '../../../ui/widget/button_widget.dart';
 import '../../../ui/widget/text_form_widget.dart';
 import '../../../ui/widget/text_widget.dart';
@@ -46,6 +52,8 @@ import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/app/app.logger.dart';
 import '../../core_folder/app/app.router.dart';
 import '../../core_folder/manager/shared_preference.dart';
+import '../model/add_account_response_model/add_account_response_model.dart';
+import '../model/get_bank_account_response_model/get_bank_account_response_model.dart';
 import '../model/get_message_response/get_message_response.dart';
 import '../model/get_payment_gate_response_model/get_payment_gate_response_model.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
@@ -58,6 +66,8 @@ import '../model/post_user_verification_cloud_response/post_user_verification_cl
 import '../model/preference_response_model/preference_response_model.dart';
 import '../model/register_entity_model.dart';
 import '../model/send_message_response_model/send_message_response_model.dart';
+import '../model/withdrawal_history_response_model/withdrawal_history_response_model.dart';
+import '../model/withdrawal_response_model/withdrawal_response_model.dart';
 import '../repo/repo_impl.dart';
 import '../model/get_swapped_transactions_response_model/datum.dart' as sp;
 import 'debouncer.dart';
@@ -131,6 +141,121 @@ class AuthViewModel extends BaseViewModel {
   TextEditingController emailController = TextEditingController();
   TextEditingController desController = TextEditingController();
   TextEditingController recipientWalletIdController = TextEditingController();
+  LoginResponseModel? _loginResponse;
+  LoginResponseModel? get loginResponse => _loginResponse;
+  RegistrationResponseModel? _registrationResponseModel;
+  RegistrationResponseModel? get registrationResponseModel =>
+      _registrationResponseModel;
+  UserResponseModel? _userResponseModel;
+  UserResponseModel? get userResponseModel => _userResponseModel;
+  GetStatsResponseModel? _getStatsResponseModel;
+  GetStatsResponseModel? get getStatsResponseModel => _getStatsResponseModel;
+  GetTransactionResponseModel? _getTransactionResponseModel;
+  GetTransactionResponseModel? get getTransactionResponseModel =>
+      _getTransactionResponseModel;
+  UpdatePasswordResponseModel? get updatePasswordResponseModel =>
+      _updatePasswordResponseModel;
+  UpdatePasswordResponseModel? _updatePasswordResponseModel;
+  TextEditingController dobController = TextEditingController();
+  List<sp.Datum>? transactionListData = [];
+
+  NotificationUserResponseModel? _notificationUserResponseModel;
+  NotificationUserResponseModel? get notificationUserResponseModel =>
+      _notificationUserResponseModel;
+  PostUserVerificationCloudResponse? _postUserVerificationCloudResponse;
+  PostUserVerificationCloudResponse? get postUserVerificationCloudResponse =>
+      _postUserVerificationCloudResponse;
+
+  InitiateChatResponseModel? _initiateChatResponseModel;
+  InitiateChatResponseModel? get initiateChatResponseModel =>
+      _initiateChatResponseModel;
+  GetMessageResponse? get getMessageResponse => _getMessageResponse;
+  GetMessageResponse? _getMessageResponse;
+  SendMessageResponseModel? get sendMessageResponseModel =>
+      _sendMessageResponseModel;
+  SendMessageResponseModel? _sendMessageResponseModel;
+  PreferenceResponseModel? _preferenceResponseModel;
+  PreferenceResponseModel? get preferenceResponseModel =>
+      _preferenceResponseModel;
+
+  GetSwappedTransactionsResponseModel? _getSwappedTransactionsResponseModel;
+  GetSwappedTransactionsResponseModel?
+      get getSwappedTransactionsResponseModel =>
+          _getSwappedTransactionsResponseModel;
+
+  TextEditingController currencyController = TextEditingController();
+  Wallet? _walletAmount;
+  Wallet? get walletAmount => _walletAmount;
+
+  final _pickImage = ImagePickerHandler();
+  File? image;
+
+  File? passportPhoto;
+  String? filename;
+
+  String fromCurrency = AppImage.nigeria_flag;
+  String toCurrency = AppImage.china_flag;
+  String fromCurrencyCode = 'NGN';
+  String toCurrencyCode = 'CNY';
+  String createCurrencyCode = '';
+
+  TextEditingController fromCurrencylController =
+      TextEditingController(text: '0');
+  TextEditingController toCurrencylController =
+      TextEditingController(text: '0');
+  final debouncer = Debouncer();
+  TextEditingController curcodeFromController = TextEditingController();
+  TextEditingController curcodeToController = TextEditingController();
+  TextEditingController signUpCountryController = TextEditingController();
+  String queryFrom = '';
+  String queryTo = '';
+  String queryCreate = '';
+  String querySignUpCountry = '';
+  String? selectCountry;
+
+  String transStats = 'From';
+  bool initializingPayment = false;
+  GetWalletIdResponseModel? _getWalletIdResponseModel;
+  GetWalletIdResponseModel? get getWalletIdResponseModel =>
+      _getWalletIdResponseModel;
+  DateTime selectedDOB = DateTime.now();
+  String? _formattedDob = DateFormat('EEEE, d MMM yyyy').format(DateTime.now());
+  Timer? timer;
+  int startTimerCount = 0;
+  dynamic dailyLimit;
+  int transaction = 0;
+
+  CreatePinResponseModel? get createPinResponseModel => _createPinResponseModel;
+  CreatePinResponseModel? _createPinResponseModel;
+  VerifyPinResponseModel? get verifyPinResponseModel => _verifyPinResponseModel;
+  VerifyPinResponseModel? _verifyPinResponseModel;
+
+  AddAccountResponseModel? _accountResponseModel;
+  AddAccountResponseModel? get accountResponseModel => _accountResponseModel;
+  GetBankAccountResponseModel? _getBankAccountResponseModel;
+  GetBankAccountResponseModel? get getBankAccountResponseModel =>
+      _getBankAccountResponseModel;
+  WithdrawalResponseModel? _withdrawalResponseModel;
+  WithdrawalResponseModel? get withdrawalResponseModel =>
+      _withdrawalResponseModel;
+  WithdrawalHistoryResponseModel? _withdrawalHistoryResponseModel;
+  WithdrawalHistoryResponseModel? get withdrawalHistoryResponseModel =>
+      _withdrawalHistoryResponseModel;
+
+  TextEditingController withdrawAmount = TextEditingController();
+  TextEditingController withdrawBankAccount = TextEditingController();
+  GlobalKey<FormState> withdrawFormkey = GlobalKey<FormState>();
+
+  TextEditingController addAccuntName = TextEditingController();
+  TextEditingController addAccuntNumber = TextEditingController();
+  TextEditingController addBankName = TextEditingController();
+  GlobalKey<FormState> addAccntFormkey = GlobalKey<FormState>();
+
+  DateTime nowFilter = DateTime.now();
+  String? filterDateTime;
+
+  Wallet? w;
+  Wallet? walletHome;
 
   radioButtonChanges(String value) {
     radioValue = value;
@@ -216,25 +341,11 @@ class AuthViewModel extends BaseViewModel {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  // model.sendMoney(context,
-                                  //     sendMoney: SendMonetEntityModel(
-                                  //         amount: sendAmountController.text,
-                                  //         recipientEmail: emailController.text,
-                                  //         description: desController.text,
-                                  //         recipientName: nameController.text,
-                                  //         documentType: choice == 'wallet'
-                                  //             ? 'alipay_id'
-                                  //             : 'barcode',
-                                  //         recipientAddress: choice == 'wallet'
-                                  //             ? recipientWalletIdController.text
-                                  //             : '${_postUserVerificationCloudResponse?.publicId}.${_postUserVerificationCloudResponse?.format}',
-                                  //         currency: wallet != null
-                                  //             ? wallet.currency
-                                  //             : currencyController.text));
                                   navigate.navigateTo(Routes.welcomeBackScreen,
                                       arguments: WelcomeBackScreenArguments(
                                           name: '',
                                           transaction: 'send money',
+                                          withdraw: WithdrawalEntityModel(),
                                           sendMoney: SendMonetEntityModel(
                                               amount: sendAmountController.text,
                                               recipientEmail:
@@ -299,28 +410,128 @@ class AuthViewModel extends BaseViewModel {
         });
   }
 
-  buildCarouselIndicator() {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          for (int i = 0; i < getStatsResponseModel!.data!.wallets!.length; i++)
-            Container(
-              margin: EdgeInsets.all(5.w),
-              height: i == currentPageWallet ? 10 : 9.2.h,
-              width: i == currentPageWallet ? 10 : 9.2.w,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    color: AppColor.grey,
+  showWithrawMoneyDialog(context, amount, account,
+      {WithdrawalEntityModel? withdraw}) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => AuthViewModel(),
+              onViewModelReady: (model) {},
+              disposeViewModel: false,
+              builder: (_, AuthViewModel model, __) {
+                return Dialog(
+                  backgroundColor: AppColor.white,
+                  insetPadding:
+                      EdgeInsets.symmetric(horizontal: 22.w, vertical: 16.w),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20.w),
+                    height: 250.w,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 16.2.h,
+                          ),
+                          TextView(
+                            text: 'Confirm Withdrawal',
+                            color: AppColor.black,
+                            fontSize: 17.2.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          SizedBox(
+                            height: 10.2.h,
+                          ),
+                          TextView(
+                            text:
+                                'Are your sure you want to withdraw $amount NGN to your bank account $account?',
+                            color: AppColor.black,
+                            fontSize: 15.2.sp,
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () => Navigator.pop(context),
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.w, horizontal: 10.w),
+                                  decoration: BoxDecoration(
+                                      color: AppColor.white,
+                                      border: Border.all(
+                                          color: AppColor.primary, width: .6.w),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Center(
+                                    child: TextView(
+                                      text: 'Back',
+                                      color: AppColor.primary,
+                                      fontSize: 17.4.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  navigate.navigateTo(Routes.welcomeBackScreen,
+                                      arguments: WelcomeBackScreenArguments(
+                                          name: '',
+                                          transaction: 'withdraw money',
+                                          withdraw: WithdrawalEntityModel(
+                                              amount: amount,
+                                              bankAccountId:
+                                                  withdraw!.bankAccountId),
+                                          sendMoney: SendMonetEntityModel()));
+                                  model.notifyListeners();
+                                },
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.w, horizontal: 10.w),
+                                  decoration: BoxDecoration(
+                                      color: AppColor.primary,
+                                      border: Border.all(
+                                          color: AppColor.white, width: .6.w),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Center(
+                                    child: TextView(
+                                      text: 'Confirm',
+                                      color: AppColor.white,
+                                      fontSize: 17.4.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          model.isLoading
+                              ? TextView(
+                                  text: 'Loading...',
+                                  color: AppColor.grey,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                )
+                              : SizedBox.shrink(),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  color: i == currentPageWallet
-                      ? AppColor.primary
-                      : AppColor.white,
-                  shape: BoxShape.circle),
-            )
-        ],
-      ),
-    );
+                );
+              });
+        });
   }
 
   Future<void> initNotificationToken() async {
@@ -347,99 +558,6 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
     return _isSignupConTogglePassword;
   }
-
-  LoginResponseModel? _loginResponse;
-  LoginResponseModel? get loginResponse => _loginResponse;
-  RegistrationResponseModel? _registrationResponseModel;
-  RegistrationResponseModel? get registrationResponseModel =>
-      _registrationResponseModel;
-  UserResponseModel? _userResponseModel;
-  UserResponseModel? get userResponseModel => _userResponseModel;
-  GetStatsResponseModel? _getStatsResponseModel;
-  GetStatsResponseModel? get getStatsResponseModel => _getStatsResponseModel;
-  GetTransactionResponseModel? _getTransactionResponseModel;
-  GetTransactionResponseModel? get getTransactionResponseModel =>
-      _getTransactionResponseModel;
-  UpdatePasswordResponseModel? get updatePasswordResponseModel =>
-      _updatePasswordResponseModel;
-  UpdatePasswordResponseModel? _updatePasswordResponseModel;
-  TextEditingController dobController = TextEditingController();
-  List<sp.Datum>? transactionListData = [];
-
-  NotificationUserResponseModel? _notificationUserResponseModel;
-  NotificationUserResponseModel? get notificationUserResponseModel =>
-      _notificationUserResponseModel;
-  PostUserVerificationCloudResponse? _postUserVerificationCloudResponse;
-  PostUserVerificationCloudResponse? get postUserVerificationCloudResponse =>
-      _postUserVerificationCloudResponse;
-
-  InitiateChatResponseModel? _initiateChatResponseModel;
-  InitiateChatResponseModel? get initiateChatResponseModel =>
-      _initiateChatResponseModel;
-  GetMessageResponse? get getMessageResponse => _getMessageResponse;
-  GetMessageResponse? _getMessageResponse;
-  SendMessageResponseModel? get sendMessageResponseModel =>
-      _sendMessageResponseModel;
-  SendMessageResponseModel? _sendMessageResponseModel;
-  PreferenceResponseModel? _preferenceResponseModel;
-  PreferenceResponseModel? get preferenceResponseModel =>
-      _preferenceResponseModel;
-
-  GetSwappedTransactionsResponseModel? _getSwappedTransactionsResponseModel;
-  GetSwappedTransactionsResponseModel?
-      get getSwappedTransactionsResponseModel =>
-          _getSwappedTransactionsResponseModel;
-
-  TextEditingController currencyController = TextEditingController();
-  Wallet? _walletAmount;
-  Wallet? get walletAmount => _walletAmount;
-
-  final _pickImage = ImagePickerHandler();
-  File? image;
-  String? filename;
-
-  String fromCurrency = AppImage.nigeria_flag;
-  String toCurrency = AppImage.china_flag;
-  String fromCurrencyCode = 'NGN';
-  String toCurrencyCode = 'CNY';
-  String createCurrencyCode = '';
-
-  TextEditingController fromCurrencylController =
-      TextEditingController(text: '0');
-  TextEditingController toCurrencylController =
-      TextEditingController(text: '0');
-  final debouncer = Debouncer();
-  TextEditingController curcodeFromController = TextEditingController();
-  TextEditingController curcodeToController = TextEditingController();
-  TextEditingController signUpCountryController = TextEditingController();
-  String queryFrom = '';
-  String queryTo = '';
-  String queryCreate = '';
-  String querySignUpCountry = '';
-  String? selectCountry;
-
-  String transStats = 'From';
-  bool initializingPayment = false;
-  GetWalletIdResponseModel? _getWalletIdResponseModel;
-  GetWalletIdResponseModel? get getWalletIdResponseModel =>
-      _getWalletIdResponseModel;
-  DateTime selectedDOB = DateTime.now();
-  String? _formattedDob = DateFormat('EEEE, d MMM yyyy').format(DateTime.now());
-  Timer? timer;
-  int startTimerCount = 0;
-  dynamic dailyLimit;
-  int transaction = 0;
-
-  CreatePinResponseModel? get createPinResponseModel => _createPinResponseModel;
-  CreatePinResponseModel? _createPinResponseModel;
-  VerifyPinResponseModel? get verifyPinResponseModel => _verifyPinResponseModel;
-  VerifyPinResponseModel? _verifyPinResponseModel;
-
-  DateTime nowFilter = DateTime.now();
-  String? filterDateTime;
-
-  Wallet? w;
-  Wallet? walletHome;
 
   Future<void> createPin({String? pin, contxt}) async {
     try {
@@ -469,6 +587,7 @@ class AuthViewModel extends BaseViewModel {
       {String? transaction,
       String? pin,
       Wallet? wallet,
+      WithdrawalEntityModel? withdraw,
       SendMonetEntityModel? send}) async {
     try {
       _isLoading = true;
@@ -477,9 +596,11 @@ class AuthViewModel extends BaseViewModel {
           throwException: true);
 
       if (_verifyPinResponseModel!.status == 'success') {
-        print('tr:::$transaction');
         if (transaction == 'send money') {
-          sendMoney(context, sendMoney: send);
+          sendMoney(contxt, sendMoney: send);
+        }
+        if (transaction == 'withdraw money') {
+          withdrawFunds(contxt, withdrawEntity: withdraw);
         } else {
           navigate.navigateTo(Routes.dashboard,
               arguments: DashboardArguments(index: 0));
@@ -569,6 +690,66 @@ class AuthViewModel extends BaseViewModel {
     }
   }
 
+  Future<void> capturePhoto(context) async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      preferredCameraDevice: CameraDevice.front, // Use front camera
+      imageQuality: 85, // Compress image
+    );
+
+    if (pickedFile != null) {
+      _cropImage(File(pickedFile.path), context);
+    }
+    notifyListeners();
+  }
+
+  Future<void> _cropImage(File imageFile, context) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: imageFile.path,
+      aspectRatio: CropAspectRatio(
+          ratioX: 35, ratioY: 45), // Standard passport size ratio (3.5:4.5)
+      compressQuality: 90,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Crop Passport Photo',
+          toolbarColor: Colors.blue,
+          toolbarWidgetColor: Colors.white,
+          lockAspectRatio: true,
+        ),
+        IOSUiSettings(
+          title: 'Crop Passport Photo',
+          aspectRatioLockEnabled: true,
+        ),
+      ],
+    );
+
+    if (croppedFile != null) {
+      passportPhoto = File(croppedFile.path);
+      uploadDocumentImage(context);
+      notifyListeners();
+    }
+    notifyListeners();
+  }
+
+  void uploadDocumentImage(BuildContext context) {
+    try {
+      _isLoading = true;
+      postToCloudinary(context,
+          postCloudinary: PostUserCloudEntityModel(
+              file: MultipartFile.fromBytes(
+                  formartFileImage(passportPhoto).readAsBytesSync(),
+                  filename: passportPhoto!.path.split("/").last),
+              uploadPreset: 'daalupay.staging.verification',
+              apiKey: '163312741323182'));
+
+      _isLoading = false;
+    } catch (e) {
+      logger.e(e);
+      _isLoading = false;
+    }
+    notifyListeners();
+  }
+
   void getDocumentAlipayImage(BuildContext context) {
     try {
       _pickImage.pickImage(
@@ -601,7 +782,7 @@ class AuthViewModel extends BaseViewModel {
       if (_registrationResponseModel?.status == 'success') {
         _isLoading = false;
         await AppUtils.snackbar(contxt,
-            message: 'Registration is successfully', error: true);
+            message: 'Registration is successfully');
         navigate.navigateTo(Routes.verifyScreen,
             arguments: VerifyScreenArguments(email: registerEntity.email));
       }
@@ -627,6 +808,7 @@ class AuthViewModel extends BaseViewModel {
               arguments: WelcomeBackScreenArguments(
                   name: session.usersData['user']['firstName'],
                   transaction: 'login',
+                  withdraw: WithdrawalEntityModel(),
                   sendMoney: SendMonetEntityModel()));
         } else {
           await AppUtils.snackbar(contxt,
@@ -1787,13 +1969,7 @@ class AuthViewModel extends BaseViewModel {
                                                         selectCountry =
                                                             e['code'];
                                                         model.notifyListeners();
-                                                        Future.delayed(
-                                                            Duration(
-                                                                seconds: 1),
-                                                            () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        });
+                                                        Navigator.pop(context);
                                                         notifyListeners();
                                                       },
                                                       child: Container(
@@ -1960,6 +2136,311 @@ class AuthViewModel extends BaseViewModel {
                           ),
                         ],
                       )),
+                );
+              });
+        });
+  }
+
+  String? bankId;
+  shwUserAccountDialog(context) => showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => AuthViewModel(),
+              onViewModelReady: (model) {
+                model.getBankAccount(context);
+              },
+              disposeViewModel: false,
+              builder: (_, AuthViewModel model, __) {
+                return AlertDialog(
+                  title: TextView(
+                    text: 'Bank Accounts',
+                    color: AppColor.black,
+                    textAlign: TextAlign.center,
+                    fontSize: 22.2.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  titleTextStyle: TextStyle(),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 20.w, horizontal: 18.w),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        if (model.getBankAccountResponseModel != null &&
+                            model.getBankAccountResponseModel!.data!.isNotEmpty)
+                          ...model.getBankAccountResponseModel!.data!
+                              .map((o) => Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          withdrawBankAccount.text =
+                                              '${o.bankName} (${o.accountNumber})';
+                                          bankId = o.id.toString();
+                                          Navigator.pop(context);
+                                          model.notifyListeners();
+                                        },
+                                        child: TextView(
+                                          text:
+                                              '${o.bankName} (${o.accountNumber})',
+                                          color: AppColor.black,
+                                          fontSize: 18.2.sp,
+                                          textAlign: TextAlign.start,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 4.w,
+                                      ),
+                                      Divider(thickness: .3),
+                                    ],
+                                  ))
+                      ],
+                    ),
+                  ),
+                );
+              });
+        },
+      );
+
+  void modalBottomSheetMenuWithdrawFund(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => AuthViewModel(),
+              onViewModelReady: (model) {},
+              builder: (_, AuthViewModel model, __) {
+                return Container(
+                  height: 500.0,
+                  decoration: BoxDecoration(
+                      color: AppColor.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: const Radius.circular(14.0),
+                          topRight: const Radius.circular(14.0))),
+                  child: SingleChildScrollView(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 20.w, horizontal: 20.w),
+                    child: Form(
+                      key: withdrawFormkey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextView(
+                            text: 'Withdraw Funds',
+                            color: AppColor.black,
+                            fontSize: 22.2.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          SizedBox(
+                            height: 2.6.h,
+                          ),
+                          TextView(
+                            text:
+                                'Enter the amount and select your bank account for withdrawal.',
+                            color: AppColor.grey,
+                            fontSize: 16.2.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          TextFormWidget(
+                            label: '0.00',
+                            hint: 'Amount',
+                            border: 10,
+                            isFilled: true,
+                            fillColor: AppColor.white,
+                            controller: withdrawAmount,
+                            validator: AppValidator.validateString(),
+                          ),
+                          TextView(
+                            text: 'Enter the amount you wish to withdraw.',
+                            color: AppColor.grey,
+                            fontSize: 16.2.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          TextFormWidget(
+                            label: 'Select a bank account',
+                            hint: 'Bank Account',
+                            border: 10,
+                            isFilled: true,
+                            readOnly: true,
+                            fillColor: AppColor.white,
+                            controller: withdrawBankAccount,
+                            validator: AppValidator.validateString(),
+                            suffixWidget: IconButton(
+                                onPressed: () => shwUserAccountDialog(context),
+                                icon: Icon(
+                                  Icons.arrow_drop_down_sharp,
+                                  color: AppColor.black,
+                                )),
+                          ),
+                          TextView(
+                            text: 'Select the bank account for the withdrawal.',
+                            color: AppColor.grey,
+                            fontSize: 16.2.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          SizedBox(
+                            height: 40.h,
+                          ),
+                          ButtonWidget(
+                              buttonText: 'Withdraw',
+                              color: !model.isLoading
+                                  ? AppColor.white
+                                  : AppColor.grey,
+                              border: 8,
+                              buttonColor: AppColor.primary,
+                              buttonBorderColor: Colors.transparent,
+                              onPressed: () {
+                                if (withdrawFormkey.currentState!.validate()) {
+                                  showWithrawMoneyDialog(
+                                      context,
+                                      withdrawAmount.text,
+                                      withdrawBankAccount.text,
+                                      withdraw: WithdrawalEntityModel(
+                                          amount: withdrawAmount.text,
+                                          bankAccountId: bankId));
+                                }
+                              }),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          TextView(
+                            text:
+                                'Please ensure all details are correct before submitting.',
+                            color: AppColor.grey,
+                            fontSize: 16.2.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          SizedBox(
+                            height: 40.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              });
+        });
+  }
+
+  void modalBottomSheetMenuAddAccount(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => AuthViewModel(),
+              onViewModelReady: (model) {},
+              disposeViewModel: false,
+              builder: (_, AuthViewModel model, __) {
+                return Container(
+                  height: 500.0,
+                  decoration: BoxDecoration(
+                      color: AppColor.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: const Radius.circular(14.0),
+                          topRight: const Radius.circular(14.0))),
+                  child: SingleChildScrollView(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 20.w, horizontal: 20.w),
+                    child: Form(
+                      key: addAccntFormkey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextView(
+                            text: 'Add Bank Account',
+                            color: AppColor.black,
+                            fontSize: 21.2.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          SizedBox(
+                            height: 2.6.h,
+                          ),
+                          TextView(
+                            text: 'Enter your bank account details.',
+                            color: AppColor.grey,
+                            fontSize: 16.2.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          TextFormWidget(
+                            label: 'Enter your account number',
+                            hint: 'Amount Number',
+                            border: 10,
+                            isFilled: true,
+                            fillColor: AppColor.white,
+                            controller: addAccuntNumber,
+                            prefixIcon: Icons.credit_card,
+                            prefixIconColor: AppColor.grey,
+                            validator: AppValidator.validateString(),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          TextFormWidget(
+                            label: 'Enter your bank name',
+                            hint: 'Bank Name',
+                            border: 10,
+                            isFilled: true,
+                            fillColor: AppColor.white,
+                            controller: addBankName,
+                            prefixIcon: Icons.backup_table_outlined,
+                            prefixIconColor: AppColor.grey,
+                            validator: AppValidator.validateString(),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          TextFormWidget(
+                            label: 'Enter the account name',
+                            hint: 'Account Name',
+                            border: 10,
+                            isFilled: true,
+                            fillColor: AppColor.white,
+                            controller: addAccuntName,
+                            prefixIcon: Icons.person_outline_sharp,
+                            prefixIconColor: AppColor.grey,
+                            validator: AppValidator.validateString(),
+                          ),
+                          SizedBox(
+                            height: 40.h,
+                          ),
+                          ButtonWidget(
+                              buttonText: 'Add Acount',
+                              color: !model.isLoading
+                                  ? AppColor.white
+                                  : AppColor.grey,
+                              border: 8,
+                              isLoading: _isLoading,
+                              buttonColor: !_isLoading
+                                  ? AppColor.primary
+                                  : AppColor.inGrey,
+                              buttonBorderColor: Colors.transparent,
+                              onPressed: () {
+                                if (addAccntFormkey.currentState!.validate()) {
+                                  addBankAccount(context,
+                                      account: AddAccountEntityModel(
+                                          accountName: addAccuntName.text,
+                                          accountNumber: addAccuntNumber.text,
+                                          bankName: addBankName.text));
+                                  model.notifyListeners();
+                                }
+                              }),
+                          SizedBox(
+                            height: 40.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 );
               });
         });
@@ -2144,6 +2625,8 @@ class AuthViewModel extends BaseViewModel {
           throwException: true);
       _isLoading = false;
       if (v['status'] == 'success') {
+        await AppUtils.snackbar(context,
+            message: v['message'] ?? 'OTP Successfully validated.');
         navigate.navigateTo(Routes.loginScreen);
       }
     } catch (e) {
@@ -2330,6 +2813,95 @@ class AuthViewModel extends BaseViewModel {
       _sendMessageResponseModel = await runBusyFuture(
           repositoryImply.sendMessage(send!),
           throwException: true);
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> addBankAccount(context, {AddAccountEntityModel? account}) async {
+    try {
+      _isLoading = true;
+      _accountResponseModel = await runBusyFuture(
+          repositoryImply.addAccount(account!),
+          throwException: true);
+      if (_accountResponseModel?.status == 'success') {
+        _isLoading = false;
+        addAccuntName.text = '';
+        addAccuntNumber.text = '';
+        addBankName.text = '';
+        getBankAccount(context);
+        await AppUtils.snackbar(context,
+            message: 'Account added succcessfully..!');
+        Navigator.pop(context);
+      }
+
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getBankAccount(
+    context,
+  ) async {
+    try {
+      _isLoading = true;
+      _getBankAccountResponseModel = await runBusyFuture(
+          repositoryImply.getAccount(),
+          throwException: true);
+
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> withdrawFunds(contxt,
+      {WithdrawalEntityModel? withdrawEntity}) async {
+    try {
+      _isLoading = true;
+      _withdrawalResponseModel = await runBusyFuture(
+          repositoryImply.withdrawFund(withdrawEntity!),
+          throwException: true);
+      if (_withdrawalResponseModel?.status == 'success') {
+        _isLoading = false;
+        withdrawAmount.text = '';
+        withdrawBankAccount.text = '';
+
+        await AppUtils.snackbar(contxt, message: 'Withdrawal succcessful..!');
+        navigate.back();
+        Navigator.pop(contxt);
+        Navigator.pop(contxt);
+        Navigator.push(
+          contxt,
+          MaterialPageRoute(builder: (contxt) => WithdrawalScreen()),
+        );
+      }
+
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> withdrawHistory(
+    context,
+  ) async {
+    try {
+      _isLoading = true;
+      _withdrawalHistoryResponseModel = await runBusyFuture(
+          repositoryImply.withdrawHistory(),
+          throwException: true);
+
+      _isLoading = false;
     } catch (e) {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);

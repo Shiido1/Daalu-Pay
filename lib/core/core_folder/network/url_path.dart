@@ -31,4 +31,8 @@ class UrlConfig {
   static const String create_pin = '/user/pin';
   // ignore: constant_identifier_names
   static const String verify_pin = '/user/pin/verify';
+  // ignore: constant_identifier_names
+  static const String bank_account = '/user/bank-account';
+  // ignore: constant_identifier_names
+  static const String user_withdraw = '/user/withdraw';
 }

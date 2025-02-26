@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 25.0.w),
               child: Column(children: [
                 SizedBox(
-                  height: 50.h,
+                  height: 40.h,
                 ),
                 paddedWing(
                   value: 8.w,
@@ -75,14 +75,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       TextView(
                         text:
                             'Welcome ${model.userResponseModel?.data?.firstName ?? ''}',
-                        fontSize: 21.20.sp,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 24.20.sp,
+                        fontWeight: FontWeight.w600,
                         color: AppColor.primary,
                       ),
                       SizedBox(
                         width: 26.70.w,
                       )
-                      // SvgPicture.asset(AppImage.bell)
                     ],
                   ),
                 ),
@@ -151,8 +150,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       .instance.isKycVerified ==
                                                   false
                                               ? 'Verify your ID to\nfinish setting up your Account'
-                                              : 'Your KYC has been uploaded,\nyou will be verified\nonce admin approves.',
-                                          maxLines: 3,
+                                              : 'Your KYC has been uploaded,you will be verified once admin\napproves.',
+                                          maxLines: 4,
                                           textStyle: GoogleFonts.lato(
                                             color: AppColor.white,
                                             fontSize: 16.2.sp,

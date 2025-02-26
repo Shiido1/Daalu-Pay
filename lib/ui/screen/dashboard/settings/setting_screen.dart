@@ -12,6 +12,7 @@ import 'package:stacked/stacked.dart';
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
 import '../../../../core/core_folder/manager/shared_preference.dart';
 import '../../../app_assets/contant.dart';
+import '../wallet/withdrawal_screen.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -368,7 +369,11 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                         paddedWind(
                           child: GestureDetector(
-                            onTap: () => print('money'),
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => WithdrawalScreen()),
+                            ),
                             child: Container(
                               color: AppColor.transparent,
                               width: double.infinity,
@@ -426,7 +431,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               color: AppColor.transparent,
                               width: double.infinity,
                               child: Padding(
-                                padding: EdgeInsets.only(top: 6.w, bottom: 2.w),
+                                padding:
+                                    EdgeInsets.only(top: 10.w, bottom: 2.w),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [

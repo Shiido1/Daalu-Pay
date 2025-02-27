@@ -1,9 +1,11 @@
+import 'package:daalu_pay_admin/core/connect_end/model/approve_withdrawal_entity_model.dart';
 import 'package:daalu_pay_admin/core/connect_end/model/get_admin_stats_response_model/get_admin_stats_response_model.dart';
 import 'package:daalu_pay_admin/core/connect_end/model/get_admin_transactions_response_model/get_admin_transactions_response_model.dart';
 import 'package:daalu_pay_admin/core/connect_end/model/get_all_user_response_model/get_all_user_response_model.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import '../connect_end/model/approve_receipt_entity_model.dart';
+import '../connect_end/model/get_all_withdrawals_response_model/get_all_withdrawals_response_model.dart';
 import '../connect_end/model/get_users_receipt_response_model/get_users_receipt_response_model.dart';
 import '../connect_end/model/login_entity_model.dart';
 import '../connect_end/model/login_response_model/login_response_model.dart';
@@ -38,6 +40,18 @@ class AuthApi {
       final response = await _service.call(UrlConfig.stats, RequestMethod.get);
       logger.d(response.data);
       return GetAdminStatsResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<GetAllWithdrawalsResponseModel> getWithdrawals() async {
+    try {
+      final response =
+          await _service.call(UrlConfig.withdrawal, RequestMethod.get);
+      logger.d(response.data);
+      return GetAllWithdrawalsResponseModel.fromJson(response.data);
     } catch (e) {
       logger.d("response:$e");
       rethrow;
@@ -137,10 +151,12 @@ class AuthApi {
     }
   }
 
-  Future<dynamic> approveTransactions(String? id) async {
+  Future<dynamic> approveTransactions(
+      String? id, ApproveWithdrawalEntityModel? approve) async {
     try {
-      final response =
-          await _service.call('transactions/$id/approve', RequestMethod.post);
+      final response = await _service.call(
+          'withdrawals/$id/approve', RequestMethod.post,
+          data: approve?.toJson());
       logger.d(response.data);
       return response.data;
     } catch (e) {
@@ -152,7 +168,7 @@ class AuthApi {
   Future<dynamic> denyTransactions({String? id, String? text}) async {
     try {
       final response = await _service.call(
-          'transactions/$id/deny', RequestMethod.post,
+          'withdrawals/$id/deny', RequestMethod.post,
           data: {"reason": text});
       logger.d(response.data);
       return response.data;

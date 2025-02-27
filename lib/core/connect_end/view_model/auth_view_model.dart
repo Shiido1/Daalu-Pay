@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:daalu_pay_admin/core/connect_end/model/get_all_withdrawals_response_model/get_all_withdrawals_response_model.dart';
+import 'package:daalu_pay_admin/ui/screen/admin_dashboard/user/image_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../../core/connect_end/model/get_users_receipt_response_model/datum.dart'
@@ -25,11 +27,13 @@ import '../../core_folder/app/app.logger.dart';
 import '../../core_folder/app/app.router.dart';
 import '../../core_folder/manager/shared_preference.dart';
 import '../model/approve_receipt_entity_model.dart';
+import '../model/approve_withdrawal_entity_model.dart';
 import '../model/get_admin_stats_response_model/get_admin_stats_response_model.dart';
-import '../model/get_admin_transactions_response_model/datum.dart';
+import '../model/get_admin_transactions_response_model/datum.dart' as t;
 import '../model/get_admin_transactions_response_model/get_admin_transactions_response_model.dart';
 import '../model/get_all_user_response_model/datum.dart' as user;
 import '../model/get_all_user_response_model/get_all_user_response_model.dart';
+import '../model/get_all_withdrawals_response_model/datum.dart';
 import '../model/get_users_receipt_response_model/get_users_receipt_response_model.dart';
 import '../model/login_entity_model.dart';
 import '../model/login_response_model/login_response_model.dart';
@@ -72,17 +76,22 @@ class AuthViewModel extends BaseViewModel {
   GetAdminTransactionsResponseModel? _adminTransactionsResponseModel;
   GetAdminTransactionsResponseModel? get adminTransactionsResponseModel =>
       _adminTransactionsResponseModel;
+  GetAllWithdrawalsResponseModel? _getAllWithdrawalsResponseModel;
+  GetAllWithdrawalsResponseModel? get getAllWithdrawalsResponseModel =>
+      _getAllWithdrawalsResponseModel;
   var groupedValue;
 
   GlobalKey<FormState> susFormkey = GlobalKey<FormState>();
+  GlobalKey<FormState> appWithKey = GlobalKey<FormState>();
 
-  List<Datum>? transactionListData = [];
+  List<t.Datum>? transactionListData = [];
   List<user.Datum>? userListData = [];
   String transStats = 'all';
   String userStats = 'all';
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController rejectController = TextEditingController();
+  TextEditingController refIdController = TextEditingController();
   TextEditingController deleteController = TextEditingController();
   TextEditingController reasonController = TextEditingController();
   TextEditingController controller = TextEditingController();
@@ -242,19 +251,56 @@ class AuthViewModel extends BaseViewModel {
                       children: [
                         paddedWing(
                           value: 20,
-                          child: Container(
-                            padding: EdgeInsets.all(10.w),
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColor.navyBlueGrey),
-                            child: TextView(
-                              text: getInitials(
-                                  '${data.firstName} ${data.lastName}'),
-                              fontSize: 16.4.sp,
-                              color: AppColor.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                          child: data.kyc?.passportPhoto != null
+                              ? GestureDetector(
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ImageScreen(
+                                                image:
+                                                    'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${data.kyc?.passportPhoto}',
+                                              ))),
+                                  child: ClipOval(
+                                    child: SizedBox.fromSize(
+                                      size: const Size.fromRadius(28),
+                                      child: Image.network(
+                                        'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${data.kyc?.passportPhoto}',
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            color:
+                                                AppColor.grey.withOpacity(.3),
+                                          ),
+                                          child: Center(
+                                            child: TextView(
+                                              text: '',
+                                              fontSize: 13.2.sp,
+                                              color: AppColor.black,
+                                              fontWeight: FontWeight.w300,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  padding: EdgeInsets.all(10.w),
+                                  decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColor.navyBlueGrey),
+                                  child: TextView(
+                                    text: getInitials(
+                                        '${data.firstName} ${data.lastName}'),
+                                    fontSize: 16.4.sp,
+                                    color: AppColor.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                         ),
                         SizedBox(
                           height: 10.2.h,
@@ -331,29 +377,39 @@ class AuthViewModel extends BaseViewModel {
                                     color: AppColor.black,
                                     fontWeight: FontWeight.w400,
                                   )
-                                : ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Image.network(
-                                      'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${data.kyc?.documentImage}',
-                                      width: double.infinity,
-                                      height: 150.h,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: AppColor.grey.withOpacity(.3),
-                                        ),
+                                : GestureDetector(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ImageScreen(
+                                                  image:
+                                                      'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${data.kyc?.documentImage}',
+                                                ))),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.network(
+                                        'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${data.kyc?.documentImage}',
                                         width: double.infinity,
                                         height: 150.h,
-                                        child: Center(
-                                          child: TextView(
-                                            text: 'File Error',
-                                            fontSize: 13.2.sp,
-                                            color: AppColor.black,
-                                            fontWeight: FontWeight.w300,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            color:
+                                                AppColor.grey.withOpacity(.3),
+                                          ),
+                                          width: double.infinity,
+                                          height: 150.h,
+                                          child: Center(
+                                            child: TextView(
+                                              text: 'File Error',
+                                              fontSize: 13.2.sp,
+                                              color: AppColor.black,
+                                              fontWeight: FontWeight.w300,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -517,11 +573,27 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<void> getWithdrawals(contxt) async {
+    try {
+      _isLoading = true;
+      _getAllWithdrawalsResponseModel = await runBusyFuture(
+          repositoryImply.withdrawals(),
+          throwException: true);
+      groupTransationStatus();
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      logger.d(e);
+      AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
   groupTransationStatus() {
     app.clear();
     rej.clear();
     pend.clear();
-    for (var element in _adminTransactionsResponseModel!.data!) {
+    for (var element in _getAllWithdrawalsResponseModel!.data!) {
       if (element.status == 'approved') {
         app.add(element);
       } else if (element.status == 'rejected') {
@@ -597,7 +669,7 @@ class AuthViewModel extends BaseViewModel {
               disposeViewModel: false,
               builder: (_, AuthViewModel model, __) {
                 return Container(
-                  height: 300.0,
+                  height: 540.h,
                   decoration: const BoxDecoration(
                       color: AppColor.white,
                       borderRadius: BorderRadius.only(
@@ -610,78 +682,173 @@ class AuthViewModel extends BaseViewModel {
                               topLeft: Radius.circular(14.0),
                               topRight: Radius.circular(14.0))),
                       child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 16.h,
-                            ),
-                            paddedWing(
-                              value: 24.w,
-                              child: Center(
-                                child: TextView(
-                                  text: 'Accept Transaction',
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w500,
+                        child: Form(
+                          key: appWithKey,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 16.h,
+                              ),
+                              paddedWing(
+                                value: 24.w,
+                                child: Center(
+                                  child: TextView(
+                                    text: 'Accept Withdrawal',
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Divider(
-                              color: AppColor.inGrey,
-                              thickness: .5.r,
-                            ),
-                            paddedWing(
-                              value: 24.w,
-                              child: TextView(
-                                text:
-                                    'Are you sure you want to approve this transaction? The user will receive the funds in their wallet.',
-                                fontSize: 14.8.sp,
-                                textAlign: TextAlign.center,
+                              Divider(
+                                color: AppColor.inGrey,
+                                thickness: .5.r,
                               ),
-                            ),
-                            SizedBox(
-                              height: 40.h,
-                            ),
-                            paddedWing(
-                              value: 24.w,
-                              child: ButtonWidget(
-                                  buttonText: 'Approve Transaction',
-                                  color: AppColor.white,
-                                  border: 8,
-                                  isLoading: model.isLoading,
-                                  buttonColor: AppColor.primary,
-                                  buttonBorderColor: Colors.transparent,
-                                  onPressed: () {
-                                    approveTransaction(context, id: id);
-                                    model.notifyListeners();
-                                  }),
-                            ),
-                            SizedBox(
-                              height: 30.h,
-                            ),
-                            paddedWing(
-                              value: 24.w,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.info_outline,
-                                    color: AppColor.yellow,
-                                    size: 30.sp,
-                                  ),
-                                  SizedBox(
-                                    width: 22.w,
-                                  ),
-                                  TextView(
-                                    text:
-                                        'This action will credit the user’s wallet',
-                                    fontSize: 14.2.sp,
-                                    color: AppColor.yellow,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                              paddedWing(
+                                value: 24.w,
+                                child: TextView(
+                                  text:
+                                      'Are you sure you want to approve this withdrawal? The user will be debited from their wallet.',
+                                  fontSize: 16.8.sp,
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
-                            )
-                          ],
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              paddedWing(
+                                value: 24.w,
+                                child: TextFormWidget(
+                                  label: 'Enter reference number',
+                                  hint: 'Reference Number',
+                                  border: 10,
+                                  isFilled: true,
+                                  fillColor: AppColor.white,
+                                  controller: refIdController,
+                                  validator: AppValidator.validateString(),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              paddedWing(
+                                value: 24.w,
+                                child: GestureDetector(
+                                  onTap: () =>
+                                      model.getDocumentAlipayImage(context),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      SvgPicture.asset(AppImage.cal),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      TextView(
+                                        text:
+                                            'Click to select Proof of Payment',
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColor.darkGrey,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              model.filename != null
+                                  ? paddedWing(
+                                      value: 24.w,
+                                      child: Container(
+                                        padding: EdgeInsets.all(6.w),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: AppColor.inGrey),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            SvgPicture.asset(AppImage.pdf),
+                                            SizedBox(
+                                              width: 10.w,
+                                            ),
+                                            SizedBox(
+                                              width: 230.w,
+                                              child: TextView(
+                                                text: model.filename!,
+                                                fontSize: 14.sp,
+                                                textOverflow:
+                                                    TextOverflow.ellipsis,
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColor.darkGrey,
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox.shrink(),
+                              SizedBox(
+                                height: 40.h,
+                              ),
+                              paddedWing(
+                                value: 24.w,
+                                child: ButtonWidget(
+                                    buttonText: 'Approve Withdrawal',
+                                    color: AppColor.white,
+                                    border: 8,
+                                    isLoading: model.isLoading,
+                                    buttonColor: AppColor.primary,
+                                    buttonBorderColor: Colors.transparent,
+                                    onPressed: () {
+                                      if (appWithKey.currentState!.validate() &&
+                                          model.postUserVerificationCloudResponse !=
+                                              null) {
+                                        approveTransaction(context,
+                                            id: id,
+                                            approve: ApproveWithdrawalEntityModel(
+                                                proofOfPayment:
+                                                    '${model.postUserVerificationCloudResponse?.publicId}.${model.postUserVerificationCloudResponse?.format}',
+                                                reference:
+                                                    refIdController.text));
+                                        model.filename = null;
+                                        model.notifyListeners();
+                                      }
+                                    }),
+                              ),
+                              SizedBox(
+                                height: 30.h,
+                              ),
+                              paddedWing(
+                                value: 24.w,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.info_outline,
+                                      color: AppColor.yellow,
+                                      size: 30.sp,
+                                    ),
+                                    SizedBox(
+                                      width: 22.w,
+                                    ),
+                                    TextView(
+                                      text:
+                                          'This action will credit the user’s wallet',
+                                      fontSize: 14.2.sp,
+                                      color: AppColor.yellow,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 30.h,
+                              ),
+                            ],
+                          ),
                         ),
                       )),
                 );
@@ -1045,8 +1212,8 @@ class AuthViewModel extends BaseViewModel {
                               value: 20.w,
                               child: Center(
                                 child: TextView(
-                                  text: 'Reject Transaction',
-                                  fontSize: 18.sp,
+                                  text: 'Reject Withdrawal',
+                                  fontSize: 20.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -1059,8 +1226,8 @@ class AuthViewModel extends BaseViewModel {
                               value: 20.w,
                               child: TextView(
                                 text:
-                                    'Are you sure you want to reject this transaction? The user will be notified.',
-                                fontSize: 14.8.sp,
+                                    'Are you sure you want to reject this Withdrawal? The user will be notified.',
+                                fontSize: 16.8.sp,
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -1086,7 +1253,7 @@ class AuthViewModel extends BaseViewModel {
                             paddedWing(
                               value: 20.w,
                               child: ButtonWidget(
-                                  buttonText: 'Reject Transaction',
+                                  buttonText: 'Reject Withdrawal',
                                   color: AppColor.white,
                                   border: 8,
                                   isLoading: model.isLoading,
@@ -1352,14 +1519,16 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> approveTransaction(contxt, {String? id}) async {
+  Future<void> approveTransaction(contxt,
+      {String? id, ApproveWithdrawalEntityModel? approve}) async {
     try {
       _isLoading = true;
-      var res = await runBusyFuture(repositoryImply.approveTransaction(id!),
+      var res = await runBusyFuture(
+          repositoryImply.approveTransaction(id!, approve!),
           throwException: true);
       logger.d(res);
       _isLoading = false;
-      getAdminTransactions(contxt);
+      getWithdrawals(contxt);
 
       Navigator.pop(contxt);
     } catch (e) {
@@ -1377,7 +1546,7 @@ class AuthViewModel extends BaseViewModel {
           throwException: true);
       _isLoading = false;
       rejectController.text = '';
-      getAdminTransactions(contxt);
+      getWithdrawals(contxt);
       Navigator.pop(contxt);
     } catch (e) {
       _isLoading = false;

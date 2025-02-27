@@ -27,9 +27,9 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
     return ViewModelBuilder<AuthViewModel>.reactive(
         viewModelBuilder: () => locator<AuthViewModel>(),
         onViewModelReady: (model) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            model.getAdminStats(context);
-            model.getAdminTransactions(context);
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            await model.getAdminStats(context);
+            model.getWithdrawals(context);
           });
         },
         disposeViewModel: false,
@@ -127,7 +127,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                       : const SizedBox.shrink(),
                   model.pend.isNotEmpty
                       ? TextView(
-                          text: 'Pending Converts',
+                          text: 'Pending Withdrawals',
                           color: AppColor.greyKind,
                           fontSize: 19.2.sp,
                           fontWeight: FontWeight.w500,
@@ -170,10 +170,20 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                             ),
                             TextView(
                               text:
-                                  '${getAllCurrency(o.fromCurrency)}${oCcy.format(double.parse(o.fromAmount!))} -> ${oCcy.format(double.parse(o.toAmount!))}${getAllCurrency(o.toCurrency)}',
+                                  '${getCurrency()}${oCcy.format(double.parse(o.amount!))} ',
                               textStyle: TextStyle(
                                 fontSize: 26.sp,
                                 fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            TextView(
+                              text: '${o.bankName} (${o.accountNumber})',
+                              textStyle: TextStyle(
+                                fontSize: 18.20.sp,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                             SizedBox(

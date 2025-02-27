@@ -16,6 +16,7 @@ Kyc _$KycFromJson(Map<String, dynamic> json) => Kyc(
       documentType: json['documentType'] as String?,
       documentNumber: json['documentNumber'] as String?,
       documentImage: json['documentImage'] as String?,
+      passportPhoto: json['passportPhoto'] as String?,
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
@@ -35,6 +36,7 @@ Map<String, dynamic> _$KycToJson(Kyc instance) => <String, dynamic>{
       'documentType': instance.documentType,
       'documentNumber': instance.documentNumber,
       'documentImage': instance.documentImage,
+      'passportPhoto': instance.passportPhoto,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'deletedAt': instance.deletedAt,

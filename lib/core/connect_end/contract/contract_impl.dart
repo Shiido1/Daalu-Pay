@@ -1,3 +1,4 @@
+import 'package:daalu_pay_admin/core/connect_end/model/approve_withdrawal_entity_model.dart';
 import 'package:daalu_pay_admin/core/connect_end/model/get_all_user_response_model/get_all_user_response_model.dart';
 import 'package:daalu_pay_admin/core/connect_end/model/get_users_receipt_response_model/get_users_receipt_response_model.dart';
 import 'package:injectable/injectable.dart';
@@ -6,6 +7,7 @@ import '../../core_folder/app/app.locator.dart';
 import '../model/approve_receipt_entity_model.dart';
 import '../model/get_admin_stats_response_model/get_admin_stats_response_model.dart';
 import '../model/get_admin_transactions_response_model/get_admin_transactions_response_model.dart';
+import '../model/get_all_withdrawals_response_model/get_all_withdrawals_response_model.dart';
 import '../model/login_entity_model.dart';
 import '../model/login_response_model/login_response_model.dart';
 import '../model/post_user_cloud_entity_model.dart';
@@ -20,6 +22,9 @@ class AuthContractsImpl {
   Future<GetAllUserResponseModel> getAllUsers() async => await _api.allUsers();
   Future<GetAdminStatsResponseModel> adminStats() async =>
       await _api.adminStats();
+
+  Future<GetAllWithdrawalsResponseModel> getWithdrawal() async =>
+      await _api.getWithdrawals();
   Future<GetAdminTransactionsResponseModel> adminTransactions() async =>
       await _api.adminTransactions();
   Future<dynamic> approveUser(String id) async => await _api.approveUser(id);
@@ -29,8 +34,9 @@ class AuthContractsImpl {
   Future<dynamic> unsuspendUser({String? id, String? text}) async =>
       await _api.unsuspendUser(id: id, text: text);
   Future<dynamic> delete(String id) async => await _api.delete(id);
-  Future<dynamic> approveTransaction(String id) async =>
-      await _api.approveTransactions(id);
+  Future<dynamic> approveTransaction(
+          String id, ApproveWithdrawalEntityModel approve) async =>
+      await _api.approveTransactions(id, approve);
   Future<dynamic> denyTransaction({String? id, String? text}) async =>
       await _api.denyTransactions(id: id, text: text);
   Future<GetUsersReceiptResponseModel> getUsersReceipts() async =>

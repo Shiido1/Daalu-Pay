@@ -4,9 +4,11 @@ import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/manager/shared_preference.dart';
 import '../contract/contract_impl.dart';
 import '../model/approve_receipt_entity_model.dart';
+import '../model/approve_withdrawal_entity_model.dart';
 import '../model/get_admin_stats_response_model/get_admin_stats_response_model.dart';
 import '../model/get_admin_transactions_response_model/get_admin_transactions_response_model.dart';
 import '../model/get_all_user_response_model/get_all_user_response_model.dart';
+import '../model/get_all_withdrawals_response_model/get_all_withdrawals_response_model.dart';
 import '../model/get_users_receipt_response_model/get_users_receipt_response_model.dart';
 import '../model/login_entity_model.dart';
 import '../model/login_response_model/login_response_model.dart';
@@ -27,6 +29,11 @@ class AuthRepoImpl {
 
   Future<GetAllUserResponseModel> getAllUsers() async {
     final response = await _contract.getAllUsers();
+    return response;
+  }
+
+  Future<GetAllWithdrawalsResponseModel> withdrawals() async {
+    final response = await _contract.getWithdrawal();
     return response;
   }
 
@@ -65,8 +72,9 @@ class AuthRepoImpl {
     return response;
   }
 
-  Future<dynamic> approveTransaction(String id) async {
-    final response = await _contract.approveTransaction(id);
+  Future<dynamic> approveTransaction(
+      String id, ApproveWithdrawalEntityModel approve) async {
+    final response = await _contract.approveTransaction(id, approve);
     return response;
   }
 

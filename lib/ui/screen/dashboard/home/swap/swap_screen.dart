@@ -90,17 +90,29 @@ class SwapScreen extends StatelessWidget {
                     height: 20.h,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(
+                        width: 10.w,
+                      ),
                       const Icon(
                         Icons.info_outline,
                         color: AppColor.yellow,
                       ),
-                      TextView(
-                        text:
-                            ' Service charges may apply when exchanging currencies.',
-                        fontSize: 11.0.sp,
-                        fontWeight: FontWeight.w400,
+                      SizedBox(
+                        width: 20.w,
+                      ),
+                      SizedBox(
+                        width: 250.w,
+                        child: TextView(
+                          text:
+                              ' Service charges may apply when exchanging currencies.',
+                          fontSize: 14.0.sp,
+                          textAlign: TextAlign.center,
+                          maxLines: 3,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ],
                   ),
@@ -171,14 +183,15 @@ class SwapScreen extends StatelessWidget {
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextView(
-                        text: 'You will recieve approximately ',
-                        fontSize: 14.sp,
+                        text: 'Approximately Receiving',
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.w400,
                       ),
                       SizedBox(
-                        width: 2.w,
+                        width: 5.2.w,
                       ),
                       SizedBox(
                         width: 140.w,
@@ -186,12 +199,12 @@ class SwapScreen extends StatelessWidget {
                             text:
                                 '${getAllCurrency(model.toCurrencyCode)}${oCcy.format(double.parse(model.toCurrencylController.text))}',
                             maxLines: 2,
-                            textOverflow: TextOverflow.fade,
                             textAlign: TextAlign.end,
                             textStyle: TextStyle(
-                              fontSize: 15.6.sp,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                               color: AppColor.black,
+                              overflow: TextOverflow.fade,
                             )),
                       ),
                     ],
@@ -214,7 +227,7 @@ class SwapScreen extends StatelessWidget {
                             children: [
                               TextView(
                                 text: 'Exchange Rate',
-                                fontSize: 15.4.sp,
+                                fontSize: 17.0.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                               Wrap(children: [
@@ -232,7 +245,7 @@ class SwapScreen extends StatelessWidget {
                                 TextView(
                                   text:
                                       '1 ${model.fromCurrencyCode} = ${model.exchangeRateResponseModel?.data?.rate ?? 0} ${model.toCurrencyCode}',
-                                  fontSize: 14.4.sp,
+                                  fontSize: 16.4.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ]),
@@ -251,12 +264,12 @@ class SwapScreen extends StatelessWidget {
                             children: [
                               TextView(
                                 text: 'Transfer fees',
-                                fontSize: 15.4.sp,
+                                fontSize: 17.4.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                               TextView(
                                 text: model.transferFee(),
-                                fontSize: 15.4.sp,
+                                fontSize: 17.4.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ],
@@ -274,12 +287,12 @@ class SwapScreen extends StatelessWidget {
                             children: [
                               TextView(
                                 text: 'Processing time',
-                                fontSize: 15.4.sp,
+                                fontSize: 17.4.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                               TextView(
                                 text: '2-5 Minutes',
-                                fontSize: 15.4.sp,
+                                fontSize: 17.4.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ],

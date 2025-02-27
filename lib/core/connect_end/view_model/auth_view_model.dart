@@ -1907,52 +1907,52 @@ class AuthViewModel extends BaseViewModel {
     showModalBottomSheet(
         context: context,
         builder: (builder) {
-          return ViewModelBuilder<AuthViewModel>.reactive(
-              viewModelBuilder: () => AuthViewModel(),
-              onViewModelReady: (model) {},
-              disposeViewModel: false,
-              builder: (_, AuthViewModel model, __) {
-                return Container(
-                  height: 500.0,
-                  decoration: BoxDecoration(
-                      color: AppColor.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(14.0),
-                          topRight: const Radius.circular(14.0))),
-                  child: Container(
-                      decoration: BoxDecoration(
-                          color: AppColor.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: const Radius.circular(14.0),
-                              topRight: const Radius.circular(14.0))),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 6.0.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(12.w),
-                            child: TextFormWidget(
-                              label: 'Search country',
-                              hint: '',
-                              border: 10,
-                              isFilled: true,
-                              fillColor: AppColor.white,
-                              onChange: (p0) {
-                                querySignUpCountry = p0;
-                                model.notifyListeners();
-                              },
-                              suffixIcon: Icons.search_sharp,
-                              controller: signUpCountryController,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 16.h,
-                          ),
-                          Expanded(
-                            child: SizedBox(
-                              height: 340,
-                              child: SingleChildScrollView(
+          return Container(
+            height: 500.0,
+            decoration: BoxDecoration(
+                color: AppColor.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: const Radius.circular(14.0),
+                    topRight: const Radius.circular(14.0))),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: AppColor.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(14.0),
+                        topRight: const Radius.circular(14.0))),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 6.0.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(12.w),
+                      child: TextFormWidget(
+                        label: 'Search country',
+                        hint: '',
+                        border: 10,
+                        isFilled: true,
+                        fillColor: AppColor.white,
+                        onChange: (p0) {
+                          querySignUpCountry = p0;
+                          // model.notifyListeners();
+                        },
+                        suffixIcon: Icons.search_sharp,
+                        controller: signUpCountryController,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16.h,
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        height: 340,
+                        child: ViewModelBuilder<AuthViewModel>.reactive(
+                            viewModelBuilder: () => AuthViewModel(),
+                            onViewModelReady: (model) {},
+                            disposeViewModel: false,
+                            builder: (_, AuthViewModel model, __) {
+                              return SingleChildScrollView(
                                 child: Column(
                                   children: [
                                     querySignUpCountry == ''
@@ -1968,7 +1968,7 @@ class AuthViewModel extends BaseViewModel {
                                                             e['country']!;
                                                         selectCountry =
                                                             e['code'];
-                                                        model.notifyListeners();
+                                                        // model.notifyListeners();
                                                         Navigator.pop(context);
                                                         notifyListeners();
                                                       },
@@ -2048,8 +2048,8 @@ class AuthViewModel extends BaseViewModel {
 
                                                           selectCountry =
                                                               e['code'];
-                                                          model
-                                                              .notifyListeners();
+                                                          // model
+                                                          //     .notifyListeners();
 
                                                           Future.delayed(
                                                               Duration(
@@ -2128,16 +2128,16 @@ class AuthViewModel extends BaseViewModel {
                                     ),
                                   ],
                                 ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 26.h,
-                          ),
-                        ],
-                      )),
-                );
-              });
+                              );
+                            }),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 26.h,
+                    ),
+                  ],
+                )),
+          );
         });
   }
 
@@ -2875,6 +2875,7 @@ class AuthViewModel extends BaseViewModel {
         withdrawBankAccount.text = '';
 
         await AppUtils.snackbar(contxt, message: 'Withdrawal succcessful..!');
+        withdrawHistory(contxt);
         navigate.back();
         Navigator.pop(contxt);
         Navigator.pop(contxt);

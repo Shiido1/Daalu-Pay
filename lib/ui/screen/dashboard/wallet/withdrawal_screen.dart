@@ -356,7 +356,14 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
                                                 text: o.status?.capitalize() ??
                                                     '',
                                                 fontSize: 13.20.sp,
-                                                color: AppColor.black,
+                                                color: o.status
+                                                            ?.toLowerCase() ==
+                                                        'approved'
+                                                    ? AppColor.green
+                                                    : o.status?.toLowerCase() ==
+                                                            'rejected'
+                                                        ? AppColor.red
+                                                        : AppColor.yellow,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ],

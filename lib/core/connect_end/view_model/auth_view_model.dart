@@ -662,26 +662,25 @@ class AuthViewModel extends BaseViewModel {
   void modalBottomApproveSheet({context, String? id}) {
     showModalBottomSheet(
         context: context,
+        isScrollControlled: true, // Enables full-screen dragging
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
         builder: (builder) {
           return ViewModelBuilder<AuthViewModel>.reactive(
               viewModelBuilder: () => locator<AuthViewModel>(),
               onViewModelReady: (model) {},
               disposeViewModel: false,
               builder: (_, AuthViewModel model, __) {
-                return Container(
-                  height: 540.h,
-                  decoration: const BoxDecoration(
-                      color: AppColor.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(14.0),
-                          topRight: Radius.circular(14.0))),
-                  child: Container(
-                      decoration: const BoxDecoration(
-                          color: AppColor.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(14.0),
-                              topRight: Radius.circular(14.0))),
-                      child: SingleChildScrollView(
+                return DraggableScrollableSheet(
+                    expand: false,
+                    initialChildSize: 0.5, // 50% of screen height
+                    minChildSize: 0.3, // Can be dragged to 30% of screen height
+                    maxChildSize: 0.9, // Can be dragged to 90% of screen height
+                    builder: (context, scrollController) {
+                      return SingleChildScrollView(
+                        controller: scrollController,
                         child: Form(
                           key: appWithKey,
                           child: Column(
@@ -850,8 +849,8 @@ class AuthViewModel extends BaseViewModel {
                             ],
                           ),
                         ),
-                      )),
-                );
+                      );
+                    });
               });
         });
   }
@@ -871,7 +870,6 @@ class AuthViewModel extends BaseViewModel {
               disposeViewModel: false,
               builder: (_, AuthViewModel model, __) {
                 return Container(
-                  height: 300.0,
                   decoration: const BoxDecoration(
                       color: AppColor.white,
                       borderRadius: BorderRadius.only(
@@ -1183,26 +1181,25 @@ class AuthViewModel extends BaseViewModel {
   void modalBottomRejectSheet({context, String? id}) {
     showModalBottomSheet(
         context: context,
+        isScrollControlled: true, // Enables full-screen dragging
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
         builder: (builder) {
           return ViewModelBuilder<AuthViewModel>.reactive(
               viewModelBuilder: () => locator<AuthViewModel>(),
               onViewModelReady: (model) {},
               disposeViewModel: false,
               builder: (_, AuthViewModel model, __) {
-                return Container(
-                  height: 400.0,
-                  decoration: const BoxDecoration(
-                      color: AppColor.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(14.0),
-                          topRight: Radius.circular(14.0))),
-                  child: Container(
-                      decoration: const BoxDecoration(
-                          color: AppColor.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(14.0),
-                              topRight: Radius.circular(14.0))),
-                      child: SingleChildScrollView(
+                return DraggableScrollableSheet(
+                    expand: false,
+                    initialChildSize: 0.5, // 50% of screen height
+                    minChildSize: 0.3, // Can be dragged to 30% of screen height
+                    maxChildSize: 0.9, // Can be dragged to 90% of screen height
+                    builder: (context, scrollController) {
+                      return SingleChildScrollView(
+                        controller: scrollController,
                         child: Column(
                           children: [
                             SizedBox(
@@ -1294,8 +1291,8 @@ class AuthViewModel extends BaseViewModel {
                             )
                           ],
                         ),
-                      )),
-                );
+                      );
+                    });
               });
         });
   }

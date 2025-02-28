@@ -845,6 +845,28 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<void> getUserRefresh() async {
+    try {
+      _isLoading = true;
+      _userResponseModel =
+          await runBusyFuture(repositoryImply.userData(), throwException: true);
+
+      if (_userResponseModel?.status == 'success') {
+        _isLoading = false;
+      }
+    } catch (e) {
+      _isLoading = false;
+      logger.d(e);
+    }
+    notifyListeners();
+  }
+
+  Future<void> refreshHome() async {
+    getUserRefresh();
+    getStatisticsRefresh();
+    notifyListeners();
+  }
+
   // get user statistics data api call
 
   Future<void> getStatistics(contxt) async {
@@ -861,6 +883,23 @@ class AuthViewModel extends BaseViewModel {
       _isLoading = false;
       logger.d(e);
       AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getStatisticsRefresh() async {
+    try {
+      _isLoading = true;
+      _getStatsResponseModel = await runBusyFuture(
+          repositoryImply.getStatistics(),
+          throwException: true);
+
+      if (_getStatsResponseModel?.status == 'success') {
+        _isLoading = false;
+      }
+    } catch (e) {
+      _isLoading = false;
+      logger.d(e);
     }
     notifyListeners();
   }
@@ -952,7 +991,7 @@ class AuthViewModel extends BaseViewModel {
               disposeViewModel: false,
               builder: (_, AuthViewModel model, __) {
                 return Container(
-                  height: 400.0,
+                  height: 380.0,
                   decoration: BoxDecoration(
                       color: AppColor.white,
                       borderRadius: BorderRadius.only(
@@ -999,6 +1038,13 @@ class AuthViewModel extends BaseViewModel {
                                     queryFrom == ''
                                         ? Column(
                                             children: [
+                                              if (model.isLoading)
+                                                Center(
+                                                  child: SpinKitCircle(
+                                                    color: AppColor.primary,
+                                                    size: 37.8.sp,
+                                                  ),
+                                                ),
                                               if (model.getStatsResponseModel !=
                                                   null)
                                                 ...model.getStatsResponseModel!
@@ -1242,6 +1288,13 @@ class AuthViewModel extends BaseViewModel {
                                     queryFrom == ''
                                         ? Column(
                                             children: [
+                                              if (model.isLoading)
+                                                Center(
+                                                  child: SpinKitCircle(
+                                                    color: AppColor.primary,
+                                                    size: 37.8.sp,
+                                                  ),
+                                                ),
                                               if (model.getStatsResponseModel !=
                                                   null)
                                                 ...model.getStatsResponseModel!
@@ -1476,6 +1529,13 @@ class AuthViewModel extends BaseViewModel {
                                     queryTo == ''
                                         ? Column(
                                             children: [
+                                              if (model.isLoading)
+                                                Center(
+                                                  child: SpinKitCircle(
+                                                    color: AppColor.primary,
+                                                    size: 37.8.sp,
+                                                  ),
+                                                ),
                                               if (model.getStatsResponseModel !=
                                                   null)
                                                 ...model.getStatsResponseModel!
@@ -2206,125 +2266,133 @@ class AuthViewModel extends BaseViewModel {
   void modalBottomSheetMenuWithdrawFund(context) {
     showModalBottomSheet(
         context: context,
+        isScrollControlled: true, // Enables full-screen dragging
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
         builder: (builder) {
           return ViewModelBuilder<AuthViewModel>.reactive(
               viewModelBuilder: () => AuthViewModel(),
               onViewModelReady: (model) {},
               builder: (_, AuthViewModel model, __) {
-                return Container(
-                  height: 500.0,
-                  decoration: BoxDecoration(
-                      color: AppColor.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(14.0),
-                          topRight: const Radius.circular(14.0))),
-                  child: SingleChildScrollView(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 20.w, horizontal: 20.w),
-                    child: Form(
-                      key: withdrawFormkey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextView(
-                            text: 'Withdraw Funds',
-                            color: AppColor.black,
-                            fontSize: 22.2.sp,
-                            fontWeight: FontWeight.w600,
+                return DraggableScrollableSheet(
+                    expand: false,
+                    initialChildSize: 0.5, // 50% of screen height
+                    minChildSize: 0.3, // Can be dragged to 30% of screen height
+                    maxChildSize: 0.9, // Can be dragged to 90% of screen height
+                    builder: (context, scrollController) {
+                      return SingleChildScrollView(
+                        controller: scrollController,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 20.w, horizontal: 20.w),
+                        child: Form(
+                          key: withdrawFormkey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextView(
+                                text: 'Withdraw Funds',
+                                color: AppColor.black,
+                                fontSize: 22.2.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              SizedBox(
+                                height: 2.6.h,
+                              ),
+                              TextView(
+                                text:
+                                    'Enter the amount and select your bank account for withdrawal.',
+                                color: AppColor.grey,
+                                fontSize: 16.2.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              TextFormWidget(
+                                label: '0.00',
+                                hint: 'Amount',
+                                border: 10,
+                                isFilled: true,
+                                fillColor: AppColor.white,
+                                controller: withdrawAmount,
+                                validator: AppValidator.validateString(),
+                              ),
+                              TextView(
+                                text: 'Enter the amount you wish to withdraw.',
+                                color: AppColor.grey,
+                                fontSize: 16.2.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              TextFormWidget(
+                                label: 'Select a bank account',
+                                hint: 'Bank Account',
+                                border: 10,
+                                isFilled: true,
+                                readOnly: true,
+                                fillColor: AppColor.white,
+                                controller: withdrawBankAccount,
+                                validator: AppValidator.validateString(),
+                                suffixWidget: IconButton(
+                                    onPressed: () =>
+                                        shwUserAccountDialog(context),
+                                    icon: Icon(
+                                      Icons.arrow_drop_down_sharp,
+                                      color: AppColor.black,
+                                    )),
+                              ),
+                              TextView(
+                                text:
+                                    'Select the bank account for the withdrawal.',
+                                color: AppColor.grey,
+                                fontSize: 16.2.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              SizedBox(
+                                height: 40.h,
+                              ),
+                              ButtonWidget(
+                                  buttonText: 'Withdraw',
+                                  color: !model.isLoading
+                                      ? AppColor.white
+                                      : AppColor.grey,
+                                  border: 8,
+                                  buttonColor: AppColor.primary,
+                                  buttonBorderColor: Colors.transparent,
+                                  onPressed: () {
+                                    if (withdrawFormkey.currentState!
+                                        .validate()) {
+                                      showWithrawMoneyDialog(
+                                          context,
+                                          withdrawAmount.text,
+                                          withdrawBankAccount.text,
+                                          withdraw: WithdrawalEntityModel(
+                                              amount: withdrawAmount.text,
+                                              bankAccountId: bankId));
+                                    }
+                                  }),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              TextView(
+                                text:
+                                    'Please ensure all details are correct before submitting.',
+                                color: AppColor.grey,
+                                fontSize: 16.2.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              SizedBox(
+                                height: 40.h,
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            height: 2.6.h,
-                          ),
-                          TextView(
-                            text:
-                                'Enter the amount and select your bank account for withdrawal.',
-                            color: AppColor.grey,
-                            fontSize: 16.2.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          TextFormWidget(
-                            label: '0.00',
-                            hint: 'Amount',
-                            border: 10,
-                            isFilled: true,
-                            fillColor: AppColor.white,
-                            controller: withdrawAmount,
-                            validator: AppValidator.validateString(),
-                          ),
-                          TextView(
-                            text: 'Enter the amount you wish to withdraw.',
-                            color: AppColor.grey,
-                            fontSize: 16.2.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          TextFormWidget(
-                            label: 'Select a bank account',
-                            hint: 'Bank Account',
-                            border: 10,
-                            isFilled: true,
-                            readOnly: true,
-                            fillColor: AppColor.white,
-                            controller: withdrawBankAccount,
-                            validator: AppValidator.validateString(),
-                            suffixWidget: IconButton(
-                                onPressed: () => shwUserAccountDialog(context),
-                                icon: Icon(
-                                  Icons.arrow_drop_down_sharp,
-                                  color: AppColor.black,
-                                )),
-                          ),
-                          TextView(
-                            text: 'Select the bank account for the withdrawal.',
-                            color: AppColor.grey,
-                            fontSize: 16.2.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          SizedBox(
-                            height: 40.h,
-                          ),
-                          ButtonWidget(
-                              buttonText: 'Withdraw',
-                              color: !model.isLoading
-                                  ? AppColor.white
-                                  : AppColor.grey,
-                              border: 8,
-                              buttonColor: AppColor.primary,
-                              buttonBorderColor: Colors.transparent,
-                              onPressed: () {
-                                if (withdrawFormkey.currentState!.validate()) {
-                                  showWithrawMoneyDialog(
-                                      context,
-                                      withdrawAmount.text,
-                                      withdrawBankAccount.text,
-                                      withdraw: WithdrawalEntityModel(
-                                          amount: withdrawAmount.text,
-                                          bankAccountId: bankId));
-                                }
-                              }),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          TextView(
-                            text:
-                                'Please ensure all details are correct before submitting.',
-                            color: AppColor.grey,
-                            fontSize: 16.2.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          SizedBox(
-                            height: 40.h,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+                        ),
+                      );
+                    });
               });
         });
   }
@@ -2332,116 +2400,123 @@ class AuthViewModel extends BaseViewModel {
   void modalBottomSheetMenuAddAccount(context) {
     showModalBottomSheet(
         context: context,
+        isScrollControlled: true, // Enables full-screen dragging
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
         builder: (builder) {
           return ViewModelBuilder<AuthViewModel>.reactive(
               viewModelBuilder: () => AuthViewModel(),
               onViewModelReady: (model) {},
               disposeViewModel: false,
               builder: (_, AuthViewModel model, __) {
-                return Container(
-                  height: 500.0,
-                  decoration: BoxDecoration(
-                      color: AppColor.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(14.0),
-                          topRight: const Radius.circular(14.0))),
-                  child: SingleChildScrollView(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 20.w, horizontal: 20.w),
-                    child: Form(
-                      key: addAccntFormkey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextView(
-                            text: 'Add Bank Account',
-                            color: AppColor.black,
-                            fontSize: 21.2.sp,
-                            fontWeight: FontWeight.w600,
+                return DraggableScrollableSheet(
+                    expand: false,
+                    initialChildSize: 0.5, // 70% of screen height
+                    minChildSize: 0.3, // Can be dragged to 30% of screen height
+                    maxChildSize: .9, // Can be dragged to 90% of screen height
+                    builder: (context, scrollControll) {
+                      return SingleChildScrollView(
+                        controller: scrollControll,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 30.w, horizontal: 20.w),
+                        child: Form(
+                          key: addAccntFormkey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextView(
+                                text: 'Add Bank Account',
+                                color: AppColor.black,
+                                fontSize: 21.2.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              SizedBox(
+                                height: 2.6.h,
+                              ),
+                              TextView(
+                                text: 'Enter your bank account details.',
+                                color: AppColor.grey,
+                                fontSize: 16.2.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              TextFormWidget(
+                                label: 'Enter your account number',
+                                hint: 'Amount Number',
+                                border: 10,
+                                isFilled: true,
+                                fillColor: AppColor.white,
+                                controller: addAccuntNumber,
+                                prefixIcon: Icons.credit_card,
+                                prefixIconColor: AppColor.grey,
+                                validator: AppValidator.validateString(),
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              TextFormWidget(
+                                label: 'Enter your bank name',
+                                hint: 'Bank Name',
+                                border: 10,
+                                isFilled: true,
+                                fillColor: AppColor.white,
+                                controller: addBankName,
+                                prefixIcon: Icons.backup_table_outlined,
+                                prefixIconColor: AppColor.grey,
+                                validator: AppValidator.validateString(),
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              TextFormWidget(
+                                label: 'Enter the account name',
+                                hint: 'Account Name',
+                                border: 10,
+                                isFilled: true,
+                                fillColor: AppColor.white,
+                                controller: addAccuntName,
+                                prefixIcon: Icons.person_outline_sharp,
+                                prefixIconColor: AppColor.grey,
+                                validator: AppValidator.validateString(),
+                              ),
+                              SizedBox(
+                                height: 40.h,
+                              ),
+                              ButtonWidget(
+                                  buttonText: 'Add Acount',
+                                  color: !model.isLoading
+                                      ? AppColor.white
+                                      : AppColor.grey,
+                                  border: 8,
+                                  isLoading: _isLoading,
+                                  buttonColor: !_isLoading
+                                      ? AppColor.primary
+                                      : AppColor.inGrey,
+                                  buttonBorderColor: Colors.transparent,
+                                  onPressed: () {
+                                    if (addAccntFormkey.currentState!
+                                        .validate()) {
+                                      addBankAccount(context,
+                                          account: AddAccountEntityModel(
+                                              accountName: addAccuntName.text,
+                                              accountNumber:
+                                                  addAccuntNumber.text,
+                                              bankName: addBankName.text));
+                                      model.notifyListeners();
+                                    }
+                                  }),
+                              SizedBox(
+                                height: 250.h,
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            height: 2.6.h,
-                          ),
-                          TextView(
-                            text: 'Enter your bank account details.',
-                            color: AppColor.grey,
-                            fontSize: 16.2.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          TextFormWidget(
-                            label: 'Enter your account number',
-                            hint: 'Amount Number',
-                            border: 10,
-                            isFilled: true,
-                            fillColor: AppColor.white,
-                            controller: addAccuntNumber,
-                            prefixIcon: Icons.credit_card,
-                            prefixIconColor: AppColor.grey,
-                            validator: AppValidator.validateString(),
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          TextFormWidget(
-                            label: 'Enter your bank name',
-                            hint: 'Bank Name',
-                            border: 10,
-                            isFilled: true,
-                            fillColor: AppColor.white,
-                            controller: addBankName,
-                            prefixIcon: Icons.backup_table_outlined,
-                            prefixIconColor: AppColor.grey,
-                            validator: AppValidator.validateString(),
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          TextFormWidget(
-                            label: 'Enter the account name',
-                            hint: 'Account Name',
-                            border: 10,
-                            isFilled: true,
-                            fillColor: AppColor.white,
-                            controller: addAccuntName,
-                            prefixIcon: Icons.person_outline_sharp,
-                            prefixIconColor: AppColor.grey,
-                            validator: AppValidator.validateString(),
-                          ),
-                          SizedBox(
-                            height: 40.h,
-                          ),
-                          ButtonWidget(
-                              buttonText: 'Add Acount',
-                              color: !model.isLoading
-                                  ? AppColor.white
-                                  : AppColor.grey,
-                              border: 8,
-                              isLoading: _isLoading,
-                              buttonColor: !_isLoading
-                                  ? AppColor.primary
-                                  : AppColor.inGrey,
-                              buttonBorderColor: Colors.transparent,
-                              onPressed: () {
-                                if (addAccntFormkey.currentState!.validate()) {
-                                  addBankAccount(context,
-                                      account: AddAccountEntityModel(
-                                          accountName: addAccuntName.text,
-                                          accountNumber: addAccuntNumber.text,
-                                          bankName: addBankName.text));
-                                  model.notifyListeners();
-                                }
-                              }),
-                          SizedBox(
-                            height: 40.h,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+                        ),
+                      );
+                    });
               });
         });
   }
@@ -2532,6 +2607,25 @@ class AuthViewModel extends BaseViewModel {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);
     }
+    notifyListeners();
+  }
+
+  Future<void> getSwapTransactionRefresh() async {
+    try {
+      _isLoading = true;
+      _getSwappedTransactionsResponseModel =
+          await runBusyFuture(repositoryImply.getSwap(), throwException: true);
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      // AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> refreshTransaction() async {
+    getSwapTransactionRefresh();
+    getStatisticsRefresh();
     notifyListeners();
   }
 

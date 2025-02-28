@@ -32,180 +32,167 @@ class TransactionScreen extends StatelessWidget {
         builder: (_, AuthViewModel model, __) {
           return Scaffold(
             backgroundColor: AppColor.light,
-            body: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(vertical: 20.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 60.h,
-                  ),
-                  paddedWing(
-                    child: Center(
-                        child: TextView(
-                      text: 'Transactions',
-                      fontSize: 22.0.sp,
-                      fontWeight: FontWeight.w500,
-                    )),
-                  ),
-                  // SizedBox(
-                  //   height: 30.h,
-                  // ),
-                  // paddedWing(
-                  //   child: TextFormWidget(
-                  //     label: 'Transaction ID',
-                  //     labelColor: AppColor.grey,
-                  //     hint: null,
-                  //     border: 10,
-                  //     borderColor: AppColor.transparent,
-                  //     isFilled: true,
-                  //     fillColor: AppColor.inGreyOut,
-                  //     prefixWidget: Padding(
-                  //       padding: EdgeInsets.all(12.w),
-                  //       child: SvgPicture.asset(
-                  //         AppImage.search,
-                  //       ),
-                  //     ),
-                  //     // controller: emailController,
-                  //     // validator: AppValidator.validateEmail(),
-                  //   ),
-                  // ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(horizontal: 6.w),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: AppColor.grey),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width: 4.4.w,
-                                ),
-                                TextView(
-                                  text: model.transStats,
-                                  color: AppColor.darkGrey,
-                                  fontSize: 20.4.sp,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                PopupMenuButton(
-                                  onSelected: (value) {
-                                    // your logic
-                                  },
-                                  color: AppColor.white,
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down_rounded,
-                                    size: 20.sp,
+            body: RefreshIndicator(
+              backgroundColor: AppColor.white,
+              color: AppColor.primary,
+              onRefresh: model.refreshTransaction,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(vertical: 20.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 60.h,
+                    ),
+                    paddedWing(
+                      child: Center(
+                          child: TextView(
+                        text: 'Transactions',
+                        fontSize: 22.0.sp,
+                        fontWeight: FontWeight.w500,
+                      )),
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.symmetric(horizontal: 6.w),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: AppColor.grey),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: 4.4.w,
                                   ),
-                                  itemBuilder: (BuildContext bc) {
-                                    return [
-                                      if (model.getStatsResponseModel != null)
-                                        ...model.getStatsResponseModel!.data!
-                                            .wallets!
-                                            .map(
-                                          (e) => PopupMenuItem(
-                                            value: '/${e.currency}',
-                                            onTap: () {
-                                              model.transStats = e.currency!;
-                                              model
-                                                  .groupSwapTransationByFromCur(
-                                                      context);
-                                              model.notifyListeners();
-                                            },
-                                            child: TextView(
-                                              text: e.currency!,
-                                              fontSize: 20.sp,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        )
-                                    ];
-                                  },
-                                )
-                              ],
-                            )),
-                      ),
-                      Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: AppColor.grey),
-                          ),
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                TextView(
-                                  text: model.filterDateTime ?? '',
-                                  color: AppColor.darkGrey,
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                SizedBox(
-                                  width: 1.2.w,
-                                ),
-                                IconButton(
-                                    onPressed: () =>
-                                        model.filterTransDate(context),
+                                  TextView(
+                                    text: model.transStats,
+                                    color: AppColor.darkGrey,
+                                    fontSize: 20.4.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  PopupMenuButton(
+                                    onSelected: (value) {
+                                      // your logic
+                                    },
+                                    color: AppColor.white,
                                     icon: Icon(
                                       Icons.keyboard_arrow_down_rounded,
                                       size: 20.sp,
-                                    ))
-                              ],
+                                    ),
+                                    itemBuilder: (BuildContext bc) {
+                                      return [
+                                        if (model.getStatsResponseModel != null)
+                                          ...model.getStatsResponseModel!.data!
+                                              .wallets!
+                                              .map(
+                                            (e) => PopupMenuItem(
+                                              value: '/${e.currency}',
+                                              onTap: () {
+                                                model.transStats = e.currency!;
+                                                model
+                                                    .groupSwapTransationByFromCur(
+                                                        context);
+                                                model.notifyListeners();
+                                              },
+                                              child: TextView(
+                                                text: e.currency!,
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          )
+                                      ];
+                                    },
+                                  )
+                                ],
+                              )),
+                        ),
+                        Expanded(
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: AppColor.grey),
+                            ),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  TextView(
+                                    text: model.filterDateTime ?? '',
+                                    color: AppColor.darkGrey,
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  SizedBox(
+                                    width: 1.2.w,
+                                  ),
+                                  IconButton(
+                                      onPressed: () =>
+                                          model.filterTransDate(context),
+                                      icon: Icon(
+                                        Icons.keyboard_arrow_down_rounded,
+                                        size: 20.sp,
+                                      ))
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  paddedWing(
-                    child: TextView(
-                      text: 'Recent Transaction',
-                      color: AppColor.greyKind,
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  model.getSwappedTransactionsResponseModel == null
-                      ? SpinKitCircle(
-                          color: AppColor.primary,
-                          size: 43.0.sp,
                         )
-                      : model.getSwappedTransactionsResponseModel!.data!.isEmpty
-                          ? Center(
-                              child: TextView(
-                                text: 'No Transations',
-                                fontSize: 20.sp,
-                              ),
-                            )
-                          : Column(
-                              children: [
-                                if (model.transactionListData!.isNotEmpty)
-                                  ...model.transactionListData!.reversed
-                                      .map((e) => recentTransWidget(
-                                            e: e,
-                                          ))
-                                else
-                                  ...model.getSwappedTransactionsResponseModel!
-                                      .data!.reversed
-                                      .map((e) => recentTransWidget(
-                                            e: e,
-                                          ))
-                              ],
-                            )
-                ],
+                      ],
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    paddedWing(
+                      child: TextView(
+                        text: 'Recent Transaction',
+                        color: AppColor.greyKind,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    model.getSwappedTransactionsResponseModel == null
+                        ? SpinKitCircle(
+                            color: AppColor.primary,
+                            size: 43.0.sp,
+                          )
+                        : model.getSwappedTransactionsResponseModel!.data!
+                                .isEmpty
+                            ? Center(
+                                child: TextView(
+                                  text: 'No Transations',
+                                  fontSize: 20.sp,
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  if (model.transactionListData!.isNotEmpty)
+                                    ...model.transactionListData!.reversed
+                                        .map((e) => recentTransWidget(
+                                              e: e,
+                                            ))
+                                  else
+                                    ...model
+                                        .getSwappedTransactionsResponseModel!
+                                        .data!
+                                        .reversed
+                                        .map((e) => recentTransWidget(
+                                              e: e,
+                                            ))
+                                ],
+                              )
+                  ],
+                ),
               ),
             ),
           );
@@ -262,12 +249,6 @@ class TransactionScreen extends StatelessWidget {
                             ? AppColor.grey
                             : AppColor.red,
                   ),
-                  // TextView(
-                  //   text: '5,000 NGN -> 25 USD',
-                  //   color: AppColor.green,
-                  //   fontSize: 12.sp,
-                  //   fontWeight: FontWeight.w500,
-                  // ),
                 ],
               )
             ],

@@ -95,7 +95,7 @@ class _WelcomeBackScreenState extends State<WelcomeBackScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                           length: 4,
-                          obscureText: false,
+                          obscureText: true,
                           // obscuringCharacter: '',
                           animationType: AnimationType.fade,
                           validator: (v) {
@@ -151,40 +151,46 @@ class _WelcomeBackScreenState extends State<WelcomeBackScreen> {
                     SharedPreferencesService.instance.isFirstLogin == false
                         ? SizedBox.shrink()
                         : Center(
-                            child: ElevatedButton.icon(
-                              onPressed: () async {
-                                bool auth =
-                                    await Authentication.authentication();
-                                if (auth) {
-                                  if (widget.transaction == 'send money') {
-                                    model.sendMoney(context,
-                                        sendMoney: widget.sendMoney);
-                                  }
-                                  if (widget.transaction == 'withdraw money') {
-                                    model.withdrawFunds(context,
-                                        withdrawEntity: widget.withdraw);
-                                  } else {
-                                    navigate.navigateTo(Routes.dashboard,
-                                        arguments:
-                                            DashboardArguments(index: 0));
-                                  }
-                                }
-                              },
-                              icon: Icon(
-                                Icons.fingerprint,
-                                color: AppColor.white,
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColor.primary,
-                                  textStyle: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold)),
-                              label: TextView(
-                                text: 'Authenticate',
-                                fontSize: 15.2.sp,
-                                fontWeight: FontWeight.w400,
-                                color: AppColor.white,
-                              ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                    onPressed: () async {
+                                      bool auth =
+                                          await Authentication.authentication();
+                                      if (auth) {
+                                        if (widget.transaction ==
+                                            'send money') {
+                                          model.sendMoney(context,
+                                              sendMoney: widget.sendMoney);
+                                        }
+                                        if (widget.transaction ==
+                                            'withdraw money') {
+                                          model.withdrawFunds(context,
+                                              withdrawEntity: widget.withdraw);
+                                        } else {
+                                          navigate.navigateTo(Routes.dashboard,
+                                              arguments:
+                                                  DashboardArguments(index: 0));
+                                        }
+                                      }
+                                    },
+                                    icon: Icon(
+                                      Icons.fingerprint,
+                                      color: AppColor.primary,
+                                      size: 53.80.sp,
+                                    )),
+                                SizedBox(
+                                  height: 4.h,
+                                ),
+                                TextView(
+                                  text: 'Login using fingerprint',
+                                  fontSize: 17.2.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColor.black,
+                                ),
+                              ],
                             ),
                           ),
                     SizedBox(

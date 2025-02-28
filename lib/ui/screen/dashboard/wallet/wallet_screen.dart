@@ -36,7 +36,7 @@ class WalletScreen extends StatelessWidget {
             body: RefreshIndicator(
               backgroundColor: AppColor.white,
               color: AppColor.primary,
-              onRefresh: () => model.getStatistics(context),
+              onRefresh: model.getStatisticsRefresh,
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 16.w),
                 child: Column(

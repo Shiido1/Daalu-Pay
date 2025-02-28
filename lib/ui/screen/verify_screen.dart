@@ -84,7 +84,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                           length: 5,
-                          obscureText: false,
+                          obscureText: true,
                           // obscuringCharacter: '',
                           animationType: AnimationType.fade,
                           validator: (v) {

@@ -264,3 +264,7 @@ recentSwapTransWidget({context, required Swap e}) => Container(
         ],
       ),
     );
+
+double roundToTwoDecimals(double value) {
+  return double.parse(value.toStringAsFixed(2));
+}

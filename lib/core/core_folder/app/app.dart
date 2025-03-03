@@ -4,6 +4,7 @@ import '../../../ui/screen/chat_screen.dart';
 import '../../../ui/screen/create_account_screen.dart';
 import '../../../ui/screen/create_password_screen.dart';
 import '../../../ui/screen/dashboard/dashboard_screen.dart';
+import '../../../ui/screen/dashboard/home/home_widget/trans_receipt_screen.dart';
 import '../../../ui/screen/dashboard/transaction/transaction_screen.dart';
 import '../../../ui/screen/dashboard/wallet/send_money.dart';
 import '../../../ui/screen/dashboard/wallet/view_wallet_screen.dart';
@@ -49,6 +50,7 @@ import '../network/network_service.dart';
   MaterialRoute(page: WebviewChatScreen, initial: false),
   MaterialRoute(page: WelcomeBackScreen, initial: false),
   MaterialRoute(page: PassportPhotoScreen, initial: false),
+  MaterialRoute(page: TransReceiptScreen, initial: false),
 ], dependencies: [
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: DialogService),

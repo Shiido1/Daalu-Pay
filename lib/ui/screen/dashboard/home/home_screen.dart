@@ -1,9 +1,8 @@
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
+import 'package:daalu_pay/ui/screen/dashboard/home/exchange_rate_screen.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/home_widget/deposit_screen.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/swap/swap_screen.dart';
-import 'package:daalu_pay/ui/screen/dashboard/settings/fast_nav_screen.dart';
 import 'package:daalu_pay/ui/screen/dashboard/transaction/transaction_screen.dart';
-import 'package:daalu_pay/ui/screen/dashboard/wallet/wallet_screen.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,8 +17,8 @@ import '../../../../core/core_folder/manager/shared_preference.dart';
 import '../../../../main.dart';
 import '../../../app_assets/app_color.dart';
 import '../../../app_assets/contant.dart';
+import '../../support_screen.dart';
 import '../wallet/send_money.dart';
-import '../wallet/withdrawal_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,6 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.light,
+      key: scaffoldKey,
+      drawer: drawer(),
       body: ViewModelBuilder<AuthViewModel>.reactive(
           viewModelBuilder: () => AuthViewModel(),
           onViewModelReady: (model) async {
@@ -64,11 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         model.userResponseModel == null
                             ? SizedBox.shrink()
                             : GestureDetector(
-                                onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (contxt) => FastNavScreen()),
-                                ),
+                                onTap: () =>
+                                    scaffoldKey.currentState?.openDrawer(),
                                 // navigate.navigateTo(Routes.profileScreen),
                                 child: Container(
                                   padding: EdgeInsets.all(7.2.w),
@@ -405,9 +403,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   paddedWing(
                     value: 10.w,
                     child: Align(
-                      alignment: Alignment.topLeft,
+                      alignment: Alignment.center,
                       child: TextView(
-                        text: 'CONVERT TRANSACTION',
+                        text: 'EXCHANGE HISTORY',
                         fontSize: 17.20.sp,
                         fontWeight: FontWeight.w600,
                         color: AppColor.primary,
@@ -494,7 +492,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   drawer() => Drawer(
         backgroundColor: AppColor.white,
-        width: 220,
+        width: 280,
         child: ListView(
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
@@ -508,7 +506,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ListTile(
               leading: SvgPicture.asset(AppImage.homeSwap),
               title: TextView(
-                text: 'Convert',
+                text: 'Send Money',
                 color: AppColor.greyKind,
                 fontSize: 17.2.sp,
                 fontWeight: FontWeight.w500,
@@ -517,7 +515,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SwapScreen()),
+                  MaterialPageRoute(builder: (contxt) => SendMoneyScreen()),
                 );
               },
             ),
@@ -526,7 +524,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 AppImage.addCard,
               ),
               title: TextView(
-                text: 'Deposit',
+                text: 'Fund Wallet',
                 color: AppColor.greyKind,
                 fontSize: 17.2.sp,
                 fontWeight: FontWeight.w500,
@@ -540,20 +538,26 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              leading: SvgPicture.asset(
-                AppImage.send,
+              leading: Icon(
+                Icons.currency_exchange,
+                color: AppColor.primary,
               ),
-              title: TextView(
-                text: 'Send Money',
-                color: AppColor.greyKind,
-                fontSize: 17.2.sp,
-                fontWeight: FontWeight.w500,
+              title: SizedBox(
+                width: 230.w,
+                child: TextView(
+                  text: 'View Exchange Rates',
+                  color: AppColor.greyKind,
+                  fontSize: 17.0.sp,
+                  maxLines: 1,
+                  textOverflow: TextOverflow.ellipsis,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SendMoneyScreen()),
+                  MaterialPageRoute(builder: (context) => ExchangeRateScreen()),
                 );
               },
             ),
@@ -564,49 +568,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 42.0.w,
                 color: AppColor.primary,
               ),
-              title: TextView(
-                text: 'Withdraw',
-                color: AppColor.greyKind,
-                fontSize: 17.2.sp,
-                fontWeight: FontWeight.w500,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => WithdrawalScreen()),
-                );
-              },
-            ),
-            ListTile(
-              leading: SvgPicture.asset(
-                AppImage.wallet,
-                color: AppColor.primary,
-              ),
-              title: TextView(
-                text: 'Wallet',
-                color: AppColor.greyKind,
-                fontSize: 17.2.sp,
-                fontWeight: FontWeight.w500,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => WalletScreen()),
-                );
-              },
-            ),
-            ListTile(
-              leading: SvgPicture.asset(
-                AppImage.trans,
-                color: AppColor.primary,
-              ),
-              title: TextView(
-                text: 'Transaction',
-                color: AppColor.greyKind,
-                fontSize: 17.2.sp,
-                fontWeight: FontWeight.w500,
+              title: SizedBox(
+                width: 230.w,
+                child: TextView(
+                  text: 'Transaction History / Activity',
+                  color: AppColor.greyKind,
+                  maxLines: 1,
+                  textOverflow: TextOverflow.ellipsis,
+                  fontSize: 16.8.sp,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -618,19 +589,21 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               leading: Icon(
-                Icons.key,
-                size: 20.2.sp,
+                Icons.support,
                 color: AppColor.primary,
               ),
               title: TextView(
-                text: 'KYC',
+                text: 'Support',
                 color: AppColor.greyKind,
                 fontSize: 17.2.sp,
                 fontWeight: FontWeight.w500,
               ),
               onTap: () {
                 Navigator.pop(context);
-                navigate.navigateTo(Routes.uploadDocumentsScreen);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (contxt) => SupportScreen()),
+                );
               },
             ),
             SizedBox(

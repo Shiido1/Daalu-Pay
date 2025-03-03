@@ -3,6 +3,7 @@ import 'dart:async';
 import "package:collection/collection.dart";
 import 'package:daalu_pay/core/connect_end/model/add_account_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/all_exchange_rates_response_model/all_exchange_rates_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/create_pin_response_model/create_pin_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
@@ -71,6 +72,7 @@ import '../model/withdrawal_response_model/withdrawal_response_model.dart';
 import '../repo/repo_impl.dart';
 import '../model/get_swapped_transactions_response_model/datum.dart' as sp;
 import 'debouncer.dart';
+import '../model/all_exchange_rates_response_model/datum.dart' as ex;
 
 class AuthViewModel extends BaseViewModel {
   final BuildContext? context;
@@ -229,6 +231,9 @@ class AuthViewModel extends BaseViewModel {
   CreatePinResponseModel? _createPinResponseModel;
   VerifyPinResponseModel? get verifyPinResponseModel => _verifyPinResponseModel;
   VerifyPinResponseModel? _verifyPinResponseModel;
+  AllExchangeRatesResponseModel? get allExchangeRatesResponseModel =>
+      _allExchangeRatesResponseModel;
+  AllExchangeRatesResponseModel? _allExchangeRatesResponseModel;
 
   AddAccountResponseModel? _accountResponseModel;
   AddAccountResponseModel? get accountResponseModel => _accountResponseModel;
@@ -245,7 +250,7 @@ class AuthViewModel extends BaseViewModel {
   TextEditingController withdrawAmount = TextEditingController();
   TextEditingController withdrawBankAccount = TextEditingController();
   GlobalKey<FormState> withdrawFormkey = GlobalKey<FormState>();
-
+//
   TextEditingController addAccuntName = TextEditingController();
   TextEditingController addAccuntNumber = TextEditingController();
   TextEditingController addBankName = TextEditingController();
@@ -355,12 +360,17 @@ class AuthViewModel extends BaseViewModel {
                                                   nameController.text,
                                               documentType: choice == 'wallet'
                                                   ? 'alipay_id'
-                                                  : 'barcode',
+                                                  : choice == ''
+                                                      ? 'barcode'
+                                                      : 'barcode',
                                               recipientAddress: choice ==
                                                       'wallet'
                                                   ? recipientWalletIdController
                                                       .text
-                                                  : '${_postUserVerificationCloudResponse?.publicId}.${_postUserVerificationCloudResponse?.format}',
+                                                  : choice == ''
+                                                      ? recipientWalletIdController
+                                                          .text
+                                                      : '${_postUserVerificationCloudResponse?.publicId}.${_postUserVerificationCloudResponse?.format}',
                                               currency: wallet != null
                                                   ? wallet.currency
                                                   : currencyController.text)));
@@ -959,16 +969,106 @@ class AuthViewModel extends BaseViewModel {
       _exchangeRateResponseModel = await runBusyFuture(
           repositoryImply.exchangeRate(from: from, to: to),
           throwException: true);
+      _isLoading = false;
+    } catch (e) {
+      logger.d(e);
+      AppUtils.snackbar(contxt,
+          message: 'No exchange rate fror $from to $to', error: true);
+    }
+    notifyListeners();
+  }
 
-      if (_exchangeRateResponseModel?.status == 'success') {
-        _isLoading = false;
-      }
+  Future<void> allExchangeRates(contxt) async {
+    try {
+      _allExchangeRatesResponseModel = await runBusyFuture(
+          repositoryImply.allExchangeRate(),
+          throwException: true);
+      _isLoading = false;
     } catch (e) {
       logger.d(e);
       AppUtils.snackbar(contxt, message: e.toString(), error: true);
     }
     notifyListeners();
   }
+
+  paddWingEx({child}) => Padding(
+        padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 16.w),
+        child: child,
+      );
+
+  exchangeConWidget(context, ex.Datum e) => Column(
+        children: [
+          paddWingEx(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextView(
+                          text: e.fromCurrency ?? '',
+                          color: AppColor.greyKind,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        TextView(
+                          text: '-',
+                          color: AppColor.greyKind,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        TextView(
+                          text: e.toCurrency ?? '',
+                          color: AppColor.greyKind,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ],
+                    ),
+                    TextView(
+                      text: DateFormat('yyyy-MM-dd hh:mm a')
+                          .format(DateTime.parse(e.createdAt.toString())),
+                      color: AppColor.greyKind,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    TextView(
+                      text: e.rate ?? '',
+                      color: AppColor.greyKind,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    TextView(
+                      text: 'Exchange Rate',
+                      color: AppColor.greyKind,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Divider(
+            color: AppColor.grey,
+            thickness: .4.sp,
+          ),
+        ],
+      );
 
   exchangeTheRate(o) {
     toCurrencylController.text =
@@ -979,9 +1079,14 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void modalBottomSheetMenuFrom(context) {
+  void modalBottomSheetMenuFrom(contxt) {
     showModalBottomSheet(
-        context: context,
+        context: contxt,
+        isScrollControlled: true, // Enables full-screen dragging
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
         builder: (builder) {
           return ViewModelBuilder<AuthViewModel>.reactive(
               viewModelBuilder: () => AuthViewModel(),
@@ -990,240 +1095,215 @@ class AuthViewModel extends BaseViewModel {
               },
               disposeViewModel: false,
               builder: (_, AuthViewModel model, __) {
-                return Container(
-                  height: 380.0,
-                  decoration: BoxDecoration(
-                      color: AppColor.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(14.0),
-                          topRight: const Radius.circular(14.0))),
-                  child: Container(
-                      decoration: BoxDecoration(
-                          color: AppColor.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: const Radius.circular(14.0),
-                              topRight: const Radius.circular(14.0))),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 6.0.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(12.w),
-                            child: TextFormWidget(
-                              label: 'Search country',
-                              hint: '',
-                              border: 10,
-                              isFilled: true,
-                              fillColor: AppColor.white,
+                return Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(contxt).viewInsets.bottom),
+                  child: DraggableScrollableSheet(
+                      expand: false,
+                      initialChildSize: 0.5, // 50% of screen height
+                      minChildSize:
+                          0.3, // Can be dragged to 30% of screen height
+                      maxChildSize:
+                          0.9, // Can be dragged to 90% of screen height
+                      builder: (context, scrollController) {
+                        return SingleChildScrollView(
+                          controller: scrollController,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 6.0.h,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(12.w),
+                                child: TextFormWidget(
+                                  label: 'Search country',
+                                  hint: '',
+                                  border: 10,
+                                  isFilled: true,
+                                  fillColor: AppColor.white,
 
-                              onChange: (p0) {
-                                queryFrom = p0;
-                                model.notifyListeners();
-                              },
-                              suffixIcon: Icons.search_sharp,
-                              controller: curcodeFromController,
-                              // validator: AppValidator.validateAmount(),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 16.h,
-                          ),
-                          Expanded(
-                            child: SizedBox(
-                              height: 320,
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    queryFrom == ''
-                                        ? Column(
-                                            children: [
-                                              if (model.isLoading)
-                                                Center(
-                                                  child: SpinKitCircle(
-                                                    color: AppColor.primary,
-                                                    size: 37.8.sp,
-                                                  ),
-                                                ),
-                                              if (model.getStatsResponseModel !=
-                                                  null)
-                                                ...model.getStatsResponseModel!
-                                                    .data!.wallets!
-                                                    .map((e) => InkResponse(
-                                                          onTap: () {
-                                                            w = e;
-                                                            model
-                                                                .notifyListeners();
-                                                            fromCurrency =
-                                                                getWalletCurrencyCode(
-                                                                    e.currency);
-                                                            fromCurrencyCode =
-                                                                e.currency!;
-                                                            notifyListeners();
-                                                            Future.delayed(
-                                                                Duration(
-                                                                    seconds: 1),
-                                                                () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            });
-                                                          },
-                                                          child: Container(
-                                                            margin: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        10.w,
-                                                                    vertical:
-                                                                        4.w),
-                                                            decoration: BoxDecoration(
-                                                                color: e == w
-                                                                    ? const Color
-                                                                        .fromARGB(
-                                                                        219,
-                                                                        223,
-                                                                        233,
-                                                                        242)
-                                                                    : AppColor
-                                                                        .transparent,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            14.r)),
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    vertical:
-                                                                        10.w,
-                                                                    horizontal:
-                                                                        20.w),
-                                                            child: Row(
-                                                              children: [
-                                                                SvgPicture.asset(
-                                                                    getWalletCurrencyCode(
-                                                                        e.currency)),
-                                                                SizedBox(
-                                                                  width: 15.6.w,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 180.w,
-                                                                  child:
-                                                                      TextView(
-                                                                    text:
-                                                                        '${e.currency}',
-                                                                    fontSize:
-                                                                        17.6,
-                                                                    maxLines: 1,
-                                                                    textOverflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        )),
-                                            ],
-                                          )
-                                        : Column(
-                                            children: [
-                                              if (model.getStatsResponseModel !=
-                                                  null)
-                                                ...model.getStatsResponseModel!
-                                                    .data!.wallets!
-                                                    .where((o) => o.currency!
-                                                        .toLowerCase()
-                                                        .contains(queryFrom
-                                                            .toLowerCase()))
-                                                    .map((e) => GestureDetector(
-                                                          onTap: () {
-                                                            w = e;
-                                                            model
-                                                                .notifyListeners();
-                                                            fromCurrency =
-                                                                getWalletCurrencyCode(
-                                                                    e.currency);
-                                                            fromCurrencyCode =
-                                                                e.currency!;
-
-                                                            Future.delayed(
-                                                                Duration(
-                                                                    seconds: 1),
-                                                                () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            });
-                                                            notifyListeners();
-                                                          },
-                                                          child: Container(
-                                                            margin: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        10.w,
-                                                                    vertical:
-                                                                        4.w),
-                                                            decoration: BoxDecoration(
-                                                                color: e == w
-                                                                    ? const Color
-                                                                        .fromARGB(
-                                                                        219,
-                                                                        223,
-                                                                        233,
-                                                                        242)
-                                                                    : AppColor
-                                                                        .transparent,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            14.r)),
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    vertical:
-                                                                        10.w,
-                                                                    horizontal:
-                                                                        20.w),
-                                                            child: Row(
-                                                              children: [
-                                                                SvgPicture.asset(
-                                                                    getWalletCurrencyCode(
-                                                                        e.currency)),
-                                                                SizedBox(
-                                                                  width: 15.6.w,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 180.w,
-                                                                  child:
-                                                                      TextView(
-                                                                    text:
-                                                                        '${e.currency}',
-                                                                    fontSize:
-                                                                        17.6,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    maxLines: 1,
-                                                                    textOverflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        )),
-                                            ],
-                                          )
-                                  ],
+                                  onChange: (p0) {
+                                    queryFrom = p0;
+                                    model.notifyListeners();
+                                  },
+                                  suffixIcon: Icons.search_sharp,
+                                  controller: curcodeFromController,
+                                  // validator: AppValidator.validateAmount(),
                                 ),
                               ),
-                            ),
+                              SizedBox(
+                                height: 16.h,
+                              ),
+                              queryFrom == ''
+                                  ? Column(
+                                      children: [
+                                        if (model.isLoading)
+                                          Center(
+                                            child: SpinKitCircle(
+                                              color: AppColor.primary,
+                                              size: 37.8.sp,
+                                            ),
+                                          ),
+                                        if (model.getStatsResponseModel != null)
+                                          ...model.getStatsResponseModel!.data!
+                                              .wallets!
+                                              .map((e) => InkResponse(
+                                                    onTap: () async {
+                                                      w = e;
+                                                      model.notifyListeners();
+                                                      fromCurrency =
+                                                          getWalletCurrencyCode(
+                                                              e.currency);
+                                                      fromCurrencyCode =
+                                                          e.currency!;
+
+                                                      notifyListeners();
+                                                      await Future.delayed(
+                                                          Duration(seconds: 1),
+                                                          () {
+                                                        Navigator.pop(context);
+                                                      });
+                                                      // ignore: use_build_context_synchronously
+                                                      await exchangeRates(
+                                                          contxt,
+                                                          from:
+                                                              fromCurrencyCode,
+                                                          to: toCurrencyCode);
+                                                    },
+                                                    child: Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10.w,
+                                                              vertical: 4.w),
+                                                      decoration: BoxDecoration(
+                                                          color: e == w
+                                                              ? const Color
+                                                                  .fromARGB(219,
+                                                                  223, 233, 242)
+                                                              : AppColor
+                                                                  .transparent,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      14.r)),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 10.w,
+                                                              horizontal: 20.w),
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              getWalletCurrencyCode(
+                                                                  e.currency)),
+                                                          SizedBox(
+                                                            width: 15.6.w,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 180.w,
+                                                            child: TextView(
+                                                              text:
+                                                                  '${e.currency}',
+                                                              fontSize: 17.6,
+                                                              maxLines: 1,
+                                                              textOverflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )),
+                                      ],
+                                    )
+                                  : Column(
+                                      children: [
+                                        if (model.getStatsResponseModel != null)
+                                          ...model.getStatsResponseModel!.data!
+                                              .wallets!
+                                              .where((o) => o.currency!
+                                                  .toLowerCase()
+                                                  .contains(
+                                                      queryFrom.toLowerCase()))
+                                              .map((e) => GestureDetector(
+                                                    onTap: () async {
+                                                      w = e;
+                                                      model.notifyListeners();
+                                                      fromCurrency =
+                                                          getWalletCurrencyCode(
+                                                              e.currency);
+                                                      fromCurrencyCode =
+                                                          e.currency!;
+
+                                                      await Future.delayed(
+                                                          Duration(seconds: 1),
+                                                          () {
+                                                        Navigator.pop(context);
+                                                      });
+                                                      // ignore: use_build_context_synchronously
+                                                      await exchangeRates(
+                                                          contxt,
+                                                          from:
+                                                              fromCurrencyCode,
+                                                          to: toCurrencyCode);
+                                                      notifyListeners();
+                                                    },
+                                                    child: Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10.w,
+                                                              vertical: 4.w),
+                                                      decoration: BoxDecoration(
+                                                          color: e == w
+                                                              ? const Color
+                                                                  .fromARGB(219,
+                                                                  223, 233, 242)
+                                                              : AppColor
+                                                                  .transparent,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      14.r)),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 10.w,
+                                                              horizontal: 20.w),
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              getWalletCurrencyCode(
+                                                                  e.currency)),
+                                                          SizedBox(
+                                                            width: 15.6.w,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 180.w,
+                                                            child: TextView(
+                                                              text:
+                                                                  '${e.currency}',
+                                                              fontSize: 17.6,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              maxLines: 1,
+                                                              textOverflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )),
+                                      ],
+                                    )
+                            ],
                           ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                        ],
-                      )),
+                        );
+                      }),
                 );
               });
         });
@@ -1232,6 +1312,11 @@ class AuthViewModel extends BaseViewModel {
   void modalBottomSheetMenuWallet(context) {
     showModalBottomSheet(
         context: context,
+        isScrollControlled: true, // Enables full-screen dragging
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
         builder: (builder) {
           return ViewModelBuilder<AuthViewModel>.reactive(
               viewModelBuilder: () => AuthViewModel(),
@@ -1240,478 +1325,409 @@ class AuthViewModel extends BaseViewModel {
               },
               disposeViewModel: false,
               builder: (_, AuthViewModel model, __) {
-                return Container(
-                  height: 350.0,
-                  decoration: BoxDecoration(
-                      color: AppColor.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(14.0),
-                          topRight: const Radius.circular(14.0))),
-                  child: Container(
-                      decoration: BoxDecoration(
-                          color: AppColor.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: const Radius.circular(14.0),
-                              topRight: const Radius.circular(14.0))),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 6.0.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(12.w),
-                            child: TextFormWidget(
-                              label: 'Search country',
-                              hint: '',
-                              border: 10,
-                              isFilled: true,
-                              fillColor: AppColor.white,
-
-                              onChange: (p0) {
-                                queryFrom = p0;
-                                model.notifyListeners();
-                              },
-                              suffixIcon: Icons.search_sharp,
-                              controller: curcodeFromController,
-                              // validator: AppValidator.validateAmount(),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 16.h,
-                          ),
-                          Expanded(
-                            child: SizedBox(
-                              height: 320,
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    queryFrom == ''
-                                        ? Column(
-                                            children: [
-                                              if (model.isLoading)
-                                                Center(
-                                                  child: SpinKitCircle(
-                                                    color: AppColor.primary,
-                                                    size: 37.8.sp,
-                                                  ),
-                                                ),
-                                              if (model.getStatsResponseModel !=
-                                                  null)
-                                                ...model.getStatsResponseModel!
-                                                    .data!.wallets!
-                                                    .map((e) => InkResponse(
-                                                          onTap: () {
-                                                            walletHome = e;
-                                                            model
-                                                                .notifyListeners();
-                                                            Future.delayed(
-                                                                Duration(
-                                                                    seconds: 1),
-                                                                () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            });
-                                                            notifyListeners();
-                                                          },
-                                                          child: Container(
-                                                            margin: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        10.w,
-                                                                    vertical:
-                                                                        4.w),
-                                                            decoration: BoxDecoration(
-                                                                color: e ==
-                                                                        walletHome
-                                                                    ? const Color
-                                                                        .fromARGB(
-                                                                        219,
-                                                                        223,
-                                                                        233,
-                                                                        242)
-                                                                    : AppColor
-                                                                        .transparent,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            14.r)),
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    vertical:
-                                                                        10.w,
-                                                                    horizontal:
-                                                                        20.w),
-                                                            child: Row(
-                                                              children: [
-                                                                SvgPicture.asset(
-                                                                    getWalletCurrencyCode(
-                                                                        e.currency)),
-                                                                SizedBox(
-                                                                  width: 15.6.w,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 180.w,
-                                                                  child:
-                                                                      TextView(
-                                                                    text:
-                                                                        '${e.currency}',
-                                                                    fontSize:
-                                                                        17.6,
-                                                                    maxLines: 1,
-                                                                    textOverflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        )),
-                                            ],
-                                          )
-                                        : Column(
-                                            children: [
-                                              if (model.getStatsResponseModel !=
-                                                  null)
-                                                ...model.getStatsResponseModel!
-                                                    .data!.wallets!
-                                                    .where((o) => o.currency!
-                                                        .toLowerCase()
-                                                        .contains(queryFrom
-                                                            .toLowerCase()))
-                                                    .map((e) => GestureDetector(
-                                                          onTap: () {
-                                                            walletHome = e;
-                                                            model
-                                                                .notifyListeners();
-                                                            Future.delayed(
-                                                                Duration(
-                                                                    seconds: 1),
-                                                                () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            });
-                                                            notifyListeners();
-                                                          },
-                                                          child: Container(
-                                                            margin: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        10.w,
-                                                                    vertical:
-                                                                        4.w),
-                                                            decoration: BoxDecoration(
-                                                                color: e ==
-                                                                        walletHome
-                                                                    ? const Color
-                                                                        .fromARGB(
-                                                                        219,
-                                                                        223,
-                                                                        233,
-                                                                        242)
-                                                                    : AppColor
-                                                                        .transparent,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            14.r)),
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    vertical:
-                                                                        10.w,
-                                                                    horizontal:
-                                                                        20.w),
-                                                            child: Row(
-                                                              children: [
-                                                                SvgPicture.asset(
-                                                                    getWalletCurrencyCode(
-                                                                        e.currency)),
-                                                                SizedBox(
-                                                                  width: 15.6.w,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 180.w,
-                                                                  child:
-                                                                      TextView(
-                                                                    text:
-                                                                        '${e.currency}',
-                                                                    fontSize:
-                                                                        17.6,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    maxLines: 1,
-                                                                    textOverflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        )),
-                                            ],
-                                          )
-                                  ],
+                return Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: DraggableScrollableSheet(
+                      expand: false,
+                      initialChildSize: 0.5, // 50% of screen height
+                      minChildSize:
+                          0.3, // Can be dragged to 30% of screen height
+                      maxChildSize:
+                          0.9, // Can be dragged to 90% of screen height
+                      builder: (context, scrollController) {
+                        return SingleChildScrollView(
+                          controller: scrollController,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 6.0.h,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(12.w),
+                                child: TextFormWidget(
+                                  label: 'Search country',
+                                  hint: '',
+                                  border: 10,
+                                  isFilled: true,
+                                  fillColor: AppColor.white,
+                                  autofocus: true,
+                                  onChange: (p0) {
+                                    queryFrom = p0;
+                                    model.notifyListeners();
+                                  },
+                                  suffixIcon: Icons.search_sharp,
+                                  controller: curcodeFromController,
+                                  // validator: AppValidator.validateAmount(),
                                 ),
                               ),
-                            ),
+                              SizedBox(
+                                height: 16.h,
+                              ),
+                              queryFrom == ''
+                                  ? Column(
+                                      children: [
+                                        if (model.isLoading)
+                                          Center(
+                                            child: SpinKitCircle(
+                                              color: AppColor.primary,
+                                              size: 37.8.sp,
+                                            ),
+                                          ),
+                                        if (model.getStatsResponseModel != null)
+                                          ...model.getStatsResponseModel!.data!
+                                              .wallets!
+                                              .map((e) => InkResponse(
+                                                    onTap: () {
+                                                      walletHome = e;
+                                                      model.notifyListeners();
+                                                      Future.delayed(
+                                                          Duration(seconds: 1),
+                                                          () {
+                                                        Navigator.pop(context);
+                                                      });
+                                                      notifyListeners();
+                                                    },
+                                                    child: Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10.w,
+                                                              vertical: 4.w),
+                                                      decoration: BoxDecoration(
+                                                          color: e == walletHome
+                                                              ? const Color
+                                                                  .fromARGB(219,
+                                                                  223, 233, 242)
+                                                              : AppColor
+                                                                  .transparent,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      14.r)),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 10.w,
+                                                              horizontal: 20.w),
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              getWalletCurrencyCode(
+                                                                  e.currency)),
+                                                          SizedBox(
+                                                            width: 15.6.w,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 180.w,
+                                                            child: TextView(
+                                                              text:
+                                                                  '${e.currency}',
+                                                              fontSize: 17.6,
+                                                              maxLines: 1,
+                                                              textOverflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )),
+                                      ],
+                                    )
+                                  : Column(
+                                      children: [
+                                        if (model.getStatsResponseModel != null)
+                                          ...model.getStatsResponseModel!.data!
+                                              .wallets!
+                                              .where((o) => o.currency!
+                                                  .toLowerCase()
+                                                  .contains(
+                                                      queryFrom.toLowerCase()))
+                                              .map((e) => GestureDetector(
+                                                    onTap: () {
+                                                      walletHome = e;
+                                                      model.notifyListeners();
+                                                      Future.delayed(
+                                                          Duration(seconds: 1),
+                                                          () {
+                                                        Navigator.pop(context);
+                                                      });
+                                                      notifyListeners();
+                                                    },
+                                                    child: Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10.w,
+                                                              vertical: 4.w),
+                                                      decoration: BoxDecoration(
+                                                          color: e == walletHome
+                                                              ? const Color
+                                                                  .fromARGB(219,
+                                                                  223, 233, 242)
+                                                              : AppColor
+                                                                  .transparent,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      14.r)),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 10.w,
+                                                              horizontal: 20.w),
+                                                      child: Row(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              getWalletCurrencyCode(
+                                                                  e.currency)),
+                                                          SizedBox(
+                                                            width: 15.6.w,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 180.w,
+                                                            child: TextView(
+                                                              text:
+                                                                  '${e.currency}',
+                                                              fontSize: 17.6,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              maxLines: 1,
+                                                              textOverflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )),
+                                      ],
+                                    )
+                            ],
                           ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                        ],
-                      )),
+                        );
+                      }),
                 );
               });
         });
   }
 
-  void modalBottomSheetMenuTo(context) {
+  void modalBottomSheetMenuTo(contxt) {
     showModalBottomSheet(
-        context: context,
+        context: contxt,
+        isScrollControlled: true, // Enables full-screen dragging
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
         builder: (builder) {
           return ViewModelBuilder<AuthViewModel>.reactive(
               viewModelBuilder: () => AuthViewModel(),
               onViewModelReady: (model) {
                 model.getStatistics(context);
               },
-              disposeViewModel: false,
+              disposeViewModel: true,
               builder: (_, AuthViewModel model, __) {
-                return Container(
-                  height: 400.0,
-                  decoration: BoxDecoration(
-                      color: AppColor.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(14.0),
-                          topRight: const Radius.circular(14.0))),
-                  child: Container(
-                      decoration: BoxDecoration(
-                          color: AppColor.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: const Radius.circular(14.0),
-                              topRight: const Radius.circular(14.0))),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 6.0.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(12.w),
-                            child: TextFormWidget(
-                              label: 'Search country code',
-                              hint: '',
-                              border: 10,
-                              isFilled: true,
-                              fillColor: AppColor.white,
-
-                              onChange: (p0) {
-                                queryTo = p0;
-                                model.notifyListeners();
-                              },
-                              suffixIcon: Icons.search_sharp,
-                              controller: curcodeToController,
-                              // validator: AppValidator.validateAmount(),
+                return DraggableScrollableSheet(
+                    expand: false,
+                    initialChildSize: 0.5, // 50% of screen height
+                    minChildSize: 0.3, // Can be dragged to 30% of screen height
+                    maxChildSize: 0.9, // Can be dragged to 90% of screen height
+                    builder: (context, scrollController) {
+                      return SingleChildScrollView(
+                        controller: scrollController,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 6.0.h,
                             ),
-                          ),
-                          SizedBox(
-                            height: 16.h,
-                          ),
-                          Expanded(
-                            child: SizedBox(
-                              height: 320,
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    queryTo == ''
-                                        ? Column(
-                                            children: [
-                                              if (model.isLoading)
-                                                Center(
-                                                  child: SpinKitCircle(
-                                                    color: AppColor.primary,
-                                                    size: 37.8.sp,
-                                                  ),
-                                                ),
-                                              if (model.getStatsResponseModel !=
-                                                  null)
-                                                ...model.getStatsResponseModel!
-                                                    .data!.wallets!
-                                                    .map((e) => GestureDetector(
-                                                          onTap: () {
-                                                            w = e;
-                                                            model
-                                                                .notifyListeners();
-                                                            toCurrency =
-                                                                getWalletCurrencyCode(
-                                                                    e.currency);
-                                                            toCurrencyCode =
-                                                                e.currency!;
-                                                            Future.delayed(
-                                                                Duration(
-                                                                    seconds: 1),
-                                                                () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            });
-                                                            notifyListeners();
-                                                          },
-                                                          child: Container(
-                                                            margin: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        10.w,
-                                                                    vertical:
-                                                                        4.w),
-                                                            decoration: BoxDecoration(
-                                                                color: e == w
-                                                                    ? const Color
-                                                                        .fromARGB(
-                                                                        219,
-                                                                        223,
-                                                                        233,
-                                                                        242)
-                                                                    : AppColor
-                                                                        .transparent,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            14.r)),
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    vertical:
-                                                                        10.w,
-                                                                    horizontal:
-                                                                        20.w),
-                                                            child: Row(
-                                                              children: [
-                                                                SvgPicture.asset(
-                                                                    getWalletCurrencyCode(
-                                                                        e.currency)),
-                                                                SizedBox(
-                                                                  width: 15.6.w,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 180.w,
-                                                                  child:
-                                                                      TextView(
-                                                                    text:
-                                                                        '${e.currency}',
-                                                                    fontSize:
-                                                                        17.6,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    textOverflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    maxLines: 1,
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ))
-                                            ],
-                                          )
-                                        : Column(
-                                            children: [
-                                              if (model.getStatsResponseModel !=
-                                                  null)
-                                                ...model.getStatsResponseModel!
-                                                    .data!.wallets!
-                                                    .where((o) => o.currency!
-                                                        .toLowerCase()
-                                                        .contains(queryTo
-                                                            .toLowerCase()))
-                                                    .map((e) => GestureDetector(
-                                                          onTap: () {
-                                                            w = e;
-                                                            model
-                                                                .notifyListeners();
-                                                            toCurrency =
-                                                                getWalletCurrencyCode(
-                                                                    e.currency);
-                                                            toCurrencyCode =
-                                                                e.currency!;
-                                                            Future.delayed(
-                                                                Duration(
-                                                                    seconds: 1),
-                                                                () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            });
-                                                            notifyListeners();
-                                                          },
-                                                          child: Container(
-                                                            margin: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        10.w,
-                                                                    vertical:
-                                                                        4.w),
-                                                            decoration: BoxDecoration(
-                                                                color: e == w
-                                                                    ? const Color
-                                                                        .fromARGB(
-                                                                        219,
-                                                                        223,
-                                                                        233,
-                                                                        242)
-                                                                    : AppColor
-                                                                        .transparent,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            14.r)),
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    vertical:
-                                                                        10.w,
-                                                                    horizontal:
-                                                                        20.w),
-                                                            child: Row(
-                                                              children: [
-                                                                SvgPicture.asset(
-                                                                    getWalletCurrencyCode(
-                                                                        e.currency)),
-                                                                SizedBox(
-                                                                  width: 15.6.w,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 180.w,
-                                                                  child:
-                                                                      TextView(
-                                                                    text:
-                                                                        '${e.currency}',
-                                                                    fontSize:
-                                                                        17.6,
-                                                                    maxLines: 1,
-                                                                    textOverflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ))
-                                            ],
-                                          )
-                                  ],
-                                ),
+                            Padding(
+                              padding: EdgeInsets.all(12.w),
+                              child: TextFormWidget(
+                                label: 'Search country code',
+                                hint: '',
+                                border: 10,
+                                isFilled: true,
+                                fillColor: AppColor.white,
+
+                                onChange: (p0) {
+                                  queryTo = p0;
+                                  model.notifyListeners();
+                                },
+                                suffixIcon: Icons.search_sharp,
+                                controller: curcodeToController,
+                                // validator: AppValidator.validateAmount(),
                               ),
                             ),
-                          ),
-                        ],
-                      )),
-                );
+                            SizedBox(
+                              height: 16.h,
+                            ),
+                            queryTo == ''
+                                ? Column(
+                                    children: [
+                                      if (model.isLoading)
+                                        Center(
+                                          child: SpinKitCircle(
+                                            color: AppColor.primary,
+                                            size: 37.8.sp,
+                                          ),
+                                        ),
+                                      if (model.getStatsResponseModel != null)
+                                        ...model.getStatsResponseModel!.data!
+                                            .wallets!
+                                            .map((e) => GestureDetector(
+                                                  onTap: () async {
+                                                    w = e;
+                                                    model.notifyListeners();
+                                                    toCurrency =
+                                                        getWalletCurrencyCode(
+                                                            e.currency);
+                                                    toCurrencyCode =
+                                                        e.currency!;
+                                                    await Future.delayed(
+                                                        Duration(seconds: 1),
+                                                        () {
+                                                      Navigator.pop(context);
+                                                    });
+                                                    // ignore: use_build_context_synchronously
+                                                    await exchangeRates(contxt,
+                                                        from: fromCurrencyCode,
+                                                        to: toCurrencyCode);
+                                                    notifyListeners();
+                                                  },
+                                                  child: Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 10.w,
+                                                            vertical: 4.w),
+                                                    decoration: BoxDecoration(
+                                                        color: e == w
+                                                            ? const Color
+                                                                .fromARGB(219,
+                                                                223, 233, 242)
+                                                            : AppColor
+                                                                .transparent,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    14.r)),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 10.w,
+                                                            horizontal: 20.w),
+                                                    child: Row(
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                            getWalletCurrencyCode(
+                                                                e.currency)),
+                                                        SizedBox(
+                                                          width: 15.6.w,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 180.w,
+                                                          child: TextView(
+                                                            text:
+                                                                '${e.currency}',
+                                                            fontSize: 17.6,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            textOverflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            maxLines: 1,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ))
+                                    ],
+                                  )
+                                : Column(
+                                    children: [
+                                      if (model.getStatsResponseModel != null)
+                                        ...model.getStatsResponseModel!.data!
+                                            .wallets!
+                                            .where((o) => o.currency!
+                                                .toLowerCase()
+                                                .contains(
+                                                    queryTo.toLowerCase()))
+                                            .map((e) => GestureDetector(
+                                                  onTap: () async {
+                                                    w = e;
+                                                    model.notifyListeners();
+                                                    toCurrency =
+                                                        getWalletCurrencyCode(
+                                                            e.currency);
+                                                    toCurrencyCode =
+                                                        e.currency!;
+
+                                                    await Future.delayed(
+                                                        Duration(seconds: 1),
+                                                        () {
+                                                      Navigator.pop(context);
+                                                    });
+                                                    // ignore: use_build_context_synchronously
+                                                    await exchangeRates(contxt,
+                                                        from: fromCurrencyCode,
+                                                        to: toCurrencyCode);
+                                                    notifyListeners();
+                                                  },
+                                                  child: Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 10.w,
+                                                            vertical: 4.w),
+                                                    decoration: BoxDecoration(
+                                                        color: e == w
+                                                            ? const Color
+                                                                .fromARGB(219,
+                                                                223, 233, 242)
+                                                            : AppColor
+                                                                .transparent,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    14.r)),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 10.w,
+                                                            horizontal: 20.w),
+                                                    child: Row(
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                            getWalletCurrencyCode(
+                                                                e.currency)),
+                                                        SizedBox(
+                                                          width: 15.6.w,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 180.w,
+                                                          child: TextView(
+                                                            text:
+                                                                '${e.currency}',
+                                                            fontSize: 17.6,
+                                                            maxLines: 1,
+                                                            textOverflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ))
+                                    ],
+                                  )
+                          ],
+                        ),
+                      );
+                    });
               });
         });
   }
@@ -2276,123 +2292,130 @@ class AuthViewModel extends BaseViewModel {
               viewModelBuilder: () => AuthViewModel(),
               onViewModelReady: (model) {},
               builder: (_, AuthViewModel model, __) {
-                return DraggableScrollableSheet(
-                    expand: false,
-                    initialChildSize: 0.5, // 50% of screen height
-                    minChildSize: 0.3, // Can be dragged to 30% of screen height
-                    maxChildSize: 0.9, // Can be dragged to 90% of screen height
-                    builder: (context, scrollController) {
-                      return SingleChildScrollView(
-                        controller: scrollController,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 20.w, horizontal: 20.w),
-                        child: Form(
-                          key: withdrawFormkey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextView(
-                                text: 'Withdraw Funds',
-                                color: AppColor.black,
-                                fontSize: 22.2.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              SizedBox(
-                                height: 2.6.h,
-                              ),
-                              TextView(
-                                text:
-                                    'Enter the amount and select your bank account for withdrawal.',
-                                color: AppColor.grey,
-                                fontSize: 16.2.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              TextFormWidget(
-                                label: '0.00',
-                                hint: 'Amount',
-                                border: 10,
-                                isFilled: true,
-                                fillColor: AppColor.white,
-                                controller: withdrawAmount,
-                                validator: AppValidator.validateString(),
-                              ),
-                              TextView(
-                                text: 'Enter the amount you wish to withdraw.',
-                                color: AppColor.grey,
-                                fontSize: 16.2.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              TextFormWidget(
-                                label: 'Select a bank account',
-                                hint: 'Bank Account',
-                                border: 10,
-                                isFilled: true,
-                                readOnly: true,
-                                fillColor: AppColor.white,
-                                controller: withdrawBankAccount,
-                                validator: AppValidator.validateString(),
-                                suffixWidget: IconButton(
-                                    onPressed: () =>
-                                        shwUserAccountDialog(context),
-                                    icon: Icon(
-                                      Icons.arrow_drop_down_sharp,
-                                      color: AppColor.black,
-                                    )),
-                              ),
-                              TextView(
-                                text:
-                                    'Select the bank account for the withdrawal.',
-                                color: AppColor.grey,
-                                fontSize: 16.2.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              SizedBox(
-                                height: 40.h,
-                              ),
-                              ButtonWidget(
-                                  buttonText: 'Withdraw',
-                                  color: !model.isLoading
-                                      ? AppColor.white
-                                      : AppColor.grey,
-                                  border: 8,
-                                  buttonColor: AppColor.primary,
-                                  buttonBorderColor: Colors.transparent,
-                                  onPressed: () {
-                                    if (withdrawFormkey.currentState!
-                                        .validate()) {
-                                      showWithrawMoneyDialog(
-                                          context,
-                                          withdrawAmount.text,
-                                          withdrawBankAccount.text,
-                                          withdraw: WithdrawalEntityModel(
-                                              amount: withdrawAmount.text,
-                                              bankAccountId: bankId));
-                                    }
-                                  }),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              TextView(
-                                text:
-                                    'Please ensure all details are correct before submitting.',
-                                color: AppColor.grey,
-                                fontSize: 16.2.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              SizedBox(
-                                height: 40.h,
-                              ),
-                            ],
+                return Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: DraggableScrollableSheet(
+                      expand: false,
+                      initialChildSize: 0.5, // 50% of screen height
+                      minChildSize:
+                          0.3, // Can be dragged to 30% of screen height
+                      maxChildSize:
+                          0.9, // Can be dragged to 90% of screen height
+                      builder: (context, scrollController) {
+                        return SingleChildScrollView(
+                          controller: scrollController,
+                          padding: EdgeInsets.symmetric(
+                              vertical: 20.w, horizontal: 20.w),
+                          child: Form(
+                            key: withdrawFormkey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TextView(
+                                  text: 'Withdraw Funds',
+                                  color: AppColor.black,
+                                  fontSize: 22.2.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                SizedBox(
+                                  height: 2.6.h,
+                                ),
+                                TextView(
+                                  text:
+                                      'Enter the amount and select your bank account for withdrawal.',
+                                  color: AppColor.grey,
+                                  fontSize: 16.2.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                TextFormWidget(
+                                  label: '0.00',
+                                  hint: 'Amount',
+                                  border: 10,
+                                  isFilled: true,
+                                  fillColor: AppColor.white,
+                                  controller: withdrawAmount,
+                                  validator: AppValidator.validateString(),
+                                ),
+                                TextView(
+                                  text:
+                                      'Enter the amount you wish to withdraw.',
+                                  color: AppColor.grey,
+                                  fontSize: 16.2.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                TextFormWidget(
+                                  label: 'Select a bank account',
+                                  hint: 'Bank Account',
+                                  border: 10,
+                                  isFilled: true,
+                                  readOnly: true,
+                                  fillColor: AppColor.white,
+                                  controller: withdrawBankAccount,
+                                  validator: AppValidator.validateString(),
+                                  suffixWidget: IconButton(
+                                      onPressed: () =>
+                                          shwUserAccountDialog(context),
+                                      icon: Icon(
+                                        Icons.arrow_drop_down_sharp,
+                                        color: AppColor.black,
+                                      )),
+                                ),
+                                TextView(
+                                  text:
+                                      'Select the bank account for the withdrawal.',
+                                  color: AppColor.grey,
+                                  fontSize: 16.2.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                SizedBox(
+                                  height: 40.h,
+                                ),
+                                ButtonWidget(
+                                    buttonText: 'Withdraw',
+                                    color: !model.isLoading
+                                        ? AppColor.white
+                                        : AppColor.grey,
+                                    border: 8,
+                                    buttonColor: AppColor.primary,
+                                    buttonBorderColor: Colors.transparent,
+                                    onPressed: () {
+                                      if (withdrawFormkey.currentState!
+                                          .validate()) {
+                                        showWithrawMoneyDialog(
+                                            context,
+                                            withdrawAmount.text,
+                                            withdrawBankAccount.text,
+                                            withdraw: WithdrawalEntityModel(
+                                                amount: withdrawAmount.text,
+                                                bankAccountId: bankId));
+                                      }
+                                    }),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                TextView(
+                                  text:
+                                      'Please ensure all details are correct before submitting.',
+                                  color: AppColor.grey,
+                                  fontSize: 16.2.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                SizedBox(
+                                  height: 40.h,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    });
+                        );
+                      }),
+                );
               });
         });
   }

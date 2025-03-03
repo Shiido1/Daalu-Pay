@@ -32,6 +32,7 @@ class TextFormWidget extends StatelessWidget {
   final bool? isGender;
   final bool? isFeedback;
   final bool? isFilled;
+  final bool autofocus;
   final bool? isAsterix;
   final Function()? onTapped;
   TextStyle? labelStyle;
@@ -68,6 +69,7 @@ class TextFormWidget extends StatelessWidget {
     this.autoValidateMode,
     this.obscureText = false,
     this.isGender = false,
+    this.autofocus = false,
     this.readOnly = false,
     this.isFeedback = false,
     this.onTapped,
@@ -108,6 +110,7 @@ class TextFormWidget extends StatelessWidget {
         TextFormField(
           keyboardType: keyboardType,
           focusNode: focusNode,
+          autofocus: autofocus,
           decoration: InputDecoration(
               alignLabelWithHint: alignLabelWithHint,
               filled: isFilled,

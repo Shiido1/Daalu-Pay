@@ -19,7 +19,7 @@ class SendMonetEntityModel {
   factory SendMonetEntityModel.fromJson(Map<String, dynamic> json) {
     return SendMonetEntityModel(
       amount: json['amount']?.toString(),
-      recipientAddress: json['recipient_address']?.toString(),
+      recipientAddress: json['payment_details']?.toString(),
       currency: json['currency']?.toString(),
       documentType: json['document_type']?.toString(),
       recipientEmail: json['recipient_email']?.toString(),
@@ -30,7 +30,7 @@ class SendMonetEntityModel {
 
   Map<String, dynamic> toJson() => {
         if (amount != null) 'amount': amount,
-        if (recipientAddress != null) 'recipient_address': recipientAddress,
+        if (recipientAddress != null) 'payment_details': recipientAddress,
         if (recipientName != null) 'recipient_name': recipientName,
         if (recipientEmail != null) 'recipient_email': recipientEmail,
         if (description != null) 'description': description,

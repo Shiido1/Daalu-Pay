@@ -15,6 +15,7 @@ class AppImage {
   static const String uk = 'assets/svg/g39.svg';
   static const String cal = 'assets/svg/cal.svg';
   static const String send = 'assets/svg/send.svg';
+  static const String withdraw = 'assets/svg/withdraw.svg';
   static const String flutter = 'assets/svg/flutter.svg';
   static const String fullFlutter = 'assets/svg/full_flutter.svg';
   static const String paystack = 'assets/svg/paystack.svg';
@@ -26,6 +27,7 @@ class AppImage {
   static const String openEye = 'assets/svg/open_eye.svg';
   static const String eye = 'assets/svg/eye.svg';
   static const String addCard = 'assets/svg/card-add.svg';
+  static const String support = 'assets/svg/support.svg';
   static const String homeHelp = 'assets/svg/home_help.svg';
   static const String homeSwap = 'assets/svg/home_swap.svg';
   static const String bell = 'assets/svg/bell.svg';

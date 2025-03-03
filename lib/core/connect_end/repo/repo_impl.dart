@@ -1,4 +1,5 @@
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/all_exchange_rates_response_model/all_exchange_rates_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/create_pin_response_model/create_pin_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
@@ -77,6 +78,11 @@ class AuthRepoImpl {
   Future<GetExchangeRateResponseModel> exchangeRate(
       {String? from, String? to}) async {
     final response = await _contract.exchangeRate(from: from, to: to);
+    return response;
+  }
+
+  Future<AllExchangeRatesResponseModel> allExchangeRate() async {
+    final response = await _contract.allExchangeRate();
     return response;
   }
 

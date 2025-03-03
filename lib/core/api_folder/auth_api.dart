@@ -1,6 +1,7 @@
 import 'package:daalu_pay/core/connect_end/model/add_account_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/add_account_response_model/add_account_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/all_exchange_rates_response_model/all_exchange_rates_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/create_pin_response_model/create_pin_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
@@ -120,6 +121,20 @@ class AuthApi {
           data: {'from': from, 'to': to});
       logger.d(response.data);
       return GetExchangeRateResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<AllExchangeRatesResponseModel> allExchangeRate() async {
+    try {
+      final response = await _service.call(
+        UrlConfig.exchange_rates,
+        RequestMethod.get,
+      );
+      logger.d(response.data);
+      return AllExchangeRatesResponseModel.fromJson(response.data);
     } catch (e) {
       logger.d("response:$e");
       rethrow;
@@ -272,7 +287,7 @@ class AuthApi {
   Future<dynamic> sendMoney(SendMonetEntityModel sendMoney) async {
     try {
       final response = await _service.call(
-          '${UrlConfig.wallets}/send', RequestMethod.post,
+          '${UrlConfig.transfers}/send', RequestMethod.post,
           data: sendMoney.toJson());
       logger.d(response.data);
       return response.data;

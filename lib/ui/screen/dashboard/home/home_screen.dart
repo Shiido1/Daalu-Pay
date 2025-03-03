@@ -1,6 +1,9 @@
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/home_widget/deposit_screen.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/swap/swap_screen.dart';
+import 'package:daalu_pay/ui/screen/dashboard/settings/fast_nav_screen.dart';
+import 'package:daalu_pay/ui/screen/dashboard/transaction/transaction_screen.dart';
+import 'package:daalu_pay/ui/screen/dashboard/wallet/wallet_screen.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +18,8 @@ import '../../../../core/core_folder/manager/shared_preference.dart';
 import '../../../../main.dart';
 import '../../../app_assets/app_color.dart';
 import '../../../app_assets/contant.dart';
+import '../wallet/send_money.dart';
+import '../wallet/withdrawal_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,6 +30,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isTapped = false;
+  var scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         model.userResponseModel == null
                             ? SizedBox.shrink()
                             : GestureDetector(
-                                onTap: () =>
-                                    navigate.navigateTo(Routes.profileScreen),
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (contxt) => FastNavScreen()),
+                                ),
+                                // navigate.navigateTo(Routes.profileScreen),
                                 child: Container(
                                   padding: EdgeInsets.all(7.2.w),
                                   decoration: BoxDecoration(
@@ -236,47 +246,51 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             paddedWing(
                               value: 16,
-                              child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 20.w),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(28),
-                                  color: AppColor.inGrey.withOpacity(.22),
-                                  border: Border.all(
-                                      color: AppColor.primary.withOpacity(.24)),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    model.walletHome?.currency == null
-                                        ? SizedBox.shrink()
-                                        : Padding(
-                                            padding: EdgeInsets.only(top: 2.w),
-                                            child: SvgPicture.asset(model
-                                                .getWalletCurrencyCode(model
-                                                    .walletHome?.currency)),
-                                          ),
-                                    SizedBox(
-                                      width: 16.w,
-                                    ),
-                                    TextView(
-                                      text: model.walletHome?.currency ?? '...',
-                                      color: AppColor.primary,
-                                      fontSize: 22.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    IconButton(
-                                        onPressed: () =>
-                                            model.modalBottomSheetMenuWallet(
-                                                context),
-                                        icon: Icon(
-                                          Icons.keyboard_arrow_down_outlined,
-                                          color: AppColor.primary,
-                                          size: 32.sp,
-                                        ))
-                                  ],
+                              child: GestureDetector(
+                                onTap: () =>
+                                    model.modalBottomSheetMenuWallet(context),
+                                child: Container(
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 20.w),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(28),
+                                    color: AppColor.inGrey.withOpacity(.22),
+                                    border: Border.all(
+                                        color:
+                                            AppColor.primary.withOpacity(.24)),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      model.walletHome?.currency == null
+                                          ? SizedBox.shrink()
+                                          : Padding(
+                                              padding:
+                                                  EdgeInsets.only(top: 2.w),
+                                              child: SvgPicture.asset(model
+                                                  .getWalletCurrencyCode(model
+                                                      .walletHome?.currency)),
+                                            ),
+                                      SizedBox(
+                                        width: 16.w,
+                                      ),
+                                      TextView(
+                                        text:
+                                            model.walletHome?.currency ?? '...',
+                                        color: AppColor.primary,
+                                        fontSize: 22.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      Icon(
+                                        Icons.keyboard_arrow_down_outlined,
+                                        color: AppColor.primary,
+                                        size: 32.sp,
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -477,4 +491,178 @@ class _HomeScreenState extends State<HomeScreen> {
           }),
     );
   }
+
+  drawer() => Drawer(
+        backgroundColor: AppColor.white,
+        width: 220,
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 35, 83, 187),
+              ),
+              child: SizedBox.shrink(),
+            ),
+            ListTile(
+              leading: SvgPicture.asset(AppImage.homeSwap),
+              title: TextView(
+                text: 'Convert',
+                color: AppColor.greyKind,
+                fontSize: 17.2.sp,
+                fontWeight: FontWeight.w500,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SwapScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: SvgPicture.asset(
+                AppImage.addCard,
+              ),
+              title: TextView(
+                text: 'Deposit',
+                color: AppColor.greyKind,
+                fontSize: 17.2.sp,
+                fontWeight: FontWeight.w500,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DepositScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: SvgPicture.asset(
+                AppImage.send,
+              ),
+              title: TextView(
+                text: 'Send Money',
+                color: AppColor.greyKind,
+                fontSize: 17.2.sp,
+                fontWeight: FontWeight.w500,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SendMoneyScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: SvgPicture.asset(
+                AppImage.withdraw,
+                height: 32.h,
+                width: 42.0.w,
+                color: AppColor.primary,
+              ),
+              title: TextView(
+                text: 'Withdraw',
+                color: AppColor.greyKind,
+                fontSize: 17.2.sp,
+                fontWeight: FontWeight.w500,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WithdrawalScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: SvgPicture.asset(
+                AppImage.wallet,
+                color: AppColor.primary,
+              ),
+              title: TextView(
+                text: 'Wallet',
+                color: AppColor.greyKind,
+                fontSize: 17.2.sp,
+                fontWeight: FontWeight.w500,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WalletScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: SvgPicture.asset(
+                AppImage.trans,
+                color: AppColor.primary,
+              ),
+              title: TextView(
+                text: 'Transaction',
+                color: AppColor.greyKind,
+                fontSize: 17.2.sp,
+                fontWeight: FontWeight.w500,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TransactionScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.key,
+                size: 20.2.sp,
+                color: AppColor.primary,
+              ),
+              title: TextView(
+                text: 'KYC',
+                color: AppColor.greyKind,
+                fontSize: 17.2.sp,
+                fontWeight: FontWeight.w500,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                navigate.navigateTo(Routes.uploadDocumentsScreen);
+              },
+            ),
+            SizedBox(
+              height: 40.h,
+            ),
+            Center(
+              child: GestureDetector(
+                onTap: () {
+                  SharedPreferencesService.instance.logOut();
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextView(
+                      text: 'Logout',
+                      fontSize: 17.4.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppColor.red,
+                    ),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    Icon(
+                      Icons.logout_outlined,
+                      size: 22.2.sp,
+                      color: AppColor.red,
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      );
 }

@@ -133,6 +133,7 @@ class SwapScreen extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           model.modalBottomSheetMenuFrom(context);
+                          model.notifyListeners();
                         },
                         child: SvgPicture.asset(
                           model.fromCurrency,
@@ -166,8 +167,10 @@ class SwapScreen extends StatelessWidget {
                     prefixWidget: Padding(
                       padding: EdgeInsets.all(8.w),
                       child: GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           model.modalBottomSheetMenuTo(context);
+                          print(
+                              '${model.exchangeRateResponseModel?.data?.rate}');
                         },
                         child: SvgPicture.asset(
                           model.toCurrency,
@@ -243,7 +246,7 @@ class SwapScreen extends StatelessWidget {
                                 ),
                                 TextView(
                                   text:
-                                      '1 ${model.fromCurrencyCode} = ${model.exchangeRateResponseModel?.data?.rate ?? 0} ${model.toCurrencyCode}',
+                                      '1 ${model.fromCurrencyCode} = ${model.exchangeRateResponseModel?.data?.rate ?? ''} ${model.toCurrencyCode}',
                                   fontSize: 16.4.sp,
                                   fontWeight: FontWeight.w500,
                                 ),

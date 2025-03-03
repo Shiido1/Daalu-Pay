@@ -121,11 +121,15 @@ class WalletScreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      TextView(
-                                        text:
-                                            model.getWalletCountry(e.currency),
-                                        fontSize: 17.4.sp,
-                                        fontWeight: FontWeight.w500,
+                                      SizedBox(
+                                        width: 200.w,
+                                        child: TextView(
+                                          text: model
+                                              .getWalletCountry(e.currency),
+                                          textOverflow: TextOverflow.fade,
+                                          fontSize: 17.4.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                       TextView(
                                         text:

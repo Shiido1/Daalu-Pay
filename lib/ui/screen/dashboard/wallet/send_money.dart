@@ -91,8 +91,10 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                       controller: model.currencyController,
                       validator: AppValidator.validateString(),
                       suffixWidget: IconButton(
-                          onPressed: () =>
-                              model.shwWalletCurrencyDialog(context),
+                          onPressed: () {
+                            model.shwWalletCurrencyDialog(context);
+                            model.notifyListeners();
+                          },
                           icon: Icon(
                             Icons.arrow_drop_down_sharp,
                             color: AppColor.black,
@@ -154,6 +156,25 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                     SizedBox(
                       height: 20.h,
                     ),
+                    model.currencyController.text != 'CNY'
+                        ? TextFormWidget(
+                            hint: 'Payment Details',
+                            label:
+                                'Enter bank details (Account number,\nBank name, Sort Code,\nIBAN, Routing Number etc.)',
+                            border: 10,
+                            isFilled: true,
+                            alignLabelWithHint: true,
+                            maxline: 4,
+                            fillColor: AppColor.white,
+                            keyboardType: TextInputType.text,
+                            controller: model.recipientWalletIdController,
+                            validator: AppValidator.validateString(),
+                          )
+                        : SizedBox.shrink(),
+                    SizedBox(
+                      height:
+                          model.currencyController.text != 'CNY' ? 20.h : 0.h,
+                    ),
                     TextFormWidget(
                       hint: 'Description',
                       border: 10,
@@ -171,16 +192,22 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                       padding: EdgeInsets.only(right: 8.w),
                       child: Row(
                         children: <Widget>[
-                          Radio(
-                            value: 'wallet',
-                            groupValue: model.radioValue,
-                            onChanged: (v) {
-                              model.radioButtonChanges(v!);
-                            },
-                          ),
-                          Text(
-                            "Wallet Address",
-                          ),
+                          model.currencyController.text != 'CNY'
+                              ? SizedBox.shrink()
+                              : Row(
+                                  children: [
+                                    Radio(
+                                      value: 'wallet',
+                                      groupValue: model.radioValue,
+                                      onChanged: (v) {
+                                        model.radioButtonChanges(v!);
+                                      },
+                                    ),
+                                    Text(
+                                      "Wallet Address",
+                                    ),
+                                  ],
+                                ),
                           Spacer(),
                           Radio(
                             value: 'upload',

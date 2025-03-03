@@ -1,6 +1,7 @@
 import 'package:daalu_pay/core/connect_end/model/add_account_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/add_account_response_model/add_account_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/all_exchange_rates_response_model/all_exchange_rates_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_bank_account_response_model/get_bank_account_response_model.dart';
@@ -57,6 +58,9 @@ class AuthContractsImpl {
   Future<GetExchangeRateResponseModel> exchangeRate(
           {String? from, String? to}) async =>
       await _api.exchangeRate(from: from, to: to);
+  Future<AllExchangeRatesResponseModel> allExchangeRate(
+          {String? from, String? to}) async =>
+      await _api.allExchangeRate();
   Future<dynamic> createWallet({String? currencyCode}) async =>
       await _api.createWallet(currencyCode);
   Future<dynamic> swap(SwapEntiyModel? swap) async => await _api.swap(swap);

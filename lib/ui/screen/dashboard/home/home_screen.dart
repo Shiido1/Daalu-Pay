@@ -492,9 +492,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   drawer() => Drawer(
         backgroundColor: AppColor.white,
-        width: 280,
+        width: 250,
         child: ListView(
-          // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
@@ -571,11 +570,11 @@ class _HomeScreenState extends State<HomeScreen> {
               title: SizedBox(
                 width: 230.w,
                 child: TextView(
-                  text: 'Transaction History / Activity',
+                  text: 'Transaction History',
                   color: AppColor.greyKind,
                   maxLines: 1,
                   textOverflow: TextOverflow.ellipsis,
-                  fontSize: 16.8.sp,
+                  fontSize: 17.2.sp,
                   fontWeight: FontWeight.w500,
                 ),
               ),

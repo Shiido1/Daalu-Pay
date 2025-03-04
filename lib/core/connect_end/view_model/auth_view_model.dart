@@ -67,6 +67,7 @@ import '../model/post_user_verification_cloud_response/post_user_verification_cl
 import '../model/preference_response_model/preference_response_model.dart';
 import '../model/register_entity_model.dart';
 import '../model/send_message_response_model/send_message_response_model.dart';
+import '../model/update_user_entity_model.dart';
 import '../model/withdrawal_history_response_model/withdrawal_history_response_model.dart';
 import '../model/withdrawal_response_model/withdrawal_response_model.dart';
 import '../repo/repo_impl.dart';
@@ -167,6 +168,10 @@ class AuthViewModel extends BaseViewModel {
   PostUserVerificationCloudResponse? _postUserVerificationCloudResponse;
   PostUserVerificationCloudResponse? get postUserVerificationCloudResponse =>
       _postUserVerificationCloudResponse;
+  PostUserVerificationCloudResponse? _postUserVerificationCloudResponseAvatar;
+  PostUserVerificationCloudResponse?
+      get postUserVerificationCloudResponseAvatar =>
+          _postUserVerificationCloudResponseAvatar;
 
   InitiateChatResponseModel? _initiateChatResponseModel;
   InitiateChatResponseModel? get initiateChatResponseModel =>
@@ -700,6 +705,27 @@ class AuthViewModel extends BaseViewModel {
     }
   }
 
+  void getAvatarImage(BuildContext context) {
+    try {
+      _pickImage.pickImage(
+          context: context,
+          file: (file) {
+            image = file;
+            filename = image!.path.split("/").last;
+            postUserToCloudinary(context,
+                postCloudinary: PostUserCloudEntityModel(
+                    file: MultipartFile.fromBytes(
+                        formartFileImage(image).readAsBytesSync(),
+                        filename: image!.path.split("/").last),
+                    uploadPreset: 'daalupay.staging.verification',
+                    apiKey: '163312741323182'));
+            notifyListeners();
+          });
+    } catch (e) {
+      logger.e(e);
+    }
+  }
+
   Future<void> capturePhoto(context) async {
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.camera,
@@ -1075,6 +1101,14 @@ class AuthViewModel extends BaseViewModel {
         (double.parse(_exchangeRateResponseModel!.data!.rate!) *
                 double.parse(o == '' ? '0.0' : o))
             .toString();
+
+    notifyListeners();
+  }
+
+  exchangeFromTheRate(o) {
+    fromCurrencylController.text = (double.parse(o == '' ? '0.0' : o) /
+            double.parse(_exchangeRateResponseModel!.data!.rate!))
+        .toString();
 
     notifyListeners();
   }
@@ -2549,6 +2583,11 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void onChangeFromRate(p0) {
+    debouncer.run(() => exchangeFromTheRate(p0));
+    notifyListeners();
+  }
+
   String getWalletCurrencyCode(currencyCode) {
     String flag = '';
     for (var element in countryConst) {
@@ -2652,7 +2691,7 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> updateProfile(context, {RegisterEntityModel? update}) async {
+  Future<void> updateProfile(context, {UpdateUserEntityModel? update}) async {
     try {
       _isLoading = true;
       var v = await runBusyFuture(repositoryImply.updateProfile(update!),
@@ -3027,6 +3066,21 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<void> postUserToCloudinary(context,
+      {PostUserCloudEntityModel? postCloudinary}) async {
+    try {
+      _isLoading = true;
+      _postUserVerificationCloudResponseAvatar = await runBusyFuture(
+          repositoryImply.postCloudinary(postCloudinary!),
+          throwException: true);
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
   Future<void> postToCloudinary(context,
       {PostUserCloudEntityModel? postCloudinary}) async {
     try {
@@ -3245,10 +3299,12 @@ class AuthViewModel extends BaseViewModel {
                                   text:
                                       '${oCcy.format(double.parse(toCurrencylController.text))} ${getAllCurrency(toCurrencyCode)}',
                                   color: AppColor.black,
-                                  fontSize: 16.2.sp,
+                                  textStyle: TextStyle(
+                                    fontSize: 17.4.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                   maxLines: 1,
                                   textOverflow: TextOverflow.fade,
-                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ],

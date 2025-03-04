@@ -265,29 +265,34 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    color: model.userResponseModel?.data?.status
-                                                ?.toLowerCase() ==
-                                            'active'
-                                        ? AppColor.green.withOpacity(.8)
-                                        : AppColor.inGrey),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 4.w, horizontal: 6.w),
-                                child: TextView(
-                                  text:
-                                      '${model.userResponseModel?.data?.status}'
-                                          .capitalize(),
-                                  fontSize: 13.4.sp,
-                                  color: model.userResponseModel?.data?.status
-                                              ?.toLowerCase() ==
-                                          'active'.toLowerCase()
-                                      ? AppColor.white
-                                      : AppColor.darkGrey,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                              model.userResponseModel == null
+                                  ? SizedBox.shrink()
+                                  : Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                          color: model.userResponseModel?.data
+                                                      ?.status
+                                                      ?.toLowerCase() ==
+                                                  'active'
+                                              ? AppColor.green.withOpacity(.8)
+                                              : AppColor.inGrey),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 4.w, horizontal: 6.w),
+                                      child: TextView(
+                                        text:
+                                            '${model.userResponseModel?.data?.status}'
+                                                .capitalize(),
+                                        fontSize: 13.4.sp,
+                                        color: model.userResponseModel?.data
+                                                    ?.status
+                                                    ?.toLowerCase() ==
+                                                'active'.toLowerCase()
+                                            ? AppColor.white
+                                            : AppColor.darkGrey,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                             ],
                           ),
                         ),
@@ -319,30 +324,34 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    color: model.userResponseModel?.data
-                                                ?.kycStatus
-                                                ?.toLowerCase() ==
-                                            'approved'
-                                        ? AppColor.green.withOpacity(.8)
-                                        : AppColor.inGrey),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 4.w, horizontal: 6.w),
-                                child: TextView(
-                                  text:
-                                      '${model.userResponseModel?.data?.status}'
-                                          .capitalize(),
-                                  fontSize: 13.4.sp,
-                                  color: model.userResponseModel?.data?.status
-                                              ?.toLowerCase() ==
-                                          'approved'.toLowerCase()
-                                      ? AppColor.white
-                                      : AppColor.darkGrey,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                              model.userResponseModel == null
+                                  ? SizedBox.shrink()
+                                  : Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                          color: model.userResponseModel?.data
+                                                      ?.kycStatus
+                                                      ?.toLowerCase() ==
+                                                  'approved'
+                                              ? AppColor.green.withOpacity(.8)
+                                              : AppColor.inGrey),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 4.w, horizontal: 6.w),
+                                      child: TextView(
+                                        text:
+                                            '${model.userResponseModel?.data?.status}'
+                                                .capitalize(),
+                                        fontSize: 13.4.sp,
+                                        color: model.userResponseModel?.data
+                                                    ?.status
+                                                    ?.toLowerCase() ==
+                                                'approved'.toLowerCase()
+                                            ? AppColor.white
+                                            : AppColor.darkGrey,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                             ],
                           ),
                         ),

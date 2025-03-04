@@ -68,7 +68,7 @@ class SupportScreen extends StatelessWidget {
                             width: 20.w,
                           ),
                           TextView(
-                            text: 'Life Chat',
+                            text: 'Live Chat',
                             fontSize: 18.0.sp,
                             fontWeight: FontWeight.w500,
                           ),

@@ -133,7 +133,7 @@ class SwapScreen extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           model.modalBottomSheetMenuFrom(context);
-                          model.notifyListeners();
+                          // model.notifyListeners();
                         },
                         child: SvgPicture.asset(
                           model.fromCurrency,
@@ -163,7 +163,9 @@ class SwapScreen extends StatelessWidget {
                     isFilled: true,
                     keyboardType: TextInputType.number,
                     fillColor: AppColor.white,
-                    readOnly: true,
+                    onChange: (p0) {
+                      model.onChangeFromRate(p0);
+                    },
                     prefixWidget: Padding(
                       padding: EdgeInsets.all(8.w),
                       child: GestureDetector(
@@ -198,8 +200,9 @@ class SwapScreen extends StatelessWidget {
                       SizedBox(
                         width: 140.w,
                         child: TextView(
-                            text:
-                                '${getAllCurrency(model.toCurrencyCode)}${oCcy.format(double.parse(model.toCurrencylController.text))}',
+                            text: model.toCurrencylController.text == ''
+                                ? ''
+                                : '${getAllCurrency(model.toCurrencyCode)}${oCcy.format(double.parse(model.toCurrencylController.text))}',
                             maxLines: 2,
                             textAlign: TextAlign.end,
                             textStyle: TextStyle(
@@ -270,7 +273,10 @@ class SwapScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                               ),
                               TextView(
-                                text: model.transferFee(),
+                                text:
+                                    '${roundToTwoDecimals(double.parse(model.transferFee()))}',
+                                maxLines: 1,
+                                textOverflow: TextOverflow.ellipsis,
                                 fontSize: 17.4.sp,
                                 fontWeight: FontWeight.w500,
                               ),

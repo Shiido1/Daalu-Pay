@@ -37,6 +37,7 @@ import '../connect_end/model/get_swapped_transactions_response_model/get_swapped
 import '../connect_end/model/login_entity.dart';
 import '../connect_end/model/login_response_model/login_response_model.dart';
 import '../connect_end/model/register_entity_model.dart';
+import '../connect_end/model/update_user_entity_model.dart';
 import '../connect_end/model/user_response_model/user_response_model.dart';
 import '../connect_end/model/verify_pin_response_model/verify_pin_response_model.dart';
 import '../core_folder/app/app.locator.dart';
@@ -177,7 +178,7 @@ class AuthApi {
     }
   }
 
-  Future<dynamic> userProfile(RegisterEntityModel? userEntity) async {
+  Future<dynamic> userProfile(UpdateUserEntityModel? userEntity) async {
     try {
       final response = await _service.call(UrlConfig.user, RequestMethod.post,
           data: FormData.fromMap(userEntity!.toJson()));

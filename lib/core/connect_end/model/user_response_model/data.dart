@@ -13,6 +13,7 @@ class Data {
   String? phone;
   String? status;
   String? kycStatus;
+  String? photo;
   DateTime? emailVerifiedAt;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -28,6 +29,7 @@ class Data {
     this.email,
     this.phone,
     this.status,
+    this.photo,
     this.kycStatus,
     this.emailVerifiedAt,
     this.createdAt,

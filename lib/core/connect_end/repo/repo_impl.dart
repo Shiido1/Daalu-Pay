@@ -36,6 +36,7 @@ import '../model/preference_response_model/preference_response_model.dart';
 import '../model/register_entity_model.dart';
 import '../model/send_message_entity_model.dart';
 import '../model/send_message_response_model/send_message_response_model.dart';
+import '../model/update_user_entity_model.dart';
 import '../model/user_response_model/user_response_model.dart';
 import '../model/verify_pin_response_model/verify_pin_response_model.dart';
 import '../model/withdrawal_entity_model.dart';
@@ -101,7 +102,7 @@ class AuthRepoImpl {
     return response;
   }
 
-  Future<dynamic> updateProfile(RegisterEntityModel update) async {
+  Future<dynamic> updateProfile(UpdateUserEntityModel update) async {
     final response = await _contract.updateProfile(update);
     return response;
   }

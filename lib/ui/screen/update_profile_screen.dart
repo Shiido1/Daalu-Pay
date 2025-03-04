@@ -1,15 +1,17 @@
+import 'dart:io';
+
+import 'package:daalu_pay/core/connect_end/model/update_user_entity_model.dart';
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:daalu_pay/ui/app_assets/app_utils.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
-import '../../core/connect_end/model/register_entity_model.dart';
 import '../../core/connect_end/view_model/auth_view_model.dart';
 import '../app_assets/app_validatiion.dart';
+import '../app_assets/contant.dart';
 import '../widget/button_widget.dart';
 import '../widget/text_form_widget.dart';
 
@@ -64,11 +66,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 model.userResponseModel?.data?.lastName ?? '';
             genderController.text = model.userResponseModel?.data?.gender ?? '';
             phoneController.text = model.userResponseModel?.data?.phone ?? '';
-            // documentController.text = model.userResponseModel?.data?.d ?? '';
-            // addressController.text = model.userResponseModel?.data?.a ?? '';
-            // cityController.text = model.userResponseModel?.data?. ?? '';
-            // zipCodeController.text = model.userResponseModel?.data?.z ?? '';
-            // countryController.text = model.userResponseModel?.data?.c ?? '';
+          },
+          onDispose: (viewModel) {
+            viewModel.image = File('');
           },
           disposeViewModel: false,
           builder: (_, AuthViewModel model, __) {
@@ -97,6 +97,86 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     ),
                     SizedBox(
                       height: 20.h,
+                    ),
+                    GestureDetector(
+                      onTap: () => model.getAvatarImage(context),
+                      child: model.image != null
+                          ? ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(100), // Makes it round
+                              child: Image.file(
+                                model.image!,
+                                width: 80, // Set width
+                                height: 80, // Set height
+                                fit: BoxFit
+                                    .cover, // Ensures the image covers the area
+                              ),
+                            )
+                          : Column(
+                              children: [
+                                model.userResponseModel != null &&
+                                        model.userResponseModel?.data?.photo !=
+                                            null
+                                    ? ClipOval(
+                                        child: SizedBox.fromSize(
+                                          size: const Size.fromRadius(32),
+                                          child: Image.network(
+                                            'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${model.userResponseModel?.data?.photo}',
+                                            fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (context, error, stackTrace) =>
+                                                    Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                color: AppColor.greyKind
+                                                    .withOpacity(.3),
+                                              ),
+                                              child: Center(
+                                                child: TextView(
+                                                  text: '',
+                                                  fontSize: 13.2.sp,
+                                                  color: AppColor.black,
+                                                  fontWeight: FontWeight.w300,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : model.userResponseModel == null
+                                        ? SizedBox.shrink()
+                                        : Container(
+                                            padding: EdgeInsets.all(12.2.w),
+                                            decoration: BoxDecoration(
+                                              color: AppColor.black,
+                                              border: Border.all(
+                                                  color: AppColor.white),
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: TextView(
+                                              text: getInitials(
+                                                      '${model.userResponseModel?.data?.firstName ?? ''} ${model.userResponseModel?.data?.lastName ?? ''}')
+                                                  .toUpperCase(),
+                                              fontSize: 20.sp,
+                                              color: AppColor.white,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                              ],
+                            ),
+                    ),
+                    SizedBox(
+                      height: 4.h,
+                    ),
+                    TextView(
+                      text: 'Select Image',
+                      fontSize: 13.2.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColor.black,
+                    ),
+                    SizedBox(
+                      height: 30.h,
                     ),
                     TextFormWidget(
                       label: 'First name',
@@ -141,60 +221,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     SizedBox(
                       height: 20.h,
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: TextFormWidget(
-                            label: 'Document',
-                            hint: 'Select Document',
-                            border: 10,
-                            isFilled: true,
-                            readOnly: true,
-                            fillColor: AppColor.white,
-                            controller: documentController,
-                            validator: AppValidator.validateString(),
-                            suffixWidget: IconButton(
-                                onPressed: () => shwDocumentDialog(),
-                                icon: Icon(
-                                  Icons.arrow_drop_down_sharp,
-                                  color: AppColor.black,
-                                )),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20.w,
-                        ),
-                        GestureDetector(
-                          onTap: () => model.getDocumentImage(context),
-                          child: Container(
-                            margin: EdgeInsets.only(top: 26.w),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 12.w, horizontal: 6.w),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                border: Border.all(
-                                    color: AppColor.inGrey, width: 1.2),
-                                color: AppColor.white),
-                            child: TextView(text: 'Select file'),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.0.h,
-                    ),
-                    model.filename != null
-                        ? TextView(
-                            text: model.filename!,
-                            fontSize: 12.sp,
-                            fontStyle: FontStyle.italic,
-                            color: AppColor.red.withOpacity(.7),
-                          )
-                        : SizedBox.shrink(),
-                    SizedBox(
-                      height: 20.h,
-                    ),
                     TextFormWidget(
                       label: 'Select your date of birth',
                       hint: 'D.O.B',
@@ -215,42 +241,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       height: 20.h,
                     ),
                     TextFormWidget(
-                      label: 'Select Country',
-                      hint: 'Country',
-                      border: 10,
-                      isFilled: true,
-                      fillColor: AppColor.white,
-                      controller: countryController,
-                      validator: AppValidator.validateString(),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    TextFormWidget(
-                      label: 'Enter your address',
-                      hint: 'Address',
-                      border: 10,
-                      isFilled: true,
-                      fillColor: AppColor.white,
-                      controller: addressController,
-                      validator: AppValidator.validateString(),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    TextFormWidget(
-                      label: 'Enter your city',
-                      hint: 'City',
-                      border: 10,
-                      isFilled: true,
-                      fillColor: AppColor.white,
-                      controller: cityController,
-                      validator: AppValidator.validateString(),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    TextFormWidget(
                       label: 'Enter your email address',
                       hint: 'Email address',
                       border: 10,
@@ -258,18 +248,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       fillColor: AppColor.white,
                       controller: emailController,
                       validator: AppValidator.validateEmail(),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    TextFormWidget(
-                      label: 'Zip Code',
-                      hint: 'Enter zip code',
-                      border: 10,
-                      isFilled: true,
-                      fillColor: AppColor.white,
-                      controller: zipCodeController,
-                      validator: AppValidator.validateString(),
                     ),
                     SizedBox(
                       height: 20.h,
@@ -368,27 +346,17 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               model.image != null) {
                             model.updateProfile(
                               context,
-                              update: RegisterEntityModel(
-                                  firstName: firstnameController.text.trim(),
-                                  lastName: lastnameController.text.trim(),
-                                  email: emailController.text.trim(),
-                                  phoneNumber: phoneController.text.trim(),
-                                  gender: genderController.text.trim(),
-                                  address: addressController.text.trim(),
-                                  city: cityController.text.trim(),
-                                  dateOfBirth: model.dobController.text.trim(),
-                                  zipCode: zipCodeController.text.trim(),
-                                  country: countryController.text.trim(),
-                                  password: passwordController.text.trim(),
-                                  confirmPassword:
-                                      confirmPasswordController.text.trim(),
-                                  documentFile: MultipartFile.fromBytes(
-                                      model
-                                          .formartFileImage(model.image)
-                                          .readAsBytesSync(),
-                                      filename:
-                                          model.image!.path.split("/").last),
-                                  documentType: documentController.text.trim()),
+                              update: UpdateUserEntityModel(
+                                firstName: firstnameController.text.trim(),
+                                lastName: lastnameController.text.trim(),
+                                email: emailController.text.trim(),
+                                phone: phoneController.text.trim(),
+                                gender: genderController.text.trim(),
+                                photo:
+                                    '${model.postUserVerificationCloudResponseAvatar?.publicId}.${model.postUserVerificationCloudResponseAvatar?.format}',
+                                dateOfBirth: model.dobController.text.trim(),
+                                password: passwordController.text.trim(),
+                              ),
                             );
                           } else {
                             AppUtils.snackbar(context,

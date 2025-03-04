@@ -38,6 +38,7 @@ import '../model/registration_response_model/registration_response_model.dart';
 import '../model/send_message_entity_model.dart';
 import '../model/send_message_response_model/send_message_response_model.dart';
 import '../model/swap_entiy_model.dart';
+import '../model/update_user_entity_model.dart';
 import '../model/user_response_model/user_response_model.dart';
 import '../model/verify_pin_response_model/verify_pin_response_model.dart';
 
@@ -66,7 +67,7 @@ class AuthContractsImpl {
   Future<dynamic> swap(SwapEntiyModel? swap) async => await _api.swap(swap);
   Future<GetSwappedTransactionsResponseModel> getSwap() async =>
       await _api.getSwap();
-  Future<dynamic> updateProfile(RegisterEntityModel? update) async =>
+  Future<dynamic> updateProfile(UpdateUserEntityModel? update) async =>
       await _api.userProfile(update);
   Future<dynamic> resetPassword(ResetPasswordEntity? resetPassword) async =>
       await _api.resetPassword(resetPassword);

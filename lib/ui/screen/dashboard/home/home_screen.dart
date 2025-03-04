@@ -62,11 +62,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        IconButton(
+                            onPressed: () =>
+                                scaffoldKey.currentState?.openDrawer(),
+                            icon: Icon(
+                              Icons.menu,
+                              color: AppColor.primary,
+                            )),
+                        TextView(
+                          text:
+                              'Welcome ${model.userResponseModel?.data?.firstName ?? ''}',
+                          fontSize: 24.20.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColor.primary,
+                        ),
                         model.userResponseModel == null
                             ? SizedBox.shrink()
                             : GestureDetector(
-                                onTap: () =>
-                                    scaffoldKey.currentState?.openDrawer(),
+                                onTap: () {},
                                 // navigate.navigateTo(Routes.profileScreen),
                                 child: Container(
                                   padding: EdgeInsets.all(7.2.w),
@@ -85,16 +98,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                               ),
-                        TextView(
-                          text:
-                              'Welcome ${model.userResponseModel?.data?.firstName ?? ''}',
-                          fontSize: 24.20.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppColor.primary,
-                        ),
-                        SizedBox(
-                          width: 26.70.w,
-                        )
+
+                        // SizedBox(
+                        //   width: 26.70.w,
+                        // )
                       ],
                     ),
                   ),
@@ -492,149 +499,280 @@ class _HomeScreenState extends State<HomeScreen> {
 
   drawer() => Drawer(
         backgroundColor: AppColor.white,
-        width: 250,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 35, 83, 187),
-              ),
-              child: SizedBox.shrink(),
-            ),
-            ListTile(
-              leading: SvgPicture.asset(AppImage.homeSwap),
-              title: TextView(
-                text: 'Send Money',
-                color: AppColor.greyKind,
-                fontSize: 17.2.sp,
-                fontWeight: FontWeight.w500,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (contxt) => SendMoneyScreen()),
-                );
-              },
-            ),
-            ListTile(
-              leading: SvgPicture.asset(
-                AppImage.addCard,
-              ),
-              title: TextView(
-                text: 'Fund Wallet',
-                color: AppColor.greyKind,
-                fontSize: 17.2.sp,
-                fontWeight: FontWeight.w500,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DepositScreen()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.currency_exchange,
-                color: AppColor.primary,
-              ),
-              title: SizedBox(
-                width: 230.w,
-                child: TextView(
-                  text: 'View Exchange Rates',
-                  color: AppColor.greyKind,
-                  fontSize: 17.0.sp,
-                  maxLines: 1,
-                  textOverflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ExchangeRateScreen()),
-                );
-              },
-            ),
-            ListTile(
-              leading: SvgPicture.asset(
-                AppImage.withdraw,
-                height: 32.h,
-                width: 42.0.w,
-                color: AppColor.primary,
-              ),
-              title: SizedBox(
-                width: 230.w,
-                child: TextView(
-                  text: 'Transaction History',
-                  color: AppColor.greyKind,
-                  maxLines: 1,
-                  textOverflow: TextOverflow.ellipsis,
-                  fontSize: 17.2.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TransactionScreen()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.support,
-                color: AppColor.primary,
-              ),
-              title: TextView(
-                text: 'Support',
-                color: AppColor.greyKind,
-                fontSize: 17.2.sp,
-                fontWeight: FontWeight.w500,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (contxt) => SupportScreen()),
-                );
-              },
-            ),
-            SizedBox(
-              height: 40.h,
-            ),
-            Center(
-              child: GestureDetector(
-                onTap: () {
-                  SharedPreferencesService.instance.logOut();
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextView(
-                      text: 'Logout',
-                      fontSize: 17.4.sp,
+        width: 280,
+        child: ViewModelBuilder<AuthViewModel>.reactive(
+            viewModelBuilder: () => AuthViewModel(),
+            onViewModelReady: (model) async {
+              await model.getUser(context);
+            },
+            disposeViewModel: false,
+            builder: (_, AuthViewModel model, __) {
+              return ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: AppColor.primary,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 60.w),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          model.userResponseModel != null
+                              ? Column(
+                                  children: [
+                                    model.userResponseModel != null &&
+                                            model.userResponseModel?.data
+                                                    ?.photo !=
+                                                null
+                                        ? ClipOval(
+                                            child: SizedBox.fromSize(
+                                              size: const Size.fromRadius(24),
+                                              child: Image.network(
+                                                'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${model.userResponseModel?.data?.photo}',
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error,
+                                                        stackTrace) =>
+                                                    Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    color: AppColor.greyKind
+                                                        .withOpacity(.3),
+                                                  ),
+                                                  child: Center(
+                                                    child: TextView(
+                                                      text: '',
+                                                      fontSize: 13.2.sp,
+                                                      color: AppColor.black,
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : model.userResponseModel == null
+                                            ? SizedBox.shrink()
+                                            : Container(
+                                                padding: EdgeInsets.all(12.2.w),
+                                                decoration: BoxDecoration(
+                                                  color: AppColor.black,
+                                                  border: Border.all(
+                                                      color: AppColor.white),
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: TextView(
+                                                  text: getInitials(
+                                                          '${model.userResponseModel?.data?.firstName ?? ''} ${model.userResponseModel?.data?.lastName ?? ''}')
+                                                      .toUpperCase(),
+                                                  fontSize: 20.sp,
+                                                  color: AppColor.white,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                  ],
+                                )
+                              : SizedBox.shrink(),
+                          SizedBox(
+                            width: 6.w,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 100.w,
+                                child: TextView(
+                                  text:
+                                      '${model.userResponseModel?.data?.firstName ?? ""} ${getInitials(model.userResponseModel?.data?.lastName ?? '').toUpperCase()}',
+                                  color: AppColor.white,
+                                  fontSize: 16.2.sp,
+                                  maxLines: 1,
+                                  textOverflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 4.h,
+                              ),
+                              SizedBox(
+                                width: 180.w,
+                                child: TextView(
+                                  text: model.userResponseModel?.data?.email ??
+                                      "",
+                                  color: AppColor.white,
+                                  maxLines: 2,
+                                  fontSize: 13.2.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  ListTile(
+                    leading: SvgPicture.asset(AppImage.homeSwap),
+                    title: TextView(
+                      text: 'Send Money',
+                      color: AppColor.greyKind,
+                      fontSize: 17.2.sp,
                       fontWeight: FontWeight.w500,
-                      color: AppColor.red,
                     ),
-                    SizedBox(
-                      width: 10.w,
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (contxt) => SendMoneyScreen()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: SvgPicture.asset(
+                      AppImage.addCard,
                     ),
-                    Icon(
-                      Icons.logout_outlined,
-                      size: 22.2.sp,
-                      color: AppColor.red,
-                    )
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
+                    title: TextView(
+                      text: 'Fund Wallet',
+                      color: AppColor.greyKind,
+                      fontSize: 17.2.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DepositScreen()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.currency_exchange,
+                      color: AppColor.primary,
+                    ),
+                    title: SizedBox(
+                      width: 230.w,
+                      child: TextView(
+                        text: 'View Exchange Rates',
+                        color: AppColor.greyKind,
+                        fontSize: 17.2.sp,
+                        maxLines: 1,
+                        textOverflow: TextOverflow.ellipsis,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ExchangeRateScreen()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: SvgPicture.asset(
+                      AppImage.withdraw,
+                      height: 32.h,
+                      width: 40.w,
+                      color: AppColor.primary,
+                    ),
+                    title: SizedBox(
+                      width: 230.w,
+                      child: TextView(
+                        text: 'Transaction History',
+                        color: AppColor.greyKind,
+                        maxLines: 1,
+                        textOverflow: TextOverflow.ellipsis,
+                        fontSize: 17.2.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TransactionScreen()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.person,
+                      color: AppColor.primary,
+                    ),
+                    title: TextView(
+                      text: 'Profile',
+                      color: AppColor.greyKind,
+                      fontSize: 17.2.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+
+                      navigate.navigateTo(Routes.profileScreen);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.support,
+                      color: AppColor.primary,
+                    ),
+                    title: TextView(
+                      text: 'Support',
+                      color: AppColor.greyKind,
+                      fontSize: 17.2.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (contxt) => SupportScreen()),
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 40.h,
+                  ),
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        SharedPreferencesService.instance.logOut();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextView(
+                            text: 'Logout',
+                            fontSize: 17.4.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AppColor.red,
+                          ),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Icon(
+                            Icons.logout_outlined,
+                            size: 22.2.sp,
+                            color: AppColor.red,
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              );
+            }),
       );
 }

@@ -49,7 +49,7 @@ class ExchangeRateScreen extends StatelessWidget {
                         TextView(
                           text: 'Exchange rates',
                           color: AppColor.greyKind,
-                          fontSize: 14.sp,
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.w500,
                         ),
                         SizedBox(

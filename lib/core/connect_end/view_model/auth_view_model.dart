@@ -1037,16 +1037,16 @@ class AuthViewModel extends BaseViewModel {
                         TextView(
                           text: e.fromCurrency ?? '',
                           color: AppColor.greyKind,
-                          fontSize: 14.sp,
+                          fontSize: 17.6.sp,
                           fontWeight: FontWeight.w600,
                         ),
                         SizedBox(
                           height: 10.h,
                         ),
                         TextView(
-                          text: '-',
+                          text: ' - ',
                           color: AppColor.greyKind,
-                          fontSize: 14.sp,
+                          fontSize: 17.6.sp,
                           fontWeight: FontWeight.w600,
                         ),
                         SizedBox(
@@ -1055,7 +1055,7 @@ class AuthViewModel extends BaseViewModel {
                         TextView(
                           text: e.toCurrency ?? '',
                           color: AppColor.greyKind,
-                          fontSize: 14.sp,
+                          fontSize: 17.6.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ],
@@ -1064,7 +1064,7 @@ class AuthViewModel extends BaseViewModel {
                       text: DateFormat('yyyy-MM-dd hh:mm a')
                           .format(DateTime.parse(e.createdAt.toString())),
                       color: AppColor.greyKind,
-                      fontSize: 12.sp,
+                      fontSize: 13.8.sp,
                       fontWeight: FontWeight.w400,
                     ),
                   ],
@@ -1075,13 +1075,13 @@ class AuthViewModel extends BaseViewModel {
                     TextView(
                       text: e.rate ?? '',
                       color: AppColor.greyKind,
-                      fontSize: 14.sp,
+                      fontSize: 17.2.sp,
                       fontWeight: FontWeight.w600,
                     ),
                     TextView(
                       text: 'Exchange Rate',
                       color: AppColor.greyKind,
-                      fontSize: 12.sp,
+                      fontSize: 14.2.sp,
                       fontWeight: FontWeight.w400,
                     ),
                   ],

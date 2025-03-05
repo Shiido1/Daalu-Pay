@@ -47,18 +47,18 @@ class SupportScreen extends StatelessWidget {
               SizedBox(
                 height: 120.h,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 14.w),
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppColor.white),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () =>
-                          navigate.navigateTo(Routes.webviewChatScreen),
-                      child: Row(
+              GestureDetector(
+                onTap: () => navigate.navigateTo(Routes.webviewChatScreen),
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 14.w),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.w),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: AppColor.white),
+                  child: Column(
+                    children: [
+                      Row(
                         children: [
                           Icon(
                             Icons.chat,
@@ -74,8 +74,8 @@ class SupportScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

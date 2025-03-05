@@ -616,7 +616,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.w),
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.w),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -628,25 +628,25 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: 10.h,
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10.w, right: 20.w),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 6.w),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColor.white),
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (contxt) => SendMoneyScreen()),
-                                  );
-                                },
-                                child: Row(
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (contxt) => SendMoneyScreen()),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 10.w, right: 24.w),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 8.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColor.white),
+                            child: Column(
+                              children: [
+                                Row(
                                   children: [
                                     SvgPicture.asset(
                                       AppImage.send,
@@ -662,8 +662,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -677,25 +677,25 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: 10.h,
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10.w, right: 20.w),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 6.w),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColor.white),
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (contxt) => DepositScreen()),
-                                  );
-                                },
-                                child: Row(
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (contxt) => DepositScreen()),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 10.w, right: 24.w),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 6.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColor.white),
+                            child: Column(
+                              children: [
+                                Row(
                                   children: [
                                     SvgPicture.asset(
                                       AppImage.addCard,
@@ -711,8 +711,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -726,26 +726,25 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: 10.h,
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10.w, right: 20.w),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 12.w),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColor.white),
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (contxt) =>
-                                            ExchangeRateScreen()),
-                                  );
-                                },
-                                child: Row(
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (contxt) => ExchangeRateScreen()),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 10.w, right: 24.w),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 8.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColor.white),
+                            child: Column(
+                              children: [
+                                Row(
                                   children: [
                                     Icon(
                                       Icons.currency_exchange,
@@ -761,40 +760,47 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ],
                                 ),
-                              ),
-                              SizedBox(
-                                height: 14.0.h,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (contxt) =>
-                                            TransactionScreen()),
-                                  );
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.monitor_heart_outlined,
-                                      color: AppColor.black,
-                                    ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    TextView(
-                                      text: 'Transaction History',
-                                      maxLines: 1,
-                                      textOverflow: TextOverflow.ellipsis,
-                                      fontSize: 15.80.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ],
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (contxt) => TransactionScreen()),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 10.w, right: 24.w),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 8.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColor.white),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.monitor_heart_outlined,
+                                  color: AppColor.black,
                                 ),
-                              ),
-                            ],
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                TextView(
+                                  text: 'Transaction History',
+                                  maxLines: 1,
+                                  textOverflow: TextOverflow.ellipsis,
+                                  fontSize: 15.80.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -808,73 +814,77 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: 10.h,
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10.w, right: 20.w),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 12.w),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColor.white),
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (contxt) => ProfileScreen()),
-                                  );
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.person_3_outlined,
-                                      color: AppColor.black,
-                                    ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    TextView(
-                                      text: 'Profile',
-                                      fontSize: 15.60.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ],
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (contxt) => ProfileScreen()),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 10.w, right: 24.w),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 8.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColor.white),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.person_3_outlined,
+                                  color: AppColor.black,
                                 ),
-                              ),
-                              SizedBox(
-                                height: 14.0.h,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (contxt) => SupportScreen()),
-                                  );
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.support,
-                                      color: AppColor.black,
-                                    ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    TextView(
-                                      text: 'Support',
-                                      maxLines: 1,
-                                      textOverflow: TextOverflow.ellipsis,
-                                      fontSize: 15.80.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ],
+                                SizedBox(
+                                  width: 10.w,
                                 ),
-                              ),
-                            ],
+                                TextView(
+                                  text: 'Profile',
+                                  fontSize: 15.60.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (contxt) => SupportScreen()),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 10.w, right: 24.w),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 8.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColor.white),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.support,
+                                  color: AppColor.black,
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                TextView(
+                                  text: 'Support',
+                                  maxLines: 1,
+                                  textOverflow: TextOverflow.ellipsis,
+                                  fontSize: 15.80.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],

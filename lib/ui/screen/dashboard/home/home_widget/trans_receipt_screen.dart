@@ -67,17 +67,16 @@ class TransReceiptScreen extends StatelessWidget {
                   contContainer(
                       left: 'From',
                       right:
-                          '${getAllCurrency(e.fromCurrency)}${oCcy.format(roundToTwoDecimals(double.parse(e.fromAmount!)))}'),
+                          '${getAllCurrency(e.fromCurrency)}${oCcy.format(roundToTwoDecimals(double.parse(e.fromAmount.toString())))}'),
                   contContainer(
                       left: 'To',
                       right:
-                          '${getAllCurrency(e.toCurrency)}${oCcy.format(roundToTwoDecimals(double.parse(e.toAmount!)))}'),
+                          '${getAllCurrency(e.toCurrency)}${oCcy.format(roundToTwoDecimals(double.parse(e.toAmount.toString())))}'),
                   contContainer(
                       left: 'State',
                       right: e.status == 'completed'
                           ? 'Success'
                           : e.status?.capitalize()),
-                  // contContainer(left: 'Not Received', right: '49.99 USD'),
                 ],
               ),
             ),

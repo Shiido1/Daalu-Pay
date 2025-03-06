@@ -184,7 +184,7 @@ recentTransWidget({context, required Transaction e}) => GestureDetector(
                 ),
                 TextView(
                   text:
-                      '${getCurrency()}${oCcy.format(double.parse(e.amount!))}',
+                      '${getCurrency()}${oCcy.format(double.parse(e.amount.toString()))}',
                   textStyle: TextStyle(
                     fontSize: 15.22.sp,
                     fontWeight: FontWeight.w500,
@@ -236,7 +236,7 @@ recentSwapTransWidget({context, required Swap e}) => Container(
             children: [
               TextView(
                 text:
-                    '${getAllCurrency(e.fromCurrency)}${oCcy.format(double.parse(e.fromAmount!))} - ${getAllCurrency(e.toCurrency)}${oCcy.format(double.parse(e.toAmount!))}',
+                    '${getAllCurrency(e.fromCurrency)}${oCcy.format(double.parse(e.fromAmount.toString()))} - ${getAllCurrency(e.toCurrency)}${oCcy.format(double.parse(e.toAmount.toString()))}',
                 textStyle: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,

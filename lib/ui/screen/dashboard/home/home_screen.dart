@@ -12,6 +12,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
+import '../../../../core/core_folder/app/app.locator.dart';
 import '../../../../core/core_folder/app/app.router.dart';
 import '../../../../core/core_folder/manager/shared_preference.dart';
 import '../../../../main.dart';
@@ -497,9 +498,11 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppColor.light.withOpacity(.9),
         width: 280,
         child: ViewModelBuilder<AuthViewModel>.reactive(
-            viewModelBuilder: () => AuthViewModel(),
+            viewModelBuilder: () => locator<AuthViewModel>(),
             onViewModelReady: (model) async {
-              await model.getUser(context);
+              WidgetsBinding.instance.addPostFrameCallback((_) async {
+                await model.getUser(context);
+              });
             },
             disposeViewModel: false,
             builder: (_, AuthViewModel model, __) {
@@ -524,7 +527,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 null
                                         ? ClipOval(
                                             child: SizedBox.fromSize(
-                                              size: const Size.fromRadius(24),
+                                              size: const Size.fromRadius(26),
                                               child: Image.network(
                                                 'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${model.userResponseModel?.data?.photo}',
                                                 fit: BoxFit.cover,

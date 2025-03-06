@@ -244,15 +244,15 @@ class TransactionScreen extends StatelessWidget {
                         children: [
                           TextView(
                             text:
-                                '${oCcy.format(roundToTwoDecimals(double.parse(e.fromAmount!)))} - ',
+                                '${oCcy.format(roundToTwoDecimals(double.parse(e.fromAmount.toString())))} - ',
                             fontSize: 15.2.sp,
                             maxLines: 1,
                             textOverflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.w500,
                           ),
                           TextView(
-                            text: oCcy.format(
-                                roundToTwoDecimals(double.parse(e.toAmount!))),
+                            text: oCcy.format(roundToTwoDecimals(
+                                double.parse(e.toAmount.toString()))),
                             fontSize: 15.2.sp,
                             maxLines: 1,
                             textOverflow: TextOverflow.ellipsis,

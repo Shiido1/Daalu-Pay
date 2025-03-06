@@ -296,7 +296,7 @@ class WalletScreen extends StatelessWidget {
                                       children: [
                                         TextView(
                                           text:
-                                              '${getCurrency()}${oCcy.format(double.parse(o.amount!))}',
+                                              '${getCurrency()}${oCcy.format(double.parse(o.amount.toString()))}',
                                           textStyle: TextStyle(
                                             color: o.status?.toLowerCase() ==
                                                     'completed'

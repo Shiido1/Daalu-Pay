@@ -1384,8 +1384,9 @@ class AuthViewModel extends BaseViewModel {
                                   hint: '',
                                   border: 10,
                                   isFilled: true,
+
                                   fillColor: AppColor.white,
-                                  autofocus: true,
+                                  autofocus: false,
                                   onChange: (p0) {
                                     queryFrom = p0;
                                     model.notifyListeners();
@@ -1455,14 +1456,14 @@ class AuthViewModel extends BaseViewModel {
                                                             child: TextView(
                                                               text:
                                                                   '${e.currency}',
-                                                              fontSize: 17.6,
+                                                              fontSize: 18.0,
                                                               maxLines: 1,
                                                               textOverflow:
                                                                   TextOverflow
                                                                       .ellipsis,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .w400,
+                                                                      .w500,
                                                             ),
                                                           )
                                                         ],
@@ -1524,10 +1525,10 @@ class AuthViewModel extends BaseViewModel {
                                                             child: TextView(
                                                               text:
                                                                   '${e.currency}',
-                                                              fontSize: 17.6,
+                                                              fontSize: 18.0,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .w400,
+                                                                      .w500,
                                                               maxLines: 1,
                                                               textOverflow:
                                                                   TextOverflow

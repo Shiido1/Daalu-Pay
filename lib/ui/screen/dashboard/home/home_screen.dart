@@ -444,22 +444,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 46.h),
                   paddedWing(
                     value: 10.w,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextView(
-                          text: 'RECENT TRANSACTION',
-                          fontSize: 17.20.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppColor.grey,
-                        ),
-                        TextView(
-                          text: 'View All',
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColor.primary,
-                        ),
-                      ],
+                    child: TextView(
+                      text: 'RECENT TRANSACTION',
+                      fontSize: 17.20.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColor.grey,
                     ),
                   ),
                   SizedBox(
@@ -598,7 +587,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 4.h,
                               ),
                               SizedBox(
-                                width: 180.w,
+                                width: 160.w,
                                 child: TextView(
                                   text: model.userResponseModel?.data?.email ??
                                       "",
@@ -641,7 +630,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                           child: Container(
-                            margin: EdgeInsets.only(left: 10.w, right: 24.w),
+                            margin: EdgeInsets.only(left: 10.w, right: 14.w),
                             padding: EdgeInsets.symmetric(
                                 horizontal: 10.w, vertical: 8.w),
                             decoration: BoxDecoration(
@@ -690,7 +679,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                           child: Container(
-                            margin: EdgeInsets.only(left: 10.w, right: 24.w),
+                            margin: EdgeInsets.only(left: 10.w, right: 14.w),
                             padding: EdgeInsets.symmetric(
                                 horizontal: 10.w, vertical: 6.w),
                             decoration: BoxDecoration(
@@ -739,7 +728,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                           child: Container(
-                            margin: EdgeInsets.only(left: 10.w, right: 24.w),
+                            margin: EdgeInsets.only(left: 10.w, right: 14.w),
                             padding: EdgeInsets.symmetric(
                                 horizontal: 10.w, vertical: 8.w),
                             decoration: BoxDecoration(
@@ -780,7 +769,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                           child: Container(
-                            margin: EdgeInsets.only(left: 10.w, right: 24.w),
+                            margin: EdgeInsets.only(left: 10.w, right: 14.w),
                             padding: EdgeInsets.symmetric(
                                 horizontal: 10.w, vertical: 8.w),
                             decoration: BoxDecoration(
@@ -799,7 +788,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   text: 'Transaction History',
                                   maxLines: 1,
                                   textOverflow: TextOverflow.ellipsis,
-                                  fontSize: 15.80.sp,
+                                  fontSize: 15.60.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ],
@@ -827,7 +816,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                           child: Container(
-                            margin: EdgeInsets.only(left: 10.w, right: 24.w),
+                            margin: EdgeInsets.only(left: 10.w, right: 14.w),
                             padding: EdgeInsets.symmetric(
                                 horizontal: 10.w, vertical: 8.w),
                             decoration: BoxDecoration(
@@ -864,7 +853,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                           child: Container(
-                            margin: EdgeInsets.only(left: 10.w, right: 24.w),
+                            margin: EdgeInsets.only(left: 10.w, right: 14.w),
                             padding: EdgeInsets.symmetric(
                                 horizontal: 10.w, vertical: 8.w),
                             decoration: BoxDecoration(

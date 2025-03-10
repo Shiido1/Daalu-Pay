@@ -64,7 +64,8 @@ class _SettingScreenState extends State<SettingScreen> {
                       model.userResponseModel == null
                           ? SizedBox.shrink()
                           : Container(
-                              padding: EdgeInsets.all(5.2.w),
+                              padding: EdgeInsets.all(5.8.w),
+                              margin: EdgeInsets.only(bottom: 3.2.w),
                               decoration: const BoxDecoration(
                                 color: AppColor.inGrey,
                                 shape: BoxShape.circle,
@@ -73,8 +74,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                 text: getInitials(
                                         '${model.userResponseModel?.data?.firstName} ${model.userResponseModel?.data?.lastName}')
                                     .toUpperCase(),
-                                fontSize: 22.sp,
-                                fontWeight: FontWeight.w400,
+                                fontSize: 23.2.sp,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                       SizedBox(

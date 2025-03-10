@@ -267,8 +267,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       model.walletHome?.currency == null
                                           ? SizedBox.shrink()
                                           : Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: 2.w),
+                                              padding: EdgeInsets.only(
+                                                  top: 4.w, bottom: 4.w),
                                               child: SvgPicture.asset(model
                                                   .getWalletCurrencyCode(model
                                                       .walletHome?.currency)),
@@ -757,7 +757,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       width: 10.w,
                                     ),
                                     TextView(
-                                      text: 'View Exchange Rates',
+                                      text: 'View Rates',
                                       fontSize: 15.60.sp,
                                       fontWeight: FontWeight.w500,
                                     ),

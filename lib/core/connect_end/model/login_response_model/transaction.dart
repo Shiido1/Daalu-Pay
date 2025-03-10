@@ -9,7 +9,7 @@ class Transaction {
   String? referenceNumber;
   String? channel;
   String? type;
-  String? amount;
+  dynamic amount;
   String? status;
   DateTime? createdAt;
 

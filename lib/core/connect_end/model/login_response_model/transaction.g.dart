@@ -12,7 +12,7 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       referenceNumber: json['referenceNumber'] as String?,
       channel: json['channel'] as String?,
       type: json['type'] as String?,
-      amount: json['amount'] as String?,
+      amount: json['amount'],
       status: json['status'] as String?,
       createdAt: json['createdAt'] == null
           ? null

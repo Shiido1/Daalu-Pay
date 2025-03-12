@@ -45,6 +45,8 @@ class _AlipayScreenState extends State<AlipayScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: AppColor.white,
+      padding: EdgeInsets.only(top: 100.w, left: 32.w, right: 32.w),
       child: ViewModelBuilder<AuthViewModel>.reactive(
           viewModelBuilder: () => AuthViewModel(),
           onViewModelReady: (model) {

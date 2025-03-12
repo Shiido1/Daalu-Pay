@@ -15,23 +15,20 @@ import '../../../widget/text_form_widget.dart';
 import '../../../widget/text_widget.dart';
 
 // ignore: must_be_immutable
-class SendMoneyScreen extends StatefulWidget {
-  SendMoneyScreen({super.key, this.wallet});
-  Wallet? wallet;
+class AlipaySendMoneyScreen extends StatefulWidget {
+  AlipaySendMoneyScreen({super.key, this.wallet});
+  String? wallet;
 
   @override
-  State<SendMoneyScreen> createState() => _SendMoneyScreenState();
+  State<AlipaySendMoneyScreen> createState() => _AlipaySendMoneyScreenState();
 }
 
-class _SendMoneyScreenState extends State<SendMoneyScreen> {
+class _AlipaySendMoneyScreenState extends State<AlipaySendMoneyScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   dynamic dailyLimit;
   int transaction = 0;
   bool isTapped = false;
-  TextEditingController accntNumber = TextEditingController();
-  TextEditingController bankName = TextEditingController();
-  TextEditingController bankDetailType = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +38,23 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
           WidgetsBinding.instance.addPostFrameCallback((e) async {
             await model.getStatistics(context);
             await model.usersPrefer(context);
-            if (widget.wallet?.currency != "NGN") {
-              model.currencyController.text = widget.wallet?.currency ?? '';
+            if (widget.wallet == "CNY") {
+              List<Wallet> cnyWallets = model
+                  .getStatsResponseModel!.data!.wallets!
+                  .where((wallet) => wallet.currency == "CNY")
+                  .toList();
+              model.currencyController.text = 'CNY';
+              if (cnyWallets.isNotEmpty) {
+                for (var wallet in cnyWallets) {
+                  model.walletHomeAlipay = wallet;
+                  model.notifyListeners();
+                  print(
+                      'print.........${model.walletHomeAlipay?.toJson() ?? ''}');
+                }
+              } else {
+                print("No wallets found for CNY.");
+              }
+              model.notifyListeners();
             }
             if (model.preferenceResponseModel!.data!.dailyTransactionLimit!
                     .toLowerCase() ==
@@ -101,23 +113,23 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                       fillColor: AppColor.white,
                       controller: model.currencyController,
                       validator: AppValidator.validateString(),
-                      suffixWidget: IconButton(
-                          onPressed: () {
-                            model.shwWalletCurrencyDialog(context);
-                            model.notifyListeners();
-                          },
-                          icon: Icon(
-                            Icons.arrow_drop_down_sharp,
-                            color: AppColor.black,
-                          )),
+                      // suffixWidget: IconButton(
+                      //     onPressed: () {
+                      //       model.shwWalletCurrencyDialog(context);
+                      //       model.notifyListeners();
+                      //     },
+                      //     icon: Icon(
+                      //       Icons.arrow_drop_down_sharp,
+                      //       color: AppColor.black,
+                      //     )),
                     ),
                     SizedBox(
                       height: 10.h,
                     ),
-                    model.walletAmount != null || widget.wallet != null
+                    model.walletHomeAlipay != null
                         ? TextView(
                             text:
-                                ' Balance: ${getAllCurrency(model.walletAmount?.currency ?? widget.wallet?.currency)}${oCcy.format(double.parse('${model.walletAmount?.balance ?? widget.wallet?.balance}'))}',
+                                ' Balance: ${getAllCurrency(model.walletHomeAlipay?.currency)}${oCcy.format(double.parse('${model.walletHomeAlipay?.balance}'))}',
                             textStyle: TextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w400,
@@ -167,68 +179,37 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                     SizedBox(
                       height: 20.h,
                     ),
-                    model.currencyController.text != 'CNY'
-                        ? Column(
-                            children: [
-                              TextFormWidget(
-                                hint: 'Account number',
-                                label: 'Enter Account Number',
-                                border: 10,
-                                isFilled: true,
-                                fillColor: AppColor.white,
-                                keyboardType: TextInputType.text,
-                                controller: accntNumber,
-                              ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              TextFormWidget(
-                                hint: 'Bank Name',
-                                label: 'Enter Bank Name',
-                                border: 10,
-                                isFilled: true,
-                                fillColor: AppColor.white,
-                                keyboardType: TextInputType.text,
-                                controller: bankName,
-                              ),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              TextFormWidget(
-                                label: 'Bank Detail Type',
-                                hint: 'Select Bank Detail Type',
-                                border: 10,
-                                isFilled: true,
-                                readOnly: true,
-                                fillColor: AppColor.white,
-                                suffixWidget: IconButton(
-                                    onPressed: () {
-                                      model.shwBankDetailTypeDialog(context);
-                                      model.notifyListeners();
-                                    },
-                                    icon: Icon(
-                                      Icons.arrow_drop_down_sharp,
-                                      color: AppColor.black,
-                                    )),
-                              ),
-                              SizedBox(
-                                height:
-                                    model.bankDetailType != null ? 20.h : 0.h,
-                              ),
-                              model.bankDetailType != null
-                                  ? TextFormWidget(
-                                      hint: '${model.bankDetailType}',
-                                      label: 'Enter ${model.bankDetailType}',
-                                      border: 10,
-                                      isFilled: true,
-                                      fillColor: AppColor.white,
-                                      keyboardType: TextInputType.text,
-                                      controller: bankDetailType,
-                                    )
-                                  : SizedBox.shrink(),
-                            ],
-                          )
-                        : SizedBox.shrink(),
+                    // model.currencyController.text != 'CNY'
+                    //     ? Column(
+                    //         children: [
+                    //           TextFormWidget(
+                    //             hint: 'Payment Details',
+                    //             label:
+                    //                 'Enter bank details (Account number,\nBank name, Sort Code,\nIBAN, Routing Number etc.)',
+                    //             border: 10,
+                    //             isFilled: true,
+                    //             fillColor: AppColor.white,
+                    //             keyboardType: TextInputType.text,
+                    //             // controller: model.recipientWalletIdController,
+                    //             controller: model.recipientWalletIdController,
+                    //           ),
+                    //           SizedBox(
+                    //             height: 20.h,
+                    //           ),
+                    //           TextFormWidget(
+                    //             hint: 'Payment Details',
+                    //             label:
+                    //                 'Enter bank details (Account number,\nBank name, Sort Code,\nIBAN, Routing Number etc.)',
+                    //             border: 10,
+                    //             isFilled: true,
+                    //             fillColor: AppColor.white,
+                    //             keyboardType: TextInputType.text,
+                    //             // controller: model.recipientWalletIdController,
+                    //             controller: model.recipientWalletIdController,
+                    //           ),
+                    //         ],
+                    //       )
+                    //     : SizedBox.shrink(),
                     SizedBox(
                       height:
                           model.currencyController.text != 'CNY' ? 20.h : 0.h,
@@ -382,10 +363,8 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                     SizedBox(
                       height: 40.h,
                     ),
-                    model.walletAmount != null &&
-                                model.walletAmount!.balance! <= 1 ||
-                            widget.wallet != null &&
-                                widget.wallet!.balance! <= 1
+                    model.walletHomeAlipay != null &&
+                            model.walletHomeAlipay!.balance! <= 1
                         ? Column(
                             children: [
                               isTapped
@@ -487,35 +466,29 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                                       ],
                                     )
                                   : SizedBox.shrink(),
-                              isTapped &&
-                                      model.exchangeRateResponseModel == null
-                                  ? SizedBox.shrink()
-                                  : ButtonWidget(
-                                      buttonText: 'Add Money',
-                                      color: AppColor.white,
-                                      border: 8,
-                                      buttonColor: AppColor.primary,
-                                      buttonBorderColor: Colors.transparent,
-                                      onPressed: () async {
-                                        if (isTapped == false) {
-                                          setState(() => isTapped = !isTapped);
-                                          await model.exchangeRates(context,
-                                              from: 'NGN',
-                                              to: model
-                                                      .walletAmount?.currency ??
-                                                  widget.wallet?.currency);
-                                          model.toCurrencyCode =
-                                              (model.walletAmount?.currency ??
-                                                  widget.wallet?.currency)!;
+                              ButtonWidget(
+                                  buttonText: 'Add Money',
+                                  color: AppColor.white,
+                                  border: 8,
+                                  buttonColor: AppColor.primary,
+                                  buttonBorderColor: Colors.transparent,
+                                  onPressed: () async {
+                                    if (isTapped == false) {
+                                      setState(() => isTapped = !isTapped);
+                                      await model.exchangeRates(context,
+                                          from: 'NGN',
+                                          to: model.walletHomeAlipay?.currency);
+                                      model.toCurrencyCode =
+                                          model.walletHomeAlipay?.currency ??
+                                              "";
 
-                                          model.toCurrency =
-                                              model.getWalletCurrencyCode(model
-                                                      .walletAmount?.currency ??
-                                                  widget.wallet?.currency);
-                                        } else {
-                                          model.showConvertDialog(context);
-                                        }
-                                      }),
+                                      model.toCurrency =
+                                          model.getWalletCurrencyCode(
+                                              model.walletHomeAlipay?.currency);
+                                    } else {
+                                      model.showConvertDialog(context);
+                                    }
+                                  }),
                             ],
                           )
                         : ButtonWidget(
@@ -532,29 +505,17 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                             onPressed: model.isLoading
                                 ? () {}
                                 : () {
-                                    if (model.currencyController.text !=
-                                        'CNY') {
-                                      model.recipientWalletIdController.text =
-                                          ' {"account_number:"${accntNumber.text}","bank_name:"${bankName.text}","bank_detail_type:"${bankDetailType.text}"}';
-                                      model.notifyListeners();
-                                    }
                                     if (formKey.currentState!.validate() &&
-                                            model.walletAmount != null &&
-                                            model.walletAmount!.balance! >
-                                                int.parse(model
-                                                    .sendAmountController
-                                                    .text) ||
-                                        widget.wallet != null &&
-                                            widget.wallet!.balance! >
-                                                int.parse(model
-                                                    .sendAmountController
-                                                    .text)) {
+                                        model.walletHomeAlipay != null &&
+                                        model.walletHomeAlipay!.balance! >
+                                            int.parse(model
+                                                .sendAmountController.text)) {
                                       if (dailyLimit == "unlimited") {
                                         model.showSendMoneyDialog(
                                             context,
                                             model.sendAmountController.text,
                                             model.currencyController.text,
-                                            wallet: widget.wallet);
+                                            wallet: model.walletHomeAlipay);
 
                                         return;
                                       }
@@ -563,7 +524,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                                             context,
                                             model.sendAmountController.text,
                                             model.currencyController.text,
-                                            wallet: widget.wallet);
+                                            wallet: model.walletHomeAlipay);
                                       } else {
                                         AppUtils.snackbar(context,
                                             message:

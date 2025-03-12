@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:daalu_pay/ui/screen/dashboard/home/home_screen.dart';
+import 'package:daalu_pay/ui/screen/dashboard/wallet/alipay_send_money.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_svg/svg.dart';
 import '../../app_assets/app_color.dart';
 import '../../app_assets/app_image.dart';
 import '../../widget/text_widget.dart';
-import 'settings/setting_screen.dart';
 import 'transaction/transaction_screen.dart';
 import 'wallet/send_money.dart';
 import 'wallet/wallet_screen.dart';
@@ -31,7 +31,9 @@ class _DashboardState extends State<Dashboard> {
     SendMoneyScreen(),
     WalletScreen(),
     TransactionScreen(),
-    SettingScreen(),
+    AlipaySendMoneyScreen(
+      wallet: 'CNY',
+    ),
   ];
 
   @override
@@ -152,11 +154,11 @@ class _DashboardState extends State<Dashboard> {
                 ),
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(
-                    AppImage.person,
+                    AppImage.alipay,
                     color:
                         _currentIndex == 4 ? AppColor.primary : AppColor.black,
                   ),
-                  label: 'Settings',
+                  label: 'Alipay',
                 ),
               ]),
         ),

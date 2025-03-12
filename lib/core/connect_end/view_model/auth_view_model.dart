@@ -266,6 +266,7 @@ class AuthViewModel extends BaseViewModel {
 
   Wallet? w;
   Wallet? walletHome;
+  Wallet? walletHomeAlipay;
 
   radioButtonChanges(String value) {
     radioValue = value;
@@ -995,6 +996,7 @@ class AuthViewModel extends BaseViewModel {
       _exchangeRateResponseModel = await runBusyFuture(
           repositoryImply.exchangeRate(from: from, to: to),
           throwException: true);
+      logger.d('lllll${_exchangeRateResponseModel?.toJson()}');
       _isLoading = false;
     } catch (e) {
       logger.d(e);
@@ -1990,13 +1992,14 @@ class AuthViewModel extends BaseViewModel {
                                 buttonText: 'Create Wallet',
                                 color: AppColor.white,
                                 border: 8,
-                                isLoading: model.isLoadingCreate,
+                                isLoading: _isLoadingCreate,
                                 buttonColor: AppColor.primary,
                                 buttonBorderColor: Colors.transparent,
                                 onPressed: () {
                                   if (createCurrencyCode != '') {
                                     createWallet(context,
                                         currencyCode: createCurrencyCode);
+                                    model.notifyListeners();
                                   } else {
                                     AppUtils.snackbar(context,
                                         message:
@@ -2626,8 +2629,10 @@ class AuthViewModel extends BaseViewModel {
       Navigator.pop(context);
     } catch (e) {
       _isLoadingCreate = false;
-      AppUtils.snackbar(context,
+      await AppUtils.snackbar(context,
           message: 'This wallet may have been created already', error: true);
+
+      Navigator.pop(context);
     }
     notifyListeners();
   }
@@ -3503,6 +3508,7 @@ class AuthViewModel extends BaseViewModel {
               disposeViewModel: false,
               builder: (_, AuthViewModel model, __) {
                 return AlertDialog(
+                  backgroundColor: AppColor.white,
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 20.w, horizontal: 20.w),
                   content: SingleChildScrollView(
@@ -3546,6 +3552,46 @@ class AuthViewModel extends BaseViewModel {
                   ),
                 );
               });
+        },
+      );
+  String? bankDetailType;
+  shwBankDetailTypeDialog(context) => showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: AppColor.white,
+            contentPadding:
+                EdgeInsets.symmetric(vertical: 20.w, horizontal: 20.w),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  ...['Sort Code', 'IBAN', 'Routing Number'].map(
+                    (e) => PopupMenuItem(
+                      value: e,
+                      onTap: () {
+                        bankDetailType = e;
+                        notifyListeners();
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextView(
+                            text: e,
+                            color: AppColor.black,
+                            fontSize: 22.2.sp,
+                          ),
+                          Divider(
+                            color: AppColor.navyBlueGrey,
+                            thickness: .8,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
         },
       );
 }

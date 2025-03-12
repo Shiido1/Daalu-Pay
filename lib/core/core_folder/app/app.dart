@@ -1,3 +1,4 @@
+import 'package:daalu_pay/ui/screen/dashboard/settings/setting_screen.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../../../ui/screen/chat_screen.dart';
@@ -51,6 +52,7 @@ import '../network/network_service.dart';
   MaterialRoute(page: WelcomeBackScreen, initial: false),
   MaterialRoute(page: PassportPhotoScreen, initial: false),
   MaterialRoute(page: TransReceiptScreen, initial: false),
+  MaterialRoute(page: SettingScreen, initial: false),
 ], dependencies: [
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: DialogService),

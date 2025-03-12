@@ -14,8 +14,8 @@ Data _$DataFromJson(Map<String, dynamic> json) => Data(
       gender: json['gender'] as String?,
       email: json['email'] as String?,
       phone: json['phone'] as String?,
-      photo: json['photo'] as String?,
       status: json['status'] as String?,
+      photo: json['photo'] as String?,
       kycStatus: json['kycStatus'] as String?,
       emailVerifiedAt: json['emailVerifiedAt'] == null
           ? null
@@ -39,8 +39,8 @@ Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'email': instance.email,
       'phone': instance.phone,
       'status': instance.status,
-      'photo': instance.photo,
       'kycStatus': instance.kycStatus,
+      'photo': instance.photo,
       'emailVerifiedAt': instance.emailVerifiedAt?.toIso8601String(),
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),

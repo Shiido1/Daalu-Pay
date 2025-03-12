@@ -81,7 +81,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         model.userResponseModel == null
                             ? SizedBox.shrink()
                             : GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  navigate.navigateTo(Routes.settingScreen);
+                                },
                                 child: Container(
                                   padding: EdgeInsets.all(7.2.w),
                                   decoration: BoxDecoration(
@@ -103,7 +105,31 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 50.h,
+                    height: 30.h,
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: GestureDetector(
+                      onTap: () =>
+                          model.modalBottomSheetMenuCreateWallet(context),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 6.4.w, horizontal: 10.w),
+                        decoration: BoxDecoration(
+                          color: AppColor.primary,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextView(
+                          text: 'Create Wallet',
+                          color: AppColor.white,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
                   ),
                   if (model.getStatsResponseModel == null || model.isLoading)
                     Container(
@@ -299,35 +325,38 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(
                               height: 30.h,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                TextView(
-                                  text: isTapped
-                                      ? '${getAllCurrency(model.walletHome?.currency)}${oCcy.format(model.walletHome?.balance ?? 0)}'
-                                      : '**********',
-                                  textStyle: TextStyle(
-                                      fontSize: 28.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColor.primary,
-                                      letterSpacing: isTapped ? 1 : 3),
-                                ),
-                                SizedBox(
-                                  width: 20.w,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 12.w),
-                                  child: GestureDetector(
-                                      onTap: () =>
-                                          setState(() => isTapped = !isTapped),
-                                      child: SvgPicture.asset(
-                                        isTapped
-                                            ? AppImage.openEye
-                                            : AppImage.eye,
+                            GestureDetector(
+                              onTap: () => setState(() => isTapped = !isTapped),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  TextView(
+                                    text: isTapped
+                                        ? '${getAllCurrency(model.walletHome?.currency)}${oCcy.format(model.walletHome?.balance ?? 0)}'
+                                        : '**********',
+                                    textStyle: TextStyle(
+                                        fontSize: 28.sp,
+                                        fontWeight: FontWeight.w400,
                                         color: AppColor.primary,
-                                      )),
-                                ),
-                              ],
+                                        letterSpacing: isTapped ? 1 : 3),
+                                  ),
+                                  SizedBox(
+                                    width: 20.w,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 12.w),
+                                    child: GestureDetector(
+                                        onTap: () => setState(
+                                            () => isTapped = !isTapped),
+                                        child: SvgPicture.asset(
+                                          isTapped
+                                              ? AppImage.openEye
+                                              : AppImage.eye,
+                                          color: AppColor.primary,
+                                        )),
+                                  ),
+                                ],
+                              ),
                             ),
                             SizedBox(
                               height: 20.h,

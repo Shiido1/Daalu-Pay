@@ -206,35 +206,41 @@ class WalletScreen extends StatelessWidget {
                         SizedBox(
                           height: 20.h,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextView(
-                              text: 'Transaction History',
-                              color: AppColor.greyKind,
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            GestureDetector(
-                              onTap: () =>
-                                  navigate.navigateTo(Routes.sendMoneyScreen),
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10.w, vertical: 8.w),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  color: AppColor.primary,
-                                ),
-                                child: TextView(
-                                  text: 'Send Money',
-                                  color: AppColor.white,
-                                  fontSize: 16.2.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
+                        TextView(
+                          text: 'Transaction History',
+                          color: AppColor.greyKind,
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w500,
                         ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     TextView(
+                        //       text: 'Transaction History',
+                        //       color: AppColor.greyKind,
+                        //       fontSize: 20.sp,
+                        //       fontWeight: FontWeight.w500,
+                        //     ),
+                        //     GestureDetector(
+                        //       onTap: () =>
+                        //           navigate.navigateTo(Routes.sendMoneyScreen),
+                        //       child: Container(
+                        //         padding: EdgeInsets.symmetric(
+                        //             horizontal: 10.w, vertical: 8.w),
+                        //         decoration: BoxDecoration(
+                        //           borderRadius: BorderRadius.circular(6),
+                        //           color: AppColor.primary,
+                        //         ),
+                        //         child: TextView(
+                        //           text: 'Send Money',
+                        //           color: AppColor.white,
+                        //           fontSize: 16.2.sp,
+                        //           fontWeight: FontWeight.w600,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                     SizedBox(

@@ -102,7 +102,149 @@ class _AlipaySendMoneyScreenState extends State<AlipaySendMoneyScreen> {
                       color: AppColor.primary,
                     ),
                     SizedBox(
-                      height: 10.h,
+                      height: 20.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 8.w),
+                      child: Row(
+                        children: <Widget>[
+                          model.currencyController.text != 'CNY'
+                              ? SizedBox.shrink()
+                              : Row(
+                                  children: [
+                                    Radio(
+                                      value: 'wallet',
+                                      groupValue: model.radioValue,
+                                      onChanged: (v) {
+                                        model.radioButtonChanges(v!);
+                                      },
+                                    ),
+                                    TextView(
+                                      text: 'Alipay ID',
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColor.darkGrey,
+                                    ),
+                                  ],
+                                ),
+                          Spacer(),
+                          Radio(
+                            value: 'upload',
+                            groupValue: model.radioValue,
+                            onChanged: (v) {
+                              model.radioButtonChanges(v!);
+                            },
+                          ),
+                          TextView(
+                            text: 'Upload Image',
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AppColor.darkGrey,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    model.choice == 'wallet'
+                        ? TextFormWidget(
+                            label: 'Alipay Wallet Id',
+                            hint: 'Recipient\'s Wallet Address',
+                            border: 10,
+                            isFilled: true,
+                            fillColor: AppColor.white,
+                            controller: model.recipientWalletIdController,
+                            validator: AppValidator.validateString(),
+                            onChange: (p0) {
+                              // model.onGetUserWalletRate(context, p0);
+                            })
+                        : model.choice == 'upload'
+                            ? Column(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => model
+                                            .getDocumentAlipayImage(context),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            SvgPicture.asset(AppImage.cal),
+                                            SizedBox(
+                                              width: 10.w,
+                                            ),
+                                            TextView(
+                                              text: 'Upload File',
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColor.darkGrey,
+                                            ),
+                                            Spacer(),
+                                            DottedBorder(
+                                                color: AppColor.grey,
+                                                strokeWidth: 1,
+                                                radius: Radius.circular(22),
+                                                padding: EdgeInsets.all(8),
+                                                dashPattern: [10, 2],
+                                                child: Container(
+                                                  width: 158.0.w,
+                                                  child: TextView(
+                                                    text:
+                                                        'The file you are uploading should be clear so admin can confirm approval',
+                                                    fontSize: 12.sp,
+                                                    maxLines: 4,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: AppColor.black,
+                                                  ),
+                                                )),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  model.filename != null
+                                      ? Container(
+                                          padding: EdgeInsets.all(6.w),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: AppColor.inGrey),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              SvgPicture.asset(AppImage.pdf),
+                                              SizedBox(
+                                                width: 10.w,
+                                              ),
+                                              SizedBox(
+                                                width: 230.w,
+                                                child: TextView(
+                                                  text: model.filename!,
+                                                  fontSize: 14.sp,
+                                                  textOverflow:
+                                                      TextOverflow.ellipsis,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: AppColor.darkGrey,
+                                                ),
+                                              ),
+                                              const Spacer(),
+                                            ],
+                                          ),
+                                        )
+                                      : SizedBox.shrink(),
+                                ],
+                              )
+                            : SizedBox.shrink(),
+                    SizedBox(
+                      height: 20.h,
                     ),
                     TextFormWidget(
                       label: 'Currency',
@@ -224,142 +366,10 @@ class _AlipaySendMoneyScreenState extends State<AlipaySendMoneyScreen> {
                       controller: model.desController,
                       validator: AppValidator.validateString(),
                     ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 8.w),
-                      child: Row(
-                        children: <Widget>[
-                          model.currencyController.text != 'CNY'
-                              ? SizedBox.shrink()
-                              : Row(
-                                  children: [
-                                    Radio(
-                                      value: 'wallet',
-                                      groupValue: model.radioValue,
-                                      onChanged: (v) {
-                                        model.radioButtonChanges(v!);
-                                      },
-                                    ),
-                                    Text(
-                                      "Wallet Address",
-                                    ),
-                                  ],
-                                ),
-                          Spacer(),
-                          Radio(
-                            value: 'upload',
-                            groupValue: model.radioValue,
-                            onChanged: (v) {
-                              model.radioButtonChanges(v!);
-                            },
-                          ),
-                          Text(
-                            "Upload Image",
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    model.choice == 'wallet'
-                        ? TextFormWidget(
-                            label: 'Alipay Wallet Id',
-                            hint: 'Recipient\'s Wallet Address',
-                            border: 10,
-                            isFilled: true,
-                            fillColor: AppColor.white,
-                            controller: model.recipientWalletIdController,
-                            validator: AppValidator.validateString(),
-                            onChange: (p0) {
-                              // model.onGetUserWalletRate(context, p0);
-                            })
-                        : model.choice == 'upload'
-                            ? Column(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () => model
-                                            .getDocumentAlipayImage(context),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            SvgPicture.asset(AppImage.cal),
-                                            SizedBox(
-                                              width: 10.w,
-                                            ),
-                                            TextView(
-                                              text: 'Upload File',
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: AppColor.darkGrey,
-                                            ),
-                                            Spacer(),
-                                            DottedBorder(
-                                                color: AppColor.grey,
-                                                strokeWidth: 1,
-                                                radius: Radius.circular(22),
-                                                padding: EdgeInsets.all(8),
-                                                dashPattern: [10, 2],
-                                                child: Container(
-                                                  width: 158.0.w,
-                                                  child: TextView(
-                                                    text:
-                                                        'The file you are uploading should be clear so admin can confirm approval',
-                                                    fontSize: 12.sp,
-                                                    maxLines: 4,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: AppColor.black,
-                                                  ),
-                                                )),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 20.h,
-                                  ),
-                                  model.filename != null
-                                      ? Container(
-                                          padding: EdgeInsets.all(6.w),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: AppColor.inGrey),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.asset(AppImage.pdf),
-                                              SizedBox(
-                                                width: 10.w,
-                                              ),
-                                              SizedBox(
-                                                width: 230.w,
-                                                child: TextView(
-                                                  text: model.filename!,
-                                                  fontSize: 14.sp,
-                                                  textOverflow:
-                                                      TextOverflow.ellipsis,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: AppColor.darkGrey,
-                                                ),
-                                              ),
-                                              const Spacer(),
-                                            ],
-                                          ),
-                                        )
-                                      : SizedBox.shrink(),
-                                ],
-                              )
-                            : SizedBox.shrink(),
+                    // SizedBox(
+                    //   height: 20.h,
+                    // ),
+
                     SizedBox(
                       height: 40.h,
                     ),

@@ -107,30 +107,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 30.h,
                   ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: GestureDetector(
-                      onTap: () =>
-                          model.modalBottomSheetMenuCreateWallet(context),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 6.4.w, horizontal: 10.w),
-                        decoration: BoxDecoration(
-                          color: AppColor.primary,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextView(
-                          text: 'Create Wallet',
-                          color: AppColor.white,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
                   if (model.getStatsResponseModel == null || model.isLoading)
                     Container(
                       height: 120.h,
@@ -255,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Card(
                       elevation: 2,
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 14.w),
+                        padding: EdgeInsets.symmetric(vertical: 29.8.w),
                         width: double.infinity,
                         decoration: BoxDecoration(
                             color: AppColor.white.withOpacity(.8),
@@ -323,7 +299,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             SizedBox(
-                              height: 30.h,
+                              height: 40.h,
                             ),
                             GestureDetector(
                               onTap: () => setState(() => isTapped = !isTapped),
@@ -433,6 +409,34 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   SizedBox(height: 40.h),
+                  Align(
+                    alignment: Alignment.center,
+                    child: GestureDetector(
+                      onTap: () =>
+                          model.modalBottomSheetMenuCreateWallet(context),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 4.w, horizontal: 14.w),
+                        decoration: BoxDecoration(
+                          color: AppColor.primary,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: TextView(
+                          text: 'Create Wallet',
+                          color: AppColor.white,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    color: AppColor.primary.withOpacity(.4),
+                    thickness: 0.6,
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
                   paddedWing(
                     value: 10.w,
                     child: Align(

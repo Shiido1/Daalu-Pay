@@ -149,7 +149,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                       fillColor: AppColor.white,
                       keyboardType: TextInputType.text,
                       controller: model.nameController,
-                      validator: AppValidator.validateString(),
+                      // validator: AppValidator.validateString(),
                     ),
                     SizedBox(
                       height: 20.h,
@@ -241,7 +241,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                       fillColor: AppColor.white,
                       keyboardType: TextInputType.text,
                       controller: model.desController,
-                      validator: AppValidator.validateString(),
+                      // validator: AppValidator.validateString(),
                     ),
                     SizedBox(
                       height: 20.h,
@@ -285,8 +285,8 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                     ),
                     model.choice == 'wallet'
                         ? TextFormWidget(
-                            label: 'Alipay Wallet Id',
-                            hint: 'Recipient\'s Wallet Address',
+                            label: 'Alipay Id',
+                            hint: 'Recipient\'s Alipay Id',
                             border: 10,
                             isFilled: true,
                             fillColor: AppColor.white,

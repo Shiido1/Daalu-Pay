@@ -379,7 +379,144 @@ class AuthViewModel extends BaseViewModel {
                                                       : '${_postUserVerificationCloudResponse?.publicId}.${_postUserVerificationCloudResponse?.format}',
                                               currency: wallet != null
                                                   ? wallet.currency
-                                                  : currencyController.text)));
+                                                  : currencyController.text,
+                                              qrCode:
+                                                  '${_postUserVerificationCloudResponse?.publicId}.${_postUserVerificationCloudResponse?.format}')));
+                                  model.notifyListeners();
+                                },
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 6.w, horizontal: 10.w),
+                                  decoration: BoxDecoration(
+                                      color: AppColor.primary,
+                                      border: Border.all(
+                                          color: AppColor.white, width: .6.w),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Center(
+                                    child: TextView(
+                                      text: 'Confirm',
+                                      color: AppColor.white,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          model.isLoading
+                              ? TextView(
+                                  text: 'Loading...',
+                                  color: AppColor.grey,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                )
+                              : SizedBox.shrink(),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              });
+        });
+  }
+
+  showSendMoneyAlipayDialog(context, amount, code, {Wallet? wallet}) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => AuthViewModel(),
+              onViewModelReady: (model) {},
+              disposeViewModel: false,
+              builder: (_, AuthViewModel model, __) {
+                return Dialog(
+                  backgroundColor: AppColor.white,
+                  insetPadding:
+                      EdgeInsets.symmetric(horizontal: 22.w, vertical: 16.w),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20.w),
+                    height: 250.w,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 16.2.h,
+                          ),
+                          TextView(
+                            text: 'Confirm Send Money',
+                            color: AppColor.black,
+                            fontSize: 17.2.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          SizedBox(
+                            height: 10.2.h,
+                          ),
+                          TextView(
+                            text:
+                                'Are your sure you want to send $amount $code',
+                            color: AppColor.black,
+                            fontSize: 15.2.sp,
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () => Navigator.pop(context),
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 6.w, horizontal: 10.w),
+                                  decoration: BoxDecoration(
+                                      color: AppColor.white,
+                                      border: Border.all(
+                                          color: AppColor.primary, width: .6.w),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Center(
+                                    child: TextView(
+                                      text: 'Back',
+                                      color: AppColor.primary,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  navigate.navigateTo(Routes.welcomeBackScreen,
+                                      arguments: WelcomeBackScreenArguments(
+                                          name: '',
+                                          transaction: 'send money',
+                                          withdraw: WithdrawalEntityModel(),
+                                          sendMoney: SendMonetEntityModel(
+                                              amount: sendAmountController.text,
+                                              recipientEmail:
+                                                  emailController.text,
+                                              description: desController.text,
+                                              recipientName:
+                                                  nameController.text,
+                                              documentType: 'barcode',
+                                              recipientAddress:
+                                                  recipientWalletIdController
+                                                      .text,
+                                              currency: wallet != null
+                                                  ? wallet.currency
+                                                  : currencyController.text,
+                                              qrCode:
+                                                  '${_postUserVerificationCloudResponse?.publicId}.${_postUserVerificationCloudResponse?.format}')));
                                   model.notifyListeners();
                                 },
                                 child: Container(

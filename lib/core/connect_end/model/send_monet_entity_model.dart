@@ -6,6 +6,7 @@ class SendMonetEntityModel {
   String? description;
   String? recipientEmail;
   String? recipientName;
+  String? qrCode;
 
   SendMonetEntityModel(
       {this.amount,
@@ -14,6 +15,7 @@ class SendMonetEntityModel {
       this.documentType,
       this.description,
       this.recipientEmail,
+      this.qrCode,
       this.recipientName});
 
   factory SendMonetEntityModel.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class SendMonetEntityModel {
       recipientEmail: json['recipient_email']?.toString(),
       recipientName: json['recipient_name']?.toString(),
       description: json['description']?.toString(),
+      qrCode: json['qr_code']?.toString(),
     );
   }
 
@@ -36,5 +39,6 @@ class SendMonetEntityModel {
         if (description != null) 'description': description,
         if (currency != null) 'currency': currency,
         if (documentType != null) 'document_type': documentType,
+        if (qrCode != null) 'qr_code': qrCode,
       };
 }

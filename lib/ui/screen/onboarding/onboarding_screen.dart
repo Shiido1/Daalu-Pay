@@ -6,8 +6,7 @@ import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/connect_end/model/send_monet_entity_model.dart'
-    show SendMonetEntityModel;
+import '../../../core/connect_end/model/send_monet_entity_model.dart';
 import '../../widget/button_widget.dart';
 import '../../widget/text_widget.dart';
 

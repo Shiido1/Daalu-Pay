@@ -149,8 +149,8 @@ class _AlipaySendMoneyScreenState extends State<AlipaySendMoneyScreen> {
                     ),
                     model.choice == 'wallet'
                         ? TextFormWidget(
-                            label: 'Alipay Wallet Id',
-                            hint: 'Recipient\'s Wallet Address',
+                            label: 'Alipay Id',
+                            hint: 'Recipient\'s Alipay Id',
                             border: 10,
                             isFilled: true,
                             fillColor: AppColor.white,

@@ -64,7 +64,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '441367232546',
     projectId: 'daalupay',
     storageBucket: 'daalupay.firebasestorage.app',
-    iosBundleId: 'com.example.daaluPay',
+    iosBundleId: 'com.daalupay',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -73,7 +73,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '441367232546',
     projectId: 'daalupay',
     storageBucket: 'daalupay.firebasestorage.app',
-    iosBundleId: 'com.example.daaluPay',
+    iosBundleId: 'com.daalupay',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(

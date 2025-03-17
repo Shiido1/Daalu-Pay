@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.daaluPay</string>
+	<string>com.daalupay</string>
 	<key>PROJECT_ID</key>
 	<string>daalupay</string>
 	<key>STORAGE_BUCKET</key>

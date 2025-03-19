@@ -240,7 +240,7 @@ class _AlipaySendMoneyScreenState extends State<AlipaySendMoneyScreen> {
                         onChange: (p0) {
                           // model.onGetUserWalletRate(context, p0);
                         }),
-                    // : model.choice == 'upload'
+                    // : model.choice == 'upload' 
                     //     ? // : SizedBox.shrink(),
                     SizedBox(
                       height: 20.h,

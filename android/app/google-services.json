@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "441367232546",
-    "project_id": "daalupay",
-    "storage_bucket": "daalupay.firebasestorage.app"
+    "project_number": "769091831615",
+    "project_id": "daalupay-923ab",
+    "storage_bucket": "daalupay-923ab.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:441367232546:android:d5884249bf1ab75f720a7b",
+        "mobilesdk_app_id": "1:769091831615:android:66c3ef835e2b80dd08358a",
         "android_client_info": {
-          "package_name": "com.example.daalu_pay"
+          "package_name": "com.daalupay"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAgB0MYSjfmzaPFB9npYjUDcIaHRdEh73E"
+          "current_key": "AIzaSyBkfHfJD00l3KwoHzVIdasaez9TlL6aPUc"
         }
       ],
       "services": {

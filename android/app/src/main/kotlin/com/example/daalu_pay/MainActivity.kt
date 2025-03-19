@@ -1,4 +1,4 @@
-package com.example.daalu_pay
+package com.daalupay
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

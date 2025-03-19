@@ -261,8 +261,11 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                                         model.radioButtonChanges(v!);
                                       },
                                     ),
-                                    Text(
-                                      "Wallet Address",
+                                    TextView(
+                                      text: 'Wallet Address',
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColor.darkGrey,
                                     ),
                                   ],
                                 ),
@@ -274,8 +277,11 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                               model.radioButtonChanges(v!);
                             },
                           ),
-                          Text(
-                            "Upload Image",
+                          TextView(
+                            text: 'Upload Image',
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColor.darkGrey,
                           ),
                         ],
                       ),

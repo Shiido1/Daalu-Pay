@@ -375,7 +375,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 30.h,
                             ),
                             paddedWing(
-                              value: 28.w,
+                              value: 20.w,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

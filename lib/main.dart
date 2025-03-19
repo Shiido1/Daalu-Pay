@@ -18,14 +18,23 @@ var globalfCMToken;
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  if (Platform.isAndroid) {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    await FirebaseApi().initNotification();
-  } else {
-    await Firebase.initializeApp();
+  // Ensure Firebase is initialized only once
+  if (Firebase.apps.isEmpty) {
+    if (Platform.isAndroid) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+      await FirebaseApi().initNotification();
+    } else {
+      Firebase.initializeApp();
+    }
+    // await Firebase.initializeApp(
+    //   options: DefaultFirebaseOptions.currentPlatform,
+    // );
   }
+  // Initialize Firebase notifications only if Firebase is initialized
+  // await FirebaseApi().initNotification();
+
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   setupLocator();

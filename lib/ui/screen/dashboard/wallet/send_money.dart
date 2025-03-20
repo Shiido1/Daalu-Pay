@@ -109,6 +109,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                           icon: Icon(
                             Icons.arrow_drop_down_sharp,
                             color: AppColor.black,
+                            size: 20.sp,
                           )),
                     ),
                     SizedBox(
@@ -209,6 +210,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                                     icon: Icon(
                                       Icons.arrow_drop_down_sharp,
                                       color: AppColor.black,
+                                      size: 20.sp,
                                     )),
                               ),
                               SizedBox(
@@ -315,7 +317,11 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            SvgPicture.asset(AppImage.cal),
+                                            SvgPicture.asset(
+                                              AppImage.cal,
+                                              height: 30.h,
+                                              width: 30.w,
+                                            ),
                                             SizedBox(
                                               width: 10.w,
                                             ),

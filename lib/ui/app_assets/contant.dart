@@ -53,7 +53,11 @@ homeTransFlowWidget(
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(color: AppColor.primary.withOpacity(.3))),
-            child: SvgPicture.asset(image),
+            child: SvgPicture.asset(
+              image,
+              height: 25.0.h,
+              width: 25.0.w,
+            ),
           ),
         ),
         SizedBox(
@@ -83,6 +87,8 @@ homePageTransFlowWidget(
                 border: Border.all(color: AppColor.primary)),
             child: SvgPicture.asset(
               image,
+              height: 30.h,
+              width: 30.w,
               color: AppColor.primary,
             ),
           ),
@@ -115,6 +121,8 @@ sendTransFlowWidget(
                 border: Border.all(color: AppColor.primary.withOpacity(.3))),
             child: SvgPicture.asset(
               image,
+              height: 40.h,
+              width: 40.w,
             ),
           ),
         ),

@@ -43,7 +43,7 @@ class _ViewWalletScreenState extends State<ViewWalletScreen> {
           return Scaffold(
             backgroundColor: AppColor.white.withOpacity(.6),
             body: SingleChildScrollView(
-              physics: NeverScrollableScrollPhysics(),
+              // physics: NeverScrollableScrollPhysics(),
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 45.0.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +54,6 @@ class _ViewWalletScreenState extends State<ViewWalletScreen> {
                   paddedWing(
                     value: 12.w,
                     child: Container(
-                      height: 220.h,
                       width: double.infinity,
                       decoration: BoxDecoration(
                           color: AppColor.primary.withOpacity(.5),
@@ -112,6 +111,9 @@ class _ViewWalletScreenState extends State<ViewWalletScreen> {
                                     color: AppColor.white,
                                   ),
                                 ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
                               ],
                             ),
                             Padding(
@@ -120,10 +122,12 @@ class _ViewWalletScreenState extends State<ViewWalletScreen> {
                               child: GestureDetector(
                                   onTap: () =>
                                       setState(() => isTapped = !isTapped),
-                                  child: SvgPicture.asset(isTapped
-                                      ? AppImage.openEye
-                                      : AppImage.eye)),
-                            ),
+                                  child: SvgPicture.asset(
+                                    isTapped ? AppImage.openEye : AppImage.eye,
+                                    height: 30.h,
+                                    width: 30.w,
+                                  )),
+                            )
                           ],
                         ),
                       ),
@@ -179,7 +183,7 @@ class _ViewWalletScreenState extends State<ViewWalletScreen> {
                     height: 30.h,
                   ),
                   SizedBox(
-                    height: 400.h,
+                    height: 600.h,
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
@@ -274,7 +278,10 @@ class _ViewWalletScreenState extends State<ViewWalletScreen> {
                                           )
                                         ],
                                       ),
-                                    ))
+                                    )),
+                          SizedBox(
+                            height: 100.h,
+                          ),
                         ],
                       ),
                     ),

@@ -70,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             icon: Icon(
                               Icons.menu,
                               color: AppColor.primary,
+                              size: 30.sp,
                             )),
                         TextView(
                           text:
@@ -329,6 +330,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ? AppImage.openEye
                                               : AppImage.eye,
                                           color: AppColor.primary,
+                                          height: 36.0.h,
+                                          width: 36.0.w,
                                         )),
                                   ),
                                 ],
@@ -415,8 +418,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () =>
                           model.modalBottomSheetMenuCreateWallet(context),
                       child: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 4.w, horizontal: 14.w),
+                        padding: EdgeInsets.only(
+                            top: 4.w, left: 14.w, right: 14.w, bottom: 6.w),
                         decoration: BoxDecoration(
                           color: AppColor.primary,
                           borderRadius: BorderRadius.circular(8),
@@ -430,12 +433,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: 4.h,
+                  ),
                   Divider(
                     color: AppColor.primary.withOpacity(.4),
                     thickness: 0.6,
                   ),
                   SizedBox(
-                    height: 10.h,
+                    height: 6.h,
                   ),
                   paddedWing(
                     value: 10.w,
@@ -450,7 +456,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 30.h,
+                    height: 24.0.h,
                   ),
                   model.getStatsResponseModel == null
                       ? SpinKitPouringHourGlassRefined(
@@ -518,7 +524,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   drawer() => Drawer(
         backgroundColor: AppColor.light.withOpacity(.9),
-        width: 280,
+        width: MediaQuery.of(context).size.width * .75,
         child: ViewModelBuilder<AuthViewModel>.reactive(
             viewModelBuilder: () => locator<AuthViewModel>(),
             onViewModelReady: (model) async {
@@ -619,16 +625,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(
                                 height: 4.h,
                               ),
-                              SizedBox(
-                                width: 160.w,
-                                child: TextView(
-                                  text: model.userResponseModel?.data?.email ??
-                                      "",
-                                  color: AppColor.white,
-                                  maxLines: 2,
-                                  fontSize: 13.2.sp,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                              TextView(
+                                text:
+                                    model.userResponseModel?.data?.email ?? "",
+                                color: AppColor.white,
+                                maxLines: 2,
+                                fontSize: 13.2.sp,
+                                textOverflow: TextOverflow.ellipsis,
+                                fontWeight: FontWeight.w500,
                               ),
                             ],
                           )
@@ -676,6 +680,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     SvgPicture.asset(
                                       AppImage.send,
                                       color: AppColor.black,
+                                      height: 26.0.h,
+                                      width: 25.0.w,
                                     ),
                                     SizedBox(
                                       width: 20.w,
@@ -725,6 +731,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     SvgPicture.asset(
                                       AppImage.addCard,
                                       color: AppColor.black,
+                                      height: 30.h,
+                                      width: 30.w,
                                     ),
                                     SizedBox(
                                       width: 20.w,
@@ -774,6 +782,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Icon(
                                       Icons.currency_exchange,
                                       color: AppColor.black,
+                                      size: 26.sp,
                                     ),
                                     SizedBox(
                                       width: 10.w,
@@ -813,6 +822,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Icon(
                                   Icons.monitor_heart_outlined,
                                   color: AppColor.black,
+                                  size: 26.sp,
                                 ),
                                 SizedBox(
                                   width: 10.w,
@@ -860,6 +870,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Icon(
                                   Icons.person_3_outlined,
                                   color: AppColor.black,
+                                  size: 26.sp,
                                 ),
                                 SizedBox(
                                   width: 10.w,
@@ -897,6 +908,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Icon(
                                   Icons.support,
                                   color: AppColor.black,
+                                  size: 26.sp,
                                 ),
                                 SizedBox(
                                   width: 10.w,

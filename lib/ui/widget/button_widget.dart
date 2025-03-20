@@ -30,8 +30,8 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints.tightFor(
-          width: buttonWidth!.w, height: buttonHeight!.h),
+      constraints:
+          BoxConstraints.tightFor(width: buttonWidth!.w, height: 57.0.h),
       child: TextButton(
           onPressed: onPressed,
           style: ButtonStyle(

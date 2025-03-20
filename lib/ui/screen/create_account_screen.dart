@@ -122,6 +122,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           icon: Icon(
                             Icons.arrow_drop_down_sharp,
                             color: AppColor.black,
+                            size: 20.sp,
                           )),
                     ),
                     SizedBox(
@@ -141,6 +142,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           icon: Icon(
                             Icons.arrow_drop_down_sharp,
                             color: AppColor.black,
+                            size: 20.sp,
                           )),
                     ),
                     SizedBox(
@@ -161,6 +163,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           icon: Icon(
                             Icons.arrow_drop_down_sharp,
                             color: AppColor.black,
+                            size: 20.sp,
                           )),
                     ),
                     SizedBox(

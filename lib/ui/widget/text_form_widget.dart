@@ -164,6 +164,7 @@ class TextFormWidget extends StatelessWidget {
                             icon: Icon(
                               suffixIcon,
                               color: suffixIconColor,
+                              size: 20.sp,
                             ))
                         : null),
               )),

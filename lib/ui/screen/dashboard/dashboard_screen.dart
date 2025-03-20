@@ -121,6 +121,8 @@ class _DashboardState extends State<Dashboard> {
                     AppImage.home,
                     color:
                         _currentIndex == 0 ? AppColor.primary : AppColor.black,
+                    height: 30.h,
+                    width: 30.w,
                   ),
                   label: 'Home',
                 ),
@@ -132,6 +134,8 @@ class _DashboardState extends State<Dashboard> {
                       color: _currentIndex == 1
                           ? AppColor.primary
                           : AppColor.black,
+                      height: 27.0.h,
+                      width: 30.w,
                     ),
                   ),
                   label: 'Send',
@@ -141,6 +145,8 @@ class _DashboardState extends State<Dashboard> {
                     AppImage.wallet,
                     color:
                         _currentIndex == 2 ? AppColor.primary : AppColor.black,
+                    height: 30.h,
+                    width: 30.w,
                   ),
                   label: 'Wallet',
                 ),
@@ -149,6 +155,8 @@ class _DashboardState extends State<Dashboard> {
                     AppImage.trans,
                     color:
                         _currentIndex == 3 ? AppColor.primary : AppColor.black,
+                    height: 30.h,
+                    width: 30.w,
                   ),
                   label: 'TXNs',
                 ),
@@ -157,6 +165,8 @@ class _DashboardState extends State<Dashboard> {
                     AppImage.alipay,
                     color:
                         _currentIndex == 4 ? AppColor.primary : AppColor.black,
+                    height: 30.h,
+                    width: 30.w,
                   ),
                   label: 'Alipay',
                 ),

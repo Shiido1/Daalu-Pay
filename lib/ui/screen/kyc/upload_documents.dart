@@ -223,7 +223,11 @@ class _UploadDocumentsScreenState extends State<UploadDocumentsScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SvgPicture.asset(AppImage.cal),
+                              SvgPicture.asset(
+                                AppImage.cal,
+                                height: 30.h,
+                                width: 30.w,
+                              ),
                               SizedBox(
                                 width: 10.w,
                               ),

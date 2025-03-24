@@ -41,48 +41,48 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDXeS6_s5OAJik-tUSgoTcRWYYCU-tYH9c',
-    appId: '1:769091831615:web:6f550b6a52733e1908358a',
-    messagingSenderId: '769091831615',
-    projectId: 'daalupay-923ab',
-    authDomain: 'daalupay-923ab.firebaseapp.com',
-    storageBucket: 'daalupay-923ab.firebasestorage.app',
-    measurementId: 'G-D81HC77K1E',
+    apiKey: 'AIzaSyAoRkpSm_9EhWse2Ws8XPLExD-xKymEANo',
+    appId: '1:818345300890:web:c6576c983320217c67a023',
+    messagingSenderId: '818345300890',
+    projectId: 'daalupay-fdbaf',
+    authDomain: 'daalupay-fdbaf.firebaseapp.com',
+    storageBucket: 'daalupay-fdbaf.firebasestorage.app',
+    measurementId: 'G-66X0SNC9ST',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBkfHfJD00l3KwoHzVIdasaez9TlL6aPUc',
-    appId: '1:769091831615:android:66c3ef835e2b80dd08358a',
-    messagingSenderId: '769091831615',
-    projectId: 'daalupay-923ab',
-    storageBucket: 'daalupay-923ab.firebasestorage.app',
+    apiKey: 'AIzaSyBE1SuDSBY9aSmJxAXWBJdf131urh23f9c',
+    appId: '1:818345300890:android:1e976fbc1f45932b67a023',
+    messagingSenderId: '818345300890',
+    projectId: 'daalupay-fdbaf',
+    storageBucket: 'daalupay-fdbaf.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDuFRq2UdO2x6y_SewysLFuK5wvxyVia5U',
-    appId: '1:769091831615:ios:441b5375977dfc8f08358a',
-    messagingSenderId: '769091831615',
-    projectId: 'daalupay-923ab',
-    storageBucket: 'daalupay-923ab.firebasestorage.app',
+    apiKey: 'AIzaSyDGRx73v4LNES_Ja-EmAH1qsiYG1bsAg7c',
+    appId: '1:818345300890:ios:d3cfbfa16be2768467a023',
+    messagingSenderId: '818345300890',
+    projectId: 'daalupay-fdbaf',
+    storageBucket: 'daalupay-fdbaf.firebasestorage.app',
     iosBundleId: 'com.daalupay',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDuFRq2UdO2x6y_SewysLFuK5wvxyVia5U',
-    appId: '1:769091831615:ios:441b5375977dfc8f08358a',
-    messagingSenderId: '769091831615',
-    projectId: 'daalupay-923ab',
-    storageBucket: 'daalupay-923ab.firebasestorage.app',
+    apiKey: 'AIzaSyDGRx73v4LNES_Ja-EmAH1qsiYG1bsAg7c',
+    appId: '1:818345300890:ios:d3cfbfa16be2768467a023',
+    messagingSenderId: '818345300890',
+    projectId: 'daalupay-fdbaf',
+    storageBucket: 'daalupay-fdbaf.firebasestorage.app',
     iosBundleId: 'com.daalupay',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDXeS6_s5OAJik-tUSgoTcRWYYCU-tYH9c',
-    appId: '1:769091831615:web:dba36c5f4f25b06a08358a',
-    messagingSenderId: '769091831615',
-    projectId: 'daalupay-923ab',
-    authDomain: 'daalupay-923ab.firebaseapp.com',
-    storageBucket: 'daalupay-923ab.firebasestorage.app',
-    measurementId: 'G-52MVCPNJD8',
+    apiKey: 'AIzaSyAoRkpSm_9EhWse2Ws8XPLExD-xKymEANo',
+    appId: '1:818345300890:web:0335710dcd18d7a767a023',
+    messagingSenderId: '818345300890',
+    projectId: 'daalupay-fdbaf',
+    authDomain: 'daalupay-fdbaf.firebaseapp.com',
+    storageBucket: 'daalupay-fdbaf.firebasestorage.app',
+    measurementId: 'G-S4JBLZQB09',
   );
 }

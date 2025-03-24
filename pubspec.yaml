@@ -69,6 +69,18 @@ dependencies:
   pay_with_paystack: ^1.0.13
 
 
+flutter_native_splash:
+  android: true
+  ios: true
+  image: assets/image/logo.png
+  color: "#2563EB"
+  android_12:
+    image: assets/image/logo.png
+    color: "#2563EB"
+  image_ios: assets/image/logo_ios.png
+
+
+
 flutter_launcher_icons:
   android: true
   ios: true

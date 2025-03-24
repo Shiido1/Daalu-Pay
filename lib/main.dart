@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -16,31 +17,36 @@ final navigate = locator<NavigationService>();
 var globalfCMToken;
 
 Future<void> main() async {
+  // Ensure Flutter is initialized
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  // Ensure Firebase is initialized only once
-  if (Firebase.apps.isEmpty) {
-    if (Platform.isAndroid) {
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
-      await FirebaseApi().initNotification();
-    } else {
-      Firebase.initializeApp();
-    }
-    // await Firebase.initializeApp(
-    //   options: DefaultFirebaseOptions.currentPlatform,
-    // );
-  }
-  // Initialize Firebase notifications only if Firebase is initialized
-  // await FirebaseApi().initNotification();
 
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  // Run async tasks without blocking UI
+  unawaited(initializeFirebase());
   setupLocator();
   await locator<SharedPreferencesService>().initilize();
+  // Set screen orientation
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
   runApp(const MyApp());
 }
+
+// ✅ Async Firebase Initialization (Non-blocking)
+Future<void> initializeFirebase() async {
+  if (Platform.isAndroid) {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+    await FirebaseApi().initNotification();
+  } else {
+    await Firebase.initializeApp();
+  }
+}
+
+// ✅ Async Service Initialization
+Future<void> setupServices() async {}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -75,7 +81,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void initialization() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
     FlutterNativeSplash.remove();
   }
 }

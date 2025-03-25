@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:daalu_pay/core/bio_authentication.dart/authentication.dart';
 import 'package:daalu_pay/core/connect_end/model/withdrawal_entity_model.dart';
-import 'package:daalu_pay/core/core_folder/app/app.locator.dart';
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/app_assets/contant.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -15,6 +16,8 @@ import '../../core/connect_end/model/send_monet_entity_model.dart'
 import '../../core/connect_end/view_model/auth_view_model.dart';
 import '../../core/core_folder/app/app.router.dart';
 import '../../core/core_folder/manager/shared_preference.dart';
+import '../../core/firebase_api.dart';
+import '../../firebase_options.dart';
 import '../../main.dart';
 import '../widget/button_widget.dart';
 
@@ -44,18 +47,31 @@ class _WelcomeBackScreenState extends State<WelcomeBackScreen> {
   String currentText = "";
 
   bool hasError = false;
+
+  Future<void> initializeFirebase() async {
+    if (Platform.isAndroid) {
+      await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform);
+      await FirebaseApi().initNotification();
+    } else {
+      await Firebase.initializeApp();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<AuthViewModel>.reactive(
-        viewModelBuilder: () => locator<AuthViewModel>(),
-        onViewModelReady: (model) {},
-        fireOnViewModelReadyOnce: true,
-        disposeViewModel: false,
-        onDispose: (viewModel) {},
-        builder: (_, AuthViewModel model, __) {
-          return Scaffold(
-            backgroundColor: AppColor.light,
-            body: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: AppColor.light,
+      body: ViewModelBuilder<AuthViewModel>.reactive(
+          viewModelBuilder: () {
+            initializeFirebase();
+            return AuthViewModel();
+          },
+          onViewModelReady: (model) {},
+          disposeViewModel: false,
+          onDispose: (viewModel) {},
+          builder: (_, AuthViewModel model, __) {
+            return SingleChildScrollView(
               padding: EdgeInsets.symmetric(vertical: 100.w, horizontal: 22.w),
               child: Form(
                 key: formKey,
@@ -226,8 +242,8 @@ class _WelcomeBackScreenState extends State<WelcomeBackScreen> {
                   ],
                 ),
               ),
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 }

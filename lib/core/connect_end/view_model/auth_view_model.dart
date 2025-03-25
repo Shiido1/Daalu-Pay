@@ -28,6 +28,7 @@ import 'package:daalu_pay/core/connect_end/model/withdrawal_entity_model.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,6 +40,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:pay_with_paystack/pay_with_paystack.dart';
 import 'package:stacked/stacked.dart';
+import '../../../firebase_options.dart';
 import '../../../ui/app_assets/app_color.dart';
 import '../../../ui/app_assets/app_utils.dart';
 import '../../../ui/app_assets/app_validatiion.dart';
@@ -53,6 +55,7 @@ import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/app/app.logger.dart';
 import '../../core_folder/app/app.router.dart';
 import '../../core_folder/manager/shared_preference.dart';
+import '../../firebase_api.dart';
 import '../model/add_account_response_model/add_account_response_model.dart';
 import '../model/get_bank_account_response_model/get_bank_account_response_model.dart';
 import '../model/get_message_response/get_message_response.dart';
@@ -132,7 +135,7 @@ class AuthViewModel extends BaseViewModel {
 
   // firebase generate token call
 
-  final _firebaseMessage = FirebaseMessaging.instance;
+  var _firebaseMessage;
 
   int currentPageWallet = 0;
 
@@ -688,6 +691,14 @@ class AuthViewModel extends BaseViewModel {
   }
 
   Future<void> initNotificationToken() async {
+    if (Platform.isAndroid) {
+      await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform);
+      await FirebaseApi().initNotification();
+    } else {
+      await Firebase.initializeApp();
+    }
+    _firebaseMessage = FirebaseMessaging.instance;
     await _firebaseMessage.requestPermission();
     globalfCMToken = await _firebaseMessage.getToken();
     print(":jjjj:::::$globalfCMToken");
@@ -724,7 +735,7 @@ class AuthViewModel extends BaseViewModel {
         SharedPreferencesService.instance.isVerified = true;
         SharedPreferencesService.instance.isFirstLogin = true;
         await AppUtils.snackbar(contxt,
-            message: _loginResponse?.message!.toString());
+            message: 'You have successfully created a pin for verification');
         navigate.navigateTo(Routes.dashboard,
             arguments: DashboardArguments(index: 0));
       }
@@ -977,7 +988,8 @@ class AuthViewModel extends BaseViewModel {
           throwException: true);
 
       if (_loginResponse?.status == 'success') {
-        if (session.isVerified == false) {
+        print('oooooo...${SharedPreferencesService.instance.isVerified}');
+        if (SharedPreferencesService.instance.isVerified == false) {
           navigate.navigateTo(Routes.welcomeBackScreen,
               arguments: WelcomeBackScreenArguments(
                   name: session.usersData['user']['firstName'],

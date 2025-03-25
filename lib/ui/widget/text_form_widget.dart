@@ -111,7 +111,7 @@ class TextFormWidget extends StatelessWidget {
           keyboardType: keyboardType,
           focusNode: focusNode,
           autofocus: autofocus,
-          style: TextStyle(fontSize: 14.sp),
+          style: TextStyle(fontSize: 16.sp),
           decoration: InputDecoration(
               alignLabelWithHint: alignLabelWithHint,
               filled: isFilled,

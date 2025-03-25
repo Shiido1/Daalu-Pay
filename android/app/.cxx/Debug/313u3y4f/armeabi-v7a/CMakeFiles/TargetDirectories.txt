@@ -1,0 +1,2 @@
+/Users/imac/Desktop/Daalu-Pay/android/app/.cxx/Debug/313u3y4f/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/imac/Desktop/Daalu-Pay/android/app/.cxx/Debug/313u3y4f/armeabi-v7a/CMakeFiles/rebuild_cache.dir

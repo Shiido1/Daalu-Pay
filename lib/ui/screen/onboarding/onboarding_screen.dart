@@ -1,12 +1,20 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:daalu_pay/core/connect_end/model/withdrawal_entity_model.dart';
 import 'package:daalu_pay/core/core_folder/app/app.router.dart';
 import 'package:daalu_pay/core/core_folder/manager/shared_preference.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_color.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/connect_end/model/send_monet_entity_model.dart';
+import '../../../core/core_folder/app/app.locator.dart';
+import '../../../core/firebase_api.dart';
+import '../../../firebase_options.dart';
 import '../../widget/button_widget.dart';
 import '../../widget/text_widget.dart';
 
@@ -77,23 +85,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
+  Future<void> initializeFirebase() async {
+    await locator<SharedPreferencesService>().initilize();
+    if (Platform.isAndroid) {
+      await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform);
+      await FirebaseApi().initNotification();
+    } else {
+      await Firebase.initializeApp();
+    }
+  }
+
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (SharedPreferencesService.instance.isLoggedIn == false) {
-        return;
-      } else {
-        navigate.navigateTo(
-          Routes.welcomeBackScreen,
-          arguments: WelcomeBackScreenArguments(
-              name: SharedPreferencesService.instance.usersData['user']
-                  ['firstName'],
-              transaction: 'login',
-              withdraw: WithdrawalEntityModel(),
-              sendMoney: SendMonetEntityModel()),
-        );
-      }
-    });
+    print('object............${SharedPreferencesService.instance.isLoggedIn}');
+
+    unawaited(initializeFirebase());
     super.initState();
   }
 

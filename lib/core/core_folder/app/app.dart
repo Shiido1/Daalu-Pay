@@ -22,6 +22,7 @@ import '../../../ui/screen/update_profile_screen.dart';
 import '../../../ui/screen/verify_screen.dart';
 import '../../../ui/screen/webview_chat_screen.dart';
 import '../../../ui/screen/welcome_back_screen.dart';
+import '../../../ui/screen/welcome_back_screen_login.dart';
 import '../../api_folder/auth_api.dart';
 import '../../connect_end/contract/contract_impl.dart';
 import '../../connect_end/repo/repo_impl.dart';
@@ -50,6 +51,7 @@ import '../network/network_service.dart';
   MaterialRoute(page: WalletScreen, initial: false),
   MaterialRoute(page: WebviewChatScreen, initial: false),
   MaterialRoute(page: WelcomeBackScreen, initial: false),
+  MaterialRoute(page: WelcomeBackLoginScreen, initial: false),
   MaterialRoute(page: PassportPhotoScreen, initial: false),
   MaterialRoute(page: TransReceiptScreen, initial: false),
   MaterialRoute(page: SettingScreen, initial: false),

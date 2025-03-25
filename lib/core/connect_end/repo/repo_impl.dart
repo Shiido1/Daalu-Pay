@@ -14,6 +14,7 @@ import 'package:daalu_pay/core/connect_end/model/send_monet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/swap_entiy_model.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_entity/update_password_entity.dart';
 import 'package:daalu_pay/core/connect_end/model/update_password_response_model/update_password_response_model.dart';
+import 'package:daalu_pay/core/core_folder/app/app.logger.dart';
 import 'package:injectable/injectable.dart';
 import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/manager/shared_preference.dart';
@@ -57,6 +58,7 @@ class AuthRepoImpl {
   Future<LoginResponseModel> login(LoginEntityModel loginEntity) async {
     final response = await _contract.login(loginEntity);
     _session.isLoggedIn = true;
+    getLogger('className').d(_session.isLoggedIn);
     _chache(response.data);
     return response;
   }

@@ -345,7 +345,7 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
                                               ),
                                               TextView(
                                                 text:
-                                                    '${getCurrency()}${oCcy.format(double.parse(o.amount ?? '0.0'))}',
+                                                    '${getCurrency()}${oCcy.format(double.parse(o.amount.toString() ?? '0.0'))}',
                                                 textStyle: TextStyle(
                                                   fontSize: 14.6.sp,
                                                   color: AppColor.black,

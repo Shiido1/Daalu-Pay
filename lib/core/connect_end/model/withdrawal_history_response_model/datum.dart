@@ -6,7 +6,7 @@ part 'datum.g.dart';
 class Datum {
   num? id;
   num? userId;
-  String? amount;
+  dynamic amount;
   String? status;
   num? currencyId;
   num? walletId;

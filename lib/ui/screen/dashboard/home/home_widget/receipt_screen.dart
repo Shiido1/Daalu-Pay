@@ -72,12 +72,14 @@ class ReceiptScreen extends StatelessWidget {
                           : e.status?.capitalize()),
                   contContainer(
                       left: 'Transaction Fee',
-                      right: '${oCcy.format(double.parse(e.amount!))}NGN'),
+                      right:
+                          '${oCcy.format(double.parse(e.amount.toString()))}NGN'),
                   contContainer(left: 'Not Received', right: '49.99 USD'),
                   contContainer(left: 'Payment Method', right: e.type),
                   contContainer(
                       left: 'Amount added to wallet',
-                      right: '${oCcy.format(double.parse(e.amount!))}NGN'),
+                      right:
+                          '${oCcy.format(double.parse(e.amount.toString()))}NGN'),
                 ],
               ),
             ),

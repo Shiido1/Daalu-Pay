@@ -24,7 +24,6 @@ class ChatScreen extends StatelessWidget {
       body: ViewModelBuilder<AuthViewModel>.reactive(
           viewModelBuilder: () => AuthViewModel(),
           onViewModelReady: (model) async {
-            print(SharedPreferencesService.instance.usersData);
             await model.initiateMessage(context);
             model.getMessage(context,
                 id: model.initiateChatResponseModel?.data?.id.toString());

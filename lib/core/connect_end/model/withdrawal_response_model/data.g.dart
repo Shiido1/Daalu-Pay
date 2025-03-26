@@ -8,7 +8,7 @@ part of 'data.dart';
 
 Data _$DataFromJson(Map<String, dynamic> json) => Data(
       userId: json['userId'] as String?,
-      amount: json['amount'] as String?,
+      amount: json['amount'],
       currencyId: json['currencyId'] as num?,
       walletId: json['walletId'] as num?,
       transactionId: json['transactionId'] as num?,

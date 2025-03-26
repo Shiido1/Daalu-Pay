@@ -5,7 +5,7 @@ part 'data.g.dart';
 @JsonSerializable()
 class Data {
   String? userId;
-  String? amount;
+  dynamic amount;
   num? currencyId;
   num? walletId;
   num? transactionId;

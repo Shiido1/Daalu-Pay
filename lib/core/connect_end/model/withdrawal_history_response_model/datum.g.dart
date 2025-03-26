@@ -9,7 +9,7 @@ part of 'datum.dart';
 Datum _$DatumFromJson(Map<String, dynamic> json) => Datum(
       id: json['id'] as num?,
       userId: json['userId'] as num?,
-      amount: json['amount'] as String?,
+      amount: json['amount'],
       status: json['status'] as String?,
       currencyId: json['currencyId'] as num?,
       walletId: json['walletId'] as num?,

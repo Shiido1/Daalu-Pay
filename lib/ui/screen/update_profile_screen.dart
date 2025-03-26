@@ -301,7 +301,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           isFilled: true,
                           fillColor: AppColor.white,
                           controller: phoneController,
-                          validator: AppValidator.validateString(),
+                          validator: AppValidator.validatePhone(),
                         ),
                       ),
                     ]),
@@ -354,6 +354,20 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 gender: genderController.text.trim(),
                                 photo:
                                     '${model.postUserVerificationCloudResponseAvatar?.publicId}.${model.postUserVerificationCloudResponseAvatar?.format}',
+                                dateOfBirth: model.dobController.text.trim(),
+                                password: passwordController.text.trim(),
+                              ),
+                            );
+                          } else if (formKeyRegister.currentState!.validate() &&
+                              model.image == null) {
+                            model.updateProfile(
+                              context,
+                              update: UpdateUserEntityModel(
+                                firstName: firstnameController.text.trim(),
+                                lastName: lastnameController.text.trim(),
+                                email: emailController.text.trim(),
+                                phone: phoneController.text.trim(),
+                                gender: genderController.text.trim(),
                                 dateOfBirth: model.dobController.text.trim(),
                                 password: passwordController.text.trim(),
                               ),

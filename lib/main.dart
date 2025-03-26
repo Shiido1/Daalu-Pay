@@ -39,8 +39,6 @@ Future<void> main() async {
 Future<void> setupServices() async {
   setupLocator();
   await locator<SharedPreferencesService>().initilize();
-
-  print('iiiiiii${SharedPreferencesService.instance.isLoggedIn}');
 }
 
 getScreen() {
@@ -81,14 +79,11 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     initialization();
-    print('222222${SharedPreferencesService.instance.isLoggedIn}');
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('3333333${SharedPreferencesService.instance.isLoggedIn}');
     return ScreenUtilInit(
       designSize: const Size(390, 977),
       builder: (BuildContext context, Widget? child) => MaterialApp(

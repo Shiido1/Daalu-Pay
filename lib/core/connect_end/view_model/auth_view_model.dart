@@ -988,7 +988,6 @@ class AuthViewModel extends BaseViewModel {
           throwException: true);
 
       if (_loginResponse?.status == 'success') {
-        print('oooooo...${SharedPreferencesService.instance.isVerified}');
         if (SharedPreferencesService.instance.isVerified == false) {
           navigate.navigateTo(Routes.welcomeBackScreen,
               arguments: WelcomeBackScreenArguments(
@@ -2073,7 +2072,7 @@ class AuthViewModel extends BaseViewModel {
                                     fillColor: AppColor.white,
                                     onChange: (p0) {
                                       querySignUpCountry = p0;
-                                      // model.notifyListeners();
+                                      model.notifyListeners();
                                     },
                                     suffixIcon: Icons.search_sharp,
                                     controller: signUpCountryController,
@@ -3423,7 +3422,6 @@ class AuthViewModel extends BaseViewModel {
               channel: 'flutterwave',
               walletId: walletId));
     }
-    print("${response.toJson()}");
   }
 
   isDisable() {

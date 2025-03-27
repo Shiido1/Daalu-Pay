@@ -13,8 +13,8 @@ class Datum {
   num? transactionId;
   String? fromCurrency;
   String? toCurrency;
-  String? fromAmount;
-  String? toAmount;
+  dynamic fromAmount;
+  dynamic toAmount;
   String? rate;
   String? status;
   String? notes;

@@ -170,7 +170,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                             ),
                             TextView(
                               text:
-                                  '${getCurrency()}${oCcy.format(double.parse(o.amount!))} ',
+                                  '${getCurrency()}${oCcy.format(double.parse(o.amount!.toString()))} ',
                               textStyle: TextStyle(
                                 fontSize: 26.sp,
                                 fontWeight: FontWeight.w500,
@@ -359,7 +359,7 @@ class _AdminOverviewScreenState extends State<AdminOverviewScreen> {
                                   ),
                                   TextView(
                                     text:
-                                        '${getAllCurrency(o.fromCurrency)}${oCcy.format(double.parse(o.fromAmount!))} -> ${oCcy.format(double.parse(o.toAmount!))}${getAllCurrency(o.toCurrency)}',
+                                        '${getAllCurrency(o.fromCurrency)}${oCcy.format(double.parse(o.fromAmount!.toString()))} -> ${oCcy.format(double.parse(o.toAmount!.toString()))}${getAllCurrency(o.toCurrency)}',
                                     textStyle: TextStyle(
                                       fontSize: 16.4.sp,
                                       fontWeight: FontWeight.w500,

@@ -180,7 +180,7 @@ class AuthApi {
 
   Future<GetUsersReceiptResponseModel> getUsersReceipts() async {
     try {
-      final response = await _service.call('receipts', RequestMethod.get);
+      final response = await _service.call('transfers', RequestMethod.get);
       logger.d(response.data);
       return GetUsersReceiptResponseModel.fromJson(response.data);
     } catch (e) {

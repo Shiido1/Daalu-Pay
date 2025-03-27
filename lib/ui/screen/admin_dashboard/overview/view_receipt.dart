@@ -78,7 +78,7 @@ class _ViewReceiptState extends State<ViewReceipt> {
                                   height: 10.h,
                                 ),
                                 QrImageView(
-                                  data: widget.datum?.recipientAlipayId ?? '',
+                                  data: widget.datum?.paymentDetails ?? '',
                                   version: QrVersions.auto,
                                   size: 200,
                                   gapless: false,
@@ -99,8 +99,8 @@ class _ViewReceiptState extends State<ViewReceipt> {
                                     IconButton(
                                         onPressed: () {
                                           Clipboard.setData(ClipboardData(
-                                              text: widget.datum
-                                                      ?.recipientAlipayId ??
+                                              text: widget
+                                                      .datum?.paymentDetails ??
                                                   ''));
                                           AppUtils.snackbar(context,
                                               message:
@@ -120,7 +120,7 @@ class _ViewReceiptState extends State<ViewReceipt> {
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
                           child: Image.network(
-                            'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${widget.datum?.recipientAlipayId}',
+                            'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${widget.datum?.qrCode}',
                             width: 300.w,
                             height: 320,
                             fit: BoxFit.cover,
@@ -157,7 +157,7 @@ class _ViewReceiptState extends State<ViewReceipt> {
                   ),
                   TextView(
                     text:
-                        'Amount: ${getAllCurrency('CNY')}${oCcy.format(double.parse(widget.datum?.amount ?? '0.0'))}',
+                        'Amount: ${getAllCurrency('CNY')}${oCcy.format(double.parse(widget.datum?.amount.toString() ?? '0.0'))}',
                     fontSize: 24.sp,
                     color: AppColor.black,
                     fontWeight: FontWeight.w400,
@@ -305,7 +305,7 @@ class _ViewReceiptState extends State<ViewReceipt> {
                                                   null
                                               ? TextEditingController(
                                                   text: widget.datum
-                                                          ?.recipientAlipayId ??
+                                                          ?.paymentDetails ??
                                                       "")
                                               : recipientWalletIdController,
                                           datum: widget.datum,

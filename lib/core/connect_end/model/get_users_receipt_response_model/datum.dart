@@ -6,24 +6,36 @@ part 'datum.g.dart';
 class Datum {
   num? id;
   num? userId;
-  String? amount;
+  num? adminId;
+  num? amount;
+  String? currency;
   String? status;
-  String? recipientAlipayId;
+  String? paymentDetails;
+  String? recipientName;
+  String? recipientEmail;
+  String? description;
   num? transactionId;
   String? documentType;
   String? proofOfPayment;
+  dynamic qrCode;
   DateTime? createdAt;
   DateTime? updatedAt;
 
   Datum({
     this.id,
     this.userId,
+    this.adminId,
     this.amount,
+    this.currency,
     this.status,
-    this.recipientAlipayId,
+    this.paymentDetails,
+    this.recipientName,
+    this.recipientEmail,
+    this.description,
     this.transactionId,
     this.documentType,
     this.proofOfPayment,
+    this.qrCode,
     this.createdAt,
     this.updatedAt,
   });

@@ -14,9 +14,9 @@ Kyc _$KycFromJson(Map<String, dynamic> json) => Kyc(
       reason: json['reason'],
       type: json['type'] as String?,
       documentType: json['documentType'] as String?,
+      passportPhoto: json['passportPhoto'] as String?,
       documentNumber: json['documentNumber'] as String?,
       documentImage: json['documentImage'] as String?,
-      passportPhoto: json['passportPhoto'] as String?,
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),

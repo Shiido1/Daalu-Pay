@@ -14,11 +14,11 @@ Swap _$SwapFromJson(Map<String, dynamic> json) => Swap(
       transactionId: json['transactionId'] as num?,
       fromCurrency: json['fromCurrency'] as String?,
       toCurrency: json['toCurrency'] as String?,
-      fromAmount: json['fromAmount'] as String?,
-      toAmount: json['toAmount'] as String?,
+      fromAmount: json['fromAmount'] as num?,
+      toAmount: json['toAmount'] as num?,
       rate: json['rate'] as String?,
       status: json['status'] as String?,
-      notes: json['notes'] as String?,
+      notes: json['notes'],
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
@@ -26,6 +26,9 @@ Swap _$SwapFromJson(Map<String, dynamic> json) => Swap(
           ? null
           : DateTime.parse(json['updatedAt'] as String),
       deletedAt: json['deletedAt'],
+      user: json['user'] == null
+          ? null
+          : User.fromJson(json['user'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SwapToJson(Swap instance) => <String, dynamic>{
@@ -44,4 +47,5 @@ Map<String, dynamic> _$SwapToJson(Swap instance) => <String, dynamic>{
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'deletedAt': instance.deletedAt,
+      'user': instance.user,
     };

@@ -356,11 +356,11 @@ class AdminTransactionScreen extends StatelessWidget {
                                                 height: 20.w,
                                               ),
                                               TextView(
-                                                text: DateFormat(
-                                                        'yyyy-MM-dd hh:mm a')
-                                                    .format(DateTime.parse(o
-                                                        .createdAt
-                                                        .toString())),
+                                                text:
+                                                    DateFormat('MM-dd hh:mm a')
+                                                        .format(DateTime.parse(o
+                                                            .createdAt
+                                                            .toString())),
                                                 fontSize: 14.sp,
                                                 color: AppColor.grey,
                                                 fontWeight: FontWeight.w500,
@@ -372,10 +372,10 @@ class AdminTransactionScreen extends StatelessWidget {
                                                 CrossAxisAlignment.end,
                                             children: [
                                               SizedBox(
-                                                width: 130.w,
+                                                width: 200.w,
                                                 child: TextView(
                                                   text:
-                                                      '${getAllCurrency(o.fromCurrency)}${oCcy.format(double.parse(o.fromAmount!))} -> ${oCcy.format(double.parse(o.toAmount!))}${getAllCurrency(o.toCurrency)}',
+                                                      '${getAllCurrency(o.fromCurrency)}${oCcy.format(double.parse(o.fromAmount!.toString()))} -> ${oCcy.format(double.parse(o.toAmount!.toString()))}${getAllCurrency(o.toCurrency)}',
                                                   textStyle: TextStyle(
                                                     fontSize: 14.sp,
                                                     fontWeight: FontWeight.w500,
@@ -389,6 +389,7 @@ class AdminTransactionScreen extends StatelessWidget {
                                                   textOverflow:
                                                       TextOverflow.ellipsis,
                                                   maxLines: 1,
+                                                  textAlign: TextAlign.end,
                                                 ),
                                               ),
                                               SizedBox(

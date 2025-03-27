@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'user.dart';
+
 part 'swap.g.dart';
 
 @JsonSerializable()
@@ -11,14 +13,15 @@ class Swap {
   num? transactionId;
   String? fromCurrency;
   String? toCurrency;
-  String? fromAmount;
-  String? toAmount;
+  num? fromAmount;
+  num? toAmount;
   String? rate;
   String? status;
-  String? notes;
+  dynamic notes;
   DateTime? createdAt;
   DateTime? updatedAt;
   dynamic deletedAt;
+  User? user;
 
   Swap({
     this.id,
@@ -36,6 +39,7 @@ class Swap {
     this.createdAt,
     this.updatedAt,
     this.deletedAt,
+    this.user,
   });
 
   factory Swap.fromJson(Map<String, dynamic> json) => _$SwapFromJson(json);

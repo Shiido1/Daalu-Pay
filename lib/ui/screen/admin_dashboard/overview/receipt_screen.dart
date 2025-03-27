@@ -43,7 +43,7 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                           height: 40.h,
                         ),
                         TextView(
-                          text: 'Alipay Receipts',
+                          text: 'Transfer Receipts',
                           fontSize: 21.2.sp,
                           color: AppColor.primary,
                           fontWeight: FontWeight.w500,
@@ -95,7 +95,7 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                                             children: [
                                               TextView(
                                                 text:
-                                                    '${getAllCurrency('CNY')}${oCcy.format(double.parse(o.amount!))}',
+                                                    '${getAllCurrency('CNY')}${oCcy.format(double.parse(o.amount!.toString()))}',
                                                 fontSize: 18.sp,
                                               ),
                                               SizedBox(
@@ -153,8 +153,7 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                                           ),
                                           o.documentType == 'alipay_id'
                                               ? QrImageView(
-                                                  data:
-                                                      o.recipientAlipayId ?? '',
+                                                  data: o.paymentDetails ?? '',
                                                   version: QrVersions.auto,
                                                   size: 90,
                                                   gapless: false,
@@ -164,7 +163,7 @@ class ViewUsersReceiptScreen extends StatelessWidget {
                                                       BorderRadius.circular(
                                                           8.0),
                                                   child: Image.network(
-                                                    'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${o.recipientAlipayId}',
+                                                    'https://res.cloudinary.com/walexbiz/image/upload/f_auto,q_auto/${o.qrCode ?? o.paymentDetails}',
                                                     width: 90.w,
                                                     height: 120,
                                                     fit: BoxFit.cover,

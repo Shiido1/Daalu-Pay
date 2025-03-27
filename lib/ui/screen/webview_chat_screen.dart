@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebviewChatScreen extends StatefulWidget {
+  const WebviewChatScreen({super.key});
+
   @override
   State<WebviewChatScreen> createState() => _WebviewChatScreenState();
 }

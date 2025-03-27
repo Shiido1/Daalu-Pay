@@ -2,6 +2,7 @@ import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/all_exchange_rates_response_model/all_exchange_rates_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/create_pin_response_model/create_pin_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
+import 'package:daalu_pay/core/connect_end/model/get_all_notifications_response_model/get_all_notifications_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/kyc_entity_model/kyc_entity_model.dart';
@@ -22,6 +23,7 @@ import '../contract/contract_impl.dart';
 import '../model/add_account_entity_model.dart';
 import '../model/add_account_response_model/add_account_response_model.dart';
 import '../model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
+import '../model/get_a_notification_message_model/get_a_notification_message_model.dart';
 import '../model/get_bank_account_response_model/get_bank_account_response_model.dart';
 import '../model/get_message_response/get_message_response.dart';
 import '../model/get_payment_gate_response_model/get_payment_gate_response_model.dart';
@@ -233,6 +235,21 @@ class AuthRepoImpl {
 
   Future<WithdrawalHistoryResponseModel> withdrawHistory() async {
     final response = await _contract.withdrawHistory();
+    return response;
+  }
+
+  Future<GetAllNotificationsResponseModel> getAllNotification() async {
+    final response = await _contract.getAllNotification();
+    return response;
+  }
+
+  Future<GetANotificationMessageModel> getANotificationMessage(id) async {
+    final response = await _contract.getANotification(id);
+    return response;
+  }
+
+  Future<dynamic> markAsReadMessage(id) async {
+    final response = await _contract.markAsReadMessage(id);
     return response;
   }
 

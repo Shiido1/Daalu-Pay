@@ -338,7 +338,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                                                 radius: Radius.circular(22),
                                                 padding: EdgeInsets.all(8),
                                                 dashPattern: [10, 2],
-                                                child: Container(
+                                                child: SizedBox(
                                                   width: 158.0.w,
                                                   child: TextView(
                                                     text:

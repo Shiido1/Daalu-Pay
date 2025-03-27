@@ -5,6 +5,7 @@ import 'package:daalu_pay/core/connect_end/model/all_exchange_rates_response_mod
 import 'package:daalu_pay/core/connect_end/model/create_pin_response_model/create_pin_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/get_all_notifications_response_model/get_all_notifications_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_bank_account_response_model/get_bank_account_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_message_response/get_message_response.dart';
@@ -33,6 +34,7 @@ import 'package:daalu_pay/core/connect_end/model/withdrawal_history_response_mod
 import 'package:daalu_pay/core/connect_end/model/withdrawal_response_model/withdrawal_response_model.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import '../connect_end/model/get_a_notification_message_model/get_a_notification_message_model.dart';
 import '../connect_end/model/get_swapped_transactions_response_model/get_swapped_transactions_response_model.dart';
 import '../connect_end/model/login_entity.dart';
 import '../connect_end/model/login_response_model/login_response_model.dart';
@@ -495,6 +497,42 @@ class AuthApi {
           await _service.call(UrlConfig.user_withdraw, RequestMethod.get);
       logger.d(response.data);
       return WithdrawalHistoryResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<GetAllNotificationsResponseModel> getAllNotification() async {
+    try {
+      final response =
+          await _service.call(UrlConfig.notification, RequestMethod.get);
+      logger.d(response.data);
+      return GetAllNotificationsResponseModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<GetANotificationMessageModel> getANotificationMessage(id) async {
+    try {
+      final response = await _service.call(
+          '${UrlConfig.notification_view}/$id', RequestMethod.get);
+      logger.d(response.data);
+      return GetANotificationMessageModel.fromJson(response.data);
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
+
+  Future<dynamic> markAsReadMessage(id) async {
+    try {
+      final response = await _service.call(
+          '${UrlConfig.notification}/$id', RequestMethod.post);
+      logger.d(response.data);
+      return response.data;
     } catch (e) {
       logger.d("response:$e");
       rethrow;

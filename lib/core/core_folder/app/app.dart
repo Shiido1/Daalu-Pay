@@ -6,6 +6,8 @@ import '../../../ui/screen/create_account_screen.dart';
 import '../../../ui/screen/create_password_screen.dart';
 import '../../../ui/screen/dashboard/dashboard_screen.dart';
 import '../../../ui/screen/dashboard/home/home_widget/trans_receipt_screen.dart';
+import '../../../ui/screen/dashboard/home/notification/notification_screen.dart';
+import '../../../ui/screen/dashboard/home/notification/view_notification_screen.dart';
 import '../../../ui/screen/dashboard/transaction/transaction_screen.dart';
 import '../../../ui/screen/dashboard/wallet/send_money.dart';
 import '../../../ui/screen/dashboard/wallet/view_wallet_screen.dart';
@@ -55,6 +57,8 @@ import '../network/network_service.dart';
   MaterialRoute(page: PassportPhotoScreen, initial: false),
   MaterialRoute(page: TransReceiptScreen, initial: false),
   MaterialRoute(page: SettingScreen, initial: false),
+  MaterialRoute(page: NotificationScreen, initial: false),
+  MaterialRoute(page: ViewNotificationScreenMessage, initial: false),
 ], dependencies: [
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: DialogService),

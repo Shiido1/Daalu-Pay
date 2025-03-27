@@ -4,6 +4,7 @@ import 'package:daalu_pay/core/connect_end/model/ali_pay_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/all_exchange_rates_response_model/all_exchange_rates_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/get_all_notifications_response_model/get_all_notifications_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_bank_account_response_model/get_bank_account_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
@@ -23,6 +24,7 @@ import 'package:injectable/injectable.dart';
 import '../../api_folder/auth_api.dart';
 import '../../core_folder/app/app.locator.dart';
 import '../model/create_pin_response_model/create_pin_response_model.dart';
+import '../model/get_a_notification_message_model/get_a_notification_message_model.dart';
 import '../model/get_message_response/get_message_response.dart';
 import '../model/get_payment_gate_response_model/get_payment_gate_response_model.dart';
 import '../model/get_stats_response_model/get_stats_response_model.dart';
@@ -124,4 +126,10 @@ class AuthContractsImpl {
       await _api.withdrawalFund(withdrawEntity);
   Future<WithdrawalHistoryResponseModel> withdrawHistory() async =>
       await _api.withdrawalHistory();
+  Future<GetAllNotificationsResponseModel> getAllNotification() async =>
+      await _api.getAllNotification();
+  Future<GetANotificationMessageModel> getANotification(id) async =>
+      await _api.getANotificationMessage(id);
+  Future<dynamic> markAsReadMessage(id) async =>
+      await _api.markAsReadMessage(id);
 }

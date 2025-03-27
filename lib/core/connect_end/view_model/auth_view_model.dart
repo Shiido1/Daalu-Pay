@@ -7,6 +7,9 @@ import 'package:daalu_pay/core/connect_end/model/all_exchange_rates_response_mod
 import 'package:daalu_pay/core/connect_end/model/create_pin_response_model/create_pin_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_entity_model.dart';
 import 'package:daalu_pay/core/connect_end/model/deposit_wallet_response_model/deposit_wallet_response_model.dart';
+import 'package:daalu_pay/core/connect_end/model/get_a_notification_message_model/get_a_notification_message_model.dart'
+    show GetANotificationMessageModel;
+import 'package:daalu_pay/core/connect_end/model/get_all_notifications_response_model/get_all_notifications_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_exchange_rate_response_model/get_exchange_rate_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_transaction_response_model/get_transaction_response_model.dart';
 import 'package:daalu_pay/core/connect_end/model/get_wallet_id_response_model/get_wallet_id_response_model.dart';
@@ -270,6 +273,14 @@ class AuthViewModel extends BaseViewModel {
   Wallet? w;
   Wallet? walletHome;
   Wallet? walletHomeAlipay;
+
+  GetAllNotificationsResponseModel? _getAllNotificationsResponseModel;
+  GetAllNotificationsResponseModel? get getAllNotificationsResponseModel =>
+      _getAllNotificationsResponseModel;
+
+  GetANotificationMessageModel? _getANotificationMessageModel;
+  GetANotificationMessageModel? get getANotificationMessageModel =>
+      _getANotificationMessageModel;
 
   radioButtonChanges(String value) {
     radioValue = value;
@@ -1049,6 +1060,11 @@ class AuthViewModel extends BaseViewModel {
   Future<void> refreshHome() async {
     getUserRefresh();
     getStatisticsRefresh();
+    notifyListeners();
+  }
+
+  Future<void> refreshNotification() async {
+    getAllNotification();
     notifyListeners();
   }
 
@@ -3047,6 +3063,63 @@ class AuthViewModel extends BaseViewModel {
           throwException: true);
 
       _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getAllNotifications(
+    context,
+  ) async {
+    try {
+      _isLoading = true;
+      _getAllNotificationsResponseModel = await runBusyFuture(
+          repositoryImply.getAllNotification(),
+          throwException: true);
+
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> getAllNotification() async {
+    try {
+      _isLoading = true;
+      _getAllNotificationsResponseModel = await runBusyFuture(
+          repositoryImply.getAllNotification(),
+          throwException: true);
+
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+    }
+    notifyListeners();
+  }
+
+  Future<void> getANotificationMessage(context, String? id) async {
+    try {
+      _isLoading = true;
+      _getANotificationMessageModel = await runBusyFuture(
+          repositoryImply.getANotificationMessage(id),
+          throwException: true);
+
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      AppUtils.snackbar(context, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> markMessageAsRead(context, String? id) async {
+    try {
+      await runBusyFuture(repositoryImply.markAsReadMessage(id),
+          throwException: true);
     } catch (e) {
       _isLoading = false;
       AppUtils.snackbar(context, message: e.toString(), error: true);

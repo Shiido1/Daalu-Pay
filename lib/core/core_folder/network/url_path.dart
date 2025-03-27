@@ -36,4 +36,6 @@ class UrlConfig {
   static const String bank_account = '/user/bank-account';
   // ignore: constant_identifier_names
   static const String user_withdraw = '/user/withdraw';
+  static const String notification = '/user/notifications';
+  static const String notification_view = '/user/notifications/view';
 }

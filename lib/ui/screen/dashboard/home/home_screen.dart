@@ -2,10 +2,10 @@ import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/exchange_rate_screen.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/home_widget/deposit_screen.dart';
 import 'package:daalu_pay/ui/screen/dashboard/home/swap/swap_screen.dart';
+import 'package:daalu_pay/ui/screen/dashboard/settings/setting_screen.dart';
 import 'package:daalu_pay/ui/screen/dashboard/transaction/transaction_screen.dart';
 import 'package:daalu_pay/ui/widget/text_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
@@ -45,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
             await model.getUser(context);
             await model.getStatistics(context);
             model.walletHome = model.getStatsResponseModel?.data?.wallets![0];
+            model.getAllNotifications(context);
           },
           disposeViewModel: false,
           builder: (_, AuthViewModel model, __) {
@@ -79,29 +80,47 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.w600,
                           color: AppColor.primary,
                         ),
-                        model.userResponseModel == null
-                            ? SizedBox.shrink()
-                            : GestureDetector(
-                                onTap: () {
-                                  navigate.navigateTo(Routes.settingScreen);
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(7.2.w),
-                                  decoration: BoxDecoration(
-                                    color: AppColor.inGrey.withOpacity(.22),
-                                    border: Border.all(color: AppColor.primary),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: TextView(
-                                    text: getInitials(
-                                            '${model.userResponseModel?.data?.firstName} ${model.userResponseModel?.data?.lastName}')
-                                        .toUpperCase(),
-                                    fontSize: 20.sp,
-                                    color: AppColor.primary,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
+                        GestureDetector(
+                            onTap: () =>
+                                navigate.navigateTo(Routes.notificationScreen),
+                            child: Stack(children: [
+                              SvgPicture.asset(AppImage.bell),
+                              if (model.getAllNotificationsResponseModel !=
+                                  null)
+                                model.getAllNotificationsResponseModel!.data!
+                                        .any((o) => o.readAt == null)
+                                    ? Container(
+                                        padding: EdgeInsets.all(4.w),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: AppColor.red,
+                                        ),
+                                      )
+                                    : SizedBox.shrink()
+                            ])),
+                        // model.userResponseModel == null
+                        //     ? SizedBox.shrink()
+                        //     : GestureDetector(
+                        //         onTap: () {
+                        //           navigate.navigateTo(Routes.settingScreen);
+                        //         },
+                        //         child: Container(
+                        //           padding: EdgeInsets.all(7.2.w),
+                        //           decoration: BoxDecoration(
+                        //             color: AppColor.inGrey.withOpacity(.22),
+                        //             border: Border.all(color: AppColor.primary),
+                        //             shape: BoxShape.circle,
+                        //           ),
+                        //           child: TextView(
+                        //             text: getInitials(
+                        //                     '${model.userResponseModel?.data?.firstName} ${model.userResponseModel?.data?.lastName}')
+                        //                 .toUpperCase(),
+                        //             fontSize: 20.sp,
+                        //             color: AppColor.primary,
+                        //             fontWeight: FontWeight.w600,
+                        //           ),
+                        //         ),
+                        //       ),
                       ],
                     ),
                   ),
@@ -915,6 +934,46 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 TextView(
                                   text: 'Support',
+                                  maxLines: 1,
+                                  textOverflow: TextOverflow.ellipsis,
+                                  fontSize: 15.80.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (contxt) => SettingScreen()),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 10.w, right: 14.w),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 8.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColor.white),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.settings,
+                                  color: AppColor.black,
+                                  size: 26.sp,
+                                ),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                TextView(
+                                  text: 'Settings',
                                   maxLines: 1,
                                   textOverflow: TextOverflow.ellipsis,
                                   fontSize: 15.80.sp,

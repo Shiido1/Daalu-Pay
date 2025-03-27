@@ -133,7 +133,7 @@ class _AlipaySendMoneyScreenState extends State<AlipaySendMoneyScreen> {
                                       radius: Radius.circular(22),
                                       padding: EdgeInsets.all(8),
                                       dashPattern: [10, 2],
-                                      child: Container(
+                                      child: SizedBox(
                                         width: 158.0.w,
                                         child: TextView(
                                           text:
@@ -240,7 +240,7 @@ class _AlipaySendMoneyScreenState extends State<AlipaySendMoneyScreen> {
                         onChange: (p0) {
                           // model.onGetUserWalletRate(context, p0);
                         }),
-                    // : model.choice == 'upload' 
+                    // : model.choice == 'upload'
                     //     ? // : SizedBox.shrink(),
                     SizedBox(
                       height: 20.h,

@@ -15,7 +15,7 @@ import '../../../../widget/text_widget.dart';
 
 // ignore: must_be_immutable
 class SwapScreen extends StatelessWidget {
-  SwapScreen({super.key});
+  const SwapScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,6 @@ class SwapScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SvgPicture.asset(AppImage.bell),
                     ],
                   ),
                   SizedBox(

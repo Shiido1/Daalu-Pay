@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../main.dart';
+import 'core_folder/app/app.router.dart';
 
 Future<void> handlerBackgroundMessage(RemoteMessage message) async {
   print("title:${message.notification?.title}");
@@ -29,6 +30,7 @@ class FirebaseApi {
 
   void handleMessage(RemoteMessage? message) {
     if (message == null) return;
+    navigate.navigateTo(Routes.welcomeBackPushScreen);
 
     // navigation to screens when push notification pops should be implemented here
   }

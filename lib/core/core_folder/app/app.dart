@@ -25,6 +25,7 @@ import '../../../ui/screen/verify_screen.dart';
 import '../../../ui/screen/webview_chat_screen.dart';
 import '../../../ui/screen/welcome_back_screen.dart';
 import '../../../ui/screen/welcome_back_screen_login.dart';
+import '../../../ui/screen/welcome_back_screen_push.dart';
 import '../../api_folder/auth_api.dart';
 import '../../connect_end/contract/contract_impl.dart';
 import '../../connect_end/repo/repo_impl.dart';
@@ -59,6 +60,7 @@ import '../network/network_service.dart';
   MaterialRoute(page: SettingScreen, initial: false),
   MaterialRoute(page: NotificationScreen, initial: false),
   MaterialRoute(page: ViewNotificationScreenMessage, initial: false),
+  MaterialRoute(page: WelcomeBackPushScreen, initial: false),
 ], dependencies: [
   LazySingleton(classType: NavigationService),
   LazySingleton(classType: DialogService),

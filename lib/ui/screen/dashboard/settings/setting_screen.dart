@@ -522,7 +522,32 @@ class _SettingScreenState extends State<SettingScreen> {
                         ],
                       ),
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  GestureDetector(
+                    onTap: () => model.showDeleteAccountDialog(context),
+                    child: Center(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 22.w, vertical: 8.w),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: AppColor.red,
+                        ),
+                        child: TextView(
+                          text: 'Delete Account',
+                          fontSize: 17.4.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColor.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
                 ],
               ),
             ),

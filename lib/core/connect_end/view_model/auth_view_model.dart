@@ -701,6 +701,118 @@ class AuthViewModel extends BaseViewModel {
         });
   }
 
+  showDeleteAccountDialog(context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ViewModelBuilder<AuthViewModel>.reactive(
+              viewModelBuilder: () => AuthViewModel(),
+              onViewModelReady: (model) {},
+              disposeViewModel: false,
+              builder: (_, AuthViewModel model, __) {
+                return Dialog(
+                  backgroundColor: AppColor.white,
+                  insetPadding:
+                      EdgeInsets.symmetric(horizontal: 22.w, vertical: 16.w),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20.w),
+                    height: 250.w,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 16.2.h,
+                          ),
+                          TextView(
+                            text: 'Delete Account',
+                            color: AppColor.black,
+                            fontSize: 17.2.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          SizedBox(
+                            height: 10.2.h,
+                          ),
+                          TextView(
+                            text:
+                                'Are your sure you want to delete this account permanently?',
+                            color: AppColor.black,
+                            fontSize: 15.2.sp,
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () => Navigator.pop(context),
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.w, horizontal: 10.w),
+                                  decoration: BoxDecoration(
+                                      color: AppColor.white,
+                                      border: Border.all(
+                                          color: AppColor.black, width: .6.w),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Center(
+                                    child: TextView(
+                                      text: 'Cancel',
+                                      color: AppColor.black,
+                                      fontSize: 17.4.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.w, horizontal: 10.w),
+                                  decoration: BoxDecoration(
+                                      color: AppColor.red,
+                                      border: Border.all(
+                                          color: AppColor.white, width: .6.w),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Center(
+                                    child: TextView(
+                                      text: 'Delete',
+                                      color: AppColor.white,
+                                      fontSize: 17.4.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          model.isLoading
+                              ? TextView(
+                                  text: 'Loading...',
+                                  color: AppColor.grey,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                )
+                              : SizedBox.shrink(),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              });
+        });
+  }
+
   Future<void> initNotificationToken() async {
     if (Platform.isAndroid) {
       await Firebase.initializeApp(
@@ -780,6 +892,30 @@ class AuthViewModel extends BaseViewModel {
           navigate.navigateTo(Routes.dashboard,
               arguments: DashboardArguments(index: 0));
         }
+      }
+
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      logger.d(e);
+      AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> verifyPinPush(contxt, {String? pin}) async {
+    try {
+      _isLoading = true;
+      _verifyPinResponseModel = await runBusyFuture(
+          repositoryImply.verifyPin(pin!),
+          throwException: true);
+
+      if (_verifyPinResponseModel!.status == 'success') {
+        navigate.navigateTo(Routes.dashboard,
+            arguments: DashboardArguments(index: 0));
+        Future.delayed(Duration(seconds: 5), () {
+          navigate.navigateTo(Routes.notificationScreen);
+        });
       }
 
       _isLoading = false;

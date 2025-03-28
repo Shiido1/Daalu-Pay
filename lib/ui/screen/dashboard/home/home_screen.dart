@@ -1016,6 +1016,32 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(
+                    height: 20.h,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                      model.showDeleteAccountDialog(context);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 40.w),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.w),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColor.red,
+                      ),
+                      child: Center(
+                        child: TextView(
+                          text: 'Delete Account',
+                          fontSize: 17.4.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColor.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
                     height: 40.h,
                   ),
                 ],

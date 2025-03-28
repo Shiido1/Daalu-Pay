@@ -716,7 +716,7 @@ class AuthViewModel extends BaseViewModel {
                       EdgeInsets.symmetric(horizontal: 22.w, vertical: 16.w),
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 20.w),
-                    height: 250.w,
+                    height: 300.w,
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
@@ -768,7 +768,10 @@ class AuthViewModel extends BaseViewModel {
                                 height: 20.h,
                               ),
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  deleteAccountUser(context);
+                                  model.notifyListeners();
+                                },
                                 child: Container(
                                   width: double.infinity,
                                   padding: EdgeInsets.symmetric(
@@ -793,7 +796,7 @@ class AuthViewModel extends BaseViewModel {
                           SizedBox(
                             height: 10.h,
                           ),
-                          model.isLoading
+                          _isLoading
                               ? TextView(
                                   text: 'Loading...',
                                   color: AppColor.grey,
@@ -813,20 +816,20 @@ class AuthViewModel extends BaseViewModel {
         });
   }
 
-  Future<void> initNotificationToken() async {
-    if (Platform.isAndroid) {
-      await Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform);
-      await FirebaseApi().initNotification();
-    } else {
-      await Firebase.initializeApp();
-    }
-    _firebaseMessage = FirebaseMessaging.instance;
-    await _firebaseMessage.requestPermission();
-    globalfCMToken = await _firebaseMessage.getToken();
-    print(":jjjj:::::$globalfCMToken");
-    notifyListeners();
-  }
+  // Future<void> initNotificationToken() async {
+  //   if (Platform.isAndroid) {
+  //     await Firebase.initializeApp(
+  //         options: DefaultFirebaseOptions.currentPlatform);
+  //     await FirebaseApi().initNotification();
+  //   } else {
+  //     await Firebase.initializeApp();
+  //   }
+  //   _firebaseMessage = FirebaseMessaging.instance;
+  //   await _firebaseMessage.requestPermission();
+  //   globalfCMToken = await _firebaseMessage.getToken();
+  //   print(":jjjj:::::$globalfCMToken");
+  //   notifyListeners();
+  // }
 
   bool isOnTogglePassword() {
     _isTogglePassword = !_isTogglePassword;
@@ -1154,6 +1157,31 @@ class AuthViewModel extends BaseViewModel {
       _isLoading = false;
       logger.d(e);
       AppUtils.snackbar(contxt, message: e.toString(), error: true);
+    }
+    notifyListeners();
+  }
+
+  Future<void> deleteAccountUser(contxt) async {
+    try {
+      _isLoading = true;
+      var v = await runBusyFuture(repositoryImply.deleteAccount(),
+          throwException: true);
+      if (v['status'] == 'success') {
+        Navigator.pop(contxt);
+        Future.delayed(Duration(seconds: 1), () {
+          AppUtils.snackbar(contxt, message: v['data']);
+          navigate.navigateTo(Routes.loginScreen);
+        });
+      }
+
+      _isLoading = false;
+    } catch (e) {
+      _isLoading = false;
+      logger.d(e);
+      Navigator.pop(contxt);
+      Future.delayed(Duration(seconds: 3), () {
+        AppUtils.snackbar(contxt, message: e.toString(), error: true);
+      });
     }
     notifyListeners();
   }

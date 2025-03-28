@@ -6,7 +6,7 @@ part 'data.g.dart';
 class Data {
   String? token;
   String? deviceType;
-  String? userId;
+  dynamic userId;
   String? status;
   DateTime? updatedAt;
   DateTime? createdAt;

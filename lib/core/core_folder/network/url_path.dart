@@ -37,5 +37,8 @@ class UrlConfig {
   // ignore: constant_identifier_names
   static const String user_withdraw = '/user/withdraw';
   static const String notification = '/user/notifications';
+  // ignore: constant_identifier_names
   static const String notification_view = '/user/notifications/view';
+  // ignore: constant_identifier_names
+  static const String delete_account = '/user/delete-account';
 }

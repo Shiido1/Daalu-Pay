@@ -39,15 +39,15 @@ class _WelcomeBackScreenState extends State<WelcomeBackLoginScreen> {
 
   bool hasError = false;
 
-  Future<void> initializeFirebase() async {
-    if (Platform.isAndroid) {
-      await Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform);
-      await FirebaseApi().initNotification();
-    } else {
-      await Firebase.initializeApp();
-    }
-  }
+  // Future<void> initializeFirebase() async {
+  //   if (Platform.isAndroid) {
+  //     await Firebase.initializeApp(
+  //         options: DefaultFirebaseOptions.currentPlatform);
+  //     await FirebaseApi().initNotification();
+  //   } else {
+  //     await Firebase.initializeApp();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

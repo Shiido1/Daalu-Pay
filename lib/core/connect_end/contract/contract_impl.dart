@@ -132,4 +132,5 @@ class AuthContractsImpl {
       await _api.getANotificationMessage(id);
   Future<dynamic> markAsReadMessage(id) async =>
       await _api.markAsReadMessage(id);
+  Future<dynamic> deleteAccount() async => await _api.deleteAccount();
 }

@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../core/connect_end/view_model/auth_view_model.dart';
+import '../../../../core/core_folder/app/app.locator.dart' show locator;
 import '../../../../core/core_folder/manager/shared_preference.dart';
 import '../../../app_assets/contant.dart';
 import '../wallet/withdrawal_screen.dart';
@@ -35,10 +36,12 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AuthViewModel>.reactive(
-        viewModelBuilder: () => AuthViewModel(),
+        viewModelBuilder: () => locator<AuthViewModel>(),
         onViewModelReady: (model) async {
-          await model.getUser(context);
-          model.initNotificationToken();
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            await model.getUser(context);
+            // model.initNotificationToken();
+          });
         },
         disposeViewModel: false,
         builder: (_, AuthViewModel model, __) {

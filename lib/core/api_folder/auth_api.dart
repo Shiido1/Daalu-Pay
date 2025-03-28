@@ -538,4 +538,16 @@ class AuthApi {
       rethrow;
     }
   }
+
+  Future<dynamic> deleteAccount() async {
+    try {
+      final response =
+          await _service.call(UrlConfig.delete_account, RequestMethod.post);
+      logger.d(response.data);
+      return response.data;
+    } catch (e) {
+      logger.d("response:$e");
+      rethrow;
+    }
+  }
 }

@@ -9,7 +9,7 @@ part of 'data.dart';
 Data _$DataFromJson(Map<String, dynamic> json) => Data(
       token: json['token'] as String?,
       deviceType: json['deviceType'] as String?,
-      userId: json['userId'] as String?,
+      userId: json['userId'],
       status: json['status'] as String?,
       updatedAt: json['updatedAt'] == null
           ? null

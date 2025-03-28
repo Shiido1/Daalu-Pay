@@ -253,6 +253,11 @@ class AuthRepoImpl {
     return response;
   }
 
+  Future<dynamic> deleteAccount() async {
+    final response = await _contract.deleteAccount();
+    return response;
+  }
+
   void _chache(data) {
     if (data != null) {
       _session.authToken = data.token!;

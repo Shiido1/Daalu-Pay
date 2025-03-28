@@ -31,8 +31,6 @@ import 'package:daalu_pay/core/connect_end/model/withdrawal_entity_model.dart';
 import 'package:daalu_pay/main.dart';
 import 'package:daalu_pay/ui/app_assets/app_image.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -43,7 +41,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:pay_with_paystack/pay_with_paystack.dart';
 import 'package:stacked/stacked.dart';
-import '../../../firebase_options.dart';
 import '../../../ui/app_assets/app_color.dart';
 import '../../../ui/app_assets/app_utils.dart';
 import '../../../ui/app_assets/app_validatiion.dart';
@@ -58,7 +55,6 @@ import '../../core_folder/app/app.locator.dart';
 import '../../core_folder/app/app.logger.dart';
 import '../../core_folder/app/app.router.dart';
 import '../../core_folder/manager/shared_preference.dart';
-import '../../firebase_api.dart';
 import '../model/add_account_response_model/add_account_response_model.dart';
 import '../model/get_bank_account_response_model/get_bank_account_response_model.dart';
 import '../model/get_message_response/get_message_response.dart';
@@ -708,7 +704,7 @@ class AuthViewModel extends BaseViewModel {
           return ViewModelBuilder<AuthViewModel>.reactive(
               viewModelBuilder: () => AuthViewModel(),
               onViewModelReady: (model) {},
-              disposeViewModel: false,
+              // disposeViewModel: false,
               builder: (_, AuthViewModel model, __) {
                 return Dialog(
                   backgroundColor: AppColor.white,
@@ -1180,7 +1176,8 @@ class AuthViewModel extends BaseViewModel {
       logger.d(e);
       Navigator.pop(contxt);
       Future.delayed(Duration(seconds: 3), () {
-        AppUtils.snackbar(contxt, message: e.toString(), error: true);
+        AppUtils.snackbar(contxt,
+            message: 'Account was unable to delete.', error: true);
       });
     }
     notifyListeners();

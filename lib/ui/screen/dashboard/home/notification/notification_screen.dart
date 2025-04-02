@@ -81,7 +81,8 @@ class NotificationScreen extends StatelessWidget {
   }
 
   Widget notificationMessage(Datum? d) => GestureDetector(
-        onTap: () => navigate.navigateTo(Routes.viewNotificationScreenMessage,
+        onTap: () => navigate.clearStackAndShow(
+            Routes.viewNotificationScreenMessage,
             arguments: ViewNotificationScreenMessageArguments(id: d!.id)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

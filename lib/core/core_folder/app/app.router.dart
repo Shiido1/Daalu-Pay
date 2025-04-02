@@ -426,8 +426,10 @@ class StackedRouter extends _i1.RouterBase {
       final args =
           data.getArgs<ViewNotificationScreenMessageArguments>(nullOk: false);
       return _i28.MaterialPageRoute<dynamic>(
-        builder: (context) =>
-            _i26.ViewNotificationScreenMessage(key: args.key, id: args.id),
+        builder: (context) => _i26.ViewNotificationScreenMessage(
+          key: args.key,
+          id: args.id,
+        ),
         settings: data,
       );
     },
@@ -761,26 +763,29 @@ class ViewNotificationScreenMessageArguments {
   const ViewNotificationScreenMessageArguments({
     this.key,
     required this.id,
+    this.onBack,
   });
 
   final _i28.Key? key;
 
   final String? id;
 
+  final Function? onBack;
+
   @override
   String toString() {
-    return '{"key": "$key", "id": "$id"}';
+    return '{"key": "$key", "id": "$id", "onBack": "$onBack"}';
   }
 
   @override
   bool operator ==(covariant ViewNotificationScreenMessageArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key && other.id == id;
+    return other.key == key && other.id == id && other.onBack == onBack;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ id.hashCode;
+    return key.hashCode ^ id.hashCode ^ onBack.hashCode;
   }
 }
 
@@ -1165,6 +1170,7 @@ extension NavigatorStateExtension on _i33.NavigationService {
   Future<dynamic> navigateToViewNotificationScreenMessage({
     _i28.Key? key,
     required String? id,
+    Function? onBack,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1172,7 +1178,8 @@ extension NavigatorStateExtension on _i33.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.viewNotificationScreenMessage,
-        arguments: ViewNotificationScreenMessageArguments(key: key, id: id),
+        arguments: ViewNotificationScreenMessageArguments(
+            key: key, id: id, onBack: onBack),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1573,6 +1580,7 @@ extension NavigatorStateExtension on _i33.NavigationService {
   Future<dynamic> replaceWithViewNotificationScreenMessage({
     _i28.Key? key,
     required String? id,
+    Function? onBack,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1580,7 +1588,8 @@ extension NavigatorStateExtension on _i33.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.viewNotificationScreenMessage,
-        arguments: ViewNotificationScreenMessageArguments(key: key, id: id),
+        arguments: ViewNotificationScreenMessageArguments(
+            key: key, id: id, onBack: onBack),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

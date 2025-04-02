@@ -19,16 +19,19 @@ class NotificationScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.white,
       appBar: AppBar(
-        backgroundColor: AppColor.white,
-        shadowColor: AppColor.navyBlueGrey,
-        title: TextView(
-          text: 'Messages',
-          fontWeight: FontWeight.w500,
-          fontSize: 20.sp,
-        ),
-        centerTitle: false,
-        elevation: 0.1,
-      ),
+          backgroundColor: AppColor.white,
+          shadowColor: AppColor.navyBlueGrey,
+          title: TextView(
+            text: 'Messages',
+            fontWeight: FontWeight.w500,
+            fontSize: 20.sp,
+          ),
+          centerTitle: false,
+          elevation: 0.1,
+          leading: IconButton(
+              onPressed: () => navigate.replaceWith(Routes.dashboard,
+                  arguments: DashboardArguments(index: 0)),
+              icon: Icon(Icons.arrow_back))),
       body: ViewModelBuilder<AuthViewModel>.reactive(
           viewModelBuilder: () => AuthViewModel(),
           onViewModelReady: (model) async {

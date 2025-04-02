@@ -1,3 +1,5 @@
+import 'package:daalu_pay/core/core_folder/app/app.router.dart';
+import 'package:daalu_pay/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -25,6 +27,9 @@ class ViewNotificationScreenMessage extends StatelessWidget {
         ),
         centerTitle: false,
         elevation: 0.1,
+        leading: IconButton(
+            onPressed: () => navigate.replaceWith(Routes.notificationScreen),
+            icon: Icon(Icons.arrow_back)),
       ),
       body: ViewModelBuilder<AuthViewModel>.reactive(
           viewModelBuilder: () => AuthViewModel(),

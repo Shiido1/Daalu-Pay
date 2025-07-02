@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
       builder: (BuildContext context, Widget? child) => MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
           useMaterial3: true,
         ),
         initialRoute: SharedPreferencesService.instance.isLoggedIn == false

@@ -430,6 +430,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         },
       );
 
+  
   shwDocumentDialog() => showDialog(
         context: context,
         builder: (BuildContext context) {

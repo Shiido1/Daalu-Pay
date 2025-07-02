@@ -134,7 +134,7 @@ class AuthViewModel extends BaseViewModel {
 
   // firebase generate token call
 
-  var _firebaseMessage;
+  // var _firebaseMessage;
 
   int currentPageWallet = 0;
 

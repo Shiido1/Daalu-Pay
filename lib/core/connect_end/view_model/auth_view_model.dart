@@ -812,21 +812,6 @@ class AuthViewModel extends BaseViewModel {
         });
   }
 
-  // Future<void> initNotificationToken() async {
-  //   if (Platform.isAndroid) {
-  //     await Firebase.initializeApp(
-  //         options: DefaultFirebaseOptions.currentPlatform);
-  //     await FirebaseApi().initNotification();
-  //   } else {
-  //     await Firebase.initializeApp();
-  //   }
-  //   _firebaseMessage = FirebaseMessaging.instance;
-  //   await _firebaseMessage.requestPermission();
-  //   globalfCMToken = await _firebaseMessage.getToken();
-  //   print(":jjjj:::::$globalfCMToken");
-  //   notifyListeners();
-  // }
-
   bool isOnTogglePassword() {
     _isTogglePassword = !_isTogglePassword;
     notifyListeners();
@@ -3323,7 +3308,7 @@ class AuthViewModel extends BaseViewModel {
 
     PayWithPayStack().now(
         context: context,
-        secretKey: "sk_test_d9830d6c7a17c2b69f22ccb0589b560c902f6059",
+        secretKey: "sk_live_fc106ba6ffe79baa317f1acbe25fec54902876f5",
         customerEmail: session.usersData['user']['email'],
         reference: uniqueTransRef,
         currency: "NGN",
@@ -3343,6 +3328,18 @@ class AuthViewModel extends BaseViewModel {
         },
         transactionNotCompleted: (reason) {
           debugPrint("==> Transaction failed reason $reason");
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text('Payment Incomplete'),
+              content: Text(
+                  'Your payment was not completed. Reason: $reason. Please try again.'),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context), child: Text('OK'))
+              ],
+            ),
+          );
         });
   }
 
@@ -3635,7 +3632,7 @@ class AuthViewModel extends BaseViewModel {
         email: session.usersData['user']['email']);
     final Flutterwave flutterwave = Flutterwave(
         context: context,
-        publicKey: "FLWPUBK_TEST-c2f20bd64cbacd523ebb2542ad58aa00-X",
+        publicKey: "FLWPUBK-3ed374b04d2aef33045940b76b6fcb8b-X",
         currency: "NGN",
         redirectUrl: "https://flutterwave.com/pay/shiidotgyt",
         txRef: walletId!,

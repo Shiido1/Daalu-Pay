@@ -3632,7 +3632,7 @@ class AuthViewModel extends BaseViewModel {
         email: session.usersData['user']['email']);
     final Flutterwave flutterwave = Flutterwave(
         context: context,
-        publicKey: "FLWPUBK-3ed374b04d2aef33045940b76b6fcb8b-X",
+        publicKey: "FLWPUBK_TEST-fa78ed4bfde85f582c36a9bfed97964b-X",
         currency: "NGN",
         redirectUrl: "https://flutterwave.com/pay/shiidotgyt",
         txRef: walletId!,

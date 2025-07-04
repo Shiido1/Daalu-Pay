@@ -218,49 +218,48 @@ class TransactionScreen extends StatelessWidget {
                 color: AppColor.white,
                 border: Border.all(color: AppColor.inGrey),
                 borderRadius: BorderRadius.circular(12)),
-            child: Row(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 180.0.w,
-                      child: TextView(
-                        text: '${e.fromCurrency ?? ''} - ${e.toCurrency ?? ''}',
+                SizedBox(
+                  width: 180.0.w,
+                  child: TextView(
+                    text: '${e.fromCurrency ?? ''} - ${e.toCurrency ?? ''}',
+                    fontSize: 15.2.sp,
+                    maxLines: 1,
+                    textOverflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                SizedBox(
+                  width: 280.0.w,
+                  child: Row(
+                    children: [
+                      TextView(
+                        text:
+                            '${oCcy.format(roundToTwoDecimals(double.parse(e.fromAmount.toString())))} - ',
                         fontSize: 15.2.sp,
                         maxLines: 1,
                         textOverflow: TextOverflow.ellipsis,
                         fontWeight: FontWeight.w500,
                       ),
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    SizedBox(
-                      width: 180.0.w,
-                      child: Row(
-                        children: [
-                          TextView(
-                            text:
-                                '${oCcy.format(roundToTwoDecimals(double.parse(e.fromAmount.toString())))} - ',
-                            fontSize: 15.2.sp,
-                            maxLines: 1,
-                            textOverflow: TextOverflow.ellipsis,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          TextView(
-                            text: oCcy.format(roundToTwoDecimals(
-                                double.parse(e.toAmount.toString()))),
-                            fontSize: 15.2.sp,
-                            maxLines: 1,
-                            textOverflow: TextOverflow.ellipsis,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ],
+                      TextView(
+                        text: oCcy.format(roundToTwoDecimals(
+                            double.parse(e.toAmount.toString()))),
+                        fontSize: 15.2.sp,
+                        maxLines: 1,
+                        textOverflow: TextOverflow.ellipsis,
+                        fontWeight: FontWeight.w500,
                       ),
-                    ),
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     TextView(
                       text: DateFormat('yyyy-MM-dd hh:mm a')
                           .format(DateTime.parse(e.createdAt.toString())),
@@ -268,17 +267,12 @@ class TransactionScreen extends StatelessWidget {
                       color: AppColor.grey,
                       fontWeight: FontWeight.w400,
                     ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
                     TextView(
                       text: e.status?.toLowerCase() == 'approved'
                           ? 'Successful'
                           : e.status!.capitalize(),
-                      fontSize: 15.2.sp,
-                      fontWeight: FontWeight.w400,
+                      fontSize: 16.2.sp,
+                      fontWeight: FontWeight.w500,
                       color: e.status?.toLowerCase() == 'approved'
                           ? AppColor.green
                           : e.status?.toLowerCase() == 'pending'
@@ -286,7 +280,7 @@ class TransactionScreen extends StatelessWidget {
                               : AppColor.red,
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),

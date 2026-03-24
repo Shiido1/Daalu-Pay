@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "name": "Flutter (lib/ui/screen/reset_password_screen.dart)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/ui/screen/reset_password_screen.dart"
+        }
+    ]
+}

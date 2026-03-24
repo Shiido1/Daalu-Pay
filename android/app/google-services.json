@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "818345300890",
+    "project_id": "daalupay-fdbaf",
+    "storage_bucket": "daalupay-fdbaf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818345300890:android:fe69b2bf4a7c7b3b67a023",
+        "android_client_info": {
+          "package_name": "com.daalupayapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE1SuDSBY9aSmJxAXWBJdf131urh23f9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
